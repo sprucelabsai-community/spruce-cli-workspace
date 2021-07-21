@@ -22,6 +22,6 @@ export default class RemoteService {
 		const values = Object.entries(REMOTES)
 		const host = this.getHost()
 		const match = values.find((v) => v[1] === host)
-		return match?.[0]
+		return match?.[0] as Remote
 	}
 }

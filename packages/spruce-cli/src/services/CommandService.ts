@@ -13,6 +13,7 @@ interface MockResponse {
 	code: number
 	stdout?: string
 	stderr?: string
+	callback?: () => void
 }
 
 export default class CommandService {
@@ -58,6 +59,8 @@ export default class CommandService {
 
 		if (mockResponse) {
 			CommandService.commandsRunCapturedByMockResponses.push(mockKey)
+			mockResponse.callback?.()
+
 			if (mockResponse.code !== 0) {
 				throw new SpruceError({
 					code: 'EXECUTING_COMMAND_FAILED',
@@ -67,6 +70,7 @@ export default class CommandService {
 					stderr: mockResponse.stderr,
 				})
 			}
+
 			return { stdout: mockResponse.stdout ?? '' }
 		}
 

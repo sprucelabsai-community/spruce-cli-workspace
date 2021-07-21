@@ -342,10 +342,10 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		})
 
 		assert.isFalsy(
-			results.find((r) => r.id === 'builtForm')?.schema.fields
-				//@ts-ignore
-				?.completedFormBuilder?.options?.schemaIds?.[0]
-				?.moduleToImportFromWhenRemote
+			(
+				results.find((r) => r.id === 'builtForm')?.schema.fields
+					?.completedFormBuilder?.options as any
+			)?.schemaIds?.[0]?.moduleToImportFromWhenRemote
 		)
 	}
 

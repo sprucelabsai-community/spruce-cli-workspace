@@ -7,6 +7,13 @@ import { FeatureActionResponse } from '../../features.types'
 
 type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptions
+
+export interface BootMeta {
+	kill: () => void
+	pid: number
+	promise: Promise<void>
+}
+
 export default class BootAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public commandAliases = ['boot']
