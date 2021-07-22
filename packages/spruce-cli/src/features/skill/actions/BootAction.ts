@@ -12,6 +12,7 @@ export interface BootMeta {
 	kill: () => void
 	pid: number
 	promise: Promise<void>
+	isBooted: boolean
 }
 
 export default class BootAction extends AbstractAction<OptionsSchema> {
@@ -38,6 +39,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 
 		return {
 			meta: {
+				isBooted: true,
 				kill: command.kill.bind(command),
 				pid: command.pid() as number,
 				promise: runningPromise,

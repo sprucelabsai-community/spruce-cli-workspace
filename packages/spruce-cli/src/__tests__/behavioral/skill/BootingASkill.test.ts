@@ -1,12 +1,11 @@
 import { test, assert } from '@sprucelabs/test'
 import findProcess from 'find-process'
-import AbstractCliTest from '../../../tests/AbstractCliTest'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
-export default class BootingASkillTest extends AbstractCliTest {
+export default class BootingASkillTest extends AbstractSkillTest {
+	protected static skillCacheKey = 'skills'
 	@test()
 	protected static async bootingWithoutBuildingThrowsGoodError() {
-		await this.install()
-
 		const results = await this.Action('skill', 'boot').execute({})
 
 		assert.isTruthy(results.errors)
@@ -15,11 +14,12 @@ export default class BootingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async aSkillCanBeBootedAndKilled() {
-		await this.install()
-
 		await this.Service('build').build()
 
 		const response = await this.Action('skill', 'boot').execute({})
+
+		assert.isFalsy(response.errors)
+		assert.isTrue(response.meta?.isBooted)
 
 		const pid = response.meta?.pid
 		assert.isAbove(pid, 0)
@@ -37,9 +37,16 @@ export default class BootingASkillTest extends AbstractCliTest {
 		await response.meta?.promise
 	}
 
-	private static async install() {
-		const fixture = this.FeatureFixture()
-		const cli = await fixture.installCachedFeatures('skills')
-		return cli
+	@test()
+	protected static async canReturnFromExecuteImmediately() {
+		const response = await this.Action('skill', 'boot').execute({
+			shouldReturnImmediately: true,
+		})
+
+		assert.isFalse(response.meta?.isBooted)
+
+		await response.meta?.bootPromise
+
+		assert.isTrue(response.meta?.isBooted)
 	}
 }

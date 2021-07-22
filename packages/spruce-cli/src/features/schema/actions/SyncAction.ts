@@ -213,13 +213,15 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
 		const pkg = this.Service('pkg')
 		for (const m of modules) {
-			if (!pkg.isInstalled(m)) {
+			if (!pkg.isInstalled(m) && notInstalled.indexOf(m) === -1) {
 				notInstalled.push(m)
 			}
 		}
 
 		if (notInstalled.length > 0) {
 			if (!forceInstall) {
+				this.ui.stopLoading()
+
 				this.ui.renderSection({
 					headline: `Missing ${notInstalled.length} module${
 						notInstalled.length === 1 ? '' : 's'

@@ -1,8 +1,8 @@
 import { buildSchema } from '@sprucelabs/schema'
+import { heartwoodRemoteUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { BootMeta } from '../../skill/actions/BootAction'
-import { heartwoodRemoteUtil } from '../utilities/heartwoodRemote.utility'
 
 const optionsSchema = buildSchema({
 	id: 'watchViewsOptions',
@@ -21,7 +21,8 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const watchFeature = this.featureInstaller.getFeature('watch')
-		await watchFeature.startWatching()
+
+		await watchFeature.startWatching({ delay: 2000 })
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -34,13 +35,13 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 
 		this.bootControls = await this.boot()
 
-		this.ui.startLoading(`Waiting for view changes.`)
+		this.ui.startLoading(`Waiting for  changes...`)
 
 		await this.emitter.on('watcher.did-detect-change', async () => {
 			this.ui.startLoading('Changes detected, rebooting skill...')
 			this.bootControls?.kill()
 			this.bootControls = await this.boot()
-			this.ui.startLoading('Waiting for view changes...')
+			this.ui.startLoading('Waiting for  changes...')
 		})
 
 		await new Promise((resolve) => {
@@ -63,7 +64,9 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	}
 
 	private async boot() {
-		const results = await this.Action('skill', 'boot').execute({})
+		const results = await this.Action('skill', 'boot').execute({
+			shouldReturnImmediately: true,
+		})
 
 		if (results.errors) {
 			throw results.errors[0]

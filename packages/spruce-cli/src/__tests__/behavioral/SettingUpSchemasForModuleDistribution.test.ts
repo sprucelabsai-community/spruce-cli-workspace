@@ -21,6 +21,8 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 	protected static skillCacheKey = 'schemas'
 	private static builder1: Schema
 	private static schema1: Schema
+	//@ts-ignore
+	private static schema1b: Schema
 	private static schema2: Schema
 
 	@test(
@@ -79,6 +81,8 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 
 		//@ts-ignore
 		this[`schema${count}`] = schema
+		//@ts-ignore
+		this[`schema${count}b`] = { ...schema, id: `schema${count}B` }
 	}
 
 	@test()
@@ -124,12 +128,19 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		[REMOTE_MODULE, REMOTE_MODULE2],
 		true
 	)
+	@test(
+		'does not return the same module twice',
+		['schema1', 'schema1b', 'schema2'],
+		[REMOTE_MODULE, REMOTE_MODULE2],
+		true
+	)
 	protected static async asksIfModuleShouldBeInstalled(
 		schemaNames: ('schema1' | 'schema2')[],
 		expectedModules: string[],
 		shouldConfirmInstall: boolean
 	) {
 		await this.reInstallSkill()
+
 		await this.Store('skill').setCurrentSkillsNamespace('TestingTwo')
 
 		const schemas = schemaNames.map((name) => this[name])

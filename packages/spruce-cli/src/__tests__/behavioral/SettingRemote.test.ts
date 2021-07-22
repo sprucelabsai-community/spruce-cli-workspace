@@ -1,10 +1,10 @@
-import { test, assert } from '@sprucelabs/test'
 import {
 	REMOTE_DEV,
 	REMOTE_LOCAL,
 	REMOTE_PROD,
 	REMOTE_SANDBOX,
-} from '../../features/event/constants'
+} from '@sprucelabs/spruce-event-utils'
+import { test, assert } from '@sprucelabs/test'
 import TerminalInterface from '../../interfaces/TerminalInterface'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 

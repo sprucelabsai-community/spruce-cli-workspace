@@ -1,7 +1,7 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { Remote } from '@sprucelabs/spruce-event-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
-import { Remote } from '../constants'
 
 const optionsSchema = buildSchema({
 	id: 'setRemoteOptions',

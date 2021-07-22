@@ -1,13 +1,25 @@
+import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import ps from 'ps-node'
+import BootAction from '../../features/skill/actions/BootAction'
 import WatchAction from '../../features/view/actions/WatchAction'
 import CommandService from '../../services/CommandService'
-import AbstractCliTest from '../../tests/AbstractCliTest'
+import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
-export default class WatchingSkillViewsTest extends AbstractCliTest {
+export default class WatchingSkillViewsTest extends AbstractSkillTest {
+	protected static skillCacheKey = 'events'
+	protected static oldBootExecute: any
+
+	protected static async beforeAll() {
+		await super.beforeAll()
+		this.oldBootExecute = BootAction.prototype.execute
+	}
+
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.getFeatureInstaller().isInstalled = async () => true
+		SettingsService.prototype.isMarkedAsInstalled = () => true
+		BootAction.prototype.execute = this.oldBootExecute
 	}
 
 	@test()
@@ -45,23 +57,31 @@ export default class WatchingSkillViewsTest extends AbstractCliTest {
 
 		assert.isEqual(hitCount, 1)
 
-		const emitter = this.getEmitter()
-
-		await emitter.emit('watcher.did-detect-change', {
-			changes: [
-				{
-					schemaId: 'generatedFile',
-					version: 'v2020_07_22',
-					values: {
-						action: 'updated',
-						name: 'Cool name!',
-						path: '/',
-					},
-				},
-			],
-		})
+		await this.emitFileChangeEvent()
 
 		assert.isEqual(hitCount, 2)
+	}
+
+	@test()
+	protected static async changesDuringBootOfSkillKillSkill() {
+		CommandService.setMockResponse(/yarn boot/gis, {
+			code: 0,
+		})
+
+		const watchAction = this.Action('view', 'watch') as WatchAction
+
+		let passedOptions: any = null
+
+		//@ts-ignore
+		BootAction.prototype.execute = (options: any) => {
+			passedOptions = options
+		}
+
+		void watchAction.execute()
+
+		await this.wait(100)
+
+		assert.isTrue(passedOptions.shouldReturnImmediately)
 	}
 
 	@test()
@@ -182,6 +202,24 @@ export default class WatchingSkillViewsTest extends AbstractCliTest {
 
 				resolve(results)
 			})
+		})
+	}
+
+	private static async emitFileChangeEvent() {
+		const emitter = this.getEmitter()
+
+		await emitter.emit('watcher.did-detect-change', {
+			changes: [
+				{
+					schemaId: 'generatedFile',
+					version: 'v2020_07_22',
+					values: {
+						action: 'updated',
+						name: 'Cool name!',
+						path: '/',
+					},
+				},
+			],
 		})
 	}
 }
