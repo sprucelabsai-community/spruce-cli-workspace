@@ -127,6 +127,7 @@ export interface VcTemplateItem {
 }
 
 export interface ViewsOptions {
+	namespaceKebab: string
 	svcTemplateItems: VcTemplateItem[]
 	vcTemplateItems: VcTemplateItem[]
 }

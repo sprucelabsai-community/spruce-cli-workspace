@@ -69,7 +69,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 	@test()
 	protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
-		this.Service('remote').set('dev')
+		this.Service('remote').set('developer')
 		const results = await this.Action('event', 'sync').execute({})
 
 		assert.isTruthy(results.summaryLines)

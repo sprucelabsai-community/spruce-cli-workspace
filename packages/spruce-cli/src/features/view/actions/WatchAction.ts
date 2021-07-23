@@ -31,17 +31,14 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 			`Preview: ${this.getPreviewUrl()}`,
 			'',
 		])
-		this.ui.startLoading(`Booting skill.`)
 
 		this.bootControls = await this.boot()
 
-		this.ui.startLoading(`Waiting for  changes...`)
-
 		await this.emitter.on('watcher.did-detect-change', async () => {
-			this.ui.startLoading('Changes detected, rebooting skill...')
 			this.bootControls?.kill()
-			this.bootControls = await this.boot()
-			this.ui.startLoading('Waiting for  changes...')
+			this.bootControls = await this.boot(
+				'Changes detected, rebooting skill...'
+			)
 		})
 
 		await new Promise((resolve) => {
@@ -58,15 +55,18 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	}
 	private getPreviewUrl() {
 		const remote = this.Service('remote').getRemote()
-		return (
-			heartwoodRemoteUtil.buildViewWatchUrl(remote) + '/#views/heartwood.watch'
-		)
+		return heartwoodRemoteUtil.buildUrl(remote) + '/#views/heartwood.watch'
 	}
 
-	private async boot() {
+	private async boot(bootMessage = 'Booting skill...') {
+		this.ui.startLoading(bootMessage)
 		const results = await this.Action('skill', 'boot').execute({
 			shouldReturnImmediately: true,
 		})
+
+		results.meta?.bootPromise?.then(() =>
+			this.ui.startLoading('Skill booted. Waiting for changes...')
+		)
 
 		if (results.errors) {
 			throw results.errors[0]

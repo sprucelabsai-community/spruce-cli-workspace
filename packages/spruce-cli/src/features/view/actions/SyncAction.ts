@@ -1,5 +1,5 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { VcTemplateItem } from '../../../../../spruce-templates/build'
 import introspectionUtil, {
@@ -51,7 +51,9 @@ export default class syncAction extends AbstractAction<OptionsSchema> {
 			}
 		})
 
+		const namespace = await this.Store('skill').loadCurrentSkillsNamespace()
 		const files = await this.Writer('view').writeCombinedViewsFile(this.cwd, {
+			namespaceKebab: namesUtil.toKebab(namespace),
 			vcTemplateItems,
 			svcTemplateItems,
 		})

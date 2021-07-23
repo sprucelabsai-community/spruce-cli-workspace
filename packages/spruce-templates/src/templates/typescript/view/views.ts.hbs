@@ -17,22 +17,22 @@ const vcs = {
 declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
 	interface SkillViewControllerMap {
         {{#each svcTemplateItems}}
-		'{{id}}': {{namePascal}}
+		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
         {{/each}}
 	}
 
 	interface SkillViewControllerArgsMap {
         {{#each svcTemplateItems}}
-		'{{id}}': Parameters<{{namePascal}}['load']>[0]['args']
+		'{{../namespaceKebab}}.{{id}}': Parameters<{{namePascal}}['load']>[0]['args']
         {{/each}}
 	}
 
 	interface ViewControllerMap {
         {{#each vcTemplateItems}}
-		'{{id}}': {{namePascal}}
+		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
         {{/each}}
          {{#each svcTemplateItems}}
-		'{{id}}': {{namePascal}}
+		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
         {{/each}}
 	}
 }
