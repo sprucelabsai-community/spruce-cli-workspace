@@ -89,7 +89,8 @@
 			"@sprucelabs/spruce-core-schemas",
 			"@sprucelabs/spruce-skill-utils",
 			"@sprucelabs/test",
-			"@sprucelabs/test-utils"
+			"@sprucelabs/test-utils",
+			"globby"
 		]
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"

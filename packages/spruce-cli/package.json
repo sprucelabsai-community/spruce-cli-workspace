@@ -565,6 +565,7 @@
       "@sprucelabs/spruce-store-plugin",
       "emphasize",
       "gifwrap",
+      "globby",
       "terminal-kit",
       "terminal-image"
     ]
