@@ -45,8 +45,9 @@ export default class BootingASkillTest extends AbstractSkillTest {
 
 		assert.isFalse(response.meta?.isBooted)
 
-		await response.meta?.bootPromise
+		const bootResponse = await response.meta?.bootPromise
 
-		assert.isTrue(response.meta?.isBooted)
+		assert.isEqual(bootResponse.meta.pid, response.meta.pid)
+		assert.isTrue(bootResponse.meta?.isBooted)
 	}
 }

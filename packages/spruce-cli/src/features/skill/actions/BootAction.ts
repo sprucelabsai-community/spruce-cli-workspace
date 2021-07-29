@@ -48,12 +48,18 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			bootPromise = bootPromise
 				.then(() => {
 					meta.isBooted = true
+					return { meta }
 				})
-				.catch(reject)
+				.catch((err) => {
+					reject(err)
+					return err
+				})
 
 			if (!options.shouldReturnImmediately) {
 				void bootPromise.then(() => resolve({ meta }))
 			} else {
+				meta.bootPromise = bootPromise
+
 				resolve({
 					meta,
 				})
