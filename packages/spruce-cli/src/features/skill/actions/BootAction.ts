@@ -37,7 +37,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 		})
 
 		const meta = {
-			isBooted: true,
+			isBooted: false,
 			kill: command.kill.bind(command),
 			pid: command.pid() as number,
 			promise: runningPromise,
@@ -45,7 +45,11 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 		}
 
 		return new Promise((resolve, reject) => {
-			bootPromise = bootPromise.then(() => (meta.isBooted = true)).catch(reject)
+			bootPromise = bootPromise
+				.then(() => {
+					meta.isBooted = true
+				})
+				.catch(reject)
 
 			if (!options.shouldReturnImmediately) {
 				void bootPromise.then(() => resolve({ meta }))
