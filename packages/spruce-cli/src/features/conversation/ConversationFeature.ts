@@ -23,7 +23,7 @@ export default class ConversationFeature extends AbstractFeature {
 	]
 	public packageDependencies: NpmPackage[] = [
 		{
-			name: '@sprucelabs/spruce-conversation-plugin',
+			name: '@sprucelabs/spruce-conversation-plugin@latest',
 			isDev: false,
 		},
 	]

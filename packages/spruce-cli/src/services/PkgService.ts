@@ -75,16 +75,7 @@ export default class PkgService extends CommandService {
 
 		for (const thisPackage of packages) {
 			const isInstalled = this.isInstalled(thisPackage)
-			if (!isInstalled && thisPackage.startsWith('@sprucelabs/')) {
-				const lm = thisPackage.replace('@latest', '')
-
-				labsModules.push(lm)
-
-				this.set({
-					path: `${options?.isDev ? 'devDependencies' : 'dependencies'}.${lm}`,
-					value: 'latest',
-				})
-			} else if (!isInstalled) {
+			if (thisPackage.startsWith('@sprucelabs/') || !isInstalled) {
 				toInstall.push(thisPackage)
 				totalInstalled++
 			} else {
@@ -94,7 +85,6 @@ export default class PkgService extends CommandService {
 
 		if (totalInstalled > 0) {
 			const args: string[] = [
-				// '--timeout 9999999',
 				'--cache-min 9999999',
 				'--no-progress',
 				'install',
@@ -110,12 +100,7 @@ export default class PkgService extends CommandService {
 			})
 		}
 
-		this.deleteLockFile()
-
-		if (
-			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules')) ||
-			labsModules.length > 0
-		) {
+		if (!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules'))) {
 			await this.execute('yarn', { args: ['install'] })
 		}
 

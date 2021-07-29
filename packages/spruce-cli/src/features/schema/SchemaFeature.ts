@@ -26,12 +26,12 @@ export default class SchemaFeature extends AbstractFeature {
 	]
 	public packageDependencies: NpmPackage[] = [
 		{
-			name: '@sprucelabs/schema',
+			name: '@sprucelabs/schema@latest',
 		},
 		{
-			name: '@sprucelabs/spruce-core-schemas',
+			name: '@sprucelabs/spruce-core-schemas@latest',
 		},
-		{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
+		{ name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
 	]
 
 	public code: FeatureCode = 'schema'

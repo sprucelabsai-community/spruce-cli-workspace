@@ -29,7 +29,7 @@ export default class ErrorFeature extends AbstractFeature {
 	]
 	public packageDependencies: NpmPackage[] = [
 		{
-			name: '@sprucelabs/error',
+			name: '@sprucelabs/error@latest',
 		},
 	]
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')

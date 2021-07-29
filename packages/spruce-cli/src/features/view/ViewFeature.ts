@@ -21,10 +21,10 @@ export default class ViewFeature extends AbstractFeature {
 
 	public readonly packageDependencies: NpmPackage[] = [
 		{
-			name: '@sprucelabs/heartwood-view-controllers',
+			name: '@sprucelabs/heartwood-view-controllers@latest',
 		},
 		{
-			name: '@sprucelabs/spruce-view-plugin',
+			name: '@sprucelabs/spruce-view-plugin@latest',
 		},
 	]
 

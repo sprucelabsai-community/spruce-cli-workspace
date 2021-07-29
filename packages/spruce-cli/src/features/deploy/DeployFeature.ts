@@ -22,7 +22,7 @@ export default class DeployFeature extends AbstractFeature {
 		},
 	]
 	public packageDependencies = [
-		{ name: '@sprucelabs/spruce-deploy-plugin', isDev: false },
+		{ name: '@sprucelabs/spruce-deploy-plugin@latest', isDev: false },
 	]
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
