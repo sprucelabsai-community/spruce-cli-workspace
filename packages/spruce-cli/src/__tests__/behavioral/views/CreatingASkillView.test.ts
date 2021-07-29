@@ -153,9 +153,9 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 		const contents = this.buildTestfile({
 			idInterfaceName: 'SkillViewControllerId',
 			code: `
-const root = vcFactory.Controller('root', {})
+const root = vcFactory.Controller('testing-views.root', {})
 export const svcModel = root.render()
-export const svcId: SkillViewControllerId = 'root'`,
+export const svcId: SkillViewControllerId = 'testing-views.root'`,
 		})
 
 		const testFile = this.resolvePath('src', 'test.ts')
@@ -165,6 +165,25 @@ export const svcId: SkillViewControllerId = 'root'`,
 
 		assert.isTruthy(imported.svcModel)
 		assert.isTruthy(imported.svcId)
+	}
+
+	@test()
+	protected static async nicelyTypesViewController() {
+		const contents = this.buildTestfile({
+			idInterfaceName: 'ViewControllerId',
+			code: `
+		const apptCard = vcFactory.Controller('testing-views.appointments-card', {})
+		export const vcModel = apptCard.render()
+		export const vcId: ViewControllerId = 'testing-views.appointments-card'`,
+		})
+
+		const testFile = this.resolvePath('src', 'test.ts')
+		diskUtil.writeFile(testFile, contents)
+
+		const imported = await this.Service('import').importAll(testFile)
+
+		assert.isTruthy(imported.vcModel)
+		assert.isTruthy(imported.vcId)
 	}
 
 	private static buildTestfile(options: {
@@ -179,12 +198,16 @@ import ` +
 			`'#spruce/views/views'
 import {
 	ViewControllerFactory,
+	AuthenticatorImpl,
+	MockStorage,
 	${idInterfaceName},
 } from '@sprucelabs/heartwood-view-controllers'
-import { viewControllerUtil } from '@sprucelabs/spruce-view-plugin'
+import { vcFixtureUtil } from '@sprucelabs/spruce-test-fixtures'
+
+AuthenticatorImpl.setStorage(new MockStorage())
 
 const vcFactory = ViewControllerFactory.Factory({
-	controllerMap: viewControllerUtil.buildControllerMap(__dirname),
+	controllerMap: vcFixtureUtil.buildControllerMap('testing-views', __dirname),
 	connectToApi: async () => {
 		return 'yes' as any
 	},
@@ -192,24 +215,5 @@ const vcFactory = ViewControllerFactory.Factory({
 ${code}
 		`.trim()
 		)
-	}
-
-	@test()
-	protected static async nicelyTypesViewController() {
-		const contents = this.buildTestfile({
-			idInterfaceName: 'ViewControllerId',
-			code: `
-		const apptCard = vcFactory.Controller('appointments-card', {})
-		export const vcModel = apptCard.render()
-		export const vcId: ViewControllerId = 'appointments-card'`,
-		})
-
-		const testFile = this.resolvePath('src', 'test.ts')
-		diskUtil.writeFile(testFile, contents)
-
-		const imported = await this.Service('import').importAll(testFile)
-
-		assert.isTruthy(imported.vcModel)
-		assert.isTruthy(imported.vcId)
 	}
 }

@@ -30,6 +30,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	@test()
 	protected static async shouldCallBoot() {
 		let wasHit = false
+
 		CommandService.setMockResponse(/yarn boot/gis, {
 			code: 0,
 			callback: () => {
