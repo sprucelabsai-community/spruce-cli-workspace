@@ -11,6 +11,7 @@ import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
+//TODO rethink how to check for count of files and results or where it may make sense to move this test
 const TYPE_FILE_COUNT = 3
 const SYNC_FILE_COUNT = Object.keys(coreSchemas).length + TYPE_FILE_COUNT
 const MOCK_CORE_SYNC_FILE_COUNT = 3 + TYPE_FILE_COUNT
@@ -45,6 +46,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isFalsy(results.errors)
 
+		//TODO determine better way to count files
 		testUtil.assertCountsByAction(results.files, {
 			updated: 0,
 			generated: SYNC_FILE_COUNT,
@@ -64,7 +66,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		testUtil.assertCountsByAction(results.files, {
 			updated: 0,
-			generated: TYPE_FILE_COUNT,
+			generated: TYPE_FILE_COUNT - 1, // minus 1 because schemas.types is skipped
 			skipped: 0,
 		})
 	}
@@ -97,6 +99,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		assert.isUndefined(results.errors)
 		assert.isTruthy(results.files)
+
 		assert.isLength(results.files, MOCK_CORE_SYNC_FILE_COUNT)
 
 		testUtil.assertCountsByAction(results.files, {

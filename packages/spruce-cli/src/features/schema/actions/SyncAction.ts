@@ -1,3 +1,4 @@
+import pathUtil from 'path'
 import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
@@ -186,7 +187,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
-		diskUtil.deleteEmptyDirs(resolvedSchemaTypesDestination)
+		const p = resolvedSchemaTypesDestination
+		diskUtil.deleteEmptyDirs(diskUtil.isDir(p) ? p : pathUtil.dirname(p))
 
 		this.ui.stopLoading()
 
