@@ -113,17 +113,12 @@ async function run() {
 			await cacheOrSkip(cacheKey)
 		}
 	} else {
-		let isFirstOneDone = false
-		const promises = testKeys.map(async (cacheKey, idx) => {
-			while (
-				totalSimultaneous >= maxSimultaneous ||
-				(idx > 0 && !isFirstOneDone)
-			) {
+		const promises = testKeys.map(async (cacheKey) => {
+			while (totalSimultaneous >= maxSimultaneous) {
 				await new Promise((resolve) => setTimeout(resolve, 1000))
 			}
 			totalSimultaneous++
 			await cacheOrSkip(cacheKey)
-			isFirstOneDone = true
 			totalSimultaneous--
 		})
 		await Promise.all(promises)

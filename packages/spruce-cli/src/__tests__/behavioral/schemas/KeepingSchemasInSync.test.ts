@@ -398,7 +398,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.isTrue(diskUtil.doesFileExist(afterFolder))
 	}
 
-	@test.only()
+	@test()
 	protected static async generatedSchemasRetainImportsAndTypeSuffix() {
 		await this.installSchemaFeature('schemas')
 
@@ -450,7 +450,6 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		const imported = await this.Service('import').importDefault(schemaPath)
 
 		assert.doesInclude(imported, {
-			importsWhenLocal: ['import * as Local from "@sprucelabs/schema"'],
 			importsWhenRemote: ['import * as Remote from "@sprucelabs/schema"'],
 			typeSuffix: '<S extends Record<string, any> = Record<string, any>>',
 		})

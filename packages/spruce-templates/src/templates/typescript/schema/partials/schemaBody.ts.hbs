@@ -4,7 +4,8 @@ namespace: '{{{escape namespace}}}',{{/if}}
 name: '{{{escape schema.name}}}',{{#if schema.importsWhenRemote}}
 importsWhenRemote: [{{#each schema.importsWhenRemote}}'{{{escape this}}}',{{/each}}],{{/if}}{{#if schema.moduleToImportFromWhenRemote}}
 moduleToImportFromWhenRemote: '{{{escape schema.moduleToImportFromWhenRemote}}}',{{/if}}{{#if schema.description}}
-description: '{{{escape schema.description}}}',{{/if}}{{#if schema.dynamicFieldSignature}}
+description: '{{{escape schema.description}}}',{{/if}}{{#if schema.typeSuffix}}
+typeSuffix: '{{{escape schema.typeSuffix}}}',{{/if}}{{#if schema.dynamicFieldSignature}}
 dynamicFieldSignature: { 
     {{> fieldDefinitionBody namespace=namespace schemaNameCamel=nameCamel schema=schema fieldName="__dynamicFieldSignature" field=schema.dynamicFieldSignature renderAs=renderAs}} 
 },{{/if}}{{#if schema.fields}}
