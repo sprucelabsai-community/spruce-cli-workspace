@@ -153,6 +153,33 @@
     "tsconfig-paths": "^3.9.0"
   },
   "testSkillCache": {
+    "everything": [
+      {
+        "code": "skill",
+        "options": {
+          "name": "everything skill",
+          "description": "this too, is a great test!"
+        }
+      },
+      {
+        "code": "schema"
+      },
+      {
+        "code": "test"
+      },
+      {
+        "code": "event"
+      },
+      {
+        "code": "view"
+      },
+      {
+        "code": "deploy"
+      },
+      {
+        "code": "conversation"
+      }
+    ],
     "skills": [
       {
         "code": "skill",
@@ -424,33 +451,6 @@
       },
       {
         "code": "view"
-      }
-    ],
-    "everything": [
-      {
-        "code": "skill",
-        "options": {
-          "name": "everything skill",
-          "description": "this too, is a great test!"
-        }
-      },
-      {
-        "code": "schema"
-      },
-      {
-        "code": "test"
-      },
-      {
-        "code": "event"
-      },
-      {
-        "code": "view"
-      },
-      {
-        "code": "deploy"
-      },
-      {
-        "code": "conversation"
       }
     ]
   },
