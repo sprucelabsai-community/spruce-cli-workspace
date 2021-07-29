@@ -32,7 +32,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 
 		let runningPromise: any
 
-		const bootPromise = new Promise((resolve, reject) => {
+		let bootPromise = new Promise((resolve, reject) => {
 			runningPromise = this.boot(command, script, resolve, reject)
 		})
 
@@ -44,15 +44,17 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			bootPromise,
 		}
 
-		void bootPromise.then(() => (meta.isBooted = true))
+		return new Promise((resolve, reject) => {
+			bootPromise = bootPromise.then(() => (meta.isBooted = true)).catch(reject)
 
-		if (!options.shouldReturnImmediately) {
-			await bootPromise
-		}
-
-		return {
-			meta,
-		}
+			if (!options.shouldReturnImmediately) {
+				bootPromise.then(() => resolve({ meta }))
+			} else {
+				resolve({
+					meta,
+				})
+			}
+		})
 	}
 
 	private async boot(
