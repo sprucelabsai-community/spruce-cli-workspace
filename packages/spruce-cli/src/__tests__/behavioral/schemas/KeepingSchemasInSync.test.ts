@@ -1,3 +1,4 @@
+import pathUtil from 'path'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -12,9 +13,9 @@ import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 //TODO rethink how to check for count of files and results or where it may make sense to move this test
-const TYPE_FILE_COUNT = 3
+const TYPE_FILE_COUNT = 2 // (only fieldMap and field.types... schema.types checked by +1 in tests)
 const SYNC_FILE_COUNT = Object.keys(coreSchemas).length + TYPE_FILE_COUNT
-const MOCK_CORE_SYNC_FILE_COUNT = 3 + TYPE_FILE_COUNT
+const MOCK_CORE_SYNC_FILE_COUNT = 4 + TYPE_FILE_COUNT
 
 export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 	private static readonly coreSyncOptions = {
@@ -66,7 +67,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 
 		testUtil.assertCountsByAction(results.files, {
 			updated: 0,
-			generated: TYPE_FILE_COUNT - 1, // minus 1 because schemas.types is skipped
+			generated: TYPE_FILE_COUNT,
 			skipped: 0,
 		})
 	}
@@ -289,7 +290,9 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			'gis'
 		)
 
-		assert.isTrue(diskUtil.doesFileExist(this.schemaTypesFile))
+		assert.isTrue(
+			diskUtil.doesFileExist(pathUtil.dirname(this.schemaTypesFile))
+		)
 
 		const createResponse = await createAction.execute({
 			nameReadable: 'Test schema',
