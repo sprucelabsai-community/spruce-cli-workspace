@@ -53,8 +53,9 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 			summaryLines: [`Done watching...`],
 		}
 	}
+
 	private getPreviewUrl() {
-		const remote = this.Service('remote').getRemote()
+		const remote = this.Service('remote').getRemote() as any
 		return heartwoodRemoteUtil.buildUrl(remote) + '/#views/heartwood.watch'
 	}
 
