@@ -18,7 +18,7 @@ const optionsSchema = buildSchema({
 						label: 'Local',
 					},
 					{
-						value: 'dev',
+						value: 'developer',
 						label: 'Development',
 					},
 					{
@@ -26,7 +26,7 @@ const optionsSchema = buildSchema({
 						label: 'Sandbox',
 					},
 					{
-						value: 'prod',
+						value: 'production',
 						label: 'Production',
 					},
 				],

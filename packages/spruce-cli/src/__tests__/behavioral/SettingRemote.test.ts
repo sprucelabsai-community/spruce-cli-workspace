@@ -17,9 +17,9 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 	}
 
 	@test(`saves local as ${REMOTE_LOCAL}`, `local`, `${REMOTE_LOCAL}`)
-	@test(`saves dev as ${REMOTE_DEV}`, `dev`, `${REMOTE_DEV}`)
+	@test(`saves dev as ${REMOTE_DEV}`, `developer`, `${REMOTE_DEV}`)
 	@test(`saves sandbox as ${REMOTE_SANDBOX}`, `sandbox`, `${REMOTE_SANDBOX}`)
-	@test(`saves prod as ${REMOTE_PROD}`, `prod`, `${REMOTE_PROD}`)
+	@test(`saves prod as ${REMOTE_PROD}`, `production`, `${REMOTE_PROD}`)
 	protected static async savesRemote(remote: string, expected: string) {
 		await this.Action('event', 'setRemote').execute({ remote })
 
