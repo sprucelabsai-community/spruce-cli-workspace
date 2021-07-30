@@ -72,6 +72,11 @@ jobs:
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
 
       - run:
+          name: "Clean test data"
+          command: |
+            y clean.test.data
+
+      - run:
           name: "Test 💪"
           command: |
             cd packages/spruce-cli
