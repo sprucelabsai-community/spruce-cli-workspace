@@ -43,6 +43,10 @@ jobs:
             - ~/project/packages/spruce-cli/build
             - ~/project/packages/spruce-templates/node_modules
             - ~/project/packages/spruce-templates/build
+      - run:
+          name: "Clean test data"
+          command: |
+            y clean.test.data
   test:
     docker:
       - image: circleci/node:12
@@ -70,11 +74,6 @@ jobs:
           name: "ENV file creation"
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
-
-      - run:
-          name: "Clean test data"
-          command: |
-            y clean.test.data
 
       - run:
           name: "Test 💪"
