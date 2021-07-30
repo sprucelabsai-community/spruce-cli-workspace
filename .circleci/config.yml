@@ -50,7 +50,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:12
-    resource_class: large
+    resource_class: xlarge
     parallelism: 7
     steps:
       - add_ssh_keys:
