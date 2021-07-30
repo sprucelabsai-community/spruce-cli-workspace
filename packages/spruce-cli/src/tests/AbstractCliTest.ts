@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { SchemaRegistry } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, testLog } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
@@ -325,14 +325,25 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async waitForInput() {
-		const ttl = 30 * 1000
+		const ttl = 1000 * 60 * 5
 		const checkInterval = 100
 		let loops = ttl / checkInterval
+		let lastWriteCount = this.ui.invocations.length
+
 		while (!this.ui.isWaitingForInput()) {
 			if (loops-- === 0) {
 				assert.fail(`Waiting for input timed out.`)
 			}
 
+			const hasWritten = lastWriteCount != this.ui.invocations.length
+
+			if (hasWritten) {
+				loops = ttl / checkInterval
+				lastWriteCount = this.ui.invocations.length
+				if (process.env.SHOULD_RENDER_TEST_LOGS === 'true') {
+					testUtil.log('waitForInput timeout reset because of new output.')
+				}
+			}
 			await new Promise((resolve) => setTimeout(resolve, checkInterval))
 		}
 	}
