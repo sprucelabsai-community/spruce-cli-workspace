@@ -43,6 +43,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 			shouldAutoHandleDependencies: true,
 		}).execute({})
 
+		console.log(this.ui.invocations)
 		await this.waitForInput()
 
 		const last = this.ui.lastInvocation()

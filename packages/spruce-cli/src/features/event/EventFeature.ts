@@ -80,6 +80,7 @@ export default class EventFeature extends AbstractFeature {
 			actionCode !== 'setRemote'
 		) {
 			const remote = this.Service('remote')
+
 			const r = remote.getRemote()
 
 			if (!r) {
