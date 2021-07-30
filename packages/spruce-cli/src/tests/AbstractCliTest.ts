@@ -53,6 +53,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
 	private static featureInstaller?: FeatureInstaller
+	private static originalEnv: { [x: string]: string | undefined }
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -63,10 +64,16 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 
 		process.env.ENABLE_INSTALL_INTERTAINMENT = 'false'
+
+		this.originalEnv = { ...process.env }
 	}
 
 	protected static async beforeEach() {
 		await super.beforeEach()
+
+		//@ts-ignore
+		process.env = { ...this.originalEnv }
+
 		testUtil.startLogTimer()
 
 		SchemaRegistry.getInstance().forgetAllSchemas()
