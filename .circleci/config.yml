@@ -46,7 +46,7 @@ jobs:
       - run:
           name: "Clean test data"
           command: |
-            y clean.test.data
+            yarn clean.test.data
   test:
     docker:
       - image: circleci/node:12
