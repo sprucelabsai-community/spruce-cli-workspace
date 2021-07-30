@@ -178,7 +178,8 @@ export default class SpyInterface implements GraphicsInterface {
 			const duration = new Date().getTime() - this.startTime
 			const friendly = durationUtil.msToFriendly(duration)
 
-			testLog.info(`${friendly} :: ${message}`)
+			//@ts-ignore
+			testLog.info(`${global.activeTest?.test} :: ${friendly} :: ${message}`)
 		}
 	}
 
