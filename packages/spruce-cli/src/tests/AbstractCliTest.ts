@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { SchemaRegistry } from '@sprucelabs/schema'
-import { diskUtil, testLog } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test'
 import fs from 'fs-extra'
