@@ -10,7 +10,6 @@ export default class BuildService {
 		return this.commandService.cwd
 	}
 
-	private activeWatch: any
 	private commandService: CommandService
 	private lintService: LintService
 
@@ -25,17 +24,5 @@ export default class BuildService {
 		}
 		const results = await this.commandService.execute(`yarn build.dev`)
 		return results
-	}
-
-	public async watchStart() {
-		this.activeWatch = this.commandService.execute('yarn watch.build.dev')
-		return this.activeWatch
-	}
-
-	public async watchStop() {
-		if (this.activeWatch) {
-			this.commandService.kill()
-			this.activeWatch = undefined
-		}
 	}
 }

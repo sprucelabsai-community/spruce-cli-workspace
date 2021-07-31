@@ -32,35 +32,6 @@ console.log(testVar);
 		)
 	}
 
-	@test()
-	protected static async canWatchAndBuild() {
-		await this.installSkill('skills')
-
-		const service = this.Service('build')
-		void service.watchStart()
-
-		const testFile = "const test: string = 'hello world'"
-		const destination = this.resolvePath('src/test-watch.ts')
-
-		diskUtil.writeFile(destination, testFile)
-
-		const builtFilePath = this.resolvePath('build/test-watch.js')
-		do {
-			await this.wait(1000)
-		} while (!diskUtil.doesFileExist(builtFilePath))
-
-		const contents = diskUtil.readFile(builtFilePath)
-
-		assert.isEqual(
-			contents,
-			`"use strict";
-const test = 'hello world';
-//# sourceMappingURL=test-watch.js.map`
-		)
-
-		await service.watchStop()
-	}
-
 	private static async installSkill(cacheKey?: string) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey ?? 'skills')
 	}

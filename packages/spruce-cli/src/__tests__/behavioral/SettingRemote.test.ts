@@ -61,7 +61,9 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		const env = this.Service('env')
 		env.unset('HOST')
 
-		const results = await this.Action('event', action).execute({})
+		const results = await this.Action('event', action, {
+			shouldThrowOnListenerError: false,
+		}).execute({})
 
 		assert.isTruthy(results.errors)
 		assert.doesInclude(results.errors[0].stack, 'env.HOST')
