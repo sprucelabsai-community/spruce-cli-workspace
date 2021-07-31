@@ -23,7 +23,7 @@ export default class ActionExecuter4Test extends AbstractCliTest {
 		msg: string,
 		willDid: 'will' | 'did' = 'will'
 	) {
-		this.getEmitter().on(`feature.${willDid}-execute`, () => {
+		await this.getEmitter().on(`feature.${willDid}-execute`, () => {
 			throw new Error(msg)
 		})
 
