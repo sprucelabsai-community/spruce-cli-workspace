@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.17.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.16.0...v14.17.0) (2021-07-31)
+
+
+### Features
+
+* create.listener alias ([7732b6c](https://github.com/sprucelabsai/spruce-cli-workspace/commit/7732b6c))
+* importFromModuleWhenRemote and importsWhenRemote supporte ([b055bf7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b055bf7))
+* wach skill views ([fdd3a20](https://github.com/sprucelabsai/spruce-cli-workspace/commit/fdd3a20))
+
+
+
+
+
 # [14.16.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.15.5...v14.16.0) (2021-07-02)
 
 
