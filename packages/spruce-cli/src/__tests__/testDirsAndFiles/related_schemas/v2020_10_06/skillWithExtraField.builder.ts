@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import skillSchema from '#spruce/schemas/spruce/v2020_07_22/skill.schema'
+import { skillSchema } from '@sprucelabs/spruce-core-schemas'
 
 export default buildSchema({
 	id: 'skillWithExtraField',
