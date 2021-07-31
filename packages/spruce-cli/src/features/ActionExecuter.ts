@@ -20,6 +20,7 @@ export interface ActionExecuterOptions {
 	actionFactory: ActionFactory
 	featureInstallerFactory: () => FeatureInstaller
 	shouldAutoHandleDependencies?: boolean
+	shouldThrowOnListenerError?: boolean
 }
 
 export default class ActionExecuter {
@@ -28,6 +29,7 @@ export default class ActionExecuter {
 	private actionFactory: ActionFactory
 	private featureInstallerFactory: () => FeatureInstaller
 	private shouldAutoHandleDependencies: boolean
+	private shouldThrowOnListenerError: boolean
 
 	public constructor(options: ActionExecuterOptions) {
 		this.featureInstallerFactory = options.featureInstallerFactory
@@ -36,6 +38,8 @@ export default class ActionExecuter {
 		this.actionFactory = options.actionFactory
 		this.shouldAutoHandleDependencies =
 			options.shouldAutoHandleDependencies ?? true
+
+		this.shouldThrowOnListenerError = !!options.shouldThrowOnListenerError
 	}
 
 	private getFeatureInstaller() {
@@ -80,6 +84,10 @@ export default class ActionExecuter {
 			)
 
 		if (errors?.length ?? 0 > 0) {
+			if (this.shouldThrowOnListenerError) {
+				//@ts-ignore
+				throw errors[0]
+			}
 			return { errors }
 		}
 
@@ -139,6 +147,14 @@ export default class ActionExecuter {
 				didExecuteResults,
 				SpruceError
 			)
+
+		if (
+			(this.shouldThrowOnListenerError && didExecuteErrors?.length) ??
+			0 > 0
+		) {
+			//@ts-ignore
+			throw didExecuteErrors[0]
+		}
 
 		response = actionUtil.mergeActionResults(
 			response,

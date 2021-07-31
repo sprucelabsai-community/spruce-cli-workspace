@@ -400,10 +400,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		actionCode: string,
 		options?: Partial<ActionExecuterOptions>
 	): Action {
-		const executer = this.ActionExecuter(options).Action(
-			featureCode,
-			actionCode
-		)
+		const executer = this.ActionExecuter({
+			shouldThrowOnListenerError: true,
+			...options,
+		}).Action(featureCode, actionCode)
 
 		return executer as any
 	}
