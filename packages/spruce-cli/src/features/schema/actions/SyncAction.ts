@@ -66,25 +66,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			localNamespace = CORE_NAMESPACE
 		}
 
-		const shouldSyncRemoteSchemasFirst =
-			shouldFetchLocalSchemas &&
-			shouldFetchCoreSchemas &&
-			!diskUtil.doesDirExist(
-				diskUtil.resolveHashSprucePath(this.cwd, 'schemas', CORE_NAMESPACE)
-			)
-
 		let coreSyncResults: FeatureActionResponse | undefined
-
-		if (shouldSyncRemoteSchemasFirst) {
-			this.ui.startLoading('Syncing core schemas first...')
-			coreSyncResults = await this.execute({
-				...normalizedOptions,
-				deleteOrphanedSchemas: false,
-				shouldFetchLocalSchemas: false,
-				shouldFetchRemoteSchemas: false,
-			})
-			this.ui.startLoading('Done syncing core schemas...')
-		}
 
 		const {
 			resolvedFieldTypesDestination,

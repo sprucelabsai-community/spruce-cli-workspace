@@ -62,6 +62,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		AbstractWriter.disableLinting()
 
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
+		ImportService.enableCaching()
 
 		process.env.ENABLE_INSTALL_INTERTAINMENT = 'false'
 
