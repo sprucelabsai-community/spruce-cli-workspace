@@ -1,7 +1,7 @@
 import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
 import '#spruce/schemas/schemas.types'
 
-const theme: SpruceSchemas.Heartwood.v2021_02_11.ThemeProps = {
+const theme: SpruceSchemas.HeartwoodViewControllers.v2021_02_11.ThemeProps = {
 	/**
 	 ************************************
 	 * START Background
