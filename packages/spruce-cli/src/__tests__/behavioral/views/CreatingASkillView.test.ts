@@ -202,12 +202,12 @@ import {
 	MockStorage,
 	${idInterfaceName},
 } from '@sprucelabs/heartwood-view-controllers'
-import { vcFixtureUtil } from '@sprucelabs/spruce-test-fixtures'
+import { vcDiskUtil } from '@sprucelabs/spruce-test-fixtures'
 
 AuthenticatorImpl.setStorage(new MockStorage())
 
 const vcFactory = ViewControllerFactory.Factory({
-	controllerMap: vcFixtureUtil.buildControllerMap('testing-views', __dirname),
+	controllerMap: vcDiskUtil.loadViewControllersAndBuildMap('testing-views', __dirname),
 	connectToApi: async () => {
 		return 'yes' as any
 	},

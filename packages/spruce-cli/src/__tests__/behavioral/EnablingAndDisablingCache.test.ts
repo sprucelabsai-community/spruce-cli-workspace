@@ -1,6 +1,9 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import { ENABLE_NPM_CACHE_COMMAND } from '../../features/cache/constants'
+import {
+	DISABLE_NPM_CACHE_COMMAND,
+	ENABLE_NPM_CACHE_COMMAND,
+} from '../../features/cache/constants'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
@@ -52,6 +55,9 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 			code: 0,
 		})
 		CommandService.setMockResponse(ENABLE_NPM_CACHE_COMMAND, {
+			code: 0,
+		})
+		CommandService.setMockResponse(DISABLE_NPM_CACHE_COMMAND, {
 			code: 0,
 		})
 
@@ -119,6 +125,9 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 	@test()
 	protected static async canEnableCacheMultipleTimes() {
 		CommandService.setMockResponse(/which docker/gis, {
+			code: 0,
+		})
+		CommandService.setMockResponse(DISABLE_NPM_CACHE_COMMAND, {
 			code: 0,
 		})
 		CommandService.setMockResponse(ENABLE_NPM_CACHE_COMMAND, {
