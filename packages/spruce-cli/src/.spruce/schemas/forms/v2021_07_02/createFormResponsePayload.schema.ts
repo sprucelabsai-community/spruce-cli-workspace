@@ -15,6 +15,12 @@ const createFormResponsePayloadSchema: SpruceSchemas.Forms.v2021_07_02.CreateFor
 	                isRequired: true,
 	                options: {schema: builtFormSchema_v2021_07_02,}
 	            },
+	            /** . */
+	            'values': {
+	                type: 'raw',
+	                isArray: true,
+	                options: {valueType: `Record<string, any>`,}
+	            },
 	    }
 }
 

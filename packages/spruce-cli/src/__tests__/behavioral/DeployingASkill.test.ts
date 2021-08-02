@@ -81,7 +81,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async deployHaltedWithBadBuild() {
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad build',
 		})
 
@@ -113,7 +113,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async deployHaltedWithBadTest() {
 		await this.FeatureFixture().installCachedFeatures('deployWithTests')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad test',
 		})
 
@@ -145,7 +145,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'heroku not installed',
 		})
 
@@ -168,7 +168,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'git not installed',
 		})
 
@@ -193,7 +193,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'not in git repo',
 		})
 
@@ -221,7 +221,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'creates git repo',
 		})
 
@@ -250,7 +250,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'not logged into heroku',
 		})
 
@@ -270,7 +270,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'decline proc file',
 		})
 
@@ -299,7 +299,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		diskUtil.deleteFile(this.resolvePath('Procfile'))
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'valid proc file',
 		})
 
@@ -333,7 +333,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'decline to create remote branch',
 		})
 
@@ -365,7 +365,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'ask for app name',
 		})
 
@@ -400,7 +400,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		})
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'haulted wth bad build',
 		})
 
@@ -444,7 +444,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'pending changes to commit',
 		})
 
@@ -463,7 +463,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 	protected static async canDeploySkill() {
 		await this.FeatureFixture().installCachedFeatures('deploy')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'can deploy',
 		})
 

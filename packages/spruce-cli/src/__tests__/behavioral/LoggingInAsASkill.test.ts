@@ -12,14 +12,14 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 
-		await this.PersonFixture().loginAsDemoPerson(
+		await this.getPersonFixture().loginAsDemoPerson(
 			process.env.DEMO_NUMBER_LOGIN_AS_SKILL
 		)
 
-		const skillFixture = this.SkillFixture()
+		const skillFixture = this.getSkillFixture()
 		await skillFixture.clearAllSkills()
 
-		await this.PersonFixture().logout()
+		await this.getPersonFixture().logout()
 	}
 
 	@test()
@@ -50,7 +50,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	}
 
 	private static async login() {
-		const person = await this.PersonFixture().loginAsDemoPerson(
+		const person = await this.getPersonFixture().loginAsDemoPerson(
 			process.env.DEMO_NUMBER_LOGIN_AS_SKILL
 		)
 
@@ -61,7 +61,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async logsInAsOnlySkillIfOnly1Registered() {
 		await this.login()
 
-		this.skill1 = await this.SkillFixture().seedDemoSkill({
+		this.skill1 = await this.getSkillFixture().seedDemoSkill({
 			name: `login skill ${new Date().getTime()}`,
 		})
 
@@ -77,7 +77,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async letsYouSelectSkillIfMoreThan1IsRegistered() {
 		await this.login()
 
-		this.skill2 = await this.SkillFixture().seedDemoSkill({
+		this.skill2 = await this.getSkillFixture().seedDemoSkill({
 			name: `login skill 2 ${new Date().getTime()}`,
 		})
 
@@ -119,7 +119,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async canLoginWithSlugYouOwn() {
 		await this.login()
 
-		this.skill3 = await this.SkillFixture().seedDemoSkill({
+		this.skill3 = await this.getSkillFixture().seedDemoSkill({
 			name: `login skill 3 ${new Date().getTime()}`,
 		})
 

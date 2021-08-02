@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import { DEMO_NUMBER } from '../../../fixtures/PersonFixture'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
+import { DEMO_NUMBER } from '../../../tests/fixtures/PersonFixture'
 
 export default class LoggingInAsPersonTest extends AbstractCliTest {
 	@test()

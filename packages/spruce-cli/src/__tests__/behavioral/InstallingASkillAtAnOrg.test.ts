@@ -7,11 +7,11 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 		await this.login()
-		await this.OrganizationFixture().clearAllOrgs()
+		await this.getOrganizationFixture().clearAllOrgs()
 	}
 
 	private static async login() {
-		await this.PersonFixture().loginAsDemoPerson(
+		await this.getPersonFixture().loginAsDemoPerson(
 			process.env.DEMO_NUMBER_INSTALL_SKILL
 		)
 	}
@@ -24,17 +24,17 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantInstallWithoutBeingLoggedIn() {
-		const org = await this.OrganizationFixture().seedDemoOrg({
+		const org = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'new org',
 		})
 
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 
-		await this.PersonFixture().logout()
+		await this.getPersonFixture().logout()
 
 		await this.Cli()
 
@@ -53,7 +53,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async cantInstallWithoutAnyOrgs() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 
@@ -67,7 +67,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async cantInstallWithoutBeingRegistered() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		await this.OrganizationFixture().seedDemoOrg({
+		await this.getOrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
@@ -81,11 +81,11 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async canInstallSkillAtOrg() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDemoOrg({
+		const org = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 
@@ -119,15 +119,15 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async asksYouToSelectOrgWithMoreThanOne() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		await this.OrganizationFixture().seedDemoOrg({
+		await this.getOrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
-		const org2 = await this.OrganizationFixture().seedDemoOrg({
+		const org2 = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'My great org',
 		})
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my amazing skill',
 		})
 

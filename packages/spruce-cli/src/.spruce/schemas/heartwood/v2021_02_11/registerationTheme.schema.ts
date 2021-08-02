@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import themePropsSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/themeProps.schema'
+import themePropsSchema_v2021_02_11 from '#spruce/schemas/heartwoodViewControllers/v2021_02_11/themeProps.schema'
 
 const registerationThemeSchema: SpruceSchemas.Heartwood.v2021_02_11.RegisterationThemeSchema  = {
 	id: 'registerationTheme',

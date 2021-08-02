@@ -1,12 +1,12 @@
 import { EventContract, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { RegisterSkillOptions } from '../features/skill/stores/SkillStore'
-import StoreFactory from '../stores/StoreFactory'
+import { RegisterSkillOptions } from '../../features/skill/stores/SkillStore'
+import StoreFactory from '../../stores/StoreFactory'
 import {
 	ApiClientFactory,
 	ApiClientFactoryOptions,
-} from '../types/apiClient.types'
-import apiClientUtil from '../utilities/apiClient.utility'
+} from '../../types/apiClient.types'
+import apiClientUtil from '../../utilities/apiClient.utility'
 import PersonFixture from './PersonFixture'
 
 export default class SkillFixture {

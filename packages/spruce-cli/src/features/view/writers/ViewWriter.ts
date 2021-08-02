@@ -21,7 +21,7 @@ export default class ViewWriter extends AbstractWriter {
 			options.namePascal
 		)
 
-		return this.writeController(path, options)
+		return this.writeController(path, { ...options, viewType: 'skillView' })
 	}
 
 	public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {

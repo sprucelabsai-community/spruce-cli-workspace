@@ -46,11 +46,11 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 	}
 
 	protected static async registerCurrentSkillAndInstallToOrg() {
-		await this.PersonFixture().loginAsDemoPerson(
+		await this.getPersonFixture().loginAsDemoPerson(
 			process.env.DEMO_NUMBER_VIEWS_ON_BOOT
 		)
-		const skillFixture = this.SkillFixture()
-		const orgFixture = this.OrganizationFixture()
+		const skillFixture = this.getSkillFixture()
+		const orgFixture = this.getOrganizationFixture()
 
 		const org = await orgFixture.seedDemoOrg({ name: 'my org' })
 

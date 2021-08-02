@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import builtFormSchema_v2021_07_02 from '#spruce/schemas/forms/v2021_07_02/builtForm.schema'
+import listFormsFormSchema_v2021_07_02 from '#spruce/schemas/forms/v2021_07_02/listFormsForm.schema'
 
 const listFormsResponsePayloadSchema: SpruceSchemas.Forms.v2021_07_02.ListFormsResponsePayloadSchema  = {
 	id: 'listFormsResponsePayload',
@@ -15,7 +15,7 @@ const listFormsResponsePayloadSchema: SpruceSchemas.Forms.v2021_07_02.ListFormsR
 	                isRequired: true,
 	                isArray: true,
 	                minArrayLength: 0,
-	                options: {schema: builtFormSchema_v2021_07_02,}
+	                options: {schema: listFormsFormSchema_v2021_07_02,}
 	            },
 	    }
 }

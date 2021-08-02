@@ -1,4 +1,4 @@
-import StoreFactory from '../stores/StoreFactory'
+import StoreFactory from '../../stores/StoreFactory'
 import PersonFixture from './PersonFixture'
 
 export default class OrganizationFixture {

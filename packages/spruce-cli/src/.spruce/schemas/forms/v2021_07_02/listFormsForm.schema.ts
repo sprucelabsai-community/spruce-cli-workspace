@@ -1,10 +1,10 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import builderImportExportPageSchema_v2021_02_11 from '#spruce/schemas/heartwoodViewControllers/v2021_02_11/builderImportExportPage.schema'
 
-const builtFormSchema: SpruceSchemas.Forms.v2021_07_02.BuiltFormSchema  = {
-	id: 'builtForm',
+
+const listFormsFormSchema: SpruceSchemas.Forms.v2021_07_02.ListFormsFormSchema  = {
+	id: 'listFormsForm',
 	version: 'v2021_07_02',
 	namespace: 'Forms',
 	name: '',
@@ -34,17 +34,9 @@ const builtFormSchema: SpruceSchemas.Forms.v2021_07_02.BuiltFormSchema  = {
 	                type: 'text',
 	                options: undefined
 	            },
-	            /** Pages. */
-	            'pages': {
-	                label: 'Pages',
-	                type: 'schema',
-	                isRequired: true,
-	                isArray: true,
-	                options: {schema: builderImportExportPageSchema_v2021_02_11,}
-	            },
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(builtFormSchema)
+SchemaRegistry.getInstance().trackSchema(listFormsFormSchema)
 
-export default builtFormSchema
+export default listFormsFormSchema

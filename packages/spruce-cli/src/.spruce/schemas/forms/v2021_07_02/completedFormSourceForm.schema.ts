@@ -3,8 +3,8 @@ import { SpruceSchemas } from '../../schemas.types'
 
 import builderImportExportPageSchema_v2021_02_11 from '#spruce/schemas/heartwoodViewControllers/v2021_02_11/builderImportExportPage.schema'
 
-const builtFormSchema: SpruceSchemas.Forms.v2021_07_02.BuiltFormSchema  = {
-	id: 'builtForm',
+const completedFormSourceFormSchema: SpruceSchemas.Forms.v2021_07_02.CompletedFormSourceFormSchema  = {
+	id: 'completedFormSourceForm',
 	version: 'v2021_07_02',
 	namespace: 'Forms',
 	name: '',
@@ -13,12 +13,6 @@ const builtFormSchema: SpruceSchemas.Forms.v2021_07_02.BuiltFormSchema  = {
 	            'id': {
 	                type: 'id',
 	                isRequired: true,
-	                options: undefined
-	            },
-	            /** . */
-	            'dateDeleted': {
-	                type: 'number',
-	                isPrivate: true,
 	                options: undefined
 	            },
 	            /** Title. */
@@ -45,6 +39,6 @@ const builtFormSchema: SpruceSchemas.Forms.v2021_07_02.BuiltFormSchema  = {
 	    }
 }
 
-SchemaRegistry.getInstance().trackSchema(builtFormSchema)
+SchemaRegistry.getInstance().trackSchema(completedFormSourceFormSchema)
 
-export default builtFormSchema
+export default completedFormSourceFormSchema

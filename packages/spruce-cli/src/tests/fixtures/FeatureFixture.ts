@@ -1,17 +1,17 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli, { CliBootOptions, CliInterface } from '../cli'
-import FeatureInstaller from '../features/FeatureInstaller'
-import { InstallFeature } from '../features/features.types'
-import { GlobalEmitter } from '../GlobalEmitter'
+import Cli, { CliBootOptions, CliInterface } from '../../cli'
+import FeatureInstaller from '../../features/FeatureInstaller'
+import { InstallFeature } from '../../features/features.types'
+import { GlobalEmitter } from '../../GlobalEmitter'
 import ServiceFactory, {
 	ServiceProvider,
 	Service,
 	ServiceMap,
-} from '../services/ServiceFactory'
-import testUtil from '../tests/utilities/test.utility'
-import { ApiClientFactory } from '../types/apiClient.types'
-import { GraphicsInterface } from '../types/cli.types'
+} from '../../services/ServiceFactory'
+import { ApiClientFactory } from '../../types/apiClient.types'
+import { GraphicsInterface } from '../../types/cli.types'
+import testUtil from '../utilities/test.utility'
 
 export interface CachedCli {
 	cli: CliInterface

@@ -20,11 +20,15 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = bootSkillOptionsSchema
 	public commandAliases = ['boot']
 	public invocationMessage = 'Booting skill... ⚡️'
+	private onDataHandler: ((msg: string) => void) | null | undefined
+	private onErrorHandler: ((msg: string) => void) | null | undefined
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const command = this.Service('command')
 
 		let script = 'boot'
+		this.onDataHandler = options.onData
+		this.onErrorHandler = options.onError
 
 		if (options.local) {
 			script += '.local'
@@ -77,10 +81,14 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 		try {
 			const results = await command.execute(`yarn ${script}`, {
 				onData: (data) => {
+					this.onDataHandler?.(data)
 					if (!isBooted && data.search(':: Skill booted') > -1) {
 						isBooted = true
 						resolve(undefined)
 					}
+				},
+				onError: (data) => {
+					this.onErrorHandler?.(data)
 				},
 			})
 

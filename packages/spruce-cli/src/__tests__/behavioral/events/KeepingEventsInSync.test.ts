@@ -68,7 +68,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async mergesGlobalEvents() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const skills = this.SkillFixture()
+		const skills = this.getSkillFixture()
 		await skills.registerCurrentSkill({
 			name: 'events in sync skill',
 		})
@@ -191,7 +191,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		assert.isTrue(diskUtil.doesFileExist(match))
 
-		const client = await this.MercuryFixture().connectToApi({
+		const client = await this.getMercuryFixture().connectToApi({
 			shouldAuthAsCurrentSkill: true,
 		})
 		await client.disconnect()
@@ -564,7 +564,7 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 		skill: RegisteredSkill,
 		signature?: EventSignature
 	) {
-		const skillFixture = this.SkillFixture()
+		const skillFixture = this.getSkillFixture()
 		const stamp = new Date().getTime()
 		const eventName = `cleanup-event-test-${stamp}::${this.todaysVersion.constValue}`
 		const filename = generateEventContractFileName({

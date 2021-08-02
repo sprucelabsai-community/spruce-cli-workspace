@@ -1,12 +1,12 @@
 import osUtil from 'os'
-import MercuryFixture from '../fixtures/MercuryFixture'
-import OrganizationFixture from '../fixtures/OrganizationFixture'
-import PersonFixture from '../fixtures/PersonFixture'
-import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter from '../GlobalEmitter'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
+import MercuryFixture from './fixtures/MercuryFixture'
+import OrganizationFixture from './fixtures/OrganizationFixture'
+import PersonFixture from './fixtures/PersonFixture'
+import SkillFixture from './fixtures/SkillFixture'
 
 require('dotenv').config()
 

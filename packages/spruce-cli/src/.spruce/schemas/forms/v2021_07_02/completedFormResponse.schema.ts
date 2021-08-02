@@ -27,6 +27,12 @@ const completedFormResponseSchema: SpruceSchemas.Forms.v2021_07_02.CompletedForm
 	                isRequired: true,
 	                options: undefined
 	            },
+	            /** . */
+	            'percentComplete': {
+	                type: 'number',
+	                isRequired: true,
+	                options: undefined
+	            },
 	    }
 }
 

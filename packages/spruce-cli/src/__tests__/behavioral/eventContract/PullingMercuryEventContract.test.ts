@@ -76,7 +76,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async pullsGlobalContracts() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'heartwood test',
 		})
 

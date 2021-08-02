@@ -59,7 +59,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 	@test()
 	protected static async registerEventContract() {
-		const organizationFixture = this.OrganizationFixture()
+		const organizationFixture = this.getOrganizationFixture()
 		const org = await organizationFixture.seedDemoOrg({
 			name: 'my new org',
 		})
@@ -117,7 +117,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	protected static async badLocalContractThrowsNiceError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
@@ -152,7 +152,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	protected static async badLocalSignature() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
@@ -187,7 +187,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	protected static async mixesInLocalContracts() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 
@@ -275,7 +275,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	private static async installAndRegisterOneGlobalEvent() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'event store test skill',
 		})
 
@@ -300,11 +300,11 @@ export default class EventStoreTest extends AbstractEventTest {
 	}
 
 	private static async seedSkillAndInstallAtOrg(org: any, name: string) {
-		const skill = await this.SkillFixture().seedDemoSkill({
+		const skill = await this.getSkillFixture().seedDemoSkill({
 			name,
 		})
 
-		await this.OrganizationFixture().installSkillAtOrganization(
+		await this.getOrganizationFixture().installSkillAtOrganization(
 			skill.id,
 			org.id
 		)

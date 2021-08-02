@@ -7,7 +7,7 @@ import CommandService from '../../services/CommandService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
 export default class WatchingSkillViewsTest extends AbstractSkillTest {
-	protected static skillCacheKey = 'events'
+	protected static skillCacheKey = 'views'
 	protected static oldBootExecute: any
 
 	protected static async beforeAll() {
@@ -173,6 +173,15 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	@test()
 	protected static async killingActionKillsProcess() {
 		await this.FeatureFixture().installCachedFeatures('events')
+		await this.getSkillFixture().registerCurrentSkill({
+			name: `Watching skill views`,
+		})
+
+		await this.getViewFixture().createViewController({
+			nameKebab: 'root',
+			namePascal: 'Root',
+		})
+
 		await this.Service('build').build()
 
 		const watchAction = this.Action('view', 'watch') as WatchAction

@@ -10,6 +10,18 @@ export default buildSchema({
 			label: 'Run local',
 			hint: 'Will run using ts-node and typescript directly. Longer boot times',
 		},
+		onData: {
+			type: 'raw',
+			options: {
+				valueType: '(msg: string) => void',
+			},
+		},
+		onError: {
+			type: 'raw',
+			options: {
+				valueType: '(msg: string) => void',
+			},
+		},
 		shouldReturnImmediately: {
 			label: 'Wait until skill is booted',
 			type: 'boolean',

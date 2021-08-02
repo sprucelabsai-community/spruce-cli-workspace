@@ -21,7 +21,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		const personFixture = this.PersonFixture()
+		const personFixture = this.getPersonFixture()
 		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
 	}
 
@@ -32,7 +32,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	private static async resetSkills() {
-		const skillFixture = this.SkillFixture()
+		const skillFixture = this.getSkillFixture()
 		await skillFixture.clearAllSkills()
 	}
 
@@ -58,7 +58,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async throwsHelpfulErrorWhenMissingParams() {
 		await this.installAndSetupForSandbox()
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
@@ -100,7 +100,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async skipsAlreadyRegisteredSkill() {
 		const { client } = await this.installAndSetupForSandbox()
 
-		const registered = await this.SkillFixture().registerCurrentSkill({
+		const registered = await this.getSkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
@@ -119,7 +119,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async registersSkillAgain() {
 		const { client } = await this.installAndSetupForSandbox()
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
@@ -141,7 +141,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async registersSkillAndCanBootAgain() {
 		await this.installAndSetupForSandbox()
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
@@ -160,7 +160,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async canReRegisterAndThenRegisterConversationsWithoutCrash() {
 		await this.installAndSetupForSandbox('conversation-with-sandbox')
 
-		await this.SkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'Conversation test',
 		})
 
@@ -177,7 +177,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	private static async installAndSetupForSandbox(cacheKey = 'sandbox') {
-		const client = await this.MercuryFixture().connectToApi()
+		const client = await this.getMercuryFixture().connectToApi()
 
 		const cli = await this.FeatureFixture().installCachedFeatures(cacheKey)
 

@@ -16,7 +16,7 @@ const optionsSchema = buildSchema({
 
 type OptionsSchema = typeof optionsSchema
 
-export default class syncAction extends AbstractAction<OptionsSchema> {
+export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['sync.views']
 	public invocationMessage = 'Syncing view controller types... 🌲'

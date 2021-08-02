@@ -18,14 +18,14 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 
-		await this.PersonFixture().loginAsDemoPerson(
+		await this.getPersonFixture().loginAsDemoPerson(
 			process.env.DEMO_NUMBER_GLOBAL_EVENTS
 		)
 
 		await this.resetAccount()
 
-		const orgFixture = this.OrganizationFixture()
-		const skillFixture = this.SkillFixture()
+		const orgFixture = this.getOrganizationFixture()
+		const skillFixture = this.getSkillFixture()
 
 		const org = await orgFixture.seedDemoOrg({ name: 'my org' })
 
@@ -42,8 +42,8 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 	}
 
 	private static async resetAccount() {
-		await this.OrganizationFixture().clearAllOrgs()
-		await this.SkillFixture().clearAllSkills()
+		await this.getOrganizationFixture().clearAllOrgs()
+		await this.getSkillFixture().clearAllSkills()
 	}
 
 	@test()

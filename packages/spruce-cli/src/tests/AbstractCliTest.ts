@@ -19,13 +19,6 @@ import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import SkillStore from '../features/skill/stores/SkillStore'
-import FeatureFixture, {
-	FeatureFixtureOptions,
-} from '../fixtures/FeatureFixture'
-import MercuryFixture from '../fixtures/MercuryFixture'
-import OrganizationFixture from '../fixtures/OrganizationFixture'
-import PersonFixture from '../fixtures/PersonFixture'
-import SkillFixture from '../fixtures/SkillFixture'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import CommandService from '../services/CommandService'
@@ -40,6 +33,14 @@ import StoreFactory, {
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import AbstractWriter from '../writers/AbstractWriter'
 import WriterFactory from '../writers/WriterFactory'
+import FeatureFixture, {
+	FeatureFixtureOptions,
+} from './fixtures/FeatureFixture'
+import MercuryFixture from './fixtures/MercuryFixture'
+import OrganizationFixture from './fixtures/OrganizationFixture'
+import PersonFixture from './fixtures/PersonFixture'
+import SkillFixture from './fixtures/SkillFixture'
+import ViewFixture from './fixtures/ViewFixture'
 import testUtil from './utilities/test.utility'
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
@@ -53,6 +54,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
 	private static featureInstaller?: FeatureInstaller
+	private static viewFixture?: ViewFixture
 	private static originalEnv: { [x: string]: string | undefined }
 
 	protected static async beforeAll() {
@@ -122,6 +124,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 	}
 
+	protected static async afterAll() {
+		await super.afterAll()
+		if (testUtil.shouldCleanupTestSkillDirs()) {
+			FeatureFixture.deleteOldSkillDirs()
+		}
+	}
+
 	private static async cleanTestDirsAndFiles() {
 		const pattern = this.resolveTestPath('**/*.d.ts')
 		const matches = await globby(pattern)
@@ -137,6 +146,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.organizationFixture = undefined
 		this.personFixture = undefined
 		this.skillFixture = undefined
+		this.viewFixture = undefined
 	}
 
 	protected static freshTmpDir() {
@@ -167,13 +177,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			'testDirsAndFiles',
 			...pathAfterTestDirsAndFiles
 		)
-	}
-
-	protected static async afterAll() {
-		await super.afterAll()
-		if (testUtil.shouldCleanupTestSkillDirs()) {
-			FeatureFixture.deleteOldSkillDirs()
-		}
 	}
 
 	protected static async Cli(options?: CliBootOptions) {
@@ -209,13 +212,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
 			emitter,
-			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
 			featureInstaller: this.getFeatureInstaller({ emitter }),
 			...options,
 		})
 	}
 
-	protected static MercuryFixture() {
+	protected static getMercuryFixture() {
 		if (!this.mercuryFixture) {
 			this.mercuryFixture = new MercuryFixture(this.cwd, this.ServiceFactory())
 		}
@@ -223,14 +226,28 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this.mercuryFixture
 	}
 
-	protected static PersonFixture() {
+	protected static getPersonFixture() {
 		if (!this.personFixture) {
 			this.personFixture = new PersonFixture(
-				this.MercuryFixture().getApiClientFactory()
+				this.getMercuryFixture().getApiClientFactory()
 			)
 		}
 
 		return this.personFixture
+	}
+
+	protected static getViewFixture() {
+		if (!this.viewFixture) {
+			const writerFactory = new WriterFactory(templates, this.ui)
+			const viewWriter = writerFactory.Writer('view', { fileDescriptions: [] })
+			this.viewFixture = new ViewFixture(
+				this.cwd,
+				viewWriter,
+				this.Action('view', 'sync')
+			)
+		}
+
+		return this.viewFixture
 	}
 
 	protected static async skipInstallSkill<
@@ -251,10 +268,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return results as any
 	}
 
-	protected static OrganizationFixture() {
+	protected static getOrganizationFixture() {
 		if (!this.organizationFixture) {
 			this.organizationFixture = new OrganizationFixture(
-				this.PersonFixture(),
+				this.getPersonFixture(),
 				this.StoreFactory()
 			)
 		}
@@ -262,12 +279,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this.organizationFixture
 	}
 
-	protected static SkillFixture() {
+	protected static getSkillFixture() {
 		if (!this.skillFixture) {
 			this.skillFixture = new SkillFixture(
-				this.PersonFixture(),
+				this.getPersonFixture(),
 				this.StoreFactory(),
-				this.MercuryFixture().getApiClientFactory()
+				this.getMercuryFixture().getApiClientFactory()
 			)
 		}
 
@@ -283,7 +300,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			const serviceFactory = this.ServiceFactory()
 			const storeFactory = this.StoreFactory(options)
 			const emitter = this.getEmitter()
-			const apiClientFactory = this.MercuryFixture().getApiClientFactory()
+			const apiClientFactory = this.getMercuryFixture().getApiClientFactory()
 
 			const actionExecuter = this.ActionExecuter()
 
@@ -309,7 +326,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			cwd: this.cwd,
 			serviceFactory,
 			homeDir: this.homeDir,
-			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
 			emitter: this.getEmitter(),
 			...options,
 		})
@@ -373,7 +390,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async connectToApi(options?: ApiClientFactoryOptions) {
-		return this.MercuryFixture().connectToApi(options)
+		return this.getMercuryFixture().connectToApi(options)
 	}
 
 	protected static async openInVsCode(options?: {
@@ -424,7 +441,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			writerFactory,
 			ui: this.ui,
 			emitter,
-			apiClientFactory: this.MercuryFixture().getApiClientFactory(),
+			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
 			cwd: this.cwd,
 			serviceFactory,
 			storeFactory: this.StoreFactory(),

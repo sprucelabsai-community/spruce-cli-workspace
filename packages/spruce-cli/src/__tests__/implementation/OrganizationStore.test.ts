@@ -11,11 +11,11 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async skillIsNotInstalledByDefault() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDemoOrg({
+		const org = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'a new skill',
 		})
 
@@ -31,7 +31,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async canDeleteOrg() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDemoOrg({
+		const org = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
@@ -50,11 +50,11 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	protected static async installSkill() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		const org = await this.OrganizationFixture().seedDemoOrg({
+		const org = await this.getOrganizationFixture().seedDemoOrg({
 			name: 'A cool org',
 		})
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'a new skill',
 		})
 
@@ -73,7 +73,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
 	@test()
 	protected static async canGetMyOrgs() {
 		await this.FeatureFixture().installCachedFeatures('organizations')
-		const orgFixture = this.OrganizationFixture()
+		const orgFixture = this.getOrganizationFixture()
 		const org1 = await orgFixture.seedDemoOrg({
 			name: 'A cool org',
 		})

@@ -15,7 +15,7 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('organizations')
 
-		await this.PersonFixture().loginAsDemoPerson()
+		await this.getPersonFixture().loginAsDemoPerson()
 
 		const results = await this.Action('organization', 'create').execute({
 			nameReadable: 'My new org',

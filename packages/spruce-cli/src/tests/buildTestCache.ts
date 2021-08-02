@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import FeatureFixture from '../fixtures/FeatureFixture'
-import MercuryFixture from '../fixtures/MercuryFixture'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ImportService from '../services/ImportService'
 import ServiceFactory from '../services/ServiceFactory'
 import testUtil from '../tests/utilities/test.utility'
 import { GraphicsTextEffect } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
+import FeatureFixture from './fixtures/FeatureFixture'
+import MercuryFixture from './fixtures/MercuryFixture'
 require('dotenv').config()
 
 const packageJsonContents = diskUtil.readFile(

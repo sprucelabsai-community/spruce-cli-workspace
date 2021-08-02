@@ -139,7 +139,7 @@ export default createFormEmitPayloadBuilder
 	private static async createEvent() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.SkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'my new skill',
 		})
 

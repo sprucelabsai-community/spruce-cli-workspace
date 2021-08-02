@@ -43,8 +43,8 @@ export default abstract class AbstractEventTest extends AbstractCliTest {
 		cacheKey = 'events'
 	) {
 		const cliPromise = this.installEventFeature(cacheKey)
-		const skillFixture = this.SkillFixture()
-		const orgFixture = this.OrganizationFixture()
+		const skillFixture = this.getSkillFixture()
+		const orgFixture = this.getOrganizationFixture()
 
 		const org = await orgFixture.seedDemoOrg({ name: 'my org' })
 		const cli = await cliPromise
