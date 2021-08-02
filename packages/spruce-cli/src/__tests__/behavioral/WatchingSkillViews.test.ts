@@ -170,7 +170,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		assert.isTrue(wasStopped)
 	}
 
-	@test.only()
+	@test()
 	protected static async killingActionKillsProcess() {
 		await this.FeatureFixture().installCachedFeatures('events')
 		await this.getSkillFixture().registerCurrentSkill({
