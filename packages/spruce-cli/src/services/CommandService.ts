@@ -127,8 +127,6 @@ export default class CommandService {
 				}
 				this.activeChildProcess = undefined
 
-				console.log(executable, args)
-
 				setTimeout(() => {
 					child.stdout?.removeAllListeners()
 					child.stderr?.removeAllListeners()
