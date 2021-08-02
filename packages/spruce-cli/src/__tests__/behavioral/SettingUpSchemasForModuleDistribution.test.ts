@@ -151,7 +151,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			}
 		})
 
-		const promise = this.Action('schema', 'sync').execute({})
+		const promise = this.SyncAction().execute({})
 
 		await this.waitForInput()
 
@@ -204,7 +204,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			}
 		})
 
-		const results = await this.Action('schema', 'sync').execute({
+		const results = await this.SyncAction().execute({
 			shouldInstallMissingDependencies: true,
 		})
 
@@ -253,7 +253,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			}
 		})
 
-		const results = await this.Action('schema', 'sync').execute({
+		const results = await this.SyncAction().execute({
 			shouldInstallMissingDependencies: true,
 		})
 
@@ -282,7 +282,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			nameCamel: 'calendarEvent',
 		})
 
-		const results = await this.Action('schema', 'sync').execute({
+		const results = await this.SyncAction().execute({
 			moduleToImportFromWhenRemote: REMOTE_MODULE,
 		})
 
@@ -358,6 +358,14 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 					?.completedFormBuilder?.options as any
 			)?.schemaIds?.[0]?.moduleToImportFromWhenRemote
 		)
+	}
+
+	private static SyncAction() {
+		return this.Action('schema', 'sync', {
+			optionOverrides: {
+				'sync.schemas': {},
+			},
+		})
 	}
 
 	private static async importGeneratedFile(

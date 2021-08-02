@@ -31,6 +31,7 @@ import StoreFactory, {
 	StoreMap,
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
+import { OptionOverrides } from '../types/cli.types'
 import AbstractWriter from '../writers/AbstractWriter'
 import WriterFactory from '../writers/WriterFactory'
 import FeatureFixture, {
@@ -42,6 +43,10 @@ import PersonFixture from './fixtures/PersonFixture'
 import SkillFixture from './fixtures/SkillFixture'
 import ViewFixture from './fixtures/ViewFixture'
 import testUtil from './utilities/test.utility'
+
+type ExecuterOptions = Partial<ActionExecuterOptions> & {
+	optionOverrides?: OptionOverrides
+}
 
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
@@ -413,11 +418,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static Action<
 		Action extends AbstractAction = AbstractAction,
 		F extends FeatureCode = FeatureCode
-	>(
-		featureCode: F,
-		actionCode: string,
-		options?: Partial<ActionExecuterOptions>
-	): Action {
+	>(featureCode: F, actionCode: string, options?: ExecuterOptions): Action {
 		const executer = this.ActionExecuter({
 			shouldThrowOnListenerError: true,
 			...options,
@@ -426,7 +427,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return executer as any
 	}
 
-	protected static ActionExecuter(options?: Partial<ActionExecuterOptions>) {
+	protected static ActionExecuter(options?: ExecuterOptions) {
 		const serviceFactory = this.ServiceFactory()
 
 		const writerFactory = new WriterFactory(
@@ -446,6 +447,12 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory,
 			storeFactory: this.StoreFactory(),
 			templates,
+			optionOverrides: {
+				'sync.schemas': {
+					shouldInstallMissingDependencies: true,
+				},
+				...options?.optionOverrides,
+			},
 		})
 
 		const executer = new ActionExecuter({

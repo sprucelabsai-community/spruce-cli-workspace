@@ -14,9 +14,6 @@ import TerminalInterface from './TerminalInterface'
 
 export default class SpyInterface implements GraphicsInterface {
 	public invocations: { command: string; options?: any }[] = []
-	public static shouldRenderAsTestLogs: any =
-		process.env.SHOULD_RENDER_TEST_LOGS === 'true'
-
 	private cursorPosition = { x: 0, y: 0 }
 
 	private promptResolver?: (
@@ -31,11 +28,16 @@ export default class SpyInterface implements GraphicsInterface {
 
 	public constructor() {
 		this.startTime = new Date().getTime()
-		this.term = SpyInterface.shouldRenderAsTestLogs
+
+		this.term = this.shouldRenderTestLogs()
 			? new TerminalInterface(process.cwd(), true, (...strs: []) => {
 					this.optionallyRenderLine(strs.join(' '))
 			  })
 			: undefined
+	}
+
+	private shouldRenderTestLogs() {
+		return process.env.SHOULD_RENDER_TEST_LOGS === 'true'
 	}
 
 	public renderWarning(
@@ -174,7 +176,7 @@ export default class SpyInterface implements GraphicsInterface {
 	}
 
 	private optionallyRenderLine(message: string) {
-		if (SpyInterface.shouldRenderAsTestLogs) {
+		if (this.shouldRenderTestLogs()) {
 			const duration = new Date().getTime() - this.startTime
 			const friendly = durationUtil.msToFriendly(duration)
 
