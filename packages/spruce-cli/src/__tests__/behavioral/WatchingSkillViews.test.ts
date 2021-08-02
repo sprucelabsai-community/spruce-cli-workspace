@@ -170,7 +170,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		assert.isTrue(wasStopped)
 	}
 
-	@test()
+	@test.only()
 	protected static async killingActionKillsProcess() {
 		await this.FeatureFixture().installCachedFeatures('events')
 		await this.getSkillFixture().registerCurrentSkill({
@@ -182,10 +182,11 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			namePascal: 'Root',
 		})
 
+		await this.Action('view', 'sync').execute({})
 		await this.Service('build').build()
 
 		const watchAction = this.Action('view', 'watch') as WatchAction
-		void watchAction.execute()
+		const results = await watchAction.execute({ shouldReturnImmediately: true })
 
 		let pid = watchAction.getPid()
 
@@ -193,6 +194,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			await this.wait(100)
 			pid = watchAction.getPid()
 		}
+
+		await results.meta?.bootPromise
 
 		await this.assertProcessRunning(pid)
 

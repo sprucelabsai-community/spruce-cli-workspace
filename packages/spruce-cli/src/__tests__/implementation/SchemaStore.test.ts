@@ -212,25 +212,6 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async droppingInDuplicateEventsThrows() {
-		const cli = await this.installSchemaFeature('schemas')
-
-		await cli.on('schema.did-fetch-schemas', () => {
-			return {
-				schemas: [coreSchemas.locationSchema],
-			}
-		})
-
-		const err = await assert.doesThrowAsync(() =>
-			this.Store('schema').fetchSchemas({
-				localNamespace: LOCAL_NAMESPACE,
-			})
-		)
-
-		errorAssertUtil.assertError(err, 'SCHEMA_EXISTS')
-	}
-
-	@test()
 	protected static async canListenToFetchEventToDropInAdditionalSchemas() {
 		const cli = await this.installSchemaFeature('schemas')
 
@@ -256,6 +237,41 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.isTruthy(schemasByNamespace.MyCoolNamespace)
 	}
 
+	@test()
+	protected static async droppingInDuplicateSchemasThrows() {
+		const cli = await this.installSchemaFeature('schemas')
+
+		await this.copySchemas()
+
+		await cli.on('schema.did-fetch-schemas', () => {
+			return {
+				schemas: [
+					{
+						id: 'schemaOne',
+						name: 'First schema',
+						namespace: 'TestSkill',
+						version: 'v2020_06_23',
+						description: 'It is going to be great!',
+						fields: {
+							name: {
+								type: 'text',
+								isRequired: true,
+							},
+						},
+					},
+				],
+			}
+		})
+
+		const err = await assert.doesThrowAsync(() =>
+			this.Store('schema').fetchSchemas({
+				localNamespace: LOCAL_NAMESPACE,
+			})
+		)
+
+		errorAssertUtil.assertError(err, 'SCHEMA_EXISTS')
+	}
+
 	private static validateSchemas(schemas: Schema[]) {
 		for (const schema of schemas) {
 			validateSchema(schema)
@@ -268,14 +284,18 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	) {
 		await this.syncSchemas('schemas')
 
-		const schemasDir = this.resolvePath('src', 'schemas')
-		await diskUtil.copyDir(this.resolveTestPath(testBuilderDir), schemasDir)
+		await this.copySchemas(testBuilderDir)
 
 		const results = await this.Store('schema').fetchSchemas({
 			localNamespace: LOCAL_NAMESPACE,
 			...(options || {}),
 		})
 		return results
+	}
+
+	private static async copySchemas(testBuilderDir = 'test_builders') {
+		const schemasDir = this.resolvePath('src', 'schemas')
+		await diskUtil.copyDir(this.resolveTestPath(testBuilderDir), schemasDir)
 	}
 
 	private static async copySchemasAndFieldsThenFetchFields(

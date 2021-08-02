@@ -1,17 +1,24 @@
-import { buildSchema } from '@sprucelabs/schema'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { heartwoodRemoteUtil } from '@sprucelabs/spruce-event-utils'
 import { GraphicsTextEffect } from '@sprucelabs/spruce-skill-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { BootMeta } from '../../skill/actions/BootAction'
+import WatchFeature from '../../watch/WatchFeature'
 
 const optionsSchema = buildSchema({
 	id: 'watchViewsOptions',
 	description: 'Watch for view changes and preview them in real time.',
-	fields: {},
+	fields: {
+		shouldReturnImmediately: {
+			type: 'boolean',
+			hint: "For testing so we don't wait until the process is killed to get the results.",
+		},
+	},
 })
 
 type OptionsSchema = typeof optionsSchema
+type Options = SchemaValues<OptionsSchema>
 
 export default class WatchAction extends AbstractAction<OptionsSchema> {
 	public commandAliases = ['watch.views']
@@ -21,11 +28,15 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	private bootControls?: BootMeta
 	private skillName!: string
 	private bootMessage!: string
+	private watchFeature!: WatchFeature
 
-	public async execute(): Promise<FeatureActionResponse> {
-		const watchFeature = this.featureInstaller.getFeature('watch')
+	public async execute(options?: Options): Promise<FeatureActionResponse> {
+		const { shouldReturnImmediately } = this.validateAndNormalizeOptions(
+			options ?? {}
+		)
 
-		await watchFeature.startWatching({ delay: 2000 })
+		this.watchFeature = this.featureInstaller.getFeature('watch')
+		await this.watchFeature.startWatching({ delay: 2000 })
 
 		const skill = await this.Store('skill').loadCurrentSkill()
 
@@ -39,16 +50,21 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 			)
 		})
 
-		await new Promise((resolve) => {
-			//@ts-ignore
-			this.resolve = resolve
-		})
+		if (!shouldReturnImmediately) {
+			await new Promise((resolve) => {
+				//@ts-ignore
+				this.resolve = resolve
+			})
 
-		await watchFeature.stopWatching()
-		this.bootControls?.kill()
+			await this.watchFeature.stopWatching()
+			this.bootControls?.kill()
+		}
 
 		return {
 			summaryLines: [`Done watching...`],
+			meta: {
+				bootPromise: this.bootControls.bootPromise,
+			},
 		}
 	}
 
@@ -107,6 +123,7 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	}
 
 	public kill() {
+		void this.watchFeature.stopWatching()
 		this.bootControls?.kill()
 		this.resolve?.()
 	}
