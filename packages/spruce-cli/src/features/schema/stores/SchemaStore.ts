@@ -150,7 +150,7 @@ export default class SchemaStore extends AbstractStore {
 			isEqual(normalizeSchemaToIdWithVersion(s), idWithVersion)
 		)
 
-		if (match) {
+		if (match && !match.moduleToImportFromWhenRemote) {
 			throw new SpruceError({
 				code: 'SCHEMA_EXISTS',
 				schemaId: schema.id,

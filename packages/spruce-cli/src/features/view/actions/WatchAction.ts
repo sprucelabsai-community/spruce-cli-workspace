@@ -107,6 +107,7 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	}
 
 	public kill() {
+		this.bootControls?.kill()
 		this.resolve?.()
 	}
 
