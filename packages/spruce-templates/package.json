@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "14.17.1",
+	"version": "14.17.2",
 	"files": [
 		"build/**/*",
 		"tsconfig.json",
@@ -38,7 +38,7 @@
 		"build.ci": "yarn build.tsc && yarn build.copy-files && yarn build.resolve-paths",
 		"build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/ && rsync -avzq src/templates/ build/templates/",
 		"build.copy-files.dist": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/dist/ && rsync -avzq src/templates/ build/esm/templates/",
-		"build.dev": "yarn build.tsc ; yarn build.copy-files && yarn build.resolve-paths",
+		"build.dev": "yarn build.tsc --sourceMap ; yarn build.copy-files && yarn build.resolve-paths",
 		"build.dist": "yarn build.tsc && yarn build.copy-files && tsc --project tsconfig.dist.json && yarn build.copy-files.dist && yarn build.resolve-paths",
 		"build.resolve-paths": "resolve-path-aliases --target build",
 		"build.tsc": "tsc",
