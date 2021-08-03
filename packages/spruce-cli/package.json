@@ -8,7 +8,7 @@
     "namespace": "spruce-cli"
   },
   "license": "MIT",
-  "version": "14.17.2",
+  "version": "14.17.3",
   "bin": {
     "spruce": "./build/index.js"
   },
@@ -59,7 +59,7 @@
     "watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
     "watch.rebuild": "cd ../ && yarn watch.rebuild",
     "watch.tests": "yarn cache.tests && jest --watch",
-    "watch.tsc": "tsc -w"
+    "watch.tsc": "tsc -w --sourceMap"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.6",
@@ -76,7 +76,7 @@
     "@sprucelabs/spruce-event-utils": "latest",
     "@sprucelabs/spruce-skill-booter": "latest",
     "@sprucelabs/spruce-skill-utils": "latest",
-    "@sprucelabs/spruce-templates": "^14.17.2",
+    "@sprucelabs/spruce-templates": "^14.17.3",
     "cfonts": "^2.9.3",
     "chalk": "^4.1.1",
     "chokidar": "^3.5.2",
