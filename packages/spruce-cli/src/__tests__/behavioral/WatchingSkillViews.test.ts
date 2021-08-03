@@ -127,8 +127,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 		await this.wait(100)
 
-		//@ts-ignore
-		watchAction.kill()
+		await watchAction.kill()
 
 		await actionPromise
 
