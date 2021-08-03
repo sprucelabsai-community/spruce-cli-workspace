@@ -53,7 +53,7 @@
 		"release": "semantic-release",
 		"update.dependencies": "cd ../ && yarn update.dependencies",
 		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn watch.tsc' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
-		"watch.tsc": "tsc -w"
+		"watch.tsc": "tsc -w --sourceMap"
 	},
 	"dependencies": {
 		"@sprucelabs/mercury-types": "latest",

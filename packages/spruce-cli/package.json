@@ -59,7 +59,7 @@
     "watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
     "watch.rebuild": "cd ../ && yarn watch.rebuild",
     "watch.tests": "yarn cache.tests && jest --watch",
-    "watch.tsc": "tsc -w"
+    "watch.tsc": "tsc -w --sourceMap"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.6",

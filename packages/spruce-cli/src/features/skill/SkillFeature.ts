@@ -92,7 +92,7 @@ export default class SkillFeature<
 		'watch.lint':
 			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
 		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build.dev',
-		'watch.tsc': 'tsc -w',
+		'watch.tsc': 'tsc -w --sourceMap',
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
