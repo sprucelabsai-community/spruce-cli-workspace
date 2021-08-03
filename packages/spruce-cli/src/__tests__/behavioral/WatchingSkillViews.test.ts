@@ -95,9 +95,9 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		const actionPromise = watchAction.execute()
 		let didWait = false
 		const waitPromise = new Promise((resolve) => {
-			setTimeout(() => {
+			setTimeout(async () => {
 				didWait = true
-				watchAction.kill()
+				await watchAction.kill()
 				resolve(null)
 			}, 1000)
 		})
