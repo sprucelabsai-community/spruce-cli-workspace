@@ -204,6 +204,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		await this.wait(500)
 
 		await assert.doesThrowAsync(() => this.assertProcessRunning(pid as number))
+
+		await this.wait(10000)
 	}
 
 	private static async assertProcessRunning(pid: number) {
