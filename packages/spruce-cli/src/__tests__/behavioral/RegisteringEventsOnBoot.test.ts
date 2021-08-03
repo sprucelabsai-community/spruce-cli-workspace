@@ -71,6 +71,19 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 				namespace,
 				name: '',
 				fields: {
+					source: {
+						label: 'Source',
+						type: 'schema',
+						options: {
+							schema: {
+								id: 'eventSource',
+								version,
+								namespace,
+								name: '',
+								fields: { proxyToken: { label: 'Proxy token', type: 'id' } },
+							},
+						},
+					},
 					target: {
 						type: 'schema',
 						isRequired: true,
