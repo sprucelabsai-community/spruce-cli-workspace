@@ -38,9 +38,12 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			},
 		})
 
-		void this.Action('view', 'watch').execute({})
+		const watchAction = this.Action('view', 'watch')
+		void watchAction.execute({})
 		await this.wait(10)
 		assert.isTrue(wasHit)
+
+		await watchAction.kill()
 	}
 
 	@test()
@@ -53,7 +56,9 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			},
 		})
 
-		void this.Action('view', 'watch').execute({})
+		const watchAction = this.Action('view', 'watch')
+		void watchAction.execute({})
+
 		await this.wait(10)
 
 		assert.isEqual(hitCount, 1)
@@ -61,6 +66,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		await this.emitFileChangeEvent()
 
 		assert.isEqual(hitCount, 2)
+		await watchAction.kill()
 	}
 
 	@test()
@@ -83,6 +89,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		await this.wait(100)
 
 		assert.isTrue(passedOptions.shouldReturnImmediately)
+
+		await watchAction.kill()
 	}
 
 	@test()
@@ -106,6 +114,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		await waitPromise
 
 		assert.isTrue(didWait)
+
+		await watchAction.kill()
 	}
 
 	@test()
@@ -134,6 +144,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		assert.isFalse(didWait)
 
 		await waitPromise
+
+		await watchAction.kill()
 	}
 
 	@test()
@@ -203,8 +215,6 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		await this.wait(500)
 
 		await assert.doesThrowAsync(() => this.assertProcessRunning(pid as number))
-
-		await this.wait(10000)
 	}
 
 	private static async assertProcessRunning(pid: number) {
