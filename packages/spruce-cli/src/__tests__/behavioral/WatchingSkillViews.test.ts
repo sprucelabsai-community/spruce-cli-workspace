@@ -38,7 +38,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			},
 		})
 
-		const watchAction = this.Action('view', 'watch')
+		const watchAction = this.Action('view', 'watch') as WatchAction
 		void watchAction.execute({})
 		await this.wait(10)
 		assert.isTrue(wasHit)
@@ -56,7 +56,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			},
 		})
 
-		const watchAction = this.Action('view', 'watch')
+		const watchAction = this.Action('view', 'watch') as WatchAction
 		void watchAction.execute({})
 
 		await this.wait(10)
