@@ -122,8 +122,8 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 		this.ui.startLoading(this.bootMessage)
 	}
 
-	public kill() {
-		void this.watchFeature.stopWatching()
+	public async kill() {
+		await this.watchFeature.stopWatching()
 		this.bootControls?.kill()
 		this.resolve?.()
 	}

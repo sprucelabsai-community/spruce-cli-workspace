@@ -199,7 +199,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 		await this.assertProcessRunning(pid)
 
-		watchAction.kill()
+		await watchAction.kill()
 
 		await this.wait(500)
 
