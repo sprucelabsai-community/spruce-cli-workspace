@@ -81,7 +81,7 @@
     "chalk": "^4.1.2",
     "chokidar": "^3.5.2",
     "cli-table3": "^0.6.0",
-    "commander": "^8.1.0",
+    "commander": "^7.2.0",
     "core-js": "^3.16.0",
     "emphasize": "^4.2.0",
     "fs-extra": "^10.0.0",
@@ -568,7 +568,8 @@
       "gifwrap",
       "globby",
       "terminal-kit",
-      "terminal-image"
+      "terminal-image",
+      "commander"
     ]
   },
   "gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
