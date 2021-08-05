@@ -65,7 +65,7 @@
     "@babel/runtime": "^7.14.8",
     "@jest/reporters": "^27.0.6",
     "@sprucelabs/error": "latest",
-    "@sprucelabs/heartwood-view-controllers": "^32.0.5",
+    "@sprucelabs/heartwood-view-controllers": "^32.0.6",
     "@sprucelabs/jest-json-reporter": "latest",
     "@sprucelabs/mercury-client": "latest",
     "@sprucelabs/mercury-event-emitter": "latest",
