@@ -75,6 +75,7 @@ export default class SpyInterface implements GraphicsInterface {
 		this.promptResolver = undefined
 		this.confirmResolver = undefined
 		this.waitForEnterResolver = undefined
+		clearTimeout(this.promptTimeout)
 	}
 
 	public lastInvocation() {
