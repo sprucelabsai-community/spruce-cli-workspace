@@ -14,6 +14,7 @@ import EventFeature from './event/EventFeature'
 import EventContractFeature from './eventContract/EventContractFeature'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
+import LogFeature from './log/LogFeature'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
 import OrganizationFeature from './organization/OrganizationFeature'
@@ -46,6 +47,7 @@ export default class FeatureInstallerFactory {
 		StoreFeature,
 		ViewFeature,
 		CacheFeature,
+		LogFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -67,6 +69,7 @@ export default class FeatureInstallerFactory {
 		'store',
 		'view',
 		'cache',
+		'log',
 	]
 
 	public static WithAllFeatures(options: {

@@ -32,6 +32,36 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface TransportAlreadyExists {
+		
+			/** Transport name. */
+			'name': string
+	}
+
+	export interface TransportAlreadyExistsSchema extends SpruceSchema.Schema {
+		id: 'transportAlreadyExists',
+		namespace: 'SpruceCli',
+		name: 'transport already exists',
+		    fields: {
+		            /** Transport name. */
+		            'name': {
+		                label: 'Transport name',
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type TransportAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.TransportAlreadyExistsSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface ThemeExists {
 		
 	}

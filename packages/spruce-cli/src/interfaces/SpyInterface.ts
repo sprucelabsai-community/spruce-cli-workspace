@@ -25,6 +25,7 @@ export default class SpyInterface implements GraphicsInterface {
 	private promptDefaultValue: any
 	private term?: TerminalInterface
 	private startTime: number
+	private promptTimeout?: any
 
 	public constructor() {
 		this.startTime = new Date().getTime()
@@ -225,8 +226,15 @@ export default class SpyInterface implements GraphicsInterface {
 		this.optionallyRenderLine(msg)
 
 		return new Promise<FieldDefinitionValueType<FieldDefinitions>>(
-			(resolve) => {
-				this.promptResolver = resolve
+			(resolve, reject) => {
+				this.promptResolver = (...args: any[]) => {
+					clearTimeout(this.promptTimeout)
+					//@ts-ignore
+					resolve(...args)
+				}
+				this.promptTimeout = setTimeout(() => {
+					reject(`Timed out waiting for input: ${definition.label}`)
+				}, 400)
 				this.promptDefaultValue = definition.defaultValue
 			}
 		)

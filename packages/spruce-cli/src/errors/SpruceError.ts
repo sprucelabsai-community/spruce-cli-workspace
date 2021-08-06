@@ -238,6 +238,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = 'A Action cancelled just happened!'
 				break
 
+			case 'TRANSPORT_ALREADY_EXISTS':
+				message = `A transport named '${options.name}' already exists!`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}
