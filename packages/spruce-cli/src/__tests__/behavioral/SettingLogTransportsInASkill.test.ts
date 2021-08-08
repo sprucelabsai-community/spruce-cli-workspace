@@ -48,33 +48,27 @@ export default class SettingLogTransportsInASkillTest extends AbstractSkillTest 
 
 	@test()
 	protected static async logsWriteToTransports() {
-		const results = await this.createTransport('File')
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			'fileTransport.plugin.ts',
-			results.files
-		)
-
 		const transportContents = `
-import { diskUtil, Level, LogTransport } from '@sprucelabs/spruce-skill-utils'
+		import { diskUtil, Level, LogTransport } from '@sprucelabs/spruce-skill-utils'
+		
+		export default function (): {
+			levels: Level[]
+			transport: LogTransport
+		} | null {
+			return {
+				levels: ['ERROR', 'INFO', 'WARN'],
+				transport: (...messageParts: string[]) => {
+					const message = messageParts.join(' ')
+					diskUtil.writeFile(
+						diskUtil.resolvePath(__dirname, '..', '..', 'log.txt'),
+						message
+					)
+				},
+			}
+		}
+		`
 
-export default function (): {
-	levels: Level[]
-	transport: LogTransport
-} | null {
-	return {
-		levels: ['ERROR', 'INFO', 'WARN'],
-		transport: (...messageParts: string[]) => {
-			const message = messageParts.join(' ')
-			diskUtil.writeFile(
-				diskUtil.resolvePath(__dirname, '..', '..', 'log.txt'),
-				message
-			)
-		},
-	}
-}
-`
-
-		diskUtil.writeFile(match, transportContents)
+		await this.createTransportWithContents(transportContents, 'File')
 
 		await this.Service('build').build()
 		const boot = await this.Action('skill', 'boot').execute({})
@@ -84,6 +78,19 @@ export default function (): {
 		assert.isTrue(
 			diskUtil.doesFileExist(diskUtil.resolvePath(this.cwd, 'log.txt'))
 		)
+	}
+
+	private static async createTransportWithContents(
+		transportContents: string,
+		nameReadable: string
+	) {
+		const results = await this.createTransport(nameReadable)
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			`${namesUtil.toCamel(nameReadable)}Transport.plugin.ts`,
+			results.files
+		)
+
+		diskUtil.writeFile(match, transportContents)
 	}
 
 	private static async createTransport(nameReadable = 'Slack') {
