@@ -23,6 +23,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class CreateLogTransportAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema = createErrorActionSchema
 	public invocationMessage = 'Creating a new log transport... ✍️'
+	public commandAliases = ['create.log.transport']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { nameCamel, nameReadable } =
