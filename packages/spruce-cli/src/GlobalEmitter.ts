@@ -4,34 +4,8 @@ import {
 	MercuryEventEmitter,
 } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
-import generatedFileSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedFile.schema'
 import watcherDidDetectChangesEmitPayloadSchema from '#spruce/schemas/spruceCli/v2020_07_22/watcherDidDetectChangesEmitPayload.schema'
-
-const actionResponseSchema = buildSchema({
-	id: 'actionResponse',
-	fields: {
-		files: {
-			type: 'schema',
-			isArray: true,
-			options: {
-				schema: generatedFileSchema,
-			},
-		},
-		headline: {
-			type: 'text',
-		},
-		summaryLines: {
-			type: 'text',
-			isArray: true,
-		},
-		meta: {
-			type: 'raw',
-			options: {
-				valueType: 'Record<string, any>',
-			},
-		},
-	},
-})
+import { actionResponseSchema } from './features/features.types'
 
 export const globalContract = buildEventContract({
 	eventSignatures: {

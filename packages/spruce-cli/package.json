@@ -531,7 +531,8 @@
             "nicelyTypesViewController": "I192",
             "canSetImportFromModuleWithNestedSchemasWhenRemoteWhenSyncing": "I206",
             "can reference impored from another module": "I207",
-            "killingActionKillsProcess": "I230"
+            "killingActionKillsProcess": "I230",
+            "upgradingSkillSyncsEvents": "I251"
           }
         }
       ],

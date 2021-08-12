@@ -1,4 +1,5 @@
 import fsUtil from 'fs'
+import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -409,6 +410,20 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const dependencies = this.Service('pkg').get('dependencies')
 
 		assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
+	}
+
+	@test()
+	protected static async upgradingSkillSyncsEvents() {
+		await this.FeatureFixture().installCachedFeatures('events')
+		const results = await this.Action('skill', 'upgrade').execute({})
+
+		const events = eventDiskUtil.resolveCombinedEventsContractFile(this.cwd)
+		assert.isTrue(diskUtil.doesFileExist(events))
+
+		testUtil.assertFileByNameInGeneratedFiles(
+			'events.contract.ts',
+			results.files
+		)
 	}
 
 	private static clearFileIfAboutToBeUpdated(

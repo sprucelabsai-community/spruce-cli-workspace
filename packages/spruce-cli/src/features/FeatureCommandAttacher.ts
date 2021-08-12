@@ -109,6 +109,7 @@ export default class FeatureCommandAttacher {
 		this.ui.clear()
 
 		this.ui.renderActionSummary({
+			//@ts-ignore
 			headline: `${actionCode} finished!`,
 			featureCode,
 			actionCode,

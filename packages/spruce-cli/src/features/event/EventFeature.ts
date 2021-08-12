@@ -59,10 +59,28 @@ export default class EventFeature extends AbstractFeature {
 			'feature.will-execute',
 			this.handleWillExecute.bind(this)
 		)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			this.handleDidExecute.bind(this)
+		)
 	}
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
+		return {}
+	}
+
+	private async handleDidExecute(payload: {
+		featureCode: string
+		actionCode: string
+	}) {
+		const { featureCode, actionCode } = payload
+
+		if (featureCode === 'skill' && actionCode === 'upgrade') {
+			return this.Action('event', 'sync').execute({})
+		}
+
 		return {}
 	}
 
