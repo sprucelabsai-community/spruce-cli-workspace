@@ -76,8 +76,9 @@ export default class EventFeature extends AbstractFeature {
 		actionCode: string
 	}) {
 		const { featureCode, actionCode } = payload
+		const isInstalled = await this.featureInstaller.isInstalled('event')
 
-		if (featureCode === 'skill' && actionCode === 'upgrade') {
+		if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
 			return this.Action('event', 'sync').execute({})
 		}
 
@@ -98,7 +99,6 @@ export default class EventFeature extends AbstractFeature {
 			actionCode !== 'setRemote'
 		) {
 			const remote = this.Service('remote')
-
 			const r = remote.getRemote()
 
 			if (!r) {

@@ -65,6 +65,7 @@ export default class ActionExecuter {
 		const isInstalled = await installer.isInstalled(featureCode)
 
 		if (!isInstalled && !this.shouldAutoHandleDependencies) {
+			debugger
 			throw new SpruceError({
 				code: 'FEATURE_NOT_INSTALLED',
 				featureCode,
