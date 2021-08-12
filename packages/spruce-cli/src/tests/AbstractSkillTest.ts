@@ -22,10 +22,8 @@ export default abstract class AbstractSkillTest extends AbstractCliTest {
 		this.cli = await this.Cli()
 	}
 
-	protected static async reInstallSkill() {
+	protected static async reInstallSkill(key = this.skillCacheKey) {
 		this.cwd = this.skillDir = this.freshTmpDir()
-		this.cli = await this.FeatureFixture().installCachedFeatures(
-			this.skillCacheKey
-		)
+		this.cli = await this.FeatureFixture().installCachedFeatures(key)
 	}
 }

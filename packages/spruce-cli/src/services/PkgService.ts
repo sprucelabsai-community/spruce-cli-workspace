@@ -7,9 +7,12 @@ import CommandService from './CommandService'
 
 export interface AddOptions {
 	isDev?: boolean
+	shouldForceInstall?: boolean
 }
 
 export default class PkgService extends CommandService {
+	private _parsedPkg?: Record<string, any>
+
 	public get(path: string | string[]) {
 		const contents = this.readPackage()
 		return get(contents, path)
@@ -25,6 +28,7 @@ export default class PkgService extends CommandService {
 		const destination = this.buildPath()
 
 		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
+		this._parsedPkg = undefined
 	}
 
 	public doesExist() {
@@ -36,11 +40,15 @@ export default class PkgService extends CommandService {
 	}
 
 	public readPackage(): Record<string, any | undefined> {
+		if (this._parsedPkg) {
+			return this._parsedPkg
+		}
 		const packagePath = this.buildPath()
 
 		try {
 			const contents = fs.readFileSync(packagePath).toString()
 			const parsed = JSON.parse(contents)
+			this._parsedPkg = parsed
 
 			return parsed
 		} catch (err) {
@@ -74,7 +82,8 @@ export default class PkgService extends CommandService {
 		let totalSkipped = 0
 
 		for (const thisPackage of packages) {
-			const isInstalled = this.isInstalled(thisPackage)
+			const isInstalled =
+				!options?.shouldForceInstall && this.isInstalled(thisPackage)
 			if (thisPackage.startsWith('@sprucelabs/') || !isInstalled) {
 				toInstall.push(thisPackage)
 				totalInstalled++
@@ -98,13 +107,15 @@ export default class PkgService extends CommandService {
 			await this.execute('npm', {
 				args,
 			})
-		}
-
-		if (!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules'))) {
+		} else if (
+			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules'))
+		) {
 			await this.execute('yarn', { args: ['install'] })
 		}
 
 		this.deleteLockFile()
+
+		this._parsedPkg = undefined
 
 		return { totalInstalled: totalInstalled + labsModules.length, totalSkipped }
 	}
@@ -125,5 +136,11 @@ export default class PkgService extends CommandService {
 		await this.execute('npm', {
 			args,
 		})
+
+		this._parsedPkg = undefined
+	}
+
+	public stripVersion(name: string): string {
+		return name.replace('@latest', '')
 	}
 }

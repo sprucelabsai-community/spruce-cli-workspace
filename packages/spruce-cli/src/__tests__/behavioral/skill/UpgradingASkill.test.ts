@@ -3,6 +3,7 @@ import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
+import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
@@ -424,6 +425,52 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			'events.contract.ts',
 			results.files
 		)
+	}
+
+	@test()
+	protected static async upgradeCallsUpdateDependencies() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		UpdateDependenciesAction.prototype.execute = () => {
+			throw new Error('baaaaad')
+		}
+
+		const results = await this.Action('skill', 'upgrade').execute({})
+
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].message, 'baaaaad')
+	}
+
+	@test()
+	protected static async callsCleanAndBuildDev() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		let wasCleanBuildCalled = false
+		UpdateDependenciesAction.prototype.execute = async () => {
+			return {}
+		}
+
+		CommandService.setMockResponse('yarn clean.build', {
+			code: 0,
+			callback: () => {
+				wasCleanBuildCalled = true
+			},
+		})
+
+		let wasBuildDevCalled = false
+
+		CommandService.setMockResponse('yarn build.dev', {
+			code: 0,
+			callback: () => {
+				wasBuildDevCalled = true
+			},
+		})
+
+		const results = await this.Action('skill', 'upgrade').execute({})
+
+		assert.isFalsy(results.errors)
+		assert.isTrue(wasCleanBuildCalled)
+		assert.isTrue(wasBuildDevCalled)
 	}
 
 	private static clearFileIfAboutToBeUpdated(

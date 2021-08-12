@@ -30,27 +30,26 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 			'Go!!!!',
 		])
 
-		await this.reInstallPackageDependencies()
+		const dependencyResults = await this.reInstallPackageDependencies()
 
-		let results = await this.Action('skill', 'rebuild').execute({
-			shouldPlayGames: true,
-		})
+		await this.Service('command').execute('yarn clean.build')
+		await this.Service('command').execute('yarn build.dev')
+
+		let results = {
+			summaryLines: ['Build folder cleared.', 'Build complete.'],
+		}
 
 		InFlightEntertainment.stop()
-		results = actionUtil.mergeActionResults(results, { files: generatedFiles })
+		results = actionUtil.mergeActionResults(results, dependencyResults, {
+			headline: 'Upgrade',
+			files: generatedFiles,
+		})
 
 		return results
 	}
 
 	private async reInstallPackageDependencies() {
-		const features = await this.featureInstaller.getInstalledFeatures()
-
-		await this.featureInstaller.installPackageDependenciesForFeatures(
-			features,
-			(message: string) => {
-				InFlightEntertainment.writeStatus(message)
-			}
-		)
+		return this.Action('node', 'updateDependencies').execute({})
 	}
 
 	private async updateScripts(options: { shouldConfirm: boolean }) {

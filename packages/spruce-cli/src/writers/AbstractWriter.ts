@@ -136,6 +136,7 @@ export default abstract class AbstractWriter {
 				if (!this.hasShownFirstWriteMessage && this.firstFileWriteMessage) {
 					this.hasShownFirstWriteMessage = true
 					this.ui.renderLine(this.firstFileWriteMessage)
+					this.ui.renderLine('')
 				}
 
 				let cleanedName = this.cleanFilename(destination, cwd)

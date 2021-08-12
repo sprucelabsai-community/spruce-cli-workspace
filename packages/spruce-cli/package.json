@@ -532,7 +532,8 @@
             "canSetImportFromModuleWithNestedSchemasWhenRemoteWhenSyncing": "I206",
             "can reference impored from another module": "I207",
             "killingActionKillsProcess": "I230",
-            "upgradingSkillSyncsEvents": "I251"
+            "upgradingSkillSyncsEvents": "I251",
+            "upgradeCallsUpdateDependencies": "I252"
           }
         }
       ],
