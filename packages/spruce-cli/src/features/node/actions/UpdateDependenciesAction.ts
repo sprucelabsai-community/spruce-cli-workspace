@@ -56,7 +56,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		const pkgContents = pkg.readPackage()
 
 		let dependencies: { stripped: string; name: string }[] =
-			Object.keys(pkgContents.dependencies).map((d) => ({
+			Object.keys(pkgContents.dependencies ?? {}).map((d) => ({
 				stripped: d,
 				name: d,
 			})) ?? []
@@ -85,20 +85,24 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 
-		await pkg.install(
-			dependencies.map((d) => d.name),
-			{
-				shouldForceInstall: true,
-			}
-		)
+		if (dependencies.length > 0) {
+			await pkg.install(
+				dependencies.map((d) => d.name),
+				{
+					shouldForceInstall: true,
+				}
+			)
+		}
 
-		await pkg.install(
-			devDependencies.map((d) => d.name),
-			{
-				shouldForceInstall: true,
-				isDev: true,
-			}
-		)
+		if (devDependencies.length > 0) {
+			await pkg.install(
+				devDependencies.map((d) => d.name),
+				{
+					shouldForceInstall: true,
+					isDev: true,
+				}
+			)
+		}
 
 		return {
 			totalDependencies: dependencies.length,
