@@ -55,34 +55,50 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		const pkg = this.Service('pkg')
 		const pkgContents = pkg.readPackage()
 
-		let dependencies: string[] = Object.keys(pkgContents.dependencies) ?? []
-		let devDependencies: string[] = []
+		let dependencies: { stripped: string; name: string }[] =
+			Object.keys(pkgContents.dependencies).map((d) => ({
+				stripped: d,
+				name: d,
+			})) ?? []
+		let devDependencies: { stripped: string; name: string }[] = []
 
 		for (const feature of features) {
 			for (const dep of feature.packageDependencies as NpmPackage[]) {
 				if (dep.isDev) {
-					devDependencies.push(pkg.stripVersion(dep.name))
+					devDependencies.push({
+						stripped: pkg.stripVersion(dep.name),
+						name: pkg.buildPackageName(dep),
+					})
 				} else {
-					dependencies.push(pkg.stripVersion(dep.name))
+					dependencies.push({
+						stripped: pkg.stripVersion(dep.name),
+						name: pkg.buildPackageName(dep),
+					})
 				}
 			}
 		}
 
 		dependencies = uniq(dependencies).filter(
-			(d) => !this.isBlockedFromUpgrade(d, pkg)
+			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 		devDependencies = uniq(devDependencies).filter(
-			(d) => !this.isBlockedFromUpgrade(d, pkg)
+			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 
-		await pkg.install(dependencies, {
-			shouldForceInstall: true,
-		})
+		await pkg.install(
+			dependencies.map((d) => d.name),
+			{
+				shouldForceInstall: true,
+			}
+		)
 
-		await pkg.install(devDependencies, {
-			shouldForceInstall: true,
-			isDev: true,
-		})
+		await pkg.install(
+			devDependencies.map((d) => d.name),
+			{
+				shouldForceInstall: true,
+				isDev: true,
+			}
+		)
 
 		return {
 			totalDependencies: dependencies.length,

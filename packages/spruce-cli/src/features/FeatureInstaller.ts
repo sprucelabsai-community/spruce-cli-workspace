@@ -386,9 +386,10 @@ export default class FeatureInstaller implements ServiceProvider {
 		didUpdateHandler?: InternalUpdateHandler
 	) {
 		const packagesInstalled: NpmPackage[] = []
+		const pkgService = this.Service('pkg')
 
 		feature.packageDependencies?.forEach((pkg) => {
-			const packageName = `${pkg.name}${pkg.version ? `@${pkg.version}` : ''}`
+			const packageName = pkgService.buildPackageName(pkg)
 
 			packagesInstalled.push(pkg)
 

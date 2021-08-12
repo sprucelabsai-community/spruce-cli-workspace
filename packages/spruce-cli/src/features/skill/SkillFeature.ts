@@ -29,18 +29,18 @@ export default class SkillFeature<
 	public readonly installOrderWeight = 100
 
 	public packageDependencies: NpmPackage[] = [
-		{ name: '@sprucelabs/error@latest' },
-		{ name: '@sprucelabs/spruce-skill-utils@latest' },
-		{ name: '@sprucelabs/spruce-skill-booter@latest' },
-		{ name: '@sprucelabs/spruce-event-utils@latest' },
-		{ name: '@sprucelabs/spruce-event-plugin@latest' },
-		{ name: '@sprucelabs/spruce-core-schemas@latest' },
+		{ name: '@sprucelabs/error' },
+		{ name: '@sprucelabs/spruce-skill-utils' },
+		{ name: '@sprucelabs/spruce-skill-booter' },
+		{ name: '@sprucelabs/spruce-event-utils' },
+		{ name: '@sprucelabs/spruce-event-plugin' },
+		{ name: '@sprucelabs/spruce-core-schemas' },
 		{ name: 'dotenv' },
 		{ name: 'globby', version: '^11.0.4' },
 		{
-			name: '@sprucelabs/mercury-types@latest',
+			name: '@sprucelabs/mercury-types',
 		},
-		{ name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
+		{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
 		{ name: '@types/node', isDev: true },
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },

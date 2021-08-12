@@ -3,6 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import { set, get } from 'lodash'
 import SpruceError from '../errors/SpruceError'
+import { NpmPackage } from '../types/cli.types'
 import CommandService from './CommandService'
 
 export interface AddOptions {
@@ -142,5 +143,14 @@ export default class PkgService extends CommandService {
 
 	public stripVersion(name: string): string {
 		return name.replace('@latest', '')
+	}
+
+	public buildPackageName(dep: NpmPackage): string {
+		const { name, version } = dep
+		if (!version) {
+			return name
+		}
+
+		return `${name}@${version}`
 	}
 }

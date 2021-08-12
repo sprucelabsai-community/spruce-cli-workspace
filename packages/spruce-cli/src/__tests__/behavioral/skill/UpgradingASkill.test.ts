@@ -14,14 +14,21 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
-		// CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
-		// 	code: 0,
-		// })
 	}
 
 	@test()
 	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
+		// CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
+		// 	code: 0,
+		// })
+		CommandService.setMockResponse('yarn clean.build', {
+			code: 0,
+		})
+		CommandService.setMockResponse('yarn build.dev', {
+			code: 0,
+		})
+
 		const files: {
 			name: string
 			path: string

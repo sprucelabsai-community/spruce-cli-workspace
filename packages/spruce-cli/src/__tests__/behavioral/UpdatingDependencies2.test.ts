@@ -20,7 +20,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
 		const name = await this.installRandomPackage()
-		const blocked = await this.blockRandomPackages()
+		const blocked = this.blockRandomPackages()
 
 		const pkg = this.Service('pkg')
 		const pkgJson = pkg.readPackage()
@@ -84,7 +84,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 	}
 
 	protected static blockRandomPackages() {
-		const names = ['@sprucelabs/error', 'globby', 'typescript']
+		const names = ['@sprucelabs/error', 'typescript']
 		const name = names[random(0, names.length - 1)]
 
 		this.action.blockUpgrade(name, this.Service('pkg'))
