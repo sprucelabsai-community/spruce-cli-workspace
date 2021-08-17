@@ -37,14 +37,15 @@ export default class ScriptUpdater {
 			const script = this.latestScripts[name as keyof typeof all]
 			const oldScript = oldScripts[name as any]
 
-			let shouldWrite = !shouldSkipAll
+			const shouldAlwaysSkip = updaterSettings.skips.indexOf(name) > -1
+			let shouldWrite = !shouldSkipAll && !shouldAlwaysSkip
 
 			if (
 				shouldConfirm &&
 				!shouldSkipAll &&
 				oldScript &&
 				script !== oldScript &&
-				updaterSettings.skips.indexOf(name) === -1
+				!shouldAlwaysSkip
 			) {
 				this.ui.clear()
 				this.ui.renderSection({
@@ -60,11 +61,11 @@ export default class ScriptUpdater {
 					options: {
 						choices: [
 							{
-								label: 'Overwrite this one',
+								label: 'Overwrite',
 								value: 'overwrite',
 							},
 							{
-								label: 'Skip this one',
+								label: 'Skip',
 								value: 'skip',
 							},
 							{

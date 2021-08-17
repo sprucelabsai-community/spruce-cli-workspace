@@ -7,7 +7,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 
 	@test()
 	protected static async changedScriptsHasAlwaysSkipOptions() {
-		const expected = this.Service('pkg').get(['scripts', 'build.ci'])
+		const expected = this.getExpectedBuildCi()
 		const updater = this.ScriptUpdater('build.ci', 'taco')
 
 		await this.assertShowsAlwaysSkipOption(updater)
@@ -22,10 +22,21 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 		assert.isEqual(ci, expected)
 	}
 
+	private static getExpectedBuildCi() {
+		//@ts-ignore
+		return this.getFeatureInstaller().getFeature('skill').scripts['build.ci']
+	}
+
 	@test()
 	protected static async shouldNotAskASecondTime() {
 		const updater = this.ScriptUpdater('build.ci', 'taco2')
 		await updater.update()
+
+		const expected = this.getExpectedBuildCi()
+		const pkg = this.Service('pkg')
+		const ci = pkg.get(['scripts', 'build.ci'])
+
+		assert.isEqual(ci, expected)
 	}
 
 	@test()
