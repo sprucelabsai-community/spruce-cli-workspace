@@ -81,6 +81,7 @@ export default class ScriptUpdater {
 
 				if (desiredAction === 'alwaysSkip') {
 					updaterSettings.skips.push(name)
+					shouldWrite = false
 				} else if (desiredAction === 'skipAll') {
 					shouldSkipAll = true
 					shouldWrite = false

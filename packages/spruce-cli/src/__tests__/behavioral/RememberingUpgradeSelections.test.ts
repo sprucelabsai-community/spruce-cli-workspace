@@ -7,11 +7,19 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 
 	@test()
 	protected static async changedScriptsHasAlwaysSkipOptions() {
+		const expected = this.Service('pkg').get(['scripts', 'build.ci'])
 		const updater = this.ScriptUpdater('build.ci', 'taco')
 
 		await this.assertShowsAlwaysSkipOption(updater)
 
 		this.ui.sendInput('alwaysSkip')
+
+		await this.wait(100)
+
+		const pkg = this.Service('pkg')
+		const ci = pkg.get(['scripts', 'build.ci'])
+
+		assert.isEqual(ci, expected)
 	}
 
 	@test()
