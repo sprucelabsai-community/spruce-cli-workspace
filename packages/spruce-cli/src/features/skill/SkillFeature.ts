@@ -5,6 +5,7 @@ import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeatu
 import { FileDescription, NpmPackage } from '../../types/cli.types'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import ScriptUpdater from './ScriptUpdater'
 
 type SkillFeatureOptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
@@ -242,69 +243,15 @@ export default class SkillFeature<
 			shouldConfirmIfScriptExistsButIsDifferent?: boolean
 		}
 	) {
-		const pkg = this.Service('pkg', destination)
-		const scripts = pkg.get('scripts') as Record<string, string>
-		const all = this.scripts
-		const oldScripts = pkg.get('scripts')
+		const scriptUpdater = new ScriptUpdater({
+			pkg: this.Service('pkg', destination),
+			latestScripts: this.scripts,
+			ui: this.ui,
+			...options,
+			settings: this.Service('settings', destination),
+		})
 
-		let shouldConfirm = options?.shouldConfirmIfScriptExistsButIsDifferent
-		let shouldSkipAll = false
-
-		for (const name in this.scripts) {
-			const script = this.scripts[name as keyof typeof all]
-			const oldScript = oldScripts[name as any]
-
-			let shouldWrite = !shouldSkipAll
-
-			if (
-				shouldConfirm &&
-				!shouldSkipAll &&
-				oldScript &&
-				script !== oldScript
-			) {
-				this.ui.clear()
-				this.ui.renderSection({
-					headline: `Warning! You have modified \`${name}\` in your package.json and I'm trying to update it!`,
-					object: {
-						Current: oldScript,
-						'    New': script,
-					},
-				})
-				const desiredAction = await this.ui.prompt({
-					type: 'select',
-					label: 'What should I do?',
-					options: {
-						choices: [
-							{
-								label: 'Overwrite this one',
-								value: 'overwrite',
-							},
-							{
-								label: 'Skip this one',
-								value: 'skip',
-							},
-							{
-								label: 'Skip all',
-								value: 'skipAll',
-							},
-						],
-					},
-				})
-
-				if (desiredAction === 'skipAll') {
-					shouldSkipAll = true
-					shouldWrite = false
-				} else if (desiredAction === 'skip') {
-					shouldWrite = false
-				}
-			}
-
-			if (shouldWrite) {
-				scripts[name] = script
-			}
-		}
-
-		pkg.set({ path: 'scripts', value: scripts })
+		await scriptUpdater.update()
 	}
 
 	public setEngines(destination: string) {

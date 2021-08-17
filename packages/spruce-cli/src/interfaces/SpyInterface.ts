@@ -238,6 +238,7 @@ export default class SpyInterface implements GraphicsInterface {
 					resolve(...args)
 				}
 				this.promptTimeout = setTimeout(() => {
+					this.reset()
 					reject(`Timed out waiting for input: ${definition.label}`)
 				}, 10000)
 				this.promptDefaultValue = definition.defaultValue
