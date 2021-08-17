@@ -40,6 +40,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		}
 
 		InFlightEntertainment.stop()
+
 		results = actionUtil.mergeActionResults(results, dependencyResults, {
 			headline: 'Upgrade',
 			files: generatedFiles,

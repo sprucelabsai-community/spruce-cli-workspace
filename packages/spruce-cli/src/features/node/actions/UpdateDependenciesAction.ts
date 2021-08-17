@@ -1,6 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { uniq } from 'lodash'
+import { uniqBy } from 'lodash'
 import InFlightEntertainment from '../../../InFlightEntertainment'
 import PkgService from '../../../services/PkgService'
 import { NpmPackage } from '../../../types/cli.types'
@@ -83,10 +83,10 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			}
 		}
 
-		dependencies = uniq(dependencies).filter(
+		dependencies = uniqBy(dependencies, 'name').filter(
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
-		devDependencies = uniq(devDependencies).filter(
+		devDependencies = uniqBy(devDependencies, 'name').filter(
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 
