@@ -20,12 +20,16 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
 		const name = await this.installRandomPackage()
+		const devName = await this.installRandomDevPackage()
 		const blocked = this.blockRandomPackages()
 
 		const pkg = this.Service('pkg')
 		const pkgJson = pkg.readPackage()
 		const allDeps = [...(Object.keys(pkgJson.dependencies) ?? []), name]
-		const allDevDeps = Object.keys(pkgJson.devDependencies) ?? []
+		const allDevDeps = [
+			...(Object.keys(pkgJson.devDependencies) ?? []),
+			devName,
+		]
 
 		let passedArgs: any[] = []
 
@@ -79,6 +83,15 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 		const name = names[random(0, names.length - 1)]
 		const pkg = this.Service('pkg')
 		await pkg.install(name)
+
+		return name
+	}
+
+	protected static async installRandomDevPackage() {
+		const names = ['moment', 'lodash']
+		const name = names[random(0, names.length - 1)]
+		const pkg = this.Service('pkg')
+		await pkg.install(name, { isDev: true })
 
 		return name
 	}
