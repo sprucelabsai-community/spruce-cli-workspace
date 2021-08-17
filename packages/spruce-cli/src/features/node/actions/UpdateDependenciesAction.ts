@@ -60,6 +60,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 				stripped: d,
 				name: d,
 			})) ?? []
+
 		let devDependencies: { stripped: string; name: string }[] =
 			Object.keys(pkgContents.devDependencies ?? {}).map((d) => ({
 				stripped: d,
