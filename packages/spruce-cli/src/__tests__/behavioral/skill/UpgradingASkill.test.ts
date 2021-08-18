@@ -3,11 +3,17 @@ import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
+import {
+	FILE_ACTION_ALWAYS_SKIP,
+	FILE_ACTION_OVERWRITE,
+	FILE_ACTION_SKIP,
+} from '../../../constants'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 import { GeneratedFile } from '../../../types/cli.types'
+const BROKEN_SKILL_INDEX_CONTENTS = 'throw new Error("cheese!")'
 export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
@@ -112,17 +118,15 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		// should still fail because we haven't written yet
 		await this.assertFailedHealthCheck(cli)
 
-		assert.doesInclude(this.ui.invocations, {
-			command: 'confirm',
-			options: `Overwrite src/index.ts?`,
+		const last = this.ui.lastInvocation()
+
+		assert.doesInclude(last, {
+			'options.options.choices[].value': FILE_ACTION_OVERWRITE,
 		})
 
-		await this.ui.sendInput('\n')
-
-		await this.wait(1000)
+		await this.ui.sendInput(FILE_ACTION_OVERWRITE)
 
 		const results = await promise
 
@@ -131,6 +135,44 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const health = await cli.checkHealth()
 
 		assert.isEqual(health.skill.status, 'passed')
+	}
+
+	@test()
+	protected static async canSkipFile() {
+		const { last, promise } = await this.installBreakAndUpgradeSkill()
+
+		assert.doesInclude(last, {
+			'options.options.choices[].value': FILE_ACTION_SKIP,
+		})
+
+		await this.ui.sendInput(FILE_ACTION_SKIP)
+
+		await promise
+
+		this.assertSkillIsBroken()
+	}
+
+	@test()
+	protected static async canAlwaysSkipFiles() {
+		const { last, promise } = await this.installBreakAndUpgradeSkill()
+
+		assert.doesInclude(last, {
+			'options.options.choices[].value': FILE_ACTION_ALWAYS_SKIP,
+		})
+
+		await this.ui.sendInput(FILE_ACTION_ALWAYS_SKIP)
+
+		await promise
+
+		this.assertSkillIsBroken()
+
+		const results = await this.Action('skill', 'upgrade').execute({
+			upgradeMode: 'askForChanged',
+		})
+
+		assert.isFalsy(results.errors)
+
+		this.assertSkillIsBroken()
 	}
 
 	@test()
@@ -502,7 +544,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	private static async installAndBreakSkill(cacheKey: string) {
 		const cli = await this.installSkill(cacheKey)
 		const indexFile = this.resolvePath('src/index.ts')
-		diskUtil.writeFile(indexFile, 'throw new Error("cheese!")')
+		diskUtil.writeFile(indexFile, BROKEN_SKILL_INDEX_CONTENTS)
 		await this.assertFailedHealthCheck(cli)
 
 		return cli
@@ -548,5 +590,24 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			0,
 			'A sandbox listeners was written and it should not have been.'
 		)
+	}
+
+	private static async installBreakAndUpgradeSkill() {
+		await this.installAndBreakSkill('skills')
+
+		const promise = this.Action('skill', 'upgrade').execute({
+			upgradeMode: 'askForChanged',
+		})
+
+		await this.waitForInput()
+
+		const last = this.ui.lastInvocation()
+		return { last, promise }
+	}
+
+	private static assertSkillIsBroken() {
+		const indexFile = this.resolvePath('src/index.ts')
+		const contents = diskUtil.readFile(indexFile)
+		assert.isEqual(contents, BROKEN_SKILL_INDEX_CONTENTS)
 	}
 }
