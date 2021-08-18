@@ -1,7 +1,12 @@
 import fs from 'fs'
 import pathUtil from 'path'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { DirectoryTemplateCode, Templates } from '@sprucelabs/spruce-templates'
+import {
+	FILE_ACTION_ALWAYS_SKIP,
+	FILE_ACTION_OVERWRITE,
+	FILE_ACTION_SKIP,
+} from '../constants'
 import LintService from '../services/LintService'
 import { FileDescription, GeneratedFile, UpgradeMode } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
@@ -15,6 +20,7 @@ export interface WriterOptions {
 	upgradeMode?: UpgradeMode
 	fileDescriptions: FileDescription[]
 	linter?: LintService
+	settings: SettingsService
 }
 
 export default abstract class AbstractWriter {
@@ -27,6 +33,7 @@ export default abstract class AbstractWriter {
 	private static isLintingEnabled = true
 	private firstFileWriteMessage?: string
 	private hasShownFirstWriteMessage = false
+	private settings: SettingsService<string>
 
 	public constructor(options: WriterOptions) {
 		this.templates = options.templates
@@ -34,6 +41,7 @@ export default abstract class AbstractWriter {
 		this.upgradeMode = options.upgradeMode
 		this.fileDescriptions = options.fileDescriptions
 		this.linter = options.linter
+		this.settings = options.settings
 	}
 
 	protected async lint(file: string) {
@@ -130,18 +138,45 @@ export default abstract class AbstractWriter {
 			this.isFileDifferent(destination, contents) &&
 			this.shouldOverwriteIfChanged(destination)
 		) {
-			let write = true
+			const cleanedName = this.cleanFilename(destination, cwd)
+			const settings = this.settings.get('writer') ?? { skips: [] }
+			const isAlwaysSkipped = settings.skips.indexOf(cleanedName) > -1
+			let write = !isAlwaysSkipped
 
-			if (this.shouldAskForOverwrite()) {
+			if (!isAlwaysSkipped && this.shouldAskForOverwrite()) {
 				if (!this.hasShownFirstWriteMessage && this.firstFileWriteMessage) {
 					this.hasShownFirstWriteMessage = true
 					this.ui.renderLine(this.firstFileWriteMessage)
 					this.ui.renderLine('')
 				}
 
-				let cleanedName = this.cleanFilename(destination, cwd)
+				const answer = await this.ui.prompt({
+					type: 'select',
+					label: `${cleanedName}`,
+					options: {
+						choices: [
+							{
+								value: FILE_ACTION_OVERWRITE,
+								label: 'Overwrite',
+							},
+							{
+								value: FILE_ACTION_SKIP,
+								label: 'Skip',
+							},
+							{
+								value: FILE_ACTION_ALWAYS_SKIP,
+								label: 'Always skip',
+							},
+						],
+					},
+				})
 
-				write = await this.ui.confirm(`Overwrite ${cleanedName}?`)
+				if (answer === FILE_ACTION_ALWAYS_SKIP) {
+					settings.skips.push(cleanedName)
+					this.settings.set('writer', settings)
+				}
+
+				write = answer === FILE_ACTION_OVERWRITE
 			}
 
 			if (write) {

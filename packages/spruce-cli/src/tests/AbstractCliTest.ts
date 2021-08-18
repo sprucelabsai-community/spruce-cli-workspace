@@ -243,7 +243,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static getViewFixture() {
 		if (!this.viewFixture) {
-			const writerFactory = new WriterFactory(templates, this.ui)
+			const writerFactory = this.WriterFactory()
+
 			const viewWriter = writerFactory.Writer('view', { fileDescriptions: [] })
 			this.viewFixture = new ViewFixture(
 				this.cwd,
@@ -253,6 +254,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 
 		return this.viewFixture
+	}
+
+	private static WriterFactory() {
+		return new WriterFactory({
+			templates,
+			ui: this.ui,
+			settings: this.Service('settings'),
+		})
 	}
 
 	protected static async skipInstallSkill<
@@ -429,12 +438,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static ActionExecuter(options?: ExecuterOptions) {
 		const serviceFactory = this.ServiceFactory()
-
-		const writerFactory = new WriterFactory(
-			templates,
-			this.ui,
-			serviceFactory.Service(this.cwd, 'lint')
-		)
+		const writerFactory = this.WriterFactory()
 
 		const emitter = this.getEmitter()
 

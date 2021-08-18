@@ -200,11 +200,12 @@ export default class Cli implements CliInterface {
 		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
 		let featureInstaller: FeatureInstaller | undefined
 
-		const writerFactory = new WriterFactory(
+		const writerFactory = new WriterFactory({
 			templates,
 			ui,
-			serviceFactory.Service(cwd, 'lint')
-		)
+			settings: serviceFactory.Service(cwd, 'settings'),
+			linter: serviceFactory.Service(cwd, 'lint'),
+		})
 
 		const optionOverrides = this.loadOptionOverrides(
 			serviceFactory.Service(cwd, 'pkg')

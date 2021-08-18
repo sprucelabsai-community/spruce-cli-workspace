@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import { FILE_ACTION_ALWAYS_SKIP } from '../../constants'
 import ScriptUpdater from '../../features/skill/ScriptUpdater'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
@@ -67,7 +68,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 		const last = this.ui.lastInvocation()
 
 		assert.doesInclude(last, {
-			'options.options.choices[].value': 'alwaysSkip',
+			'options.options.choices[].value': FILE_ACTION_ALWAYS_SKIP,
 		})
 	}
 }

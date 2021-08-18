@@ -1,4 +1,9 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
+import {
+	FILE_ACTION_ALWAYS_SKIP,
+	FILE_ACTION_OVERWRITE,
+	FILE_ACTION_SKIP,
+} from '../../constants'
 import PkgService from '../../services/PkgService'
 import { GraphicsInterface } from '../../types/cli.types'
 
@@ -55,6 +60,7 @@ export default class ScriptUpdater {
 						'    New': script,
 					},
 				})
+
 				const desiredAction = await this.ui.prompt({
 					type: 'select',
 					label: 'What should I do?',
@@ -62,15 +68,15 @@ export default class ScriptUpdater {
 						choices: [
 							{
 								label: 'Overwrite',
-								value: 'overwrite',
+								value: FILE_ACTION_OVERWRITE,
 							},
 							{
 								label: 'Skip',
-								value: 'skip',
+								value: FILE_ACTION_SKIP,
 							},
 							{
 								label: 'Always skip',
-								value: 'alwaysSkip',
+								value: FILE_ACTION_ALWAYS_SKIP,
 							},
 							{
 								label: 'Skip all',

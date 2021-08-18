@@ -533,7 +533,8 @@
             "can reference impored from another module": "I207",
             "killingActionKillsProcess": "I230",
             "upgradingSkillSyncsEvents": "I251",
-            "upgradeCallsUpdateDependencies": "I252"
+            "upgradeCallsUpdateDependencies": "I252",
+            "canAlwaysSkipFiles": "I264"
           }
         }
       ],

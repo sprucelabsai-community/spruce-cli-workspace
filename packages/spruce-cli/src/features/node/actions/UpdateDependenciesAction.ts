@@ -109,6 +109,9 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			)
 		}
 
+		//required to get install over the line for some reason????????
+		await pkg.install()
+
 		return {
 			totalDependencies: dependencies.length,
 			totalDevDependencies: devDependencies.length,

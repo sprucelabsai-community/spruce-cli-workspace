@@ -1,3 +1,4 @@
+import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import ConversationWriter from '../features/conversation/writers/ConversationWriter'
 import DeployWriter from '../features/deploy/writers/DeployWriter'
@@ -55,15 +56,20 @@ export default class WriterFactory {
 	private templates: Templates
 	private ui: GraphicsInterface
 	private linter?: LintService
+	private settings: SettingsService<string>
 
-	public constructor(
-		templates: Templates,
-		ui: GraphicsInterface,
+	public constructor(options: {
+		templates: Templates
+		ui: GraphicsInterface
 		linter?: LintService
-	) {
+		settings: SettingsService
+	}) {
+		const { templates, ui, linter, settings } = options
+
 		this.templates = templates
 		this.ui = ui
 		this.linter = linter
+		this.settings = settings
 	}
 
 	public Writer<C extends WriterCode>(
@@ -75,6 +81,7 @@ export default class WriterFactory {
 			templates: this.templates,
 			term: this.ui,
 			linter: this.linter,
+			settings: this.settings,
 			...(options || {}),
 		}) as WriterMap[C]
 	}

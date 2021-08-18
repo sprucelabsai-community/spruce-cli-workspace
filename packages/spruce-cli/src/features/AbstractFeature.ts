@@ -87,11 +87,12 @@ export default abstract class AbstractFeature<
 		this.templates = options.templates
 		this.actionFactory = options.actionFactory
 		this.storeFactory = options.storeFactory
-		this.writerFactory = new WriterFactory(
-			this.templates,
-			options.ui,
-			this.Service('lint')
-		)
+		this.writerFactory = new WriterFactory({
+			templates: this.templates,
+			ui: options.ui,
+			settings: this.Service('settings'),
+			linter: this.Service('lint'),
+		})
 		this.emitter = options.emitter
 		this.featureInstaller = options.featureInstaller
 		this.ui = options.ui

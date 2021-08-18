@@ -75,7 +75,12 @@ export default class PkgService extends CommandService {
 		}
 	}
 
-	public async install(pkg: string[] | string, options?: AddOptions) {
+	public async install(pkg?: string[] | string, options?: AddOptions) {
+		if (!pkg) {
+			await this.execute('yarn', { args: ['install'] })
+			return { totalInstalled: -1, totalSkipped: -1 }
+		}
+
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const toInstall = []
 		const labsModules: string[] = []

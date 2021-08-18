@@ -21,6 +21,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
 			term: this.ui,
 			fileDescriptions: [],
 			linter: this.Service('lint'),
+			settings: this.Service('settings'),
 		})
 
 		await this.installSchemaFeature('schemas')
