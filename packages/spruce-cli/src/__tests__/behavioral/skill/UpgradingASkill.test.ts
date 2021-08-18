@@ -1,5 +1,4 @@
 import fsUtil from 'fs'
-import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { CliInterface } from '../../../cli'
@@ -8,7 +7,6 @@ import {
 	FILE_ACTION_OVERWRITE,
 	FILE_ACTION_SKIP,
 } from '../../../constants'
-import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
@@ -360,7 +358,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
 
 		this.assertSandboxListenerNotWritten()
-		this.assertViewPluginNotWritten()
 	}
 
 	@test()
@@ -380,22 +377,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const newContents = diskUtil.readFile(match)
 		assert.isEqual(originalContents, newContents)
-	}
-
-	@test()
-	protected static async writesViewPlugin() {
-		await this.FeatureFixture().installCachedFeatures('views')
-
-		const plugin = this.getViewsPluginPath()
-		assert.isTrue(diskUtil.doesFileExist(plugin))
-
-		diskUtil.deleteFile(plugin)
-
-		assert.isFalse(diskUtil.doesFileExist(plugin))
-
-		await this.Action('skill', 'upgrade').execute({})
-
-		assert.isTrue(diskUtil.doesFileExist(plugin))
 	}
 
 	@test()
@@ -450,78 +431,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		}
 	}
 
-	@test()
-	protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
-		CommandService.clearMockResponses()
-		await this.FeatureFixture().installCachedFeatures('views')
-
-		await this.Action('skill', 'upgrade').execute({})
-
-		const dependencies = this.Service('pkg').get('dependencies')
-
-		assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
-	}
-
-	@test()
-	protected static async upgradingSkillSyncsEvents() {
-		await this.FeatureFixture().installCachedFeatures('events')
-		const results = await this.Action('skill', 'upgrade').execute({})
-
-		const events = eventDiskUtil.resolveCombinedEventsContractFile(this.cwd)
-		assert.isTrue(diskUtil.doesFileExist(events))
-
-		testUtil.assertFileByNameInGeneratedFiles(
-			'events.contract.ts',
-			results.files
-		)
-	}
-
-	@test()
-	protected static async upgradeCallsUpdateDependencies() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
-		UpdateDependenciesAction.prototype.execute = () => {
-			throw new Error('baaaaad')
-		}
-
-		const results = await this.Action('skill', 'upgrade').execute({})
-
-		assert.isTruthy(results.errors)
-		assert.doesInclude(results.errors[0].message, 'baaaaad')
-	}
-
-	@test()
-	protected static async callsCleanAndBuildDev() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
-		let wasCleanBuildCalled = false
-		UpdateDependenciesAction.prototype.execute = async () => {
-			return {}
-		}
-
-		CommandService.setMockResponse('yarn clean.build', {
-			code: 0,
-			callback: () => {
-				wasCleanBuildCalled = true
-			},
-		})
-
-		let wasBuildDevCalled = false
-
-		CommandService.setMockResponse('yarn build.dev', {
-			code: 0,
-			callback: () => {
-				wasBuildDevCalled = true
-			},
-		})
-
-		const results = await this.Action('skill', 'upgrade').execute({})
-
-		assert.isFalsy(results.errors)
-		assert.isTrue(wasCleanBuildCalled)
-		assert.isTrue(wasBuildDevCalled)
-	}
-
 	private static clearFileIfAboutToBeUpdated(
 		file: {
 			name: string
@@ -535,10 +444,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		if (file[`${upgradeMode}Action`] === 'updated') {
 			diskUtil.writeFile(this.resolvePath(file.path), '')
 		}
-	}
-
-	private static getViewsPluginPath() {
-		return this.resolveHashSprucePath('features', 'view.plugin.ts')
 	}
 
 	private static async installAndBreakSkill(cacheKey: string) {
@@ -573,10 +478,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.doesInclude(failedHealthCheck, {
 			'skill.errors[].message': 'cheese',
 		})
-	}
-
-	protected static assertViewPluginNotWritten() {
-		assert.isFalse(diskUtil.doesFileExist(this.getViewsPluginPath()))
 	}
 
 	protected static assertSandboxListenerNotWritten() {
