@@ -13,7 +13,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 
 		await this.assertShowsAlwaysSkipOption(updater)
 
-		this.ui.sendInput('alwaysSkip')
+		await this.ui.sendInput('alwaysSkip')
 
 		await this.wait(100)
 
@@ -45,7 +45,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 		const updater = this.ScriptUpdater('build.dev', 'taco')
 		await this.assertShowsAlwaysSkipOption(updater)
 
-		this.ui.sendInput('alwaysSkip')
+		await this.ui.sendInput('alwaysSkip')
 	}
 
 	private static ScriptUpdater(key: string, value: string) {
