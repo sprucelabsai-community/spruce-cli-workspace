@@ -91,6 +91,11 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		)
 
 		if (dependencies.length > 0) {
+			InFlightEntertainment.writeStatus(
+				`Installing ${dependencies.length} dependenc${
+					dependencies.length === 1 ? 'y' : 'ies'
+				} with npm.`
+			)
 			await pkg.install(
 				dependencies.map((d) => d.name),
 				{
@@ -100,6 +105,11 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		}
 
 		if (devDependencies.length > 0) {
+			InFlightEntertainment.writeStatus(
+				`Installing ${devDependencies.length} dev dependenc${
+					dependencies.length === 1 ? 'y' : 'ies'
+				} with npm.`
+			)
 			await pkg.install(
 				devDependencies.map((d) => d.name),
 				{
@@ -108,6 +118,10 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 				}
 			)
 		}
+
+		InFlightEntertainment.writeStatus(
+			`Re-running yarn to catch any missed modules...`
+		)
 
 		//required to get install over the line for some reason????????
 		await pkg.install()

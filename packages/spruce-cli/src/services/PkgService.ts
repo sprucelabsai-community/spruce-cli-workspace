@@ -81,6 +81,8 @@ export default class PkgService extends CommandService {
 			return { totalInstalled: -1, totalSkipped: -1 }
 		}
 
+		this.deleteLockFile()
+
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const toInstall = []
 		const labsModules: string[] = []
@@ -100,9 +102,9 @@ export default class PkgService extends CommandService {
 
 		if (totalInstalled > 0) {
 			const args: string[] = [
-				'--cache-min 9999999',
-				'--no-progress',
-				'install',
+				// '--cache-min 9999999',
+				// '--no-progress',
+				'add',
 				...toInstall,
 			]
 
@@ -110,7 +112,7 @@ export default class PkgService extends CommandService {
 				args.push('-D')
 			}
 
-			await this.execute('npm', {
+			await this.execute('yarn', {
 				args,
 			})
 		} else if (
