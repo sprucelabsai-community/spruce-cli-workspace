@@ -9,7 +9,7 @@ const tsConfigUtil = {
 		try {
 			const parsed = JSON.parse(contents)
 			return parsed
-		} catch (err) {
+		} catch (err: any) {
 			throw new SpruceError({
 				code: 'FAILED_TO_IMPORT',
 				file: packagePath,

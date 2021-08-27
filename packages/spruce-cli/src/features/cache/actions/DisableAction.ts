@@ -32,7 +32,7 @@ export default class DisableCacheAction extends AbstractAction<OptionsSchema> {
 				headline: 'Stopping cache',
 				summaryLines: ['Shutting down cache!'],
 			}
-		} catch (err) {
+		} catch (err: any) {
 			let error = err
 			if (err.options?.cmd?.includes('which')) {
 				error = new SpruceError({

@@ -176,7 +176,7 @@ export default class EventStore extends AbstractStore {
 							importsByName[fqen][map.key] = await importer.importDefault(match)
 						}
 					}
-				} catch (err) {
+				} catch (err: any) {
 					throw new SpruceError({
 						code: 'INVALID_EVENT_CONTRACT',
 						fullyQualifiedEventName: fqen ?? 'Bad event name',

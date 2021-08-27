@@ -98,7 +98,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			}
 
 			return results
-		} catch (err) {
+		} catch (err: any) {
 			let mappedErr = err
 			if (mappedErr.message.search(/cannot find module/gis) > -1) {
 				mappedErr = new SpruceError({

@@ -136,7 +136,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 				try {
 					this.validate({ fields })
 					valid = true
-				} catch (err) {
+				} catch (err: any) {
 					this.renderError(err)
 
 					await this.ui.waitForEnter()

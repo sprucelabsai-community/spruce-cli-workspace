@@ -387,7 +387,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		try {
 			const colored = emphasize.highlight('js', code).value
 			this.renderLine(colored)
-		} catch (err) {
+		} catch (err: any) {
 			this.renderWarning(err)
 		}
 	}

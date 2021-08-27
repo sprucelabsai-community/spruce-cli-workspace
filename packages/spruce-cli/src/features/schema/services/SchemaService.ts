@@ -9,7 +9,7 @@ export default class SchemaService extends ImportService {
 
 		try {
 			validateSchema(definitionProxy)
-		} catch (err) {
+		} catch (err: any) {
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
 				file,

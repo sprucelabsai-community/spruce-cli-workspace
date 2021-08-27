@@ -202,7 +202,7 @@ export default class SchemaStore extends AbstractStore {
 						)
 						schemas.push(schema)
 					}
-				} catch (err) {
+				} catch (err: any) {
 					errors.push(
 						new SpruceError({
 							code: 'SCHEMA_FAILED_TO_IMPORT',
@@ -212,7 +212,7 @@ export default class SchemaStore extends AbstractStore {
 					)
 				}
 			}
-		} catch (err) {
+		} catch (err: any) {
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
 				file: err?.options?.file ?? '**UNKWOWN**',
@@ -319,7 +319,7 @@ export default class SchemaStore extends AbstractStore {
 								registration,
 								isLocal: true,
 							}
-						} catch (err) {
+						} catch (err: any) {
 							localErrors.push(
 								new SpruceError({
 									code: 'FAILED_TO_IMPORT',

@@ -140,7 +140,7 @@ export default class FeatureCommandAttacher {
 						? `${field.definition.defaultValue}`
 						: undefined
 				)
-			} catch (err) {
+			} catch (err: any) {
 				throw new SpruceError({
 					//@ts-ignore
 					code: 'FAILED_TO_ATTACH_COMMAND',

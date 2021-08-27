@@ -97,7 +97,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 			} else {
 				await promise
 			}
-		} catch (err) {
+		} catch (err: any) {
 			if (
 				err.options?.stderr?.includes('SIGINT') ||
 				err.options?.code === 'CONVERSATION_ABORTED'

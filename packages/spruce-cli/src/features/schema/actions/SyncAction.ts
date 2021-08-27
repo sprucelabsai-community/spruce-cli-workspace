@@ -108,7 +108,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
 			schemaErrors.push(...templateResults.schemaErrors)
 			schemaTemplateItems = templateResults.schemaTemplateItems
-		} catch (err) {
+		} catch (err: any) {
 			schemaErrors.push(err)
 		}
 
@@ -141,7 +141,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 					schemaTemplateItems,
 					globalSchemaNamespace: globalSchemaNamespace ?? undefined,
 				})
-			} catch (err) {
+			} catch (err: any) {
 				schemaErrors.push(err)
 			}
 
@@ -163,7 +163,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 								: undefined,
 						}
 					)
-				} catch (err) {
+				} catch (err: any) {
 					schemaErrors.push(err)
 				}
 			}

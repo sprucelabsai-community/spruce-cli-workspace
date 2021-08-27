@@ -109,11 +109,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.doesInclude(contents, `declare module 'testy test'`)
 	}
 
-	@test()
+	@test.only()
 	protected static async canSyncOnlyCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const promise = this.syncCoreEvents()
+		const promise = this.syncCoreEventsPretendingToBeMercuryTypes()
 
 		await this.skipInstallSkill()
 
@@ -170,7 +170,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasAfterSyncingCoreEventsSavesCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		await this.syncCoreEvents()
+		await this.syncCoreEventsPretendingToBeMercuryTypes()
 
 		const results = await this.Action('schema', 'sync').execute({})
 		await this.assertValidSyncSchemasResults(results, true)
@@ -180,7 +180,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		await this.syncCoreEvents()
+		await this.syncCoreEventsPretendingToBeMercuryTypes()
 
 		const results = await this.Action('schema', 'sync').execute({})
 
@@ -481,7 +481,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isFalsy(contract.eventSignatures[fqen].listenPermissionContract)
 	}
 
-	private static async syncCoreEvents() {
+	private static async syncCoreEventsPretendingToBeMercuryTypes() {
 		const results = await this.Action('event', 'sync').execute({
 			shouldSyncOnlyCoreEvents: true,
 			eventBuilderFile: '../../../builder',

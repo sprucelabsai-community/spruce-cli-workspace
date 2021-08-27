@@ -52,7 +52,7 @@ export default class PkgService extends CommandService {
 			this._parsedPkg = parsed
 
 			return parsed
-		} catch (err) {
+		} catch (err: any) {
 			throw new SpruceError({
 				code: 'FAILED_TO_IMPORT',
 				file: packagePath,

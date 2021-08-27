@@ -34,6 +34,7 @@ PkgService.buildCommandAndArgs = (
 	const executable = 'npm'
 	return { executable, args }
 }
+
 const packageJson = JSON.parse(packageJsonContents)
 const { testSkillCache } = packageJson
 const testKeys = Object.keys(testSkillCache)

@@ -32,7 +32,7 @@ export default class LintService {
 			})
 
 			fixedFiles = JSON.parse(stdout)
-		} catch (err) {
+		} catch (err: any) {
 			throw new SpruceError({
 				code: 'LINT_FAILED',
 				pattern,

@@ -141,7 +141,7 @@ export default class ImportService {
 			} else {
 				defaultImported = JSON.parse(successParts[1])
 			}
-		} catch (err) {
+		} catch (err: any) {
 			if (err instanceof SpruceError) {
 				throw err
 			} else {

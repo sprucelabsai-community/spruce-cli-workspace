@@ -34,7 +34,7 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 				headline: 'Starting cache',
 				summaryLines: ['Booting cache systems now. Give it a sec!'],
 			}
-		} catch (err) {
+		} catch (err: any) {
 			let error = err
 			if (err.options?.cmd?.includes('which')) {
 				error = new SpruceError({

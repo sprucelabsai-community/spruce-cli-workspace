@@ -161,7 +161,7 @@ export default class Cli implements CliInterface {
 			const resultParts = results.stdout.split(HEALTH_DIVIDER)
 
 			return JSON.parse(resultParts[1]) as HealthCheckResults
-		} catch (originalError) {
+		} catch (originalError: any) {
 			const error = new SpruceError({
 				code: 'BOOT_ERROR',
 				originalError,
