@@ -55,7 +55,7 @@
     "start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
     "test": "yarn cache.tests && jest",
     "update.dependencies": "cd ../ && yarn update.dependencies",
-    "watch.build.dev": "concurrently 'yarn build.types.resolve-paths.lint' 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
+    "watch.build.dev": "concurrently 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths.lint'\"",
     "watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
     "watch.rebuild": "cd ../ && yarn watch.rebuild",
     "watch.tests": "yarn cache.tests && jest --watch",
@@ -65,7 +65,7 @@
     "@babel/runtime": "^7.14.8",
     "@jest/reporters": "^27.0.6",
     "@sprucelabs/error": "latest",
-    "@sprucelabs/heartwood-view-controllers": "^33.0.12",
+    "@sprucelabs/heartwood-view-controllers": "latest",
     "@sprucelabs/jest-json-reporter": "latest",
     "@sprucelabs/mercury-client": "latest",
     "@sprucelabs/mercury-event-emitter": "latest",
@@ -572,7 +572,8 @@
       "globby",
       "terminal-kit",
       "terminal-image",
-      "commander"
+      "commander",
+      "@sprucelabs/heartwood-view-controllers"
     ]
   },
   "gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"

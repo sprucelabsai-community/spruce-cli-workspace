@@ -2,10 +2,10 @@ import {
 	Schema,
 	SchemaFieldsByName,
 	SchemaFieldNames,
+	SchemaError,
 } from '@sprucelabs/schema'
 import chalk from 'chalk'
 import { shuffle } from 'lodash'
-import SpruceError from '../errors/SpruceError'
 import { GraphicsInterface } from '../types/cli.types'
 import FormComponent, {
 	FormOptions,
@@ -201,7 +201,6 @@ export default class QuizComponent<T extends Schema, Q extends QuizQuestions> {
 		return this.lastResults
 	}
 
-	/** Render the scorecard (last results by default) */
 	public async scorecard(
 		options: {
 			results?: QuizPresentationResults<Q>
@@ -212,7 +211,7 @@ export default class QuizComponent<T extends Schema, Q extends QuizQuestions> {
 		const { term } = this
 
 		if (!results) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'INVALID_PARAMETERS',
 				parameters: [],
 			})

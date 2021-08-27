@@ -1,6 +1,7 @@
 import { EventContract } from '@sprucelabs/mercury-types'
 import {
 	normalizeSchemaValues,
+	SchemaError,
 	SchemaTemplateItem,
 	SelectChoice,
 } from '@sprucelabs/schema'
@@ -16,7 +17,6 @@ import {
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import eventListenActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/listenEventOptions.schema'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
-import SpruceError from '../../../errors/SpruceError'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
@@ -67,7 +67,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				this.mapContractsToSelectChoices(contracts)
 
 			if (!eventChoicesByNamespace[eventNamespace]) {
-				throw new SpruceError({
+				throw new SchemaError({
 					code: 'INVALID_PARAMETERS',
 					friendlyMessage: `${eventNamespace} is not a valid event namespace. Try: \n\n${Object.keys(
 						eventChoicesByNamespace
@@ -93,7 +93,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			)
 
 			if (!isValidEvent) {
-				throw new SpruceError({
+				throw new SchemaError({
 					code: 'INVALID_PARAMETERS',
 					friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
 						eventNamespace

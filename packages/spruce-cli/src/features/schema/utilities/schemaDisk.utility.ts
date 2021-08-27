@@ -1,7 +1,6 @@
 import pathUtil from 'path'
-import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
+import { Schema, SchemaError, SchemaTemplateItem } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import SpruceError from '../../../errors/SpruceError'
 import schemaGeneratorUtil from './schemaGenerator.utility'
 
 const schemaDiskUtil = {
@@ -17,7 +16,7 @@ const schemaDiskUtil = {
 		} = options
 
 		if (!schema.namespace) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['namespace'],
 			})

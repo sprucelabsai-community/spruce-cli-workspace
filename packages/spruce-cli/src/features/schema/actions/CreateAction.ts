@@ -50,15 +50,15 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
 		})
 
-		const syncAction = this.Action('schema', 'sync')
-
 		let errors: AbstractSpruceError<any>[] | undefined
 
 		if (syncAfterCreate) {
 			const syncOptions = normalizeSchemaValues(syncSchemasActionSchema, rest, {
-				includePrivateFields: true,
+				shouldIncludePrivateFields: true,
 			})
-			const syncResults = await syncAction.execute(syncOptions)
+			const syncResults = await this.Action('schema', 'sync').execute(
+				syncOptions
+			)
 
 			results.push(...(syncResults.files ?? []))
 			if (syncResults.errors) {

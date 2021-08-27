@@ -160,11 +160,6 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message =
 					"It looks like you don't have any organizations setup yet. Try `spruce create.organization` first."
 				break
-			case 'INVALID_PARAMETERS':
-				message = `The following paramater${
-					options.parameters.length === 1 ? 's are' : ' is'
-				} invalid:\n\n${options.parameters.join('\n')}`
-				break
 
 			case 'INVALID_EVENT_CONTRACT':
 				message = `The event named \`${options.fullyQualifiedEventName}\` is not valid. Check ${options.brokenProperty}. The original error is:\n\n${options.originalError?.message}`

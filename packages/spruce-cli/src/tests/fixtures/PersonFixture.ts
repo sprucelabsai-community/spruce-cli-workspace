@@ -1,6 +1,6 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
+import { SchemaError } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
-import SpruceError from '../../errors/SpruceError'
 import { ApiClientFactory } from '../../types/apiClient.types'
 
 require('dotenv').config()
@@ -28,7 +28,7 @@ export default class PersonFixture {
 		phone = phone || DEMO_NUMBER
 
 		if (!phone) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['env.DEMO_NUMBER'],
 			})

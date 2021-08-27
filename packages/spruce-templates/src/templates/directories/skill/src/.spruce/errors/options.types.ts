@@ -1,7 +1,3 @@
-import { SpruceErrorOptions } from "@sprucelabs/error"
-import { SchemaErrorOptions } from '@sprucelabs/schema'
-
-
-type ErrorOptions = SpruceErrorOptions | SchemaErrorOptions
+type ErrorOptions = { code: 'NO_ERRORS_CREATED' }
 
 export default ErrorOptions

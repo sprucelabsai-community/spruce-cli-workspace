@@ -1,5 +1,5 @@
+import { SchemaError } from '@sprucelabs/schema'
 import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
-import SpruceError from '../errors/SpruceError'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 
 type Skill = SpruceSchemas.Spruce.v2020_07_22.Skill
@@ -26,7 +26,7 @@ const apiClientUtil = {
 			return `skill:${options.skillId}:${options.apiKey}`
 		}
 
-		throw new SpruceError({
+		throw new SchemaError({
 			code: 'INVALID_PARAMETERS',
 			parameters: [
 				!options.token && 'token',
@@ -44,7 +44,7 @@ const apiClientUtil = {
 		skillId = id ?? skillId
 
 		if (!skillId) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['auth.skillId'],
 			})

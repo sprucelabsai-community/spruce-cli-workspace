@@ -101,18 +101,12 @@ export default class PkgService extends CommandService {
 		}
 
 		if (totalInstalled > 0) {
-			const args: string[] = [
-				// '--cache-min 9999999',
-				// '--no-progress',
-				'add',
-				...toInstall,
-			]
+			const { executable, args } = PkgService.buildCommandAndArgs(
+				toInstall,
+				options
+			)
 
-			if (options?.isDev) {
-				args.push('-D')
-			}
-
-			await this.execute('yarn', {
+			await this.execute(executable, {
 				args,
 			})
 		} else if (
@@ -126,6 +120,25 @@ export default class PkgService extends CommandService {
 		this._parsedPkg = undefined
 
 		return { totalInstalled: totalInstalled + labsModules.length, totalSkipped }
+	}
+
+	public static buildCommandAndArgs(
+		toInstall: string[],
+		options: AddOptions | undefined
+	) {
+		const args: string[] = [
+			// '--cache-min 9999999',
+			// '--no-progress',
+			'add',
+			...toInstall,
+		]
+
+		if (options?.isDev) {
+			args.push('-D')
+		}
+
+		const executable = 'yarn'
+		return { executable, args }
 	}
 
 	private deleteLockFile() {

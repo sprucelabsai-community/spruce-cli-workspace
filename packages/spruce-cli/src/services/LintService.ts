@@ -1,4 +1,5 @@
 // import { CLIEngine } from 'eslint'
+import { SchemaError } from '@sprucelabs/schema'
 import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
 import CommandService from './CommandService'
@@ -14,7 +15,7 @@ export default class LintService {
 
 	public fix = async (pattern: string): Promise<string[]> => {
 		if (!pattern) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['pattern'],
 			})

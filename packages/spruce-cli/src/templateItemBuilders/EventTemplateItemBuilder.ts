@@ -1,5 +1,5 @@
 import { EventContract } from '@sprucelabs/mercury-types'
-import { Schema, SchemaTemplateItem } from '@sprucelabs/schema'
+import { Schema, SchemaError, SchemaTemplateItem } from '@sprucelabs/schema'
 import {
 	eventContractUtil,
 	NamedEventSignature,
@@ -12,7 +12,6 @@ import {
 	EventContractTemplateItem,
 	EventSignatureTemplateItem,
 } from '@sprucelabs/spruce-templates'
-import SpruceError from '../errors/SpruceError'
 import schemaDiskUtil from '../features/schema/utilities/schemaDisk.utility'
 import SchemaTemplateItemBuilder from './SchemaTemplateItemBuilder'
 
@@ -76,7 +75,7 @@ export default class EventTemplateItemBuilder {
 			}
 		}
 
-		throw new SpruceError({
+		throw new SchemaError({
 			code: 'INVALID_PARAMETERS',
 			parameters: ['fullyQualifiedEventName'],
 		})

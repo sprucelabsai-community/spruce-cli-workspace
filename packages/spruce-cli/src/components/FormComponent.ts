@@ -5,7 +5,6 @@ import SchemaEntity, {
 	SchemaPartialValues,
 	SchemaFieldNames,
 	SelectChoice,
-	SchemaError,
 	IFieldDefinition,
 } from '@sprucelabs/schema'
 import { pick } from 'lodash'
@@ -145,7 +144,10 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 			}
 		} while (!done || !valid)
 
-		const values = this.getValues({ fields, createEntityInstances: false })
+		const values = this.getValues({
+			fields,
+			shouldCreateEntityInstances: false,
+		})
 		const cleanValues = pick(values, fields) as Pick<SchemaAllValues<S>, F>
 
 		return cleanValues
@@ -163,8 +165,8 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 
 		let definition = { ...field.definition }
 		const value = this.get(fieldName, {
-			validate: false,
-			createEntityInstances: false,
+			shouldValidate: false,
+			shouldCreateEntityInstances: false,
 		})
 		if (definition.isArray) {
 			throw new SpruceError({
@@ -177,15 +179,14 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 			definition.defaultValue = value as IFieldDefinition['defaultValue']
 		}
 
-		// Do we have a lister?
 		if (this.handlers.onWillAskQuestion) {
 			definition = this.handlers.onWillAskQuestion(
 				fieldName,
 				//@ts-ignore
 				definition,
 				this.getValues({
-					validate: false,
-					createEntityInstances: false,
+					shouldValidate: false,
+					shouldCreateEntityInstances: false,
 				}) as unknown as SchemaPartialValues<S>
 			)
 		}
@@ -193,7 +194,6 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 		return this.ui.prompt(definition)
 	}
 
-	/** Pass it schema errors */
 	public renderError(error: Error) {
 		this.ui.renderDivider()
 		this.ui.renderHeadline('Please fix the following...', [
@@ -203,25 +203,7 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 
 		this.ui.renderLine('')
 
-		// Special handling for spruce errors
-		if (error instanceof SchemaError) {
-			const options = error.options
-
-			switch (options.code) {
-				// Invalid fields
-				case 'INVALID_FIELD':
-					// Output all errors under all fields
-					options.errors.forEach((err) => {
-						const { name, friendlyMessage, error, code } = err
-						this.ui.renderWarning(
-							friendlyMessage ?? `${name}: ${code} ${error?.message}`
-						)
-					})
-					break
-				default:
-					this.ui.renderWarning(error.friendlyMessage())
-			}
-		} else if (error instanceof AbstractSpruceError) {
+		if (error instanceof AbstractSpruceError) {
 			this.ui.renderWarning(error.friendlyMessage())
 		} else {
 			this.ui.renderWarning(`Unexpected error ${error.message}`)
@@ -230,17 +212,14 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 		this.ui.renderLine('')
 	}
 
-	/** Render every field and a select to chose what to edit (or done/cancel) */
 	public async renderOverview<F extends SchemaFieldNames<S>>(
 		options: { fields?: F[] } = {}
 	): Promise<FormAction<S>> {
 		const { ui } = this
 		const { fields = this.getNamedFields().map((nf) => nf.name) } = options
 
-		// Track actions while building choices
 		const actionMap: Record<string, FormAction<S>> = {}
 
-		// Create all choices
 		const choices: SelectChoice[] = this.getNamedFields()
 			.filter((namedField) => fields.indexOf(namedField.name) > -1)
 			.map((namedField) => {
@@ -252,11 +231,9 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 					fieldName: name,
 				}
 
-				// Track the action for checking after selection
 				actionMap[actionKey] = action
 
-				// Get the current value, don't validate
-				const value = this.get(name, { validate: false })
+				const value = this.get(name, { shouldValidate: false })
 
 				return {
 					value: actionKey,
@@ -264,7 +241,6 @@ export default class FormComponent<S extends Schema> extends SchemaEntity<S> {
 				}
 			})
 
-		// Done choice
 		actionMap['done'] = {
 			type: FormBuilderActionType.Done,
 		}

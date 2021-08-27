@@ -4,6 +4,7 @@ import {
 	FieldRegistration,
 	fieldRegistrations,
 	normalizeSchemaToIdWithVersion,
+	SchemaError,
 } from '@sprucelabs/schema'
 import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
@@ -270,7 +271,7 @@ export default class SchemaStore extends AbstractStore {
 		schema.namespace = localNamespace
 
 		if (errors.length > 0) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'INVALID_SCHEMA',
 				schemaId: schema.id,
 				errors,

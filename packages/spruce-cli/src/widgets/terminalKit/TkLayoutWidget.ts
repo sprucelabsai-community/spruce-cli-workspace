@@ -1,5 +1,5 @@
+import { SchemaError } from '@sprucelabs/schema'
 import terminal_kit from 'terminal-kit'
-import SpruceError from '../../errors/SpruceError'
 import {
 	LayoutColumn,
 	LayoutRow,
@@ -28,7 +28,7 @@ export default class TkLayoutWidget
 		const { parent, ...layout } = mappedOptions
 
 		if (!parent) {
-			throw new SpruceError({
+			throw new SchemaError({
 				code: 'MISSING_PARAMETERS',
 				parameters: ['parent'],
 			})

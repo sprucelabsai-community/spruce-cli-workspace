@@ -81,7 +81,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 				syncEventActionSchema,
 				options,
 				{
-					includePrivateFields: true,
+					shouldIncludePrivateFields: true,
 				}
 			)
 

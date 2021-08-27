@@ -1,6 +1,5 @@
 import { SpruceErrors } from "#spruce/errors/errors.types"
-import { SpruceErrorOptions, ErrorOptions as ISpruceErrorOptions} from "@sprucelabs/error"
-import { SchemaErrorOptions } from '@sprucelabs/schema'
+import { ErrorOptions as ISpruceErrorOptions} from "@sprucelabs/error"
 
 export interface VscodeNotInstalledErrorOptions extends SpruceErrors.SpruceCli.VscodeNotInstalled, ISpruceErrorOptions {
 	code: 'VSCODE_NOT_INSTALLED'
@@ -120,6 +119,6 @@ export interface ActionCancelledErrorOptions extends SpruceErrors.SpruceCli.Acti
 	code: 'ACTION_CANCELLED'
 }
 
-type ErrorOptions = SchemaErrorOptions | SpruceErrorOptions | VscodeNotInstalledErrorOptions  | TransportAlreadyExistsErrorOptions  | ThemeExistsErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillViewExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SkillNotFoundErrorOptions  | SchemaTemplateItemBuildingFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoSkillsRegisteredErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DockerNotStartedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandBlockedErrorOptions  | CommandAbortedErrorOptions  | CacheNotEnabledErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions  | ActionCancelledErrorOptions 
+type ErrorOptions =  | VscodeNotInstalledErrorOptions  | TransportAlreadyExistsErrorOptions  | ThemeExistsErrorOptions  | TestFailedErrorOptions  | StoreExistsErrorOptions  | SkillViewExistsErrorOptions  | SkillNotRegisteredErrorOptions  | SkillNotFoundErrorOptions  | SchemaTemplateItemBuildingFailedErrorOptions  | SchemaFailedToImportErrorOptions  | SchemaExistsErrorOptions  | NotLoggedInErrorOptions  | NotImplementedErrorOptions  | NoSkillsRegisteredErrorOptions  | NoOrganizationsFoundErrorOptions  | MissingDependenciesErrorOptions  | MercuryResponseErrorErrorOptions  | LintFailedErrorOptions  | InvalidTestDirectoryErrorOptions  | InvalidFeatureCodeErrorOptions  | InvalidEventContractErrorOptions  | InvalidCommandErrorOptions  | GenericErrorOptions  | FileExistsErrorOptions  | FeatureNotInstalledErrorOptions  | FailedToImportErrorOptions  | ExecutingCommandFailedErrorOptions  | DockerNotStartedErrorOptions  | DirectoryNotSkillErrorOptions  | DirectoryEmptyErrorOptions  | DeployFailedErrorOptions  | CreateAutoloaderFailedErrorOptions  | CommandNotImplementedErrorOptions  | CommandBlockedErrorOptions  | CommandAbortedErrorOptions  | CacheNotEnabledErrorOptions  | BuildFailedErrorOptions  | BootErrorErrorOptions  | ActionCancelledErrorOptions 
 
 export default ErrorOptions

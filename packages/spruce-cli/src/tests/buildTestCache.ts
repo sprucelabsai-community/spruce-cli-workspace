@@ -3,6 +3,7 @@ import { execSync } from 'child_process'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ImportService from '../services/ImportService'
+import PkgService, { AddOptions } from '../services/PkgService'
 import ServiceFactory from '../services/ServiceFactory'
 import testUtil from '../tests/utilities/test.utility'
 import { GraphicsTextEffect } from '../types/graphicsInterface.types'
@@ -15,6 +16,24 @@ const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
 )
 
+PkgService.buildCommandAndArgs = (
+	toInstall: string[],
+	options: AddOptions | undefined
+) => {
+	const args: string[] = [
+		'--cache-min 9999999',
+		'--no-progress',
+		'install',
+		...toInstall,
+	]
+
+	if (options?.isDev) {
+		args.push('-D')
+	}
+
+	const executable = 'npm'
+	return { executable, args }
+}
 const packageJson = JSON.parse(packageJsonContents)
 const { testSkillCache } = packageJson
 const testKeys = Object.keys(testSkillCache)
@@ -54,22 +73,13 @@ async function run() {
 	progressInterval =
 		doesSupportColor &&
 		setInterval(async () => {
-			term.clear()
-			term.renderDivider()
-			term.renderLine(`Found ${testKeys.length} skills to cache.`)
-			if (onlyInstall) {
-				term.renderLine(
-					`TEST_SKILLS_TO_CACHE=${process.env.TEST_SKILLS_TO_CACHE}.`
-				)
-			}
-			term.renderDivider()
-			term.renderLine(
-				shouldRunSequentially ? 'Running sequentially' : 'Running in pararell'
-			)
+			term.moveCursorTo(0, 6)
 
 			for (const message of messages) {
 				term.renderLine(message[0], message[1])
 			}
+
+			await term.stopLoading()
 
 			term.renderLine('')
 
@@ -86,17 +96,17 @@ async function run() {
 		return delta
 	}
 
-	function renderLine(message: any, effects?: any) {
+	function renderLine(lineNum: number, message: any, effects?: any) {
 		if (doesSupportColor) {
-			messages.push([message, effects])
+			messages[lineNum] = [message, effects]
 		} else {
 			console.log(message)
 		}
 	}
 
-	function renderWarning(message: any, effects?: any) {
+	function renderWarning(lineNum: number, message: any, effects?: any) {
 		if (doesSupportColor) {
-			messages.push([message, effects])
+			messages[lineNum] = [message, effects]
 		} else {
 			console.log(message)
 		}
@@ -109,16 +119,16 @@ async function run() {
 	}
 
 	if (shouldRunSequentially) {
-		for (const cacheKey of testKeys) {
-			await cacheOrSkip(cacheKey)
-		}
+		await Promise.all(
+			testKeys.map((cacheKey, idx) => cacheOrSkip(idx, cacheKey))
+		)
 	} else {
-		const promises = testKeys.map(async (cacheKey) => {
+		const promises = testKeys.map(async (cacheKey, idx) => {
 			while (totalSimultaneous >= maxSimultaneous) {
 				await new Promise((resolve) => setTimeout(resolve, 1000))
 			}
 			totalSimultaneous++
-			await cacheOrSkip(cacheKey)
+			await cacheOrSkip(idx, cacheKey)
 			totalSimultaneous--
 		})
 		await Promise.all(promises)
@@ -129,22 +139,22 @@ async function run() {
 	await term.stopLoading()
 	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
 
-	async function cacheOrSkip(cacheKey: string) {
+	async function cacheOrSkip(lineNum: number, cacheKey: string) {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
 		if (onlyInstall && onlyInstall.indexOf(cacheKey) === -1) {
-			renderLine(`Skipping '${cacheKey}'.`)
+			renderLine(lineNum, `Skipping '${cacheKey}'.`)
 			remaining--
 		} else if (
 			cacheTracker[cacheKey] &&
 			diskUtil.doesDirExist(diskUtil.resolvePath(cwd, 'node_modules'))
 		) {
 			remaining--
-			renderLine(`'${cacheKey}' already cached. Skipping...`, [
+			renderLine(lineNum, `'${cacheKey}' already cached. Skipping...`, [
 				GraphicsTextEffect.Italic,
 			])
 		} else {
-			await cache(cwd, cacheKey, fixture, options)
+			await cache(lineNum, cwd, cacheKey, fixture, options)
 			remaining--
 		}
 	}
@@ -172,6 +182,7 @@ async function run() {
 	}
 
 	async function cache(
+		lineNum: number,
 		cwd: string,
 		cacheKey: string,
 		fixture: FeatureFixture,
@@ -179,17 +190,21 @@ async function run() {
 	) {
 		if (diskUtil.doesDirExist(cwd)) {
 			renderWarning(
+				lineNum,
 				`Found cached '${cacheKey}', but deleted it since it was not in the cache tracker...`,
 				[GraphicsTextEffect.Italic]
 			)
 			diskUtil.deleteDir(cwd)
 		}
 
-		renderLine(`Starting to build '${cacheKey}'...`, [GraphicsTextEffect.Green])
+		renderLine(lineNum, `Starting to build '${cacheKey}'...`, [
+			GraphicsTextEffect.Green,
+		])
 
 		await fixture.installFeatures(options, cacheKey)
 
 		renderLine(
+			lineNum,
 			`Done caching '${cacheKey}'. ${
 				remaining - 1
 			} remaining (${durationUtil.msToFriendly(getTimeSpent())})...`,
