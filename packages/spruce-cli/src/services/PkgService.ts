@@ -86,6 +86,7 @@ export default class PkgService extends CommandService {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const toInstall = []
 		const labsModules: string[] = []
+
 		let totalInstalled = 0
 		let totalSkipped = 0
 
@@ -93,7 +94,7 @@ export default class PkgService extends CommandService {
 			const isInstalled =
 				!options?.shouldForceInstall && this.isInstalled(thisPackage)
 			if (thisPackage.startsWith('@sprucelabs/') || !isInstalled) {
-				toInstall.push(thisPackage)
+				toInstall.push(this.stripLatest(thisPackage))
 				totalInstalled++
 			} else {
 				totalSkipped++
@@ -127,8 +128,8 @@ export default class PkgService extends CommandService {
 		options: AddOptions | undefined
 	) {
 		const args: string[] = [
-			// '--cache-min 9999999',
-			// '--no-progress',
+			'--cache-folder',
+			diskUtil.createRandomTempDir(),
 			'add',
 			...toInstall,
 		]
@@ -161,7 +162,7 @@ export default class PkgService extends CommandService {
 		this._parsedPkg = undefined
 	}
 
-	public stripVersion(name: string): string {
+	public stripLatest(name: string): string {
 		return name.replace('@latest', '')
 	}
 

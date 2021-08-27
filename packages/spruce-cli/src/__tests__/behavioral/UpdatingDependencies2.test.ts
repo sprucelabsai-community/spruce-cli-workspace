@@ -52,7 +52,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 					...allDeps,
 					...featureDependencies.filter((d) => !d.isDev).map((d) => d.name),
 				]
-					.map((n) => pkg.stripVersion(n))
+					.map((n) => pkg.stripLatest(n))
 					.filter((n) => n !== blocked)
 			)
 
@@ -61,7 +61,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 					...allDevDeps,
 					...featureDependencies.filter((d) => d.isDev).map((d) => d.name),
 				]
-					.map((n) => pkg.stripVersion(n))
+					.map((n) => pkg.stripLatest(n))
 					.filter((n) => n !== blocked)
 			)
 

@@ -77,6 +77,8 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		assert.isEqual(willExecuteHitCount, 0)
 		assert.isEqual(didExecuteHitCount, 0)
 
+		await this.openInVsCode({ timeout: 30 * 1000 })
+
 		const promise = executer.execute({})
 
 		await this.waitForInput()

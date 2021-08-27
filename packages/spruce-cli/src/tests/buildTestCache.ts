@@ -16,25 +16,6 @@ const packageJsonContents = diskUtil.readFile(
 	diskUtil.resolvePath(__dirname, '..', '..', 'package.json')
 )
 
-PkgService.buildCommandAndArgs = (
-	toInstall: string[],
-	options: AddOptions | undefined
-) => {
-	const args: string[] = [
-		'--cache-min 9999999',
-		'--no-progress',
-		'install',
-		...toInstall,
-	]
-
-	if (options?.isDev) {
-		args.push('-D')
-	}
-
-	const executable = 'npm'
-	return { executable, args }
-}
-
 const packageJson = JSON.parse(packageJsonContents)
 const { testSkillCache } = packageJson
 const testKeys = Object.keys(testSkillCache)

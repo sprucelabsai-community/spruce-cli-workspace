@@ -71,12 +71,12 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			for (const dep of feature.packageDependencies as NpmPackage[]) {
 				if (dep.isDev) {
 					devDependencies.push({
-						stripped: pkg.stripVersion(dep.name),
+						stripped: pkg.stripLatest(dep.name),
 						name: pkg.buildPackageName(dep),
 					})
 				} else {
 					dependencies.push({
-						stripped: pkg.stripVersion(dep.name),
+						stripped: pkg.stripLatest(dep.name),
 						name: pkg.buildPackageName(dep),
 					})
 				}
