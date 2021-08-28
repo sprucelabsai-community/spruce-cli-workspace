@@ -52,7 +52,7 @@
 		"rebuild": "cd ../ && yarn rebuild",
 		"release": "semantic-release",
 		"update.dependencies": "cd ../ && yarn update.dependencies",
-		"watch.build.dev": "concurrently 'yarn build.dev' 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
+		"watch.build.dev": "concurrently 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
