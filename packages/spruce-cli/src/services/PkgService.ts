@@ -128,8 +128,8 @@ export default class PkgService extends CommandService {
 		options: AddOptions | undefined
 	) {
 		const args: string[] = [
-			'--cache-folder',
-			diskUtil.createRandomTempDir(),
+			// '--cache-folder',
+			// diskUtil.createRandomTempDir(),
 			'add',
 			...toInstall,
 		]

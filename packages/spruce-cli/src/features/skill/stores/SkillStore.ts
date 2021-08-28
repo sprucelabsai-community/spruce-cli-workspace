@@ -106,7 +106,7 @@ export default class SkillStore extends AbstractStore {
 		const nameFromPackage = pkg.get('skill.namespace')
 		if (!nameFromPackage) {
 			throw new Error(
-				'Need skill.namespace in package.json, make this error a proper spruce error'
+				'You need need to set skill.namespace in the package.json'
 			)
 		}
 		return nameFromPackage
