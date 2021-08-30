@@ -55,7 +55,7 @@
     "start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
     "test": "yarn cache.tests && jest",
     "update.dependencies": "cd ../ && yarn update.dependencies",
-    "watch.build.dev": "concurrently 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn resolve-paths'\"",
+    "watch.build.dev": "concurrently 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.resolve-paths'\"",
     "watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
     "watch.rebuild": "cd ../ && yarn watch.rebuild",
     "watch.tests": "yarn cache.tests && jest --watch",

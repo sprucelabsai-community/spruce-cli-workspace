@@ -37,20 +37,6 @@ export default class PkgServiceTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async setsLatestIfDevDpendency() {
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
-			code: 0,
-		})
-
-		await this.pkg.install('@sprucelabs/data-stores', {
-			isDev: true,
-		})
-
-		const version = this.pkg.get('devDependencies.@sprucelabs/data-stores')
-		assert.isTruthy(version)
-	}
-
-	@test()
 	protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
 		CommandService.setMockResponse(
 			new RegExp(/npm.*?install.*?--no-progress/gis),
