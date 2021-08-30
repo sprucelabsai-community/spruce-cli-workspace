@@ -47,7 +47,6 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 	private commandService: CommandService
 	private wasKilled = false
 	private testResults: SpruceTestResults = { totalTestFiles: 0 }
-	private hasErrorOutput = false
 
 	public constructor(options: { cwd: string; commandService: CommandService }) {
 		super(testRunnerContract)
@@ -60,7 +59,6 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 		debugPort?: number | null
 	}): Promise<SpruceTestResults & { wasKilled: boolean }> {
 		this.wasKilled = false
-		this.hasErrorOutput = false
 
 		const jestPath = this.resolvePathToJest()
 		const debugArgs =
@@ -86,7 +84,6 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 					const isDebugMessaging = this.isDebugMessage(data)
 
 					if (!isDebugMessaging) {
-						this.hasErrorOutput = true
 						await (this as MercuryEventEmitter<TestRunnerContract>).emit(
 							'did-error',
 							{ message: data }
@@ -120,7 +117,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
 	}
 
 	public hasFailedTests() {
-		return (this.testResults.totalFailed ?? 0) > 0 || this.hasErrorOutput
+		return (this.testResults.totalFailed ?? 0) > 0
 	}
 
 	public hasSkippedTests() {

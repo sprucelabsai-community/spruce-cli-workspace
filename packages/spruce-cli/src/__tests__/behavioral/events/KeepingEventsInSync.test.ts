@@ -57,7 +57,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async syncsWithoutSavingCoreEventsByDefault() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		const results = await this.skipInstallSkill(() =>
+		const results = await this.skipInstallSkillPrompts(() =>
 			this.Action('event', 'sync').execute({})
 		)
 
@@ -99,7 +99,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	protected static async canSetSkillEventContractTypesFile() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
-		await this.skipInstallSkill(() =>
+		await this.skipInstallSkillPrompts(() =>
 			this.Action('event', 'sync').execute({
 				skillEventContractTypesFile: 'testy test',
 			})
@@ -109,13 +109,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.doesInclude(contents, `declare module 'testy test'`)
 	}
 
-	@test.only()
+	@test()
 	protected static async canSyncOnlyCoreEvents() {
 		await this.FeatureFixture().installCachedFeatures('eventsInNodeModule')
 
 		const promise = this.syncCoreEventsPretendingToBeMercuryTypes()
 
-		await this.skipInstallSkill()
+		await this.skipInstallSkillPrompts()
 
 		const results = await promise
 

@@ -264,7 +264,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		})
 	}
 
-	protected static async skipInstallSkill<
+	protected static async skipInstallSkillPrompts<
 		E extends () => Promise<FeatureActionResponse>
 	>(
 		execute?: E
