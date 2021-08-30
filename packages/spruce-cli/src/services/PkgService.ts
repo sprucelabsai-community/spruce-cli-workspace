@@ -4,6 +4,7 @@ import fs from 'fs-extra'
 import { set, get } from 'lodash'
 import SpruceError from '../errors/SpruceError'
 import { NpmPackage } from '../types/cli.types'
+import isCi from '../utilities/isCi'
 import CommandService from './CommandService'
 
 export interface AddOptions {
@@ -127,12 +128,12 @@ export default class PkgService extends CommandService {
 		toInstall: string[],
 		options: AddOptions | undefined
 	) {
-		const args: string[] = [
-			// '--cache-folder',
-			// diskUtil.createRandomTempDir(),
+		const args: any[] = [
+			isCi() && '--cache-folder',
+			isCi() && diskUtil.createRandomTempDir(),
 			'add',
 			...toInstall,
-		]
+		].filter((a) => !!a)
 
 		if (options?.isDev) {
 			args.push('-D')

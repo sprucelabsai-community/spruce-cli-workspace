@@ -33,6 +33,7 @@ import {
 	ProgressBarUpdateOptions,
 } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
+import isCi from '../utilities/isCi'
 const terminalImage = require('terminal-image')
 
 let fieldCount = 0
@@ -63,27 +64,6 @@ function filterEffectsForCFonts(effects: GraphicsTextEffect[]) {
 
 type TerminalSpecificOptions = {
 	eraseBeforeRender?: boolean
-}
-
-function isCi() {
-	const env = process.env
-
-	if (
-		[
-			'TRAVIS',
-			'CIRCLECI',
-			'APPVEYOR',
-			'GITLAB_CI',
-			'GITHUB_ACTIONS',
-			'BUILDKITE',
-			'DRONE',
-		].some((sign) => sign in env) ||
-		env.CI_NAME === 'codeship'
-	) {
-		return true
-	}
-
-	return false
 }
 
 export default class TerminalInterface implements GraphicsInterface {
