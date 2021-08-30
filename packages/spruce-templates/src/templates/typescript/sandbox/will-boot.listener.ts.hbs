@@ -5,7 +5,7 @@ import {
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { EnvService } from '@sprucelabs/spruce-skill-utils'
-import { SpruceError } from '@sprucelabs/schema'
+import { SchemaError } from '@sprucelabs/schema'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
@@ -102,6 +102,6 @@ function assertRequiredParams(
 	}
 
 	if (missing.length > 0) {
-		throw new SpruceError({ code: 'MISSING_PARAMETERS', parameters: missing })
+		throw new SchemaError({ code: 'MISSING_PARAMETERS', parameters: missing })
 	}
 }
