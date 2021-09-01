@@ -90,7 +90,7 @@ export default class ErrorFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled('error')
 
 		if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
-			return this.Action('event', 'sync').execute({})
+			return this.Action('error', 'sync').execute({})
 		}
 
 		return {}
