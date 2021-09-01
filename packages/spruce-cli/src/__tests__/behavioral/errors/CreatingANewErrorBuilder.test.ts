@@ -65,8 +65,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 
 		await this.assertValidActionResponseFiles(results)
 
-		await this.openInVsCode()
-
 		const cli = await this.Cli()
 		const health = await cli.checkHealth()
 
