@@ -41,6 +41,11 @@ export default class ErrorFeature extends AbstractFeature {
 			'feature.will-execute',
 			this.handleWillExecuteCommand.bind(this)
 		)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			this.handleDidExecuteCommand.bind(this)
+		)
 	}
 
 	private async handleWillExecuteCommand(payload: {
@@ -77,6 +82,19 @@ export default class ErrorFeature extends AbstractFeature {
 		}
 	}
 
+	private async handleDidExecuteCommand(payload: {
+		featureCode: string
+		actionCode: string
+	}) {
+		const { featureCode, actionCode } = payload
+		const isInstalled = await this.featureInstaller.isInstalled('error')
+
+		if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
+			return this.Action('event', 'sync').execute({})
+		}
+
+		return {}
+	}
 	private async writePlugin() {
 		return this.Writer('error').writePlugin(this.cwd)
 	}

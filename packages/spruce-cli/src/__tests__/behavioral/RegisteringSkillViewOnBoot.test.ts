@@ -13,12 +13,14 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 		assert.isFalsy(skillViews)
 	}
 
-	@test()
+	@test.only()
 	protected static async syncsViewsOnBoot() {
 		await this.Action('view', 'create').execute({
 			viewType: 'skillView',
 			isRoot: true,
 		})
+
+		await this.openInVsCode()
 
 		await this.buildSkill()
 		const results = await this.bootSkill()

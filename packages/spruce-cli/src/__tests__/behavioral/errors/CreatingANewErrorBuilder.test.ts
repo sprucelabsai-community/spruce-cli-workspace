@@ -60,7 +60,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		assert.isFalsy(results.errors)
 
 		testUtil.assertFileByNameInGeneratedFiles(/testPass\.schema/, results.files)
-
 		testUtil.assertFileByNameInGeneratedFiles(/options\.types/, results.files)
 
 		await this.assertValidActionResponseFiles(results)

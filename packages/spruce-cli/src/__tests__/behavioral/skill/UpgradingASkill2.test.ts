@@ -130,9 +130,12 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 		assert.isTrue(diskUtil.doesFileExist(plugin))
 	}
 
-	@test.only()
-	protected static async upgradeSyncsErrors() {
-		await this.FeatureFixture().installCachedFeatures('errors')
+	@test('sync with errors installed')
+	@test('sync with errors not installed', false)
+	protected static async upgradeSyncsErrors(isInstalled = true) {
+		await this.FeatureFixture().installCachedFeatures(
+			isInstalled ? 'errors' : 'schemas'
+		)
 
 		let wasHit = false
 
@@ -155,7 +158,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 
 		await this.Action('skill', 'upgrade').execute({})
 
-		assert.isTrue(wasHit)
+		assert.isEqual(wasHit, isInstalled)
 	}
 
 	private static getViewsPluginPath() {
