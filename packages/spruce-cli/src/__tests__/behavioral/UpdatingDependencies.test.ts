@@ -36,7 +36,8 @@ export default class UpdatingDependenciesTest extends AbstractSkillTest {
 		await promise
 
 		for (const file of files) {
-			assert.isFalse(diskUtil.doesFileExist(this.resolvePath(file)))
+			const path = this.resolvePath(file)
+			assert.isFalse(diskUtil.doesFileExist(path), `Expectedly found ${path}`)
 		}
 	}
 

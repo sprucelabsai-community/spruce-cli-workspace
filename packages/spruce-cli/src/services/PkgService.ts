@@ -79,6 +79,7 @@ export default class PkgService extends CommandService {
 	public async install(pkg?: string[] | string, options?: AddOptions) {
 		if (!pkg) {
 			await this.execute('yarn', { args: ['install'] })
+			this.deleteLockFile()
 			return { totalInstalled: -1, totalSkipped: -1 }
 		}
 

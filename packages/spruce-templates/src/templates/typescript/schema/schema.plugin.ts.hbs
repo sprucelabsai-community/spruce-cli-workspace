@@ -76,7 +76,7 @@ class SchemaFeature implements SkillFeature {
 						namespace: schema.namespace ?? '***MISSING***',
 						description: schema.description,
 					}
-				} catch (err) {
+				} catch (err:any) {
 					throw new SpruceError({ 
 						//@ts-ignore
 						code: 'FAILED_LOADING_SCHEMA', 
