@@ -23,17 +23,11 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 		const devName = await this.installRandomDevPackage()
 		const blocked = this.blockRandomPackages()
 
-		const pkg = this.Service('pkg')
-		const pkgJson = pkg.readPackage()
-		const allDeps = [...(Object.keys(pkgJson.dependencies) ?? []), name]
-		const allDevDeps = [
-			...(Object.keys(pkgJson.devDependencies) ?? []),
-			devName,
-		]
+		const { allDeps, allDevDeps } = this.loadAllDependencies(name, devName)
 
 		let passedArgs: any[] = []
 
-		CommandService.setMockResponse(/(npm|yarn).*?install/, {
+		CommandService.setMockResponse(/(npm|yarn).*?(install|add)/, {
 			code: 0,
 			callback: (_, args) => {
 				passedArgs.push(args)
@@ -42,6 +36,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
 		await this.action.execute({})
 
+		const pkg = this.Service('pkg')
 		const features = await this.getFeatureInstaller().getInstalledFeatures()
 
 		for (const feature of features) {
@@ -76,6 +71,17 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
 		assert.doesNotInclude(passedArgs[0], blocked)
 		assert.doesNotInclude(passedArgs[1], blocked)
+	}
+
+	private static loadAllDependencies(name: string, devName: string) {
+		const pkg = this.Service('pkg')
+		const pkgJson = pkg.readPackage()
+		const allDeps = [...(Object.keys(pkgJson.dependencies) ?? []), name]
+		const allDevDeps = [
+			...(Object.keys(pkgJson.devDependencies) ?? []),
+			devName,
+		]
+		return { allDeps, allDevDeps }
 	}
 
 	protected static async installRandomPackage() {

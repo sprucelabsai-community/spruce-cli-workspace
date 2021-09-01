@@ -83,10 +83,10 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			}
 		}
 
-		dependencies = uniqBy(dependencies, 'name').filter(
+		dependencies = uniqBy(dependencies, 'stripped').filter(
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
-		devDependencies = uniqBy(devDependencies, 'name').filter(
+		devDependencies = uniqBy(devDependencies, 'stripped').filter(
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 

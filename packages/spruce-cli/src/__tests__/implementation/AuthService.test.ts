@@ -34,7 +34,7 @@ export default class AuthServiceTest extends AbstractCliTest {
 			this.auth.setLoggedInPerson({ test: true })
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_FIELD')
+		errorAssertUtil.assertError(err, 'MISSING_PARAMETERS')
 	}
 
 	@test()
