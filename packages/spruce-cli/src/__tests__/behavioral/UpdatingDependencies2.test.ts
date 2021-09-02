@@ -94,7 +94,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 	}
 
 	protected static async installRandomDevPackage() {
-		const names = ['moment', 'lodash']
+		const names = ['chalk', 'axios']
 		const name = names[random(0, names.length - 1)]
 		const pkg = this.Service('pkg')
 		await pkg.install(name, { isDev: true })

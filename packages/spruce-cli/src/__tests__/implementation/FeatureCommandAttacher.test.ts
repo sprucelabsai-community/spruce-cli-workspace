@@ -112,7 +112,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 	@test()
 	protected static async handlesAliases() {
 		const cli = await this.Cli()
-		const feature = cli.getFeature('skill')
+		const feature = cli.getFeature('node')
 
 		await this.attacher.attachFeature(feature)
 
