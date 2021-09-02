@@ -182,7 +182,17 @@ async function run() {
 			GraphicsTextEffect.Green,
 		])
 
-		await fixture.installFeatures(options, cacheKey)
+		try {
+			await fixture.installFeatures(options, cacheKey)
+		} catch (err: any) {
+			renderLine(lineNum, `Error caching '${cacheKey}'...`, [
+				GraphicsTextEffect.Red,
+				GraphicsTextEffect.Bold,
+			])
+
+			renderLine(lineNum, `Error caching ${cacheKey}:\n\n${err.stack}`)
+			return
+		}
 
 		renderLine(
 			lineNum,
