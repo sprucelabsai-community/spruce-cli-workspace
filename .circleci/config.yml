@@ -4,7 +4,7 @@ orbs:
 jobs:
   setup_for_test:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     resource_class: medium
     steps:
       - add_ssh_keys:
@@ -49,7 +49,7 @@ jobs:
             yarn clean.test.data
   test:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     resource_class: xlarge
     parallelism: 7
     steps:
@@ -92,7 +92,7 @@ jobs:
           when: always
   cleanup_test:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -114,7 +114,7 @@ jobs:
           command: yarn run clean.test.data
   merge_auto_upgrade:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     resource_class: medium
     steps:
       - add_ssh_keys:
@@ -139,7 +139,7 @@ jobs:
             git push origin
   npm_publish:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -164,7 +164,7 @@ jobs:
       - run: 'npm run publish -- --yes --force-publish --dist-tag latest --message "chore(release): %v [npm-publish]"'
   upgrade:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:16
     steps:
       - add_ssh_keys:
           fingerprints:
