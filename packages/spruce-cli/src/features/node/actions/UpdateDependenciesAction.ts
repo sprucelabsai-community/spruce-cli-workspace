@@ -90,8 +90,6 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 
-		debugger
-
 		if (dependencies.length > 0) {
 			InFlightEntertainment.writeStatus(
 				`Installing ${dependencies.length} dependenc${
