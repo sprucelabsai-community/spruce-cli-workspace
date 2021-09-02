@@ -55,7 +55,7 @@ export default class ErrorFeature extends AbstractFeature {
 		const isSkillInstalled = await this.featureInstaller.isInstalled('error')
 
 		if (
-			payload.featureCode === 'skill' &&
+			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade' &&
 			isSkillInstalled
 		) {

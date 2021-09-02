@@ -78,7 +78,7 @@ export default class EventFeature extends AbstractFeature {
 		const { featureCode, actionCode } = payload
 		const isInstalled = await this.featureInstaller.isInstalled('event')
 
-		if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
+		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			return this.Action('event', 'sync').execute({})
 		}
 
