@@ -50,7 +50,7 @@ export default class ViewFeature extends AbstractFeature {
 			const { featureCode, actionCode } = payload
 			const isInstalled = await this.featureInstaller.isInstalled('view')
 
-			if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
+			if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 				const files = await this.Writer('view').writePlugin(this.cwd)
 				return {
 					files,

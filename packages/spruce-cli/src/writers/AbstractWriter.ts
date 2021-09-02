@@ -63,6 +63,7 @@ export default abstract class AbstractWriter {
 		destinationDir: string
 		code: DirectoryTemplateCode
 		filesToWrite?: string[]
+		filesToSkip?: string[]
 		context: any
 		shouldConfirmBeforeWriting?: boolean
 		firstFileWriteMessage?: string
@@ -71,6 +72,7 @@ export default abstract class AbstractWriter {
 			context,
 			destinationDir,
 			filesToWrite,
+			filesToSkip,
 			shouldConfirmBeforeWriting = true,
 			firstFileWriteMessage,
 		} = options
@@ -87,7 +89,12 @@ export default abstract class AbstractWriter {
 		let results: WriteResults = []
 
 		for (const generated of files) {
-			if (!filesToWrite || filesToWrite.indexOf(generated.filename) > -1) {
+			const shouldWrite =
+				!filesToWrite || filesToWrite.indexOf(generated.filename) > -1
+			const shouldSkip =
+				filesToSkip && filesToSkip.indexOf(generated.filename) > -1
+
+			if (shouldWrite && !shouldSkip) {
 				results = await this.writeFileIfChangedMixinResults(
 					pathUtil.join(destinationDir, generated.relativePath),
 					generated.contents,

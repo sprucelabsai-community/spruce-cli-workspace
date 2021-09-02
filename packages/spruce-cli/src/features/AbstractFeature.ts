@@ -20,6 +20,7 @@ import {
 } from '../types/apiClient.types'
 import { NpmPackage, GeneratedFile, FileDescription } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
+import { WriterOptions } from '../writers/AbstractWriter'
 import WriterFactory, { WriterCode, WriterMap } from '../writers/WriterFactory'
 import ActionExecuter from './ActionExecuter'
 import ActionFactory from './ActionFactory'
@@ -121,9 +122,14 @@ export default abstract class AbstractFeature<
 		return this.serviceFactory.Service(cwd ?? this.cwd, type)
 	}
 
-	protected Writer<C extends WriterCode>(code: C): WriterMap[C] {
+	public Writer<C extends WriterCode>(
+		code: C,
+		options?: Partial<WriterOptions>
+	): WriterMap[C] {
 		return this.writerFactory.Writer(code, {
 			fileDescriptions: this.fileDescriptions,
+			linter: this.Service('lint'),
+			...options,
 		})
 	}
 

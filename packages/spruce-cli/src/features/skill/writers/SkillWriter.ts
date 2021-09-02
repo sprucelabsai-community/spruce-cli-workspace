@@ -8,15 +8,18 @@ import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 export default class SkillGenerator extends AbstractWriter {
 	public async writeSkill(
 		destinationDir: string,
-		options: DirectoryTemplateContextSkill
+		options: DirectoryTemplateContextSkill & { filesToSkip?: string[] }
 	): Promise<WriteResults> {
+		const { filesToSkip, ...context } = options
+
 		return this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,
+			filesToSkip,
 			firstFileWriteMessage:
 				'As I was upgrading your skill, I found some files I want to overwrite. Lemme take you through them now.',
 			context: {
-				...options,
+				...context,
 				name: namesUtil.toKebab(options.name),
 			},
 		})

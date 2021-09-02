@@ -75,6 +75,7 @@ export default class ActionExecuter {
 		const willExecuteResults = await this.emitter.emit('feature.will-execute', {
 			featureCode,
 			actionCode,
+			options: actionOptions,
 		})
 
 		const { payloads: willExecutePayloads, errors } =

@@ -18,7 +18,6 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const generatedFiles = await this.copyFiles(normalizedOptions)
 
 		await this.updateScripts({
 			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
@@ -43,7 +42,6 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 		results = actionUtil.mergeActionResults(results, dependencyResults, {
 			headline: 'Upgrade',
-			files: generatedFiles,
 		})
 
 		return results
@@ -72,20 +70,5 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		await scriptUpdater.update({
 			shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
 		})
-	}
-
-	private async copyFiles(normalizedOptions: Options) {
-		const skillWriter = this.Writer('skill', {
-			upgradeMode: normalizedOptions.upgradeMode,
-		})
-		const pkgService = this.Service('pkg')
-		const name = pkgService.get('name')
-		const description = pkgService.get('description')
-
-		const generatedFiles = await skillWriter.writeSkill(this.cwd, {
-			name,
-			description,
-		})
-		return generatedFiles
 	}
 }

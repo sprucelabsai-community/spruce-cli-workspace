@@ -224,6 +224,9 @@ void run()
 			term.renderLine('Running pre build cache script')
 			execSync(process.env.DID_BUILD_CACHE_SCRIPT)
 		}
+		if (progressInterval) {
+			clearInterval(progressInterval)
+		}
 	})
 	.catch((err) => {
 		term.renderError(err)

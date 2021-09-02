@@ -57,9 +57,10 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 	@test()
 	protected static async upgradingSkillSyncsEvents() {
 		await this.FeatureFixture().installCachedFeatures('events')
-		const results = await this.Action('node', 'upgrade').execute({})
 
+		const results = await this.Action('node', 'upgrade').execute({})
 		const events = eventDiskUtil.resolveCombinedEventsContractFile(this.cwd)
+
 		assert.isTrue(diskUtil.doesFileExist(events))
 
 		testUtil.assertFileByNameInGeneratedFiles(

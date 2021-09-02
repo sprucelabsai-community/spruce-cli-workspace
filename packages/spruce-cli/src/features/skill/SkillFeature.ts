@@ -6,6 +6,7 @@ import { FileDescription, NpmPackage } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import Updater from './updaters/Updater'
 
 type SkillFeatureOptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
@@ -20,6 +21,8 @@ declare module '../../features/features.types' {
 		skill: SchemaValues<SkillFeatureOptionsSchema>
 	}
 }
+
+type UpgradeOptions = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions
 
 export default class SkillFeature<
 	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema
@@ -183,6 +186,11 @@ export default class SkillFeature<
 			`test.register-abstract-test-classes`,
 			this.handleRegisterAbstractTestClasses.bind(this)
 		)
+
+		void this.emitter.on(
+			'feature.will-execute',
+			this.handleWillExecute.bind(this)
+		)
 	}
 
 	private async handleRegisterAbstractTestClasses() {
@@ -200,7 +208,6 @@ export default class SkillFeature<
 
 	public async beforePackageInstall(options: SkillFeatureOptions) {
 		const { files } = await this.install(options)
-
 		return { files, cwd: this.resolveDestination(options) }
 	}
 
@@ -255,5 +262,23 @@ export default class SkillFeature<
 		}
 
 		pkg.set({ path: 'engines', value: engines })
+	}
+
+	public async handleWillExecute(options: {
+		featureCode: string
+		actionCode: string
+		options?: UpgradeOptions
+	}) {
+		const { featureCode, actionCode, options: upgradeOptions } = options
+
+		if (featureCode === 'node' && actionCode === 'upgrade') {
+			const updater = new Updater(this)
+			const files = await updater.updateFiles(upgradeOptions as any)
+			return {
+				files,
+			}
+		}
+
+		return {}
 	}
 }

@@ -89,6 +89,12 @@ export const globalContract = buildEventContract({
 						type: 'text',
 						isRequired: true,
 					},
+					options: {
+						type: 'raw',
+						options: {
+							valueType: 'Record<string, any>',
+						},
+					},
 				},
 			}),
 			responsePayloadSchema: buildSchema({
