@@ -3,9 +3,9 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
 import { FileDescription, NpmPackage } from '../../types/cli.types'
+import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
-import ScriptUpdater from './ScriptUpdater'
 
 type SkillFeatureOptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
@@ -59,7 +59,7 @@ export default class SkillFeature<
 		node: '16.x',
 		yarn: '1.x',
 	}
-	private scripts = {
+	public scripts = {
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
@@ -237,18 +237,9 @@ export default class SkillFeature<
 		return diskUtil.resolvePath(this.cwd, options.destination ?? '')
 	}
 
-	public async installScripts(
-		destination = this.cwd,
-		options?: {
-			shouldConfirmIfScriptExistsButIsDifferent?: boolean
-		}
-	) {
-		const scriptUpdater = new ScriptUpdater({
-			pkg: this.Service('pkg', destination),
-			latestScripts: this.scripts,
-			ui: this.ui,
-			...options,
-			settings: this.Service('settings', destination),
+	public async installScripts(destination = this.cwd) {
+		const scriptUpdater = ScriptUpdater.FromFeature(this, {
+			cwd: destination,
 		})
 
 		await scriptUpdater.update()

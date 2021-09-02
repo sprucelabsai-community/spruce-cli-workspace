@@ -3,9 +3,10 @@ import {
 	FILE_ACTION_ALWAYS_SKIP,
 	FILE_ACTION_OVERWRITE,
 	FILE_ACTION_SKIP,
-} from '../../constants'
-import PkgService from '../../services/PkgService'
-import { GraphicsInterface } from '../../types/cli.types'
+} from '../constants'
+import AbstractFeature from '../features/AbstractFeature'
+import PkgService from '../services/PkgService'
+import { GraphicsInterface } from '../types/cli.types'
 
 export default class ScriptUpdater {
 	private pkg: PkgService
@@ -29,7 +30,31 @@ export default class ScriptUpdater {
 		this.settings = options.settings
 	}
 
-	public async update() {
+	public static FromFeature(
+		feature: AbstractFeature,
+		options?: { cwd?: string; latestScripts?: Record<string, any> }
+	) {
+		const cwd = options?.cwd ?? feature.cwd
+
+		const updater = new ScriptUpdater({
+			pkg: feature.Service('pkg', cwd),
+			latestScripts: feature.scripts ?? [],
+			//@ts-ignore
+			ui: feature.ui,
+			settings: feature.Service('settings', cwd),
+			...options,
+		})
+
+		return updater
+	}
+
+	public async update(options?: {
+		shouldConfirmIfScriptExistsButIsDifferent?: boolean
+	}) {
+		this.shouldConfirmIfScriptExistsButIsDifferent =
+			options?.shouldConfirmIfScriptExistsButIsDifferent ??
+			this.shouldConfirmIfScriptExistsButIsDifferent
+
 		const scripts = this.pkg.get('scripts') as Record<string, string>
 		const all = this.latestScripts
 		const oldScripts = this.pkg.get('scripts')

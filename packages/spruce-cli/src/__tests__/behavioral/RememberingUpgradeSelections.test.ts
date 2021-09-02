@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { FILE_ACTION_ALWAYS_SKIP } from '../../constants'
-import ScriptUpdater from '../../features/skill/ScriptUpdater'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import ScriptUpdater from '../../updaters/ScriptUpdater'
 
 export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'schemas'

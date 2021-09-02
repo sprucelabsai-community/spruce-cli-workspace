@@ -66,7 +66,8 @@ export default abstract class AbstractFeature<
 	public abstract readonly nameReadable: string
 	public readonly installOrderWeight: number = 0
 
-	protected cwd: string
+	public cwd: string
+	public scripts: Record<string, any> = {}
 	public actionsDir: string | undefined
 	protected actionFactory?: ActionFactory
 	protected templates: Templates

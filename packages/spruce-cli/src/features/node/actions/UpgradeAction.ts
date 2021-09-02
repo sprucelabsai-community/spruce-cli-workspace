@@ -2,10 +2,10 @@ import { SchemaValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
 import InFlightEntertainment from '../../../InFlightEntertainment'
+import ScriptUpdater from '../../../updaters/ScriptUpdater'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
-import SkillFeature from '../SkillFeature'
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
@@ -54,8 +54,22 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	}
 
 	private async updateScripts(options: { shouldConfirm: boolean }) {
-		const skillFeature = this.parent as SkillFeature
-		await skillFeature.installScripts(this.cwd, {
+		const features = await this.featureInstaller.getInstalledFeatures()
+
+		let scripts: Record<string, any> = {}
+
+		for (const feature of features) {
+			scripts = {
+				...scripts,
+				...feature.scripts,
+			}
+		}
+
+		const scriptUpdater = ScriptUpdater.FromFeature(this.parent, {
+			latestScripts: scripts,
+		})
+
+		await scriptUpdater.update({
 			shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
 		})
 	}
