@@ -199,6 +199,8 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		const watchAction = this.Action('view', 'watch') as WatchAction
 		const results = await watchAction.execute({ shouldReturnImmediately: true })
 
+		assert.isFalsy(results.errors)
+
 		let pid = watchAction.getPid()
 
 		while (!pid) {

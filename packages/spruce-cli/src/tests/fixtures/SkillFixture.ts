@@ -34,9 +34,9 @@ export default class SkillFixture {
 
 	public async registerCurrentSkill(
 		values: { name: string; slug?: string },
-		options?: RegisterSkillOptions
+		options?: RegisterSkillOptions & { phone?: string }
 	) {
-		await this.personFixture.loginAsDemoPerson()
+		await this.personFixture.loginAsDemoPerson(options?.phone)
 
 		return this.storeFactory.Store('skill').register(
 			{

@@ -36,8 +36,9 @@ const shouldRunSequentially = !!process.argv.find(
 const maxSimultaneous = process.env.MAX_SIMULTANEOUS_SKILL_CACHERS ?? 10
 let totalSimultaneous = 0
 let progressInterval: any
-
 const doesSupportColor = TerminalInterface.doesSupportColor()
+
+let didMessagesChange = true
 
 async function run() {
 	term.clear()
@@ -51,25 +52,31 @@ async function run() {
 
 	let messages: [string, any][] = []
 
-	progressInterval =
-		doesSupportColor &&
-		setInterval(async () => {
+	const render = async () => {
+		if (didMessagesChange) {
 			term.moveCursorTo(0, 6)
 
 			for (const message of messages) {
+				term.eraseLine()
 				term.renderLine(message[0], message[1])
 			}
 
 			await term.stopLoading()
 
+			term.eraseLine()
 			term.renderLine('')
+		}
 
-			await term.startLoading(
-				`${`Building ${remaining} skill${dropInS(
-					remaining
-				)}`}. ${durationUtil.msToFriendly(getTimeSpent())}`
-			)
-		}, 1000)
+		didMessagesChange = false
+
+		await term.startLoading(
+			`${`Building ${remaining} skill${dropInS(
+				remaining
+			)}`}. ${durationUtil.msToFriendly(getTimeSpent())}`
+		)
+	}
+
+	progressInterval = doesSupportColor && setInterval(render, 1000)
 
 	function getTimeSpent() {
 		const now = new Date().getTime()
@@ -79,7 +86,9 @@ async function run() {
 
 	function renderLine(lineNum: number, message: any, effects?: any) {
 		if (doesSupportColor) {
+			didMessagesChange = true
 			messages[lineNum] = [message, effects]
+			render()
 		} else {
 			console.log(message)
 		}
@@ -87,7 +96,9 @@ async function run() {
 
 	function renderWarning(lineNum: number, message: any, effects?: any) {
 		if (doesSupportColor) {
+			didMessagesChange = true
 			messages[lineNum] = [message, effects]
+			render()
 		} else {
 			console.log(message)
 		}
@@ -112,10 +123,9 @@ async function run() {
 			await cacheOrSkip(idx, cacheKey)
 			totalSimultaneous--
 		})
+
 		await Promise.all(promises)
 	}
-
-	clearInterval(progressInterval)
 
 	await term.stopLoading()
 	term.renderLine(`Done! ${durationUtil.msToFriendly(getTimeSpent())}`)
@@ -124,7 +134,9 @@ async function run() {
 		const { cacheTracker, cwd, fixture, options } = setup(cacheKey)
 
 		if (onlyInstall && onlyInstall.indexOf(cacheKey) === -1) {
-			renderLine(lineNum, `Skipping '${cacheKey}'.`)
+			renderLine(lineNum, `Skipping '${cacheKey}'.`, [
+				GraphicsTextEffect.Yellow,
+			])
 			remaining--
 		} else if (
 			cacheTracker[cacheKey] &&
@@ -184,6 +196,13 @@ async function run() {
 
 		try {
 			await fixture.installFeatures(options, cacheKey)
+			renderLine(
+				lineNum,
+				`Done caching '${cacheKey}'. ${
+					remaining - 1
+				} remaining (${durationUtil.msToFriendly(getTimeSpent())})...`,
+				[GraphicsTextEffect.Green, GraphicsTextEffect.Bold]
+			)
 		} catch (err: any) {
 			renderLine(lineNum, `Error caching '${cacheKey}'...`, [
 				GraphicsTextEffect.Red,
@@ -191,16 +210,7 @@ async function run() {
 			])
 
 			renderLine(lineNum, `Error caching ${cacheKey}:\n\n${err.stack}`)
-			return
 		}
-
-		renderLine(
-			lineNum,
-			`Done caching '${cacheKey}'. ${
-				remaining - 1
-			} remaining (${durationUtil.msToFriendly(getTimeSpent())})...`,
-			[GraphicsTextEffect.Green, GraphicsTextEffect.Bold]
-		)
 	}
 }
 

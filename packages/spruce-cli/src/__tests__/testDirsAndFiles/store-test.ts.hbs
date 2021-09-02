@@ -9,7 +9,7 @@ async function test() {
 	const factory = StoreFactory.Factory(db)
 	const bids = await factory.Store('bids')
 	const products = await factory.Store('products', {
-		hello: test
+		hello: test,
 	})
 
 	await bids.createOne({})
@@ -22,6 +22,4 @@ async function test() {
 	}
 }
 
-void test().then(() => {
-	console.log('done!')
-})
+console.log(typeof test === 'function')

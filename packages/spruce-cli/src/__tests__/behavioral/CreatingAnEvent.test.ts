@@ -116,6 +116,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 			'emitPayload.builder.ts',
 			results.files
 		)
+
 		const newContents = `import { formBuilderImportExportObjectSchema } from '@sprucelabs/heartwood-view-controllers'
 import { buildSchema } from '@sprucelabs/schema'
 
@@ -139,15 +140,21 @@ export default createFormEmitPayloadBuilder
 	private static async createEvent() {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.getSkillFixture().registerCurrentSkill({
-			name: 'my new skill',
-		})
+		const skill = await this.getSkillFixture().registerCurrentSkill(
+			{
+				name: 'my new skill',
+			},
+			{
+				phone: process.env.DEMO_NUMBER_CREATING_AN_EVENT,
+			}
+		)
 
 		const results = await this.Action('event', 'create').execute({
 			nameReadable: EVENT_NAME_READABLE,
 			nameKebab: EVENT_NAME,
 			nameCamel: EVENT_CAMEL,
 		})
+
 		return { results, cli, skill }
 	}
 
@@ -286,7 +293,6 @@ export default createFormEmitPayloadBuilder
 			)
 
 			const imported = await schemas.importSchema(match)
-
 			assert.isEqual(imported.id, payload.expectedId)
 		}
 	}

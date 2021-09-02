@@ -618,4 +618,8 @@ export default class TerminalInterface implements GraphicsInterface {
 	public clearBelowCursor(): void {
 		terminal.eraseDisplayBelow()
 	}
+
+	public eraseLine() {
+		terminal.eraseLine()
+	}
 }

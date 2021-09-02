@@ -26,9 +26,11 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		// CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
 		// 	code: 0,
 		// })
+
 		CommandService.setMockResponse('yarn clean.build', {
 			code: 0,
 		})
+
 		CommandService.setMockResponse('yarn build.dev', {
 			code: 0,
 		})

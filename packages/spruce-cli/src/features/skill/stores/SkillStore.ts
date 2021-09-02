@@ -11,7 +11,7 @@ export interface CreateSkill {
 }
 
 export interface RegisterSkillOptions {
-	isRegisteringCurrentSkill: boolean
+	isRegisteringCurrentSkill?: boolean
 }
 
 export default class SkillStore extends AbstractStore {

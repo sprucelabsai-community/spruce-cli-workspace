@@ -135,6 +135,10 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 			code: 0,
 		})
 
+		CommandService.setMockResponse(/yarn add/gis, {
+			code: 0,
+		})
+
 		const storesFile = this.resolveHashSprucePath('stores/stores.types.ts')
 		diskUtil.deleteFile(storesFile)
 		await this.Action('skill', 'upgrade').execute({})
