@@ -141,7 +141,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 		const storesFile = this.resolveHashSprucePath('stores/stores.types.ts')
 		diskUtil.deleteFile(storesFile)
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 		assert.isTrue(diskUtil.doesFileExist(storesFile))
 	}
 

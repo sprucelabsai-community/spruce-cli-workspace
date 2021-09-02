@@ -26,7 +26,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 		CommandService.clearMockResponses()
 		await this.FeatureFixture().installCachedFeatures('views')
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		const dependencies = this.Service('pkg').get('dependencies')
 
@@ -38,7 +38,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 		CommandService.clearMockResponses()
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
-		const results = await this.Action('skill', 'upgrade').execute({})
+		const results = await this.Action('node', 'upgrade').execute({})
 
 		const dependencies = this.Service('pkg').get('dependencies')
 
@@ -57,7 +57,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 	@test()
 	protected static async upgradingSkillSyncsEvents() {
 		await this.FeatureFixture().installCachedFeatures('events')
-		const results = await this.Action('skill', 'upgrade').execute({})
+		const results = await this.Action('node', 'upgrade').execute({})
 
 		const events = eventDiskUtil.resolveCombinedEventsContractFile(this.cwd)
 		assert.isTrue(diskUtil.doesFileExist(events))
@@ -76,7 +76,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 			throw new Error('baaaaad')
 		}
 
-		const results = await this.Action('skill', 'upgrade').execute({})
+		const results = await this.Action('node', 'upgrade').execute({})
 
 		assert.isTruthy(results.errors)
 		assert.doesInclude(results.errors[0].message, 'baaaaad')
@@ -107,7 +107,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 			},
 		})
 
-		const results = await this.Action('skill', 'upgrade').execute({})
+		const results = await this.Action('node', 'upgrade').execute({})
 
 		assert.isFalsy(results.errors)
 		assert.isTrue(wasCleanBuildCalled)
@@ -125,7 +125,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 
 		assert.isFalse(diskUtil.doesFileExist(plugin))
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		assert.isTrue(diskUtil.doesFileExist(plugin))
 	}
@@ -156,7 +156,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 			code: 0,
 		})
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		assert.isEqual(wasHit, isInstalled)
 	}

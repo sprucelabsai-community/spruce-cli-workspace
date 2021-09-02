@@ -88,7 +88,7 @@ async function run() {
 		if (doesSupportColor) {
 			didMessagesChange = true
 			messages[lineNum] = [message, effects]
-			render()
+			void render()
 		} else {
 			console.log(message)
 		}
@@ -98,7 +98,7 @@ async function run() {
 		if (doesSupportColor) {
 			didMessagesChange = true
 			messages[lineNum] = [message, effects]
-			render()
+			void render()
 		} else {
 			console.log(message)
 		}

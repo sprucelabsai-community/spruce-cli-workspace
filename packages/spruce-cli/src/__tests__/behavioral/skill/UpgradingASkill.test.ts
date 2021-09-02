@@ -72,7 +72,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 				this.clearFileIfAboutToBeUpdated(file, upgradeMode)
 			}
 
-			const results = await this.Action('skill', 'upgrade').execute({
+			const results = await this.Action('node', 'upgrade').execute({
 				upgradeMode,
 			})
 
@@ -112,7 +112,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradeWillAskIfYouWantToOverwriteFiles() {
 		const cli = await this.installAndBreakSkill('skills')
 
-		const promise = this.Action('skill', 'upgrade').execute({
+		const promise = this.Action('node', 'upgrade').execute({
 			upgradeMode: 'askForChanged',
 		})
 
@@ -166,7 +166,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		this.assertSkillIsBroken()
 
-		const results = await this.Action('skill', 'upgrade').execute({
+		const results = await this.Action('node', 'upgrade').execute({
 			upgradeMode: 'askForChanged',
 		})
 
@@ -188,7 +188,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			'skill.errors[].message': '"health.local" not found',
 		})
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		const passedHealth = await cli.checkHealth()
 		assert.isEqual(passedHealth.skill.status, 'passed')
@@ -209,7 +209,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		diskUtil.writeFile(pluginPath, '')
 
-		const results = await this.Action('skill', 'upgrade').execute({})
+		const results = await this.Action('node', 'upgrade').execute({})
 
 		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 
@@ -225,7 +225,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 
-		const promise = this.Action('skill', 'upgrade').execute({})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -251,7 +251,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = this.Action('skill', 'upgrade').execute({})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -281,7 +281,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = this.Action('skill', 'upgrade').execute({})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -303,7 +303,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const pkg = this.Service('pkg')
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 
-		const promise = this.Action('skill', 'upgrade').execute({})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -325,7 +325,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
 
-		const promise = this.Action('skill', 'upgrade').execute({})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
 
@@ -355,7 +355,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		//@ts-ignore
 		skillFeature.scripts['taco'] = 'bravo'
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
 
@@ -375,7 +375,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const originalContents = diskUtil.readFile(match)
 		diskUtil.writeFile(match, 'broken')
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		const newContents = diskUtil.readFile(match)
 		assert.isEqual(originalContents, newContents)
@@ -415,7 +415,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 			}
 		}
 
-		await this.Action('skill', 'upgrade').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		for (const check of checks) {
 			if (check.nodeModule) {
@@ -498,7 +498,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	private static async installBreakAndUpgradeSkill() {
 		await this.installAndBreakSkill('skills')
 
-		const promise = this.Action('skill', 'upgrade').execute({
+		const promise = this.Action('node', 'upgrade').execute({
 			upgradeMode: 'askForChanged',
 		})
 
