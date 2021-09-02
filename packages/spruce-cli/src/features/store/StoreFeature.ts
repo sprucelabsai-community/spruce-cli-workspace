@@ -63,7 +63,7 @@ export default class StoreFeature extends AbstractFeature {
 
 		if (
 			isInstalled &&
-			payload.featureCode === 'skill' &&
+			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade'
 		) {
 			uiUtil.renderMasthead({
