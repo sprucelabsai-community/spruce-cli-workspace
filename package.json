@@ -13,7 +13,6 @@
     "npm": ">=6"
   },
   "scripts": {
-    "preinstall": "git config core.hooksPath .githooks",
     "build.ci": "lerna run build.ci",
     "build.dev": "lerna run build.dev",
     "build.types": "lerna run build.types",
