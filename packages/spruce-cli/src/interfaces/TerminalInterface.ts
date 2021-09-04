@@ -168,8 +168,6 @@ export default class TerminalInterface implements GraphicsInterface {
 	public renderActionSummary(
 		results: ExecutionResults & { totalTime?: number }
 	) {
-		debugger
-
 		const generatedFiles =
 			results.files?.filter((f) => f.action === 'generated') ?? []
 		const updatedFiles =
