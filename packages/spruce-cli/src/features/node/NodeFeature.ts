@@ -1,8 +1,11 @@
 import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { FileDescription } from '../../types/cli.types'
+import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import universalFileDescriptions from '../universalFileDescriptions'
+import universalScripts from '../universalScripts'
 
 const nodeFeatureSchema = buildSchema({
 	id: 'nodeFeature',
@@ -45,13 +48,19 @@ export default class NodeFeature<
 		{ name: 'typescript', isDev: true },
 		{ name: 'ts-node', isDev: true },
 		{ name: 'tsconfig-paths', isDev: true },
+		{ name: 'eslint', isDev: true },
+		{ name: 'eslint-config-spruce', isDev: true },
+		{ name: 'prettier', isDev: true },
+		{ name: 'chokidar-cli', isDev: true },
+		{ name: 'concurrently', isDev: true },
 	]
+
+	public scripts = {
+		...universalScripts,
+	}
+
 	public readonly fileDescriptions: FileDescription[] = [
-		{
-			path: 'tsconfig.json',
-			description: 'For mapping #spruce dirs.',
-			shouldOverwriteWhenChanged: true,
-		},
+		...universalFileDescriptions,
 	]
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
@@ -65,6 +74,8 @@ export default class NodeFeature<
 
 		const nodeWriter = this.Writer('node')
 		const files = await nodeWriter.writeNodeModule(this.cwd)
+
+		await this.installScripts()
 
 		return { files }
 	}
@@ -83,6 +94,14 @@ export default class NodeFeature<
 		await this.Store('skill').setCurrentSkillsNamespace(options.name)
 
 		return {}
+	}
+
+	private async installScripts(destination = this.cwd) {
+		const scriptUpdater = ScriptUpdater.FromFeature(this, {
+			cwd: destination,
+		})
+
+		await scriptUpdater.update()
 	}
 
 	public isInstalled = async (): Promise<boolean> => {

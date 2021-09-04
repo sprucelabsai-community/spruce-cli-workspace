@@ -146,8 +146,8 @@ export default abstract class AbstractWriter {
 			this.shouldOverwriteIfChanged(destination)
 		) {
 			const cleanedName = this.cleanFilename(destination, cwd)
-			const settings = this.settings.get('writer') ?? { skips: [] }
-			const isAlwaysSkipped = settings.skips.indexOf(cleanedName) > -1
+			const settings = this.settings.get('writer') ?? { skipped: [] }
+			const isAlwaysSkipped = settings.skipped.indexOf(cleanedName) > -1
 			let write = !isAlwaysSkipped
 
 			if (!isAlwaysSkipped && this.shouldAskForOverwrite()) {
@@ -179,7 +179,7 @@ export default abstract class AbstractWriter {
 				})
 
 				if (answer === FILE_ACTION_ALWAYS_SKIP) {
-					settings.skips.push(cleanedName)
+					settings.skipped.push(cleanedName)
 					this.settings.set('writer', settings)
 				}
 

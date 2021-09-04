@@ -6,6 +6,8 @@ import { FileDescription, NpmPackage } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import universalFileDescriptions from '../universalFileDescriptions'
+import universalScripts from '../universalScripts'
 import Updater from './updaters/Updater'
 
 type SkillFeatureOptionsSchema =
@@ -66,94 +68,19 @@ export default class SkillFeature<
 		boot: 'node build/index',
 		'boot.local':
 			'node -r ts-node/register -r tsconfig-paths/register ./src/index',
-		build: 'yarn build.dev',
-		'build.ci': 'yarn build.tsc && yarn build.resolve-paths && yarn lint',
-		'build.dev': 'yarn build.tsc --sourceMap ; yarn resolve-paths.lint',
-		'build.copy-files':
-			"mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
-		'build.resolve-paths':
-			"resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
-		'build.tsc': 'yarn build.copy-files && tsc',
-		clean: 'yarn clean.build',
-		'clean.all': 'yarn clean.dependencies && yarn clean.build',
-		'clean.build': 'rm -rf build/',
-		'clean.dependencies': 'rm -rf node_modules/ package-lock.json yarn.lock',
-		'fix.lint': "eslint --fix --cache '**/*.ts'",
+
 		health: 'yarn boot --health',
 		'health.local': 'yarn boot.local --health',
-		lint: "eslint --cache '**/*.ts'",
-		rebuild: 'yarn clean.all && yarn && yarn build.dev',
-		'update.dependencies': 'yarn clean.dependencies && yarn',
-		'resolve-paths.lint': 'yarn build.resolve-paths ; yarn lint',
-		test: 'jest',
-		'upgrade.packages':
-			'yarn-upgrade-all && rm -f yarn.lock ; yarn ; yarn fix.lint ; true',
-		'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
-		'upgrade.packages.test':
-			'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
-		'watch.build.dev':
-			"concurrently 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
-		'watch.lint':
-			"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
-		'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build.dev',
-		'watch.tsc': 'tsc -w',
+
+		...universalScripts,
 	} as const
 
 	public readonly fileDescriptions: FileDescription[] = [
-		{
-			path: '.eslintignore',
-			description: 'Ignore things like build and node_module dirs.',
-			shouldOverwriteWhenChanged: true,
-		},
-		{
-			path: '.eslintrc.js',
-			description: 'Extends Spruce configurations.',
-			shouldOverwriteWhenChanged: true,
-		},
-		{
-			path: '.gitignore',
-			description: 'The usual suspects.',
-			shouldOverwriteWhenChanged: false,
-		},
-		{
-			path: '.gitignore',
-			description: 'The usual suspects.',
-			shouldOverwriteWhenChanged: false,
-		},
-		{
-			path: '.nvmrc',
-			description: 'Keep node at the latest.',
-			shouldOverwriteWhenChanged: true,
-		},
-		{
-			path: 'readme.md',
-			description: "Don't forget to update this at some point.",
-			shouldOverwriteWhenChanged: false,
-		},
-		{
-			path: 'babel.config.js',
-			description: 'Babel builds our skill for release.',
-			shouldOverwriteWhenChanged: true,
-		},
-		{
-			path: 'package.json',
-			description: 'All dependencies and scripts.',
-			shouldOverwriteWhenChanged: false,
-		},
-		{
-			path: 'tsconfig.json',
-			description: 'Maps #spruce paths.',
-			shouldOverwriteWhenChanged: true,
-		},
+		...universalFileDescriptions,
 		{
 			path: 'src/index.ts',
 			description: 'The file that "boots" the skill.',
 			shouldOverwriteWhenChanged: true,
-		},
-		{
-			path: '.spruce/settings.json',
-			description: 'Tracks things like which features are installed.',
-			shouldOverwriteWhenChanged: false,
 		},
 		{
 			path: 'errors/SpruceError.ts',
@@ -232,6 +159,7 @@ export default class SkillFeature<
 		const files = await skillGenerator.writeSkill(destination, options)
 
 		await this.installScripts(destination)
+
 		this.setEngines(destination)
 
 		const env = this.Service('env', destination)
@@ -270,8 +198,9 @@ export default class SkillFeature<
 		options?: UpgradeOptions
 	}) {
 		const { featureCode, actionCode, options: upgradeOptions } = options
+		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
-		if (featureCode === 'node' && actionCode === 'upgrade') {
+		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			const updater = new Updater(this)
 			const files = await updater.updateFiles(upgradeOptions as any)
 			return {

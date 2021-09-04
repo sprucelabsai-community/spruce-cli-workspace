@@ -55,19 +55,22 @@ export default class ScriptUpdater {
 			options?.shouldConfirmIfScriptExistsButIsDifferent ??
 			this.shouldConfirmIfScriptExistsButIsDifferent
 
-		const scripts = this.pkg.get('scripts') as Record<string, string>
+		const scripts = (this.pkg.get('scripts') as Record<string, string>) ?? {}
 		const all = this.latestScripts
-		const oldScripts = this.pkg.get('scripts')
+		const oldScripts = this.pkg.get('scripts') ?? {}
 
 		let shouldConfirm = this.shouldConfirmIfScriptExistsButIsDifferent
 		let shouldSkipAll = false
-		const updaterSettings = this.settings.get('scriptUpdater') ?? { skips: [] }
+		const updaterSettings = this.settings.get('scriptUpdater') ?? {
+			skipped: [],
+		}
 
 		for (const name in this.latestScripts) {
 			const script = this.latestScripts[name as keyof typeof all]
 			const oldScript = oldScripts[name as any]
 
-			const shouldAlwaysSkip = updaterSettings.skips.indexOf(name) > -1
+			const shouldAlwaysSkip =
+				(updaterSettings.skipped ?? []).indexOf(name) > -1
 			let shouldWrite = !shouldSkipAll && !shouldAlwaysSkip
 
 			if (
@@ -112,7 +115,7 @@ export default class ScriptUpdater {
 				})
 
 				if (desiredAction === 'alwaysSkip') {
-					updaterSettings.skips.push(name)
+					updaterSettings.skipped.push(name)
 					shouldWrite = false
 				} else if (desiredAction === 'skipAll') {
 					shouldSkipAll = true

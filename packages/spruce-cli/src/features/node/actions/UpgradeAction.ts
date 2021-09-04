@@ -23,28 +23,32 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
 		})
 
-		InFlightEntertainment.start([
-			"Let's start the upgrade!",
-			'While things are going, see if you can beat 1k points!',
-			'Go!!!!',
-		])
+		try {
+			InFlightEntertainment.start([
+				"Let's start the upgrade!",
+				'While things are going, see if you can beat 1k points!',
+				'Go!!!!',
+			])
 
-		const dependencyResults = await this.reInstallPackageDependencies()
+			const dependencyResults = await this.reInstallPackageDependencies()
 
-		await this.Service('command').execute('yarn clean.build')
-		await this.Service('command').execute('yarn build.dev')
+			await this.Service('command').execute('yarn clean.build')
+			await this.Service('command').execute('yarn build.dev')
 
-		let results = {
-			summaryLines: ['Build folder cleared.', 'Build complete.'],
+			let results = {
+				summaryLines: ['Build folder cleared.', 'Build complete.'],
+			}
+
+			results = actionUtil.mergeActionResults(results, dependencyResults, {
+				headline: 'Upgrade',
+			})
+
+			return results
+		} finally {
+			InFlightEntertainment.stop()
+
+			this.ui.renderHero('Finishing upgrade')
 		}
-
-		InFlightEntertainment.stop()
-
-		results = actionUtil.mergeActionResults(results, dependencyResults, {
-			headline: 'Upgrade',
-		})
-
-		return results
 	}
 
 	private async reInstallPackageDependencies() {

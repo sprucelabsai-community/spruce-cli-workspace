@@ -10,12 +10,13 @@ const actionUtil = {
 			Object.keys(obj || {}).forEach((key) => {
 				const pVal = prev[key]
 				const oVal = obj[key]
+
 				if (Array.isArray(pVal) && Array.isArray(oVal)) {
 					prev[key] = pVal.concat(...oVal)
 					prev[key] = this.makeUnique(prev[key])
 				} else if (isObject(pVal) && isObject(oVal)) {
 					prev[key] = this.mergeActionResults(pVal, oVal)
-				} else {
+				} else if (typeof oVal !== 'undefined') {
 					prev[key] = oVal
 				}
 			})

@@ -29,23 +29,25 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			diskUtil.deleteFile(diskUtil.resolvePath(this.cwd, file))
 		}
 
-		InFlightEntertainment.start(['Here we go!', 'Good luck!'])
+		try {
+			InFlightEntertainment.start(['Here we go!', 'Good luck!'])
 
-		const { totalDependencies, totalDevDependencies } =
-			await this.installDependencies()
+			const { totalDependencies, totalDevDependencies } =
+				await this.installDependencies()
 
-		InFlightEntertainment.stop()
-
-		return {
-			headline: 'Update Complete!',
-			summaryLines: [
-				`${totalDependencies} dependencie${
-					totalDependencies === 1 ? '' : 's'
-				} updated! 💪`,
-				`${totalDevDependencies} dev dependencie${
-					totalDevDependencies === 1 ? '' : 's'
-				} updated! 💪`,
-			],
+			return {
+				headline: 'Update Complete!',
+				summaryLines: [
+					`${totalDependencies} dependencie${
+						totalDependencies === 1 ? '' : 's'
+					} updated! 💪`,
+					`${totalDevDependencies} dev dependencie${
+						totalDevDependencies === 1 ? '' : 's'
+					} updated! 💪`,
+				],
+			}
+		} finally {
+			InFlightEntertainment.stop()
 		}
 	}
 

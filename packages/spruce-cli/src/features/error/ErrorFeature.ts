@@ -38,34 +38,9 @@ export default class ErrorFeature extends AbstractFeature {
 		super(options)
 
 		void this.emitter.on(
-			'feature.will-execute',
-			this.handleWillExecuteCommand.bind(this)
-		)
-
-		void this.emitter.on(
 			'feature.did-execute',
 			this.handleDidExecuteCommand.bind(this)
 		)
-	}
-
-	private async handleWillExecuteCommand(payload: {
-		actionCode: string
-		featureCode: string
-	}) {
-		const isSkillInstalled = await this.featureInstaller.isInstalled('error')
-
-		if (
-			payload.featureCode === 'node' &&
-			payload.actionCode === 'upgrade' &&
-			isSkillInstalled
-		) {
-			const files = await this.writePlugin()
-			return {
-				files,
-			}
-		}
-
-		return {}
 	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {
@@ -88,9 +63,21 @@ export default class ErrorFeature extends AbstractFeature {
 	}) {
 		const { featureCode, actionCode } = payload
 		const isInstalled = await this.featureInstaller.isInstalled('error')
+		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			return this.Action('error', 'sync').execute({})
+			const results = await this.Action('error', 'sync').execute({})
+
+			if (isSkillInstalled) {
+				if (!results.files) {
+					results.files = []
+				}
+
+				const plugin = await this.writePlugin()
+				results.files.push(...plugin)
+			}
+
+			return results
 		}
 
 		return {}
