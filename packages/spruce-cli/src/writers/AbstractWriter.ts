@@ -146,7 +146,7 @@ export default abstract class AbstractWriter {
 			this.shouldOverwriteIfChanged(destination)
 		) {
 			const cleanedName = this.cleanFilename(destination, cwd)
-			const settings = this.settings.get('writer') ?? { skipped: [] }
+			const settings = { skipped: [], ...this.settings.get('writer') }
 			const isAlwaysSkipped = settings.skipped.indexOf(cleanedName) > -1
 			let write = !isAlwaysSkipped
 

@@ -61,8 +61,9 @@ export default class ScriptUpdater {
 
 		let shouldConfirm = this.shouldConfirmIfScriptExistsButIsDifferent
 		let shouldSkipAll = false
-		const updaterSettings = this.settings.get('scriptUpdater') ?? {
+		const updaterSettings = {
 			skipped: [],
+			...this.settings.get('scriptUpdater'),
 		}
 
 		for (const name in this.latestScripts) {
