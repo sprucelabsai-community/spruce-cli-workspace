@@ -21,6 +21,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 		})
 
 		await this.buildSkill()
+
 		const results = await this.bootSkill()
 
 		assert.isFalsy(results.errors)

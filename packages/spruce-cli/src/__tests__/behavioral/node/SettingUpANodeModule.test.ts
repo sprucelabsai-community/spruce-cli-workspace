@@ -1,4 +1,3 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
@@ -27,30 +26,6 @@ export default class SettingUpANodeModuleTest extends AbstractCliTest {
 		const installer = this.getFeatureInstaller()
 		const isInstalled = await installer.isInstalled('node')
 		assert.isFalse(isInstalled)
-	}
-
-	@test()
-	protected static async canTellIfInstalledWithoutCreatingHashSpruceDir() {
-		const cli = await this.Cli()
-
-		await cli.installFeatures({
-			features: [
-				{
-					code: 'node',
-					options: {
-						name: 'Test module',
-						description: 'so great!',
-					},
-				},
-			],
-		})
-
-		const installer = this.getFeatureInstaller()
-		const isInstalled = await installer.isInstalled('node')
-		assert.isTrue(isInstalled)
-
-		const doesExist = diskUtil.doesHashSprucePathExist(this.cwd)
-		assert.isFalse(doesExist)
 	}
 
 	@test()

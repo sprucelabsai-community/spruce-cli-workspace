@@ -162,6 +162,8 @@ export default class PkgService extends CommandService {
 		})
 
 		this._parsedPkg = undefined
+
+		await this.install()
 	}
 
 	public stripLatest(name: string): string {

@@ -11,7 +11,7 @@ import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 import { GeneratedFile } from '../../../types/cli.types'
-const BROKEN_SKILL_INDEX_CONTENTS = 'throw new Error("cheese!")'
+const BROKEN_SKILL_INDEX_CONTENTS = "throw new Error('cheese!')\n"
 export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
