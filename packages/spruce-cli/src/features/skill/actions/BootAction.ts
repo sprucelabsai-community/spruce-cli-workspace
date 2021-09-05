@@ -104,7 +104,6 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 				mappedErr.message.search(/Error: cannot find module.*?build\/index/gi) >
 				-1
 			) {
-				debugger
 				mappedErr = new SpruceError({
 					code: 'BOOT_ERROR',
 					friendlyMessage: 'You must build your skill before you can boot it!',
