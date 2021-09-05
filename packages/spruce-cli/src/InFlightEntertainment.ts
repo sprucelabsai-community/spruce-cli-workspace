@@ -23,8 +23,7 @@ export default class InFlightEntertainment {
 		void this.game?.play(
 			intro ?? [
 				`I gotta install some dependencies to get things working.`,
-				`I'll be using NPM.`,
-				`NPM can be slow, so in the mean time, enjoy some games! 🤩`,
+				`This can be slow, so in the mean time, enjoy some games! 🤩`,
 			]
 		)
 	}

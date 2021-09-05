@@ -339,7 +339,7 @@ export default class FeatureInstaller implements ServiceProvider {
 			didUpdateHandler?.(
 				`Installing ${this.packagesToInstall.length} node module${
 					this.packagesToInstall.length === 1 ? '' : 's'
-				} using NPM. Please be patient.`
+				}. Please be patient.`
 			)
 			await pkgService.install(this.packagesToInstall, {})
 		}
@@ -348,7 +348,7 @@ export default class FeatureInstaller implements ServiceProvider {
 			didUpdateHandler?.(
 				`Now installing ${this.devPackagesToInstall.length} DEV node module${
 					this.devPackagesToInstall.length === 1 ? '' : 's'
-				} using NPM. Please be patient.`
+				}. Please be patient.`
 			)
 			await pkgService.install(this.devPackagesToInstall, {
 				isDev: true,

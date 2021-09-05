@@ -32,7 +32,10 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 
 	protected static async registerAndBootSkill() {
 		await this.registerCurrentSkillAndInstallToOrg()
-		await this.bootSkill()
+		await this.buildSkill()
+
+		const results = await this.bootSkill()
+		assert.isFalsy(results.errors)
 	}
 
 	private static async bootSkill() {
