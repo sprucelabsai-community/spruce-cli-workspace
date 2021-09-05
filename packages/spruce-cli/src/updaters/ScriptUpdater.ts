@@ -83,7 +83,7 @@ export default class ScriptUpdater {
 			) {
 				this.ui.clear()
 				this.ui.renderSection({
-					headline: `Warning! You have modified \`${name}\` in your package.json and I'm trying to update it!`,
+					headline: `Change to \`${name}\` detected!`,
 					object: {
 						Current: oldScript,
 						'    New': script,
