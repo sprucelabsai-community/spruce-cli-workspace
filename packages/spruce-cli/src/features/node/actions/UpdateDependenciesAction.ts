@@ -72,12 +72,12 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 		for (const feature of features) {
 			for (const dep of feature.packageDependencies as NpmPackage[]) {
 				if (dep.isDev) {
-					devDependencies.push({
+					devDependencies.unshift({
 						stripped: pkg.stripLatest(dep.name),
 						name: pkg.buildPackageName(dep),
 					})
 				} else {
-					dependencies.push({
+					dependencies.unshift({
 						stripped: pkg.stripLatest(dep.name),
 						name: pkg.buildPackageName(dep),
 					})
@@ -96,7 +96,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			InFlightEntertainment.writeStatus(
 				`Installing ${dependencies.length} dependenc${
 					dependencies.length === 1 ? 'y' : 'ies'
-				} with npm.`
+				}.`
 			)
 			await pkg.install(
 				dependencies.map((d) => d.name),
@@ -110,7 +110,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			InFlightEntertainment.writeStatus(
 				`Installing ${devDependencies.length} dev dependenc${
 					dependencies.length === 1 ? 'y' : 'ies'
-				} with npm.`
+				}.`
 			)
 			await pkg.install(
 				devDependencies.map((d) => d.name),

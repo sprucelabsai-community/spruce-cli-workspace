@@ -73,7 +73,7 @@ export default class SkillFeature<
 		'health.local': 'yarn boot.local --health',
 
 		...universalScripts,
-	} as const
+	}
 
 	public readonly fileDescriptions: FileDescription[] = [
 		...universalFileDescriptions,

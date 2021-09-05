@@ -14,10 +14,34 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async runsAddForAllDependenciesInPkgJson() {
-		const cacheKey = 'events'
+	protected static async locksVersionOfDependencyWhenDependencyAlreadyInPackageJson() {
+		await this.FeatureFixture().installCachedFeatures('skills')
 
-		await this.FeatureFixture().installCachedFeatures(cacheKey)
+		this.Service('pkg').set({ path: 'dependencies.axios', value: '0.0.1' })
+
+		const skill = this.getFeatureInstaller().getFeature('skill')
+		skill.packageDependencies.push({
+			name: 'axios',
+			version: '0.21.3',
+		})
+
+		const passedArgs: string[] = []
+
+		CommandService.setMockResponse(/(npm|yarn).*?(install|add)/, {
+			code: 0,
+			callback: (_, args) => {
+				passedArgs.push(...args)
+			},
+		})
+
+		await this.action.execute({})
+
+		assert.doesInclude(passedArgs, 'axios@0.21.3')
+	}
+
+	@test()
+	protected static async runsAddForAllDependenciesInPkgJson() {
+		await this.FeatureFixture().installCachedFeatures('events')
 
 		const name = await this.installRandomPackage()
 		const devName = await this.installRandomDevPackage()
