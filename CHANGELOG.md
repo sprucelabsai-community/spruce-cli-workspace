@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.19.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.18.6...v14.19.0) (2021-09-06)
+
+
+### Features
+
+* ignore script upgrades ([c33071a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/c33071a))
+* move upgrade to node ([77651bf](https://github.com/sprucelabsai/spruce-cli-workspace/commit/77651bf))
+* skip script updates forever ([de4d783](https://github.com/sprucelabsai/spruce-cli-workspace/commit/de4d783))
+* upgrade remembers choices ([4cdd092](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4cdd092))
+
+
+
+
+
 ## [14.18.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.18.5...v14.18.6) (2021-08-12)
 
 **Note:** Version bump only for package spruce-cli-workspace
