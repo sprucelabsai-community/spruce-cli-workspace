@@ -32,7 +32,7 @@ export default class SandboxFeature extends AbstractFeature {
 			)
 			if (
 				isSkillInstalled &&
-				payload.featureCode === 'skill' &&
+				payload.featureCode === 'node' &&
 				payload.actionCode === 'upgrade'
 			) {
 				uiUtil.renderMasthead({

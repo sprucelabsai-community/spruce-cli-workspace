@@ -23,9 +23,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	@test()
 	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
-		// CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
-		// 	code: 0,
-		// })
 
 		CommandService.setMockResponse('yarn clean.build', {
 			code: 0,
@@ -204,6 +201,8 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
+		CommandService.setMockResponse(/yarn/, { code: 0 })
+
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
@@ -375,6 +374,8 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const originalContents = diskUtil.readFile(match)
 		diskUtil.writeFile(match, 'broken')
 
+		CommandService.setMockResponse(/yarn/, { code: 0 })
+
 		await this.Action('node', 'upgrade').execute({})
 
 		const newContents = diskUtil.readFile(match)
@@ -414,6 +415,9 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 				diskUtil.deleteFile(check.plugin)
 			}
 		}
+
+		CommandService.setMockResponse(/yarn clean/, { code: 0 })
+		CommandService.setMockResponse(/yarn build.dev/, { code: 0 })
 
 		await this.Action('node', 'upgrade').execute({})
 

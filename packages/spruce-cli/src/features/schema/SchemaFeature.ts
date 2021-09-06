@@ -54,7 +54,7 @@ export default class SchemaFeature extends AbstractFeature {
 		const isSkillInstalled = await this.featureInstaller.isInstalled('schema')
 
 		if (
-			payload.featureCode === 'skill' &&
+			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade' &&
 			isSkillInstalled
 		) {

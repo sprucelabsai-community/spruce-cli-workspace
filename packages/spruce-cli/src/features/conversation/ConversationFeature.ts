@@ -45,7 +45,7 @@ export default class ConversationFeature extends AbstractFeature {
 		const isInstalled = await this.featureInstaller.isInstalled('conversation')
 
 		if (
-			payload.featureCode === 'skill' &&
+			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade' &&
 			isInstalled
 		) {
