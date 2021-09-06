@@ -40,7 +40,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 		for (const search of shouldNotBeFound) {
 			const doesExist = diskUtil.doesFileExist(this.resolvePath(search))
-			assert.isFalse(doesExist)
+			assert.isFalse(doesExist, `Should not have found ${search}`)
 		}
 	}
 }
