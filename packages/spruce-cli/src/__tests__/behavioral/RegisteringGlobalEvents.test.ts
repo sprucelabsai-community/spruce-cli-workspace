@@ -42,8 +42,8 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 	}
 
 	private static async resetAccount() {
-		await this.getOrganizationFixture().clearAllOrgs()
-		await this.getSkillFixture().clearAllSkills()
+		// await this.getOrganizationFixture().clearAllOrgs()
+		// await this.getSkillFixture().clearAllSkills()
 	}
 
 	@test()
