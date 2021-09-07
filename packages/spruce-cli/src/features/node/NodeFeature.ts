@@ -53,6 +53,7 @@ export default class NodeFeature<
 		{ name: 'prettier', isDev: true },
 		{ name: 'chokidar-cli', isDev: true },
 		{ name: 'concurrently', isDev: true },
+		{ name: 'tsc-watch', isDev: true },
 	]
 
 	public scripts = {

@@ -12,6 +12,8 @@ const universalScripts = {
 	'clean.dependencies': 'rm -rf node_modules/ package-lock.json yarn.lock',
 	'fix.lint': "eslint --fix --cache '**/*.ts'",
 	lint: "eslint --cache '**/*.ts'",
+	'lint.tsc': 'tsc -p . --noEmit',
+	'post.watch.build': 'yarn build.copy-files && yarn build.resolve-paths',
 	rebuild: 'yarn clean.all && yarn && yarn build.dev',
 	'update.dependencies': 'yarn clean.dependencies && yarn',
 	'resolve-paths.lint': 'yarn build.resolve-paths ; yarn lint',
@@ -22,7 +24,7 @@ const universalScripts = {
 	'upgrade.packages.test':
 		'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
 	'watch.build.dev':
-		"concurrently 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
+		"tsc-watch --sourceMap --onCompilationComplete 'yarn post.watch.build'",
 	'watch.lint':
 		"concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
 	'watch.rebuild': 'yarn clean.all && yarn && yarn watch.build.dev',
