@@ -555,7 +555,8 @@
             "killingActionKillsProcess": "I230",
             "upgradingSkillSyncsEvents": "I251",
             "upgradeCallsUpdateDependencies": "I252",
-            "canAlwaysSkipFiles": "I264"
+            "canAlwaysSkipFiles": "I264",
+            "upgradingWritesExpectedFiles": "I289"
           }
         }
       ],
