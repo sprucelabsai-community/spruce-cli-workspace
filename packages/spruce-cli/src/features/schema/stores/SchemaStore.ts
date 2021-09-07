@@ -151,15 +151,9 @@ export default class SchemaStore extends AbstractStore {
 			isEqual(normalizeSchemaToIdWithVersion(s), idWithVersion)
 		)
 
-		if (match && !match.moduleToImportFromWhenRemote) {
-			throw new SpruceError({
-				code: 'SCHEMA_EXISTS',
-				schemaId: schema.id,
-				friendlyMessage: `A feature tried to mixin a schema that already exists with id: ${schema.id}.`,
-			})
+		if (!match) {
+			results.schemasByNamespace[namespace].push(schema)
 		}
-
-		results.schemasByNamespace[namespace].push(schema)
 	}
 
 	private async loadLocalSchemas(
