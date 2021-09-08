@@ -238,7 +238,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 	}
 
 	@test()
-	protected static async droppingInDuplicateSchemasThrows() {
+	protected static async multipleSchemasWithSameIdAndVersionReturnOnce() {
 		const cli = await this.installSchemaFeature('schemas')
 
 		await this.copySchemas()
@@ -263,13 +263,11 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			}
 		})
 
-		const err = await assert.doesThrowAsync(() =>
-			this.Store('schema').fetchSchemas({
-				localNamespace: LOCAL_NAMESPACE,
-			})
-		)
+		const results = await this.Store('schema').fetchSchemas({
+			localNamespace: LOCAL_NAMESPACE,
+		})
 
-		errorAssertUtil.assertError(err, 'SCHEMA_EXISTS')
+		assert.isLength(results.schemasByNamespace.TestSkill, 3)
 	}
 
 	private static validateSchemas(schemas: Schema[]) {
