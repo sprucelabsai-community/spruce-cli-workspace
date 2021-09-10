@@ -1,5 +1,7 @@
-import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
+import { Schema, SchemaValues } from '@sprucelabs/schema'
+import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import nodeFeatureOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/nodeFeatureOptions.schema'
 import { FileDescription, GeneratedFile } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
@@ -8,29 +10,9 @@ import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 
-const nodeFeatureSchema = buildSchema({
-	id: 'nodeFeature',
-	name: 'Node feature options',
-	fields: {
-		destination: {
-			type: 'text',
-			defaultValue: '.',
-		},
-		name: {
-			type: 'text',
-			isRequired: true,
-			label: "What's the name of your module?",
-		},
-		description: {
-			type: 'text',
-			isRequired: true,
-			label: 'How would you describe your module?',
-		},
-	},
-})
-
-type OptionsSchema = typeof nodeFeatureSchema
-type Options = SchemaValues<OptionsSchema>
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptions
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -49,7 +31,7 @@ export default class NodeFeature<
 	public nameReadable = 'nodejs support'
 	public description = ''
 	public dependencies: FeatureDependency[] = []
-	public optionsSchema = nodeFeatureSchema as S
+	public optionsSchema = nodeFeatureOptionsSchema as S
 	public packageDependencies = [...universalDevDependencies]
 
 	public scripts = {

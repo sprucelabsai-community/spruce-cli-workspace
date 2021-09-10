@@ -2,7 +2,9 @@ import { buildSchema } from '@sprucelabs/schema'
 
 export default buildSchema({
 	id: 'nodeFeatureOptions',
-	name: 'Node feature options',
+	name: 'Create node module',
+	description:
+		'Create a new node module, to be written in typescript, ready to rock!',
 	fields: {
 		destination: {
 			type: 'text',

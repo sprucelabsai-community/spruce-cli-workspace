@@ -7,7 +7,8 @@ const nodeFeatureOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureO
 	id: 'nodeFeatureOptions',
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
-	name: 'Node feature options',
+	name: 'Create node module',
+	description: 'Create a new node module, to be written in typescript, ready to rock!',
 	    fields: {
 	            /** . */
 	            'destination': {

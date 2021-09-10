@@ -1,45 +1,27 @@
-import { buildSchema } from '@sprucelabs/schema'
+import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
+import nodeFeatureOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/nodeFeatureOptions.schema'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
-export const nodeFeatureSchema = buildSchema({
-	id: 'nodeFeatureOptions',
-	name: 'Node feature options',
-	fields: {
-		destination: {
-			type: 'text',
-			defaultValue: '.',
-		},
-		name: {
-			type: 'text',
-			isRequired: true,
-			label: "What's the name of your module?",
-		},
-		description: {
-			type: 'text',
-			isRequired: true,
-			label: 'How would you describe your module?',
-		},
-	},
-})
+const optionsSchema = nodeFeatureOptionsSchema
 
-const optionsSchema = buildSchema({
-	id: 'createNodeModule',
-	name: 'create skill',
-	description: 'A node module, in typescript, ready to rock!',
-	fields: {
-		...nodeFeatureSchema.fields,
-	},
-})
-
-type OptionsSchema = typeof optionsSchema
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptions
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Setting up a new mode module! 🤖'
 	public optionsSchema = optionsSchema
-	public async execute(): Promise<FeatureActionResponse> {
+	public async execute(options: Options): Promise<FeatureActionResponse> {
+		const codeSuggestion = options.destination
+			? `cd ${options.destination} && code .`
+			: `code .`
+
 		return {
-			hints: ['Your new module is ready!'],
+			hints: [
+				'Your new module is ready!',
+				`When you're ready, go ahead and run \`${codeSuggestion}\` to open vscode.`,
+			],
 		}
 	}
 }

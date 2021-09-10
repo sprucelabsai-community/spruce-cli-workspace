@@ -1975,7 +1975,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		
+		/** Create a new node module, to be written in typescript, ready to rock! */
 		interface NodeFeatureOptions {
 			
 				
@@ -1990,7 +1990,8 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			id: 'nodeFeatureOptions',
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
-			name: 'Node feature options',
+			name: 'Create node module',
+			description: 'Create a new node module, to be written in typescript, ready to rock!',
 			    fields: {
 			            /** . */
 			            'destination': {
