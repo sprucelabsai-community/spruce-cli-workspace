@@ -8,7 +8,7 @@ import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 
-export const nodeFeatureSchema = buildSchema({
+const nodeFeatureSchema = buildSchema({
 	id: 'nodeFeature',
 	name: 'Node feature options',
 	fields: {

@@ -12,7 +12,6 @@ import {
 import { templates } from '@sprucelabs/spruce-templates'
 import { Command, CommanderStatic } from 'commander'
 import './addons/filePrompt.addon'
-import eventsContracts from '#spruce/events/events.contract'
 import { CLI_HERO, DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
 import ActionExecuter from './features/ActionExecuter'
@@ -340,6 +339,9 @@ export default class Cli implements CliInterface {
 		const connect = bootOptions?.apiClientFactory
 			? bootOptions.apiClientFactory
 			: async () => {
+					const eventsContracts =
+						require('#spruce/events/events.contract').default
+
 					const client: ApiClient = await MercuryClientFactory.Client({
 						contracts: eventsContracts as any,
 						host: bootOptions?.host ?? DEFAULT_HOST,

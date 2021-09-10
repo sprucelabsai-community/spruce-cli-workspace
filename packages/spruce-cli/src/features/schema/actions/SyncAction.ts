@@ -19,8 +19,7 @@ type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions
 export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema = syncSchemasActionSchema
 	public commandAliases = ['sync.schemas']
-	public invocationMessage =
-		'Syncing schemas and generating `SpruceSchemas` type namespace... 📃'
+	public invocationMessage = 'Building schemas and generating types... 📃'
 
 	private readonly schemaWriter = this.Writer('schema')
 	private readonly schemaStore = this.Store('schema')

@@ -1975,6 +1975,53 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
+		
+		interface NodeFeatureOptions {
+			
+				
+				'destination'?: string| undefined | null
+				/** What's the name of your module?. */
+				'name': string
+				/** How would you describe your module?. */
+				'description': string
+		}
+
+		interface NodeFeatureOptionsSchema extends SpruceSchema.Schema {
+			id: 'nodeFeatureOptions',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Node feature options',
+			    fields: {
+			            /** . */
+			            'destination': {
+			                type: 'text',
+			                defaultValue: ".",
+			                options: undefined
+			            },
+			            /** What's the name of your module?. */
+			            'name': {
+			                label: 'What\'s the name of your module?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** How would you describe your module?. */
+			            'description': {
+			                label: 'How would you describe your module?',
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		type NodeFeatureOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema>
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
 		/** Used to collect input on the names of a class or interface */
 		interface NamedTemplateItem {
 			
@@ -2628,46 +2675,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		type CreateOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema>
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface CreateNodeModuleOptions {
-			
-				/** First Field. */
-				'fieldName1': string
-				/** Second Field. A hint */
-				'fieldName2': number
-		}
-
-		interface CreateNodeModuleOptionsSchema extends SpruceSchema.Schema {
-			id: 'createNodeModuleOptions',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: 'Create node module options',
-			    fields: {
-			            /** First Field. */
-			            'fieldName1': {
-			                label: 'First Field',
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** Second Field. A hint */
-			            'fieldName2': {
-			                label: 'Second Field',
-			                type: 'number',
-			                isRequired: true,
-			                hint: 'A hint',
-			                options: undefined
-			            },
-			    }
-		}
-
-		type CreateNodeModuleOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateNodeModuleOptionsSchema>
 
 	}
 
