@@ -8,11 +8,6 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		assert.isFunction(this.Action('error', 'create').execute)
 	}
 
-	protected static async installErrorsAndGetCreateAction() {
-		await this.installErrorFeature('errors')
-		return this.Action('error', 'create')
-	}
-
 	@test()
 	protected static async createsValidBuilder() {
 		const action = await this.installErrorsAndGetCreateAction()
@@ -70,5 +65,10 @@ export default class CreatingANewErrorBuilderTest extends AbstractErrorTest {
 		assert.isFalsy(health.schema?.errors)
 		assert.isTruthy(health.schema?.schemas)
 		assert.isLength(health.schema.schemas, 0)
+	}
+
+	protected static async installErrorsAndGetCreateAction() {
+		await this.installErrorFeature('errors')
+		return this.Action('error', 'create')
 	}
 }

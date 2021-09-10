@@ -74,6 +74,8 @@ async function run() {
 				remaining
 			)}`}. ${durationUtil.msToFriendly(getTimeSpent())}`
 		)
+
+		term.clearBelowCursor()
 	}
 
 	progressInterval = doesSupportColor && setInterval(render, 1000)

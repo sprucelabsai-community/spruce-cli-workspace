@@ -1,5 +1,6 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { namesUtil, testLog } from '@sprucelabs/spruce-skill-utils'
+import { assert } from '@sprucelabs/test'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import { ExecutionResults } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
@@ -240,7 +241,11 @@ export default class SpyInterface implements GraphicsInterface {
 				this.promptTimeout = setTimeout(() => {
 					this.reset()
 
-					reject(`Timed out waiting for input: ${definition.label}`)
+					try {
+						assert.fail(`Timed out waiting for input: ${definition.label}`)
+					} catch (err: any) {
+						reject(err)
+					}
 				}, 10000)
 				this.promptDefaultValue = definition.defaultValue
 			}

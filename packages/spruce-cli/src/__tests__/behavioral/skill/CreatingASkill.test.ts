@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
-import CommandService from '../../services/CommandService'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import testUtil from '../../tests/utilities/test.utility'
+import CommandService from '../../../services/CommandService'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {

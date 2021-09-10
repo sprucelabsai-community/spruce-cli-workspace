@@ -6,6 +6,7 @@ import { FileDescription, NpmPackage } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import { universalDevDependencies } from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 import Updater from './updaters/Updater'
@@ -46,17 +47,7 @@ export default class SkillFeature<
 		{
 			name: '@sprucelabs/mercury-types',
 		},
-		{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
-		{ name: '@types/node', isDev: true },
-		{ name: 'typescript', isDev: true },
-		{ name: 'ts-node', isDev: true },
-		{ name: 'tsconfig-paths', isDev: true },
-		{ name: 'eslint', isDev: true },
-		{ name: 'eslint-config-spruce', isDev: true },
-		{ name: 'prettier', isDev: true },
-		{ name: 'chokidar-cli', isDev: true },
-		{ name: 'concurrently', isDev: true },
-		{ name: 'tsc-watch', isDev: true },
+		...universalDevDependencies,
 	]
 
 	public optionsSchema = skillFeatureSchema as S

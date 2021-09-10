@@ -420,6 +420,17 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await this.wait(options?.timeout ?? 99999999)
 	}
 
+	protected static async openInFinder(options?: {
+		file?: string
+		dir?: string
+		timeout?: number
+	}) {
+		await this.Service('command').execute(
+			`open ${options?.file ?? options?.dir ?? this.cwd}`
+		)
+		await this.wait(options?.timeout ?? 99999999)
+	}
+
 	protected static log(...args: any[]) {
 		testUtil.log(...args)
 	}

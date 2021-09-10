@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../../tests/AbstractCliTest'
+import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class SettingUpANodeModuleTest extends AbstractCliTest {
 	@test()

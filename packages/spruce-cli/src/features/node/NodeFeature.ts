@@ -1,16 +1,21 @@
 import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { FileDescription } from '../../types/cli.types'
+import { FileDescription, GeneratedFile } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 
-const nodeFeatureSchema = buildSchema({
+export const nodeFeatureSchema = buildSchema({
 	id: 'nodeFeature',
 	name: 'Node feature options',
 	fields: {
+		destination: {
+			type: 'text',
+			defaultValue: '.',
+		},
 		name: {
 			type: 'text',
 			isRequired: true,
@@ -25,6 +30,7 @@ const nodeFeatureSchema = buildSchema({
 })
 
 type OptionsSchema = typeof nodeFeatureSchema
+type Options = SchemaValues<OptionsSchema>
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -44,17 +50,7 @@ export default class NodeFeature<
 	public description = ''
 	public dependencies: FeatureDependency[] = []
 	public optionsSchema = nodeFeatureSchema as S
-	public packageDependencies = [
-		{ name: 'typescript', isDev: true },
-		{ name: 'ts-node', isDev: true },
-		{ name: 'tsconfig-paths', isDev: true },
-		{ name: 'eslint', isDev: true },
-		{ name: 'eslint-config-spruce', isDev: true },
-		{ name: 'prettier', isDev: true },
-		{ name: 'chokidar-cli', isDev: true },
-		{ name: 'concurrently', isDev: true },
-		{ name: 'tsc-watch', isDev: true },
-	]
+	public packageDependencies = [...universalDevDependencies]
 
 	public scripts = {
 		...universalScripts,
@@ -66,25 +62,43 @@ export default class NodeFeature<
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public async beforePackageInstall() {
-		if (!diskUtil.doesDirExist(this.cwd)) {
-			diskUtil.createDir(this.cwd)
+	public async beforePackageInstall(options: Options) {
+		const destination = this.resolveDestination(options)
+
+		if (!diskUtil.doesDirExist(destination)) {
+			diskUtil.createDir(destination)
 		}
 
-		await this.Service('command').execute('yarn init -y')
+		const files: GeneratedFile[] = [
+			{
+				name: 'package.json',
+				path: diskUtil.resolvePath(destination, 'package.json'),
+				action: 'generated',
+			},
+		]
+
+		await this.Service('command', destination).execute('yarn init -y')
 
 		const nodeWriter = this.Writer('node')
-		const files = await nodeWriter.writeNodeModule(this.cwd)
+		const written = await nodeWriter.writeNodeModule(destination)
 
-		await this.installScripts()
+		files.push(...written)
 
-		return { files }
+		await this.installScripts(destination)
+
+		return { files, cwd: destination }
+	}
+
+	private resolveDestination(options: Options) {
+		return diskUtil.resolvePath(this.cwd, options.destination ?? '')
 	}
 
 	public async afterPackageInstall(
 		options: S extends Schema ? SchemaValues<S> : undefined
 	) {
-		const pkg = this.Service('pkg')
+		const cwd = this.resolveDestination(options)
+		const pkg = this.Service('pkg', cwd)
+
 		pkg.set({ path: 'name', value: namesUtil.toKebab(options.name) })
 		pkg.set({ path: 'description', value: options.description })
 		pkg.set({ path: 'version', value: '0.0.1' })
@@ -92,7 +106,7 @@ export default class NodeFeature<
 		pkg.unset('main')
 		pkg.unset('license')
 
-		await this.Store('skill').setCurrentSkillsNamespace(options.name)
+		await this.Store('skill', { cwd }).setCurrentSkillsNamespace(options.name)
 
 		return {}
 	}

@@ -1,6 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
+import eventSourceSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/eventSource.schema'
 import didRegisterSkillViewsEmitPayloadSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/didRegisterSkillViewsEmitPayload.schema'
 
 const didRegisterSkillViewsEmitTargetAndPayloadSchema: SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitTargetAndPayloadSchema  = {
@@ -9,6 +10,12 @@ const didRegisterSkillViewsEmitTargetAndPayloadSchema: SpruceSchemas.Heartwood.v
 	namespace: 'Heartwood',
 	name: '',
 	    fields: {
+	            /** Source. */
+	            'source': {
+	                label: 'Source',
+	                type: 'schema',
+	                options: {schema: eventSourceSchema_v2021_02_11,}
+	            },
 	            /** . */
 	            'payload': {
 	                type: 'schema',

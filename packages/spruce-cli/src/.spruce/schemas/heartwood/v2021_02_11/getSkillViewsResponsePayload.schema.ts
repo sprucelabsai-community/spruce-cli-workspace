@@ -1,7 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
-import registerationThemeSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/registerationTheme.schema'
+import themeSchema_v2021_02_11 from '#spruce/schemas/heartwoodViewControllers/v2021_02_11/theme.schema'
 
 const getSkillViewsResponsePayloadSchema: SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsResponsePayloadSchema  = {
 	id: 'getSkillViewsResponsePayload',
@@ -31,7 +31,7 @@ const getSkillViewsResponsePayloadSchema: SpruceSchemas.Heartwood.v2021_02_11.Ge
 	            /** . */
 	            'theme': {
 	                type: 'schema',
-	                options: {schema: registerationThemeSchema_v2021_02_11,}
+	                options: {schema: themeSchema_v2021_02_11,}
 	            },
 	    }
 }

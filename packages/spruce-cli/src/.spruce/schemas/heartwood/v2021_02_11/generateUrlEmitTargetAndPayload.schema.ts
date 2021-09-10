@@ -1,6 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
+import eventSourceSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/eventSource.schema'
 import generateUrlEmitTargetSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/generateUrlEmitTarget.schema'
 import generateUrlEmitPayloadSchema_v2021_02_11 from '#spruce/schemas/heartwood/v2021_02_11/generateUrlEmitPayload.schema'
 
@@ -10,6 +11,12 @@ const generateUrlEmitTargetAndPayloadSchema: SpruceSchemas.Heartwood.v2021_02_11
 	namespace: 'Heartwood',
 	name: '',
 	    fields: {
+	            /** Source. */
+	            'source': {
+	                label: 'Source',
+	                type: 'schema',
+	                options: {schema: eventSourceSchema_v2021_02_11,}
+	            },
 	            /** . */
 	            'target': {
 	                type: 'schema',

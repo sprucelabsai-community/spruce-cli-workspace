@@ -1,6 +1,7 @@
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { SpruceSchemas } from '../../schemas.types'
 
+import eventSourceSchema_v2021_06_23 from '#spruce/schemas/appointments/v2021_06_23/eventSource.schema'
 import didBookAppointmentsEmitTargetSchema_v2021_06_23 from '#spruce/schemas/appointments/v2021_06_23/didBookAppointmentsEmitTarget.schema'
 import didBookAppointmentsEmitPayloadSchema_v2021_06_23 from '#spruce/schemas/appointments/v2021_06_23/didBookAppointmentsEmitPayload.schema'
 
@@ -10,6 +11,12 @@ const didBookAppointmentsEmitTargetAndPayloadSchema: SpruceSchemas.Appointments.
 	namespace: 'Appointments',
 	name: '',
 	    fields: {
+	            /** Source. */
+	            'source': {
+	                label: 'Source',
+	                type: 'schema',
+	                options: {schema: eventSourceSchema_v2021_06_23,}
+	            },
 	            /** . */
 	            'target': {
 	                type: 'schema',
