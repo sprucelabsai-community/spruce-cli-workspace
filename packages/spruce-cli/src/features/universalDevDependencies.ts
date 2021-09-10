@@ -1,4 +1,4 @@
-export default const universalDevDependencies = [
+const universalDevDependencies = [
 	{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
 	{ name: '@types/node', isDev: true },
 	{ name: 'typescript', isDev: true },
@@ -11,3 +11,5 @@ export default const universalDevDependencies = [
 	{ name: 'concurrently', isDev: true },
 	{ name: 'tsc-watch', isDev: true },
 ]
+
+export default universalDevDependencies
