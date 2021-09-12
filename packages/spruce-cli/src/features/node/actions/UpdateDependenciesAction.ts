@@ -121,13 +121,6 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			)
 		}
 
-		InFlightEntertainment.writeStatus(
-			`Re-running yarn to catch any missed modules...`
-		)
-
-		//required to get install over the line for some reason????????
-		await pkg.install()
-
 		return {
 			totalDependencies: dependencies.length,
 			totalDevDependencies: devDependencies.length,

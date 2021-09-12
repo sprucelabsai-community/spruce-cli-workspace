@@ -10,6 +10,10 @@ type OptionsSchema =
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptions
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
+	public commandAliases = [
+		'create.module [destination]',
+		'create.node [destination]',
+	]
 	public invocationMessage = 'Setting up a new mode module! 🤖'
 	public optionsSchema = optionsSchema
 	public async execute(options: Options): Promise<FeatureActionResponse> {
@@ -21,6 +25,9 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			hints: [
 				'Your new module is ready!',
 				`When you're ready, go ahead and run \`${codeSuggestion}\` to open vscode.`,
+				'Once vscode loads, open the terminal and type `spruce setup.vscode`',
+				"Hint: You're going to want to install all extensions and setup all features (yes for everything).",
+				'See you there! 💪',
 			],
 		}
 	}
