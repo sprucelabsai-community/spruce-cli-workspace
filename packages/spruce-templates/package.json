@@ -73,25 +73,5 @@
 		"prettier": "^2.3.2",
 		"typescript": "^4.4.2"
 	},
-	"yarn-upgrade-all": {
-		"ignore": [
-			"socket.io",
-			"socket.io-client",
-			"@sprucelabs/error",
-			"@sprucelabs/jest-sheets-reporter",
-			"@sprucelabs/mercury",
-			"@sprucelabs/mercury-client",
-			"@sprucelabs/mercury-event-emitter",
-			"@sprucelabs/mercury-types",
-			"@sprucelabs/resolve-path-aliases",
-			"@sprucelabs/schema",
-			"@sprucelabs/semantic-release",
-			"@sprucelabs/spruce-core-schemas",
-			"@sprucelabs/spruce-skill-utils",
-			"@sprucelabs/test",
-			"@sprucelabs/test-utils",
-			"globby"
-		]
-	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }

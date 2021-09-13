@@ -18,11 +18,6 @@ const universalScripts = {
 	'update.dependencies': 'yarn clean.dependencies && yarn',
 	'resolve-paths.lint': 'yarn build.resolve-paths ; yarn lint',
 	test: 'jest',
-	'upgrade.packages':
-		'yarn-upgrade-all && rm -f yarn.lock ; yarn ; yarn fix.lint ; true',
-	'upgrade.packages.all': 'yarn install && yarn upgrade.packages',
-	'upgrade.packages.test':
-		'yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test',
 	'watch.build.dev':
 		"tsc-watch --sourceMap --onCompilationComplete 'yarn post.watch.build'",
 	'watch.lint':
