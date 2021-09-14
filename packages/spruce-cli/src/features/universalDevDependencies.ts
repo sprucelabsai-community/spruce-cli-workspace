@@ -8,6 +8,7 @@ const universalDevDependencies = [
 	{ name: 'chokidar-cli', isDev: true },
 	{ name: 'concurrently', isDev: true },
 	{ name: 'tsc-watch', isDev: true },
+	{ name: 'ts-node', isDev: true },
 ]
 
 export default universalDevDependencies

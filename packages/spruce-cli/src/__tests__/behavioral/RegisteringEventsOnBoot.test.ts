@@ -64,86 +64,24 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		const namespace = namesUtil.toPascal(currentSkill.slug)
 		const sig = eventContractUtil.getSignatureByName(contracts[1], name)
 
-		assert.isEqualDeep(sig, {
+		assert.doesInclude(sig, {
 			emitPayloadSchema: {
 				id: 'didBookAppointmentEmitTargetAndPayload',
 				version,
 				namespace,
-				name: '',
-				fields: {
-					source: {
-						label: 'Source',
-						type: 'schema',
-						options: {
-							schema: {
-								id: 'eventSource',
-								version,
-								namespace,
-								name: '',
-								fields: { proxyToken: { label: 'Proxy token', type: 'id' } },
-							},
-						},
-					},
-					target: {
-						type: 'schema',
-						isRequired: true,
-						options: {
-							schema: {
-								id: 'myFantasticallyAmazingEventEmitTarget',
-								version,
-								namespace,
-								name: '',
-								fields: { tacoId: { type: 'id', isRequired: true } },
-							},
-						},
-					},
-					payload: {
-						type: 'schema',
-						isRequired: true,
-						options: {
-							schema: {
-								id: 'myFantasticallyAmazingEventEmitPayload',
-								version,
-								namespace,
-								name: '',
-								fields: { aRequiredField: { type: 'text', isRequired: true } },
-							},
-						},
-					},
-				},
 			},
 			responsePayloadSchema: {
 				id: 'myFantasticallyAmazingEventResponsePayload',
 				version,
 				namespace,
-				name: '',
-				fields: { anotherRequiredField: { type: 'text', isRequired: true } },
 			},
 			emitPermissionContract: {
 				id: 'myFantasticallyAmazingEventEmitPermissions',
 				name: 'my fantastically amazing event',
-				requireAllPermissions: false,
-				permissions: [
-					{
-						id: 'can-high-five',
-						name: 'Can give high five',
-						description: 'Will this person be allowed to high five?',
-						requireAllStatuses: false,
-					},
-				],
 			},
 			listenPermissionContract: {
 				id: 'myFantasticallyAmazingEventListenPermissions',
 				name: 'my fantastically amazing event',
-				requireAllPermissions: false,
-				permissions: [
-					{
-						id: 'can-high-five',
-						name: 'Can give high five',
-						description: 'Will this person be allowed to high five?',
-						requireAllStatuses: false,
-					},
-				],
 			},
 		})
 	}
