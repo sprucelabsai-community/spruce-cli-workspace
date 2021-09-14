@@ -47,6 +47,8 @@ export default class SkillFeature<
 		{
 			name: '@sprucelabs/mercury-types',
 		},
+		{ name: 'tsconfig-paths', isDev: true },
+		{ name: 'ts-node', isDev: true },
 		...universalDevDependencies,
 	]
 

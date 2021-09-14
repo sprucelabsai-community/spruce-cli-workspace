@@ -2,8 +2,6 @@ const universalDevDependencies = [
 	{ name: '@sprucelabs/resolve-path-aliases', isDev: true },
 	{ name: '@types/node', isDev: true },
 	{ name: 'typescript', isDev: true },
-	{ name: 'ts-node', isDev: true },
-	{ name: 'tsconfig-paths', isDev: true },
 	{ name: 'eslint', isDev: true },
 	{ name: 'eslint-config-spruce', isDev: true },
 	{ name: 'prettier', isDev: true },
