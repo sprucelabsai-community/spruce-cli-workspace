@@ -1,4 +1,4 @@
-import { coreEventContracts } from '@sprucelabs/mercury-types'
+import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import appointmentsDidBookAppointmentsEventContract_v2021_06_23, {
 	DidBookAppointmentsEventContract as AppointmentsDidBookAppointmentsEventContract_v2021_06_23,
 } from '#spruce/events/appointments/didBookAppointments.v2021_06_23.contract'

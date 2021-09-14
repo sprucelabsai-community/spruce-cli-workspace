@@ -10,6 +10,7 @@ import CommandService from './CommandService'
 export interface AddOptions {
 	isDev?: boolean
 	shouldForceInstall?: boolean
+	shouldCleanupLockFiles?: boolean
 }
 
 export default class PkgService extends CommandService {
@@ -77,13 +78,18 @@ export default class PkgService extends CommandService {
 	}
 
 	public async install(pkg?: string[] | string, options?: AddOptions) {
+		const shouldCleanupLockFiles = options?.shouldCleanupLockFiles !== false
+		const deleteLockFile = shouldCleanupLockFiles
+			? this.deleteLockFile.bind(this)
+			: () => {}
+
 		if (!pkg) {
 			await this.execute('yarn', { args: ['install'] })
-			this.deleteLockFile()
+			deleteLockFile()
 			return { totalInstalled: -1, totalSkipped: -1 }
 		}
 
-		this.deleteLockFile()
+		deleteLockFile()
 
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const toInstall = []
@@ -118,7 +124,7 @@ export default class PkgService extends CommandService {
 			await this.execute('yarn', { args: ['install'] })
 		}
 
-		this.deleteLockFile()
+		deleteLockFile()
 
 		this._parsedPkg = undefined
 
@@ -144,7 +150,7 @@ export default class PkgService extends CommandService {
 		return { executable, args }
 	}
 
-	private deleteLockFile() {
+	public deleteLockFile() {
 		const files = ['package-lock.json', 'yarn.lock']
 		for (const file of files) {
 			const lock = pathUtil.join(this.cwd, file)

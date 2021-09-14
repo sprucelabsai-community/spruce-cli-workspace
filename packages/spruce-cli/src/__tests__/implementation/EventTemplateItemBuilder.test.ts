@@ -1,3 +1,4 @@
+import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import { EventContract } from '@sprucelabs/mercury-types'
 import { buildSchema, SchemaTemplateItem } from '@sprucelabs/schema'
 import {
@@ -9,7 +10,6 @@ import { EventContractTemplateItem } from '@sprucelabs/spruce-templates'
 import { test, assert } from '@sprucelabs/test'
 import EventTemplateItemBuilder from '../../templateItemBuilders/EventTemplateItemBuilder'
 import AbstractCliTest from '../../tests/AbstractCliTest'
-import coreEventContract from '../support/coreEventContract'
 
 const expectedVersion = versionUtil.generateVersion().dirValue
 
@@ -350,7 +350,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 				{
 					eventSignatures: {
 						'register-events':
-							coreEventContract.eventSignatures['register-events'],
+							coreEventContracts[0].eventSignatures['can-listen::v2020_12_25'],
 					},
 				},
 			],

@@ -1,7 +1,7 @@
 import pathUtil from 'path'
+import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import {
 	buildPermissionContract,
-	coreEventContracts,
 	EventContract,
 	EventSignature,
 	SpruceSchemas,
@@ -234,7 +234,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isAbove(health.event.contracts.length, 0)
 	}
 
-	@test()
+	@test.only()
 	protected static async syncsEventsFromOtherSkills() {
 		const { skillFixture, skill2 } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()

@@ -92,6 +92,8 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			(d) => !this.isBlockedFromUpgrade(d.stripped, pkg)
 		)
 
+		pkg.deleteLockFile()
+
 		if (dependencies.length > 0) {
 			InFlightEntertainment.writeStatus(
 				`Installing ${dependencies.length} dependenc${
@@ -102,6 +104,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 				dependencies.map((d) => d.name),
 				{
 					shouldForceInstall: true,
+					shouldCleanupLockFiles: false,
 				}
 			)
 		}
@@ -117,9 +120,12 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 				{
 					shouldForceInstall: true,
 					isDev: true,
+					shouldCleanupLockFiles: false,
 				}
 			)
 		}
+
+		pkg.deleteLockFile()
 
 		return {
 			totalDependencies: dependencies.length,

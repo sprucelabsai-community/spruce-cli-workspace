@@ -1,4 +1,4 @@
-{{#if shouldImportCoreEvents}}import { coreEventContracts } from '@sprucelabs/mercury-types'{{/if}}
+{{#if shouldImportCoreEvents}}import { coreEventContracts } from '@sprucelabs/mercury-core-events'{{/if}}
 
 {{#each contracts}}
 import {{namespaceCamel}}{{namePascal}}EventContract_{{version}}, { {{namePascal}}EventContract as {{namespacePascal}}{{namePascal}}EventContract_{{version}}  } from '#spruce/events/{{ namespaceCamel }}/{{ nameCamel }}.{{ version }}.contract'
