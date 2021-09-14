@@ -234,7 +234,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isAbove(health.event.contracts.length, 0)
 	}
 
-	@test.only()
+	@test()
 	protected static async syncsEventsFromOtherSkills() {
 		const { skillFixture, skill2 } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
