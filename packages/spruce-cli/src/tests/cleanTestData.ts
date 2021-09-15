@@ -81,4 +81,5 @@ void run()
 	})
 	.catch((err) => {
 		term.renderError(err)
+		process.exit(1)
 	})
