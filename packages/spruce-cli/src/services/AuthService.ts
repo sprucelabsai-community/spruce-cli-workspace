@@ -65,6 +65,13 @@ export default class AuthService {
 		return null
 	}
 
+	public logoutCurrentSkill() {
+		this.env.unset('SKILL_ID')
+		this.env.unset('SKILL_API_KEY')
+		this.env.unset('SKILL_NAME')
+		this.env.unset('SKILL_SLUG')
+	}
+
 	public updateCurrentSkill(skill: SkillAuth) {
 		this.env.set('SKILL_ID', skill.id)
 		this.env.set('SKILL_API_KEY', skill.apiKey)

@@ -160,6 +160,11 @@ export default class SkillStore extends AbstractStore {
 		})
 
 		eventResponseUtil.getFirstResponseOrThrow(response)
+
+		if (SkillStore.currentSkill?.id === skillId) {
+			SkillStore.currentSkill = undefined
+			this.Service('auth').logoutCurrentSkill()
+		}
 	}
 
 	public async fetchMySkills() {

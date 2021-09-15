@@ -357,9 +357,7 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 			localNamespace: 'testing',
 		})
 
-		const match = schemaTemplateItems.find(
-			(item) => item.id === 'eventContract'
-		)
+		const match = schemaTemplateItems.find((item) => item.id === 'eventSource')
 		assert.isTruthy(match)
 	}
 }

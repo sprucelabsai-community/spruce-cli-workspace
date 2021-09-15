@@ -1,3 +1,4 @@
+import { SchemaError } from '@sprucelabs/schema'
 import { EventFeature } from '@sprucelabs/spruce-event-plugin'
 import {
 	SpruceEvent,
@@ -5,7 +6,6 @@ import {
 	eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { EnvService } from '@sprucelabs/spruce-skill-utils'
-import { SchemaError } from '@sprucelabs/schema'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
 	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
@@ -40,7 +40,9 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
 		delete process.env.SKILL_ID
 		delete process.env.SKILL_API_KEY
 
-		const client = await events.connectToApi({ shouldWaitForWillBoot: false })
+		const client = (await events.connectToApi({
+			shouldWaitForWillBoot: false,
+		})) as any
 
 		const requestResults = await client.emit('request-pin::v2020_12_25', {
 			payload: {

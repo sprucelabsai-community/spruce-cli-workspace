@@ -26,14 +26,8 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	protected static async afterEach() {
-		await this.resetSkills()
-
+		await this.resetCurrentSkill()
 		await super.afterEach()
-	}
-
-	private static async resetSkills() {
-		const skillFixture = this.getSkillFixture()
-		await skillFixture.clearAllSkills()
 	}
 
 	@test()
@@ -62,7 +56,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			name: 'My new skill',
 		})
 
-		await this.resetSkills()
+		await this.resetCurrentSkill()
 
 		const env = this.Service('env')
 
@@ -123,7 +117,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			name: 'My new skill',
 		})
 
-		await this.resetSkills()
+		await this.resetCurrentSkill()
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
@@ -145,7 +139,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			name: 'My new skill',
 		})
 
-		await this.resetSkills()
+		await this.resetCurrentSkill()
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
@@ -164,7 +158,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 			name: 'Conversation test',
 		})
 
-		await this.resetSkills()
+		await this.resetCurrentSkill()
 
 		await this.Action('conversation', 'create').execute({
 			nameReadable: 'book an appointment',
@@ -199,5 +193,23 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		const { skills } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 		return skills
+	}
+
+	private static async resetCurrentSkill() {
+		const isInstalled = this.Service('settings').isMarkedAsInstalled('skill')
+		if (!isInstalled) {
+			return
+		}
+
+		const skills = this.Store('skill')
+		const isRegistered = await skills.isCurrentSkillRegistered()
+
+		if (isRegistered) {
+			const skill = await skills.loadCurrentSkill()
+
+			if (skill.id) {
+				await skills.unregisterSkill(skill.id)
+			}
+		}
 	}
 }
