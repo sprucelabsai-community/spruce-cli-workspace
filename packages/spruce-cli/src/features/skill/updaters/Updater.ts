@@ -1,4 +1,7 @@
+import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import SpruceError from '../../../errors/SpruceError'
+import { GlobalEmitter } from '../../../GlobalEmitter'
 import AbstractFeature from '../../AbstractFeature'
 
 type UpgradeOptions = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions
@@ -8,7 +11,10 @@ type Feature =
 
 export default class Updater {
 	private feature: Feature
-	public constructor(skill: Feature) {
+	private emitter: GlobalEmitter
+
+	public constructor(skill: Feature, emitter: GlobalEmitter) {
+		this.emitter = emitter
 		this.feature = skill
 	}
 
@@ -20,10 +26,27 @@ export default class Updater {
 		const name = pkgService.get('name')
 		const description = pkgService.get('description')
 
+		const results = await this.emitter.emit(
+			'skill.will-write-directory-template'
+		)
+
+		const { payloads } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+			results,
+			SpruceError
+		)
+
+		const filesToSkip = ['package.json']
+
+		for (const payload of payloads) {
+			if (payload.filesToSkip) {
+				filesToSkip.push(...payload.filesToSkip)
+			}
+		}
+
 		const generatedFiles = await skillWriter.writeSkill(this.feature.cwd, {
 			name,
 			description,
-			filesToSkip: ['package.json'],
+			filesToSkip,
 		})
 
 		return generatedFiles

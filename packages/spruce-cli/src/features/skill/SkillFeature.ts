@@ -90,7 +90,7 @@ export default class SkillFeature<
 			path: '.spruce/errors/options.types.ts',
 			description:
 				'Holds all possible error codes and options. Will be updated as you create more errors (spruce create.error).',
-			shouldOverwriteWhenChanged: false,
+			shouldOverwriteWhenChanged: true,
 		},
 		{
 			path: 'src/.spruce/features/event.plugin.ts',
@@ -195,7 +195,7 @@ export default class SkillFeature<
 		const isInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			const updater = new Updater(this)
+			const updater = new Updater(this, this.emitter)
 			const files = await updater.updateFiles(upgradeOptions as any)
 			return {
 				files,

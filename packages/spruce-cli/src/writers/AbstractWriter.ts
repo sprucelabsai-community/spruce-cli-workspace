@@ -93,7 +93,6 @@ export default abstract class AbstractWriter {
 				!filesToWrite || filesToWrite.indexOf(generated.filename) > -1
 			const shouldSkip =
 				filesToSkip && filesToSkip.indexOf(generated.filename) > -1
-
 			if (shouldWrite && !shouldSkip) {
 				results = await this.writeFileIfChangedMixinResults(
 					pathUtil.join(destinationDir, generated.relativePath),

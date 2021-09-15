@@ -149,6 +149,17 @@ export const globalContract = buildEventContract({
 				},
 			}),
 		},
+		'skill.will-write-directory-template': {
+			responsePayloadSchema: buildSchema({
+				id: 'wilLWriteDirectoryTemplateResponsePayload',
+				fields: {
+					filesToSkip: {
+						type: 'text',
+						isArray: true,
+					},
+				},
+			}),
+		},
 	},
 })
 

@@ -145,21 +145,64 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 			return {}
 		}
 
-		CommandService.setMockResponse('yarn clean.build', {
-			code: 0,
-		})
-
-		CommandService.setMockResponse('yarn build.dev', {
-			code: 0,
-		})
-
-		CommandService.setMockResponse(/yarn.*?add/gis, {
-			code: 0,
-		})
+		this.disableCleanBuildAndYarnAdd()
 
 		await this.Action('node', 'upgrade').execute({})
 
 		assert.isEqual(wasHit, isInstalled)
+	}
+
+	@test()
+	protected static async resetsErrorPluginInSkill() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		const { plugin, expectedContents } = this.destroyErrorPlugin()
+
+		await this.disableCleanBuildAndYarnAdd()
+
+		const promise = this.Action('node', 'upgrade').execute({
+			upgradeMode: 'askForChanged',
+		})
+
+		await this.waitForInput()
+		await this.ui.sendInput('overwrite')
+
+		await promise
+
+		const actualContents = diskUtil.readFile(plugin)
+
+		assert.isEqual(actualContents, expectedContents)
+	}
+
+	@test()
+	protected static async resetsErrorPluginWhenErrorInstalled() {
+		await this.FeatureFixture().installCachedFeatures('errors')
+
+		await this.Action('error', 'create').execute({
+			nameReadable: 'Test pass',
+			nameCamel: 'testPass',
+		})
+
+		const { plugin, expectedContents } = this.destroyErrorPlugin()
+
+		this.disableCleanAndBuild()
+
+		const results = await this.Action('node', 'upgrade').execute({
+			upgradeMode: 'askForChanged',
+		})
+
+		assert.isFalsy(results.errors)
+		const actualContents = diskUtil.readFile(plugin)
+
+		assert.isEqual(actualContents, expectedContents)
+	}
+
+	private static destroyErrorPlugin() {
+		const plugin = this.resolveHashSprucePath('errors', 'options.types.ts')
+		const expectedContents = diskUtil.readFile(plugin)
+
+		diskUtil.writeFile(plugin, 'waka')
+		return { plugin, expectedContents }
 	}
 
 	private static getViewsPluginPath() {
@@ -168,5 +211,23 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 
 	protected static assertViewPluginNotWritten() {
 		assert.isFalse(diskUtil.doesFileExist(this.getViewsPluginPath()))
+	}
+
+	private static disableCleanBuildAndYarnAdd() {
+		this.disableCleanAndBuild()
+
+		CommandService.setMockResponse(/yarn.*?add/gis, {
+			code: 0,
+		})
+	}
+
+	private static disableCleanAndBuild() {
+		CommandService.setMockResponse('yarn clean.build', {
+			code: 0,
+		})
+
+		CommandService.setMockResponse('yarn build.dev', {
+			code: 0,
+		})
 	}
 }

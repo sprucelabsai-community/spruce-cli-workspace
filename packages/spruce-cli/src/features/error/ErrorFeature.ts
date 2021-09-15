@@ -41,6 +41,17 @@ export default class ErrorFeature extends AbstractFeature {
 			'feature.did-execute',
 			this.handleDidExecuteCommand.bind(this)
 		)
+
+		void this.emitter.on('skill.will-write-directory-template', async () => {
+			const isInstalled = await this.featureInstaller.isInstalled('error')
+			if (isInstalled) {
+				return {
+					filesToSkip: ['options.types.ts'],
+				}
+			}
+
+			return {}
+		})
 	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {
