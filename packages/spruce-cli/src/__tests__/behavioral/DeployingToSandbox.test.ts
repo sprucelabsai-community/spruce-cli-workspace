@@ -26,7 +26,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	protected static async afterEach() {
-		await this.resetCurrentSkill()
+		await this.getSkillFixture().clearAllSkills()
 		await super.afterEach()
 	}
 
@@ -52,7 +52,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async throwsHelpfulErrorWhenMissingParams() {
 		await this.installAndSetupForSandbox()
 
-		await this.getSkillFixture().registerCurrentSkill({
+		const skill = await this.getSkillFixture().registerCurrentSkill({
 			name: 'My new skill',
 		})
 
@@ -60,6 +60,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 		const env = this.Service('env')
 
+		env.set('SKILL_ID', skill.id)
 		env.unset('SKILL_NAME')
 		env.unset('SKILL_SLUG')
 
@@ -73,21 +74,18 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async doesNotReRegisterIfNotRegisteredFirstTime() {
+	protected static async doesNotTryToRegisterIfNeverRegisteredBefore() {
 		const { client } = await this.installAndSetupForSandbox()
+
+		const expected = await this.getTotalSkills(client)
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		boot.meta?.kill()
 
-		const results2 = await client.emit(`list-skills::v2020_12_25`, {
-			payload: { showMineOnly: true },
-		})
+		const actual = await this.getTotalSkills(client)
 
-		const { skills: skills2 } =
-			eventResponseUtil.getFirstResponseOrThrow(results2)
-
-		assert.isLength(skills2, 0)
+		assert.isEqual(expected, actual)
 	}
 
 	@test()
@@ -118,6 +116,11 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 		})
 
 		await this.resetCurrentSkill()
+
+		const env = this.Service('env')
+		env.set('SKILL_ID', skill.id)
+		env.set('SKILL_NAME', skill.name)
+		env.set('SKILL_SLUG', skill.slug)
 
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
@@ -211,5 +214,17 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 				await skills.unregisterSkill(skill.id)
 			}
 		}
+	}
+
+	private static async getTotalSkills(client: ApiClient) {
+		const results2 = await client.emit(`list-skills::v2020_12_25`, {
+			payload: { showMineOnly: true },
+		})
+
+		const { skills: skills2 } =
+			eventResponseUtil.getFirstResponseOrThrow(results2)
+
+		const total = skills2.length
+		return total
 	}
 }
