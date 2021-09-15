@@ -39,7 +39,7 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class SyncAction extends AbstractAction<OptionsSchema> {
-	public commandAliases = ['set.remote']
+	public commandAliases = ['set.remote [remote]']
 	public optionsSchema: OptionsSchema = optionsSchema
 	public invocationMessage = 'Set remote... 🜒'
 
