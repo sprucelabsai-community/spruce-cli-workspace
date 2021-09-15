@@ -497,7 +497,6 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 		await this.Service('pkg').uninstall([
 			'@sprucelabs/mercury-types',
 			'@sprucelabs/mercury-client',
-			'@sprucelabs/spruce-event-utils',
 			'@sprucelabs/spruce-event-plugin',
 		])
 		return results

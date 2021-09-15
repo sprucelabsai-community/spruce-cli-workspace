@@ -29,16 +29,16 @@ export default class EventFeature extends AbstractFeature {
 	]
 	public packageDependencies = [
 		{
-			name: '@sprucelabs/mercury-client@latest',
+			name: '@sprucelabs/mercury-client',
 		},
 		{
-			name: '@sprucelabs/mercury-types@latest',
+			name: '@sprucelabs/mercury-types',
 		},
 		{
-			name: '@sprucelabs/spruce-event-utils@latest',
+			name: '@sprucelabs/spruce-event-utils',
 		},
 		{
-			name: '@sprucelabs/spruce-event-plugin@latest',
+			name: '@sprucelabs/spruce-event-plugin',
 		},
 	]
 
