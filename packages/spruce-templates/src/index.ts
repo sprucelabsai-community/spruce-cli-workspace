@@ -59,9 +59,6 @@ export const templates = {
 
 		return template({
 			...options,
-			schemaTemplateItems: options.schemaTemplateItems.filter(
-				(i) => !i.importFrom
-			),
 			imports,
 			schemaImports,
 			globalSchemaNamespace:

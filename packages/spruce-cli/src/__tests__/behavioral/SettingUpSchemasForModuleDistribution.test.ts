@@ -186,7 +186,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 
 	@test('schemas are imported from one module', ['schema1'])
 	@test('schemas are imported from two modules', ['schema1', 'schema2'])
-	protected static async schemasAreImportedFromModuleWhenSyncedFormDifferentNamespace(
+	protected static async schemasAreImportedFromModuleWhenSyncedFromDifferentNamespace(
 		schemaNames: ('schema1' | 'schema2')[]
 	) {
 		await this.reInstallSkill()
@@ -269,7 +269,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		assert.isEqualDeep(localSchema.importsWhenRemote, importsWhenRemote)
 
 		await this.assertCalendarEventSchemaIsImported(results)
-		await this.assertValidTypesFile(results)
+		await this.assertValidTypesFileWhenAddingRemoteImport(results)
 	}
 
 	@test()
@@ -360,6 +360,78 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		)
 	}
 
+	@test()
+	protected static async importedSchemasDoNotShowUpInSchemaTypes() {
+		// await this.reInstallSkill()
+		await this.Store('skill').setCurrentSkillsNamespace('TestingTwo')
+
+		const schema1 = {
+			id: 'fullCompletedForm',
+			namespace: 'Heartwood',
+			version: versionUtil.generateVersion().dirValue,
+			moduleToImportFromWhenRemote: '@sprucelabs/heartwood-view-controllers',
+			importsWhenRemote: ['import * from bananarama'],
+			fields: {
+				id: {
+					type: 'id',
+					isRequired: true,
+				},
+				personId: {
+					type: 'id',
+					isRequired: true,
+				},
+				values: {
+					type: 'raw',
+					isArray: true,
+					options: {
+						valueType: 'Record<string, any>',
+					},
+				},
+			},
+		}
+
+		const schema2 = {
+			id: 'localCompleted',
+			version: versionUtil.generateVersion().dirValue,
+			fields: {
+				id: {
+					type: 'id',
+					isRequired: true,
+				},
+				personId: {
+					type: 'id',
+					isRequired: true,
+				},
+				values: {
+					type: 'raw',
+					isArray: true,
+					options: {
+						valueType: 'Record<string, any>',
+					},
+				},
+			},
+		}
+
+		await this.getEmitter().on('schema.did-fetch-schemas', async () => {
+			return {
+				schemas: [schema1, schema2],
+			}
+		})
+
+		const results = await this.SyncAction().execute({
+			shouldInstallMissingDependencies: true,
+		})
+
+		assert.isFalsy(results.errors)
+
+		const schemaTypesFile = testUtil.assertFileByNameInGeneratedFiles(
+			'schemas.types.ts',
+			results.files
+		)
+
+		await this.Service('typeChecker').check(schemaTypesFile)
+	}
+
 	private static SyncAction() {
 		return this.Action('schema', 'sync', {
 			optionOverrides: {
@@ -429,7 +501,9 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		return templateItems as SchemaTemplateItem[]
 	}
 
-	private static async assertValidTypesFile(results: FeatureActionResponse) {
+	private static async assertValidTypesFileWhenAddingRemoteImport(
+		results: FeatureActionResponse
+	) {
 		const schemaTypesFile = testUtil.assertFileByNameInGeneratedFiles(
 			'schemas.types.ts',
 			results.files

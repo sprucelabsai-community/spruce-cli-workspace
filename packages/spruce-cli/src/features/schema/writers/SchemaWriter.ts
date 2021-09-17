@@ -140,13 +140,11 @@ export default class SchemaWriter extends AbstractWriter {
 		let results: WriteResults = []
 		this.ui.startLoading('Generating schema types...')
 
-		const firstMatchWithoutImportFrom = schemaTemplateItems.find(
-			(i) => !i.importFrom
-		)
+		const localItems = schemaTemplateItems.filter((i) => !i.importFrom)
 
-		if (firstMatchWithoutImportFrom) {
+		if (localItems) {
 			const schemaTypesContents = this.templates.schemasTypes({
-				schemaTemplateItems,
+				schemaTemplateItems: localItems,
 				fieldTemplateItems,
 				valueTypes,
 				globalSchemaNamespace: options.globalSchemaNamespace,
