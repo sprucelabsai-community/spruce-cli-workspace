@@ -142,7 +142,7 @@ export default class SchemaWriter extends AbstractWriter {
 
 		const localItems = schemaTemplateItems.filter((i) => !i.importFrom)
 
-		if (localItems) {
+		if (localItems.length > 0) {
 			const schemaTypesContents = this.templates.schemasTypes({
 				schemaTemplateItems: localItems,
 				fieldTemplateItems,

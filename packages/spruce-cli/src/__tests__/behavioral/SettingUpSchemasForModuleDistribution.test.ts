@@ -20,10 +20,40 @@ const REMOTE_MODULE2 = '@sprucelabs/spruce-templates'
 export default class SettingUpSchemasForModuleDistributionTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'schemas'
 	private static builder1: Schema
-	private static schema1: Schema
+	private static schema1: Schema = {
+		id: 'calendarEvent',
+		version: 'v2021_09_20',
+		namespace: 'TestingSchemas',
+		name: 'Schema imported as module',
+		moduleToImportFromWhenRemote: '@sprucelabs/spruce-calendar-utils',
+		fields: {
+			fieldName1: { label: 'First Field', type: 'text', isRequired: true },
+			fieldName2: {
+				label: 'Second Field',
+				type: 'number',
+				isRequired: true,
+				hint: 'A hint',
+			},
+		},
+	}
 	//@ts-ignore
 	private static schema1b: Schema
-	private static schema2: Schema
+	private static schema2: Schema = {
+		id: 'calendarEvent2',
+		version: 'v2021_09_20',
+		namespace: 'TestingSchemas',
+		name: 'Schema imported as module',
+		moduleToImportFromWhenRemote: '@sprucelabs/spruce-templates',
+		fields: {
+			fieldName1: { label: 'First Field', type: 'text', isRequired: true },
+			fieldName2: {
+				label: 'Second Field',
+				type: 'number',
+				isRequired: true,
+				hint: 'A hint',
+			},
+		},
+	}
 
 	@test(
 		'can specify importFromModuleWhenRemote 1',
@@ -209,6 +239,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		})
 
 		await this.assertCalendarEventSchemaIsImported(results)
+
 		assert.doesThrow(() =>
 			testUtil.assertFileByNameInGeneratedFiles(
 				'schemas.types.ts',
