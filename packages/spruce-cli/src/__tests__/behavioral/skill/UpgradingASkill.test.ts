@@ -317,51 +317,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async canOverwriteMultipleChangedScript() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
-		const pkg = this.Service('pkg')
-		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
-		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
-
-		const promise = this.Action('node', 'upgrade').execute({})
-
-		await this.waitForInput()
-
-		let last = this.ui.lastInvocation()
-
-		assert.isEqual(last.command, 'prompt')
-		await this.ui.sendInput('overwrite')
-
-		last = this.ui.lastInvocation()
-
-		assert.isEqual(last.command, 'prompt')
-		await this.ui.sendInput('overwrite')
-
-		await promise
-
-		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
-		assert.isNotEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
-	}
-
-	@test()
-	protected static async doesNotAskIfNewScriptsAreAddedToSkillFeature() {
-		const cli = await this.FeatureFixture().installCachedFeatures('skills')
-
-		const pkg = this.Service('pkg')
-
-		const skillFeature = cli.getFeature('skill')
-		//@ts-ignore
-		skillFeature.scripts['taco'] = 'bravo'
-
-		await this.Action('node', 'upgrade').execute({})
-
-		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
-
-		this.assertSandboxListenerNotWritten()
-	}
-
-	@test()
 	protected static async upgradingSkillWithSandboxUpgradesTheListener() {
 		await this.FeatureFixture().installCachedFeatures('sandbox')
 		const results = await this.Action('sandbox', 'setup').execute({})
@@ -380,61 +335,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		const newContents = diskUtil.readFile(match)
 		assert.isEqual(originalContents, newContents)
-	}
-
-	@test()
-	protected static async restoresMissingPackagesAndPlugins() {
-		await this.FeatureFixture().installCachedFeatures('views')
-
-		const features = this.Service('pkg', process.cwd()).get(
-			'testSkillCache.everything'
-		)
-
-		const pkg = this.Service('pkg')
-		const checks: { nodeModule?: string; plugin?: string }[] = []
-
-		for (const feat of features) {
-			const { code } = feat
-			const nodeModule = `@sprucelabs/spruce-${code}-plugin`
-			const path = this.resolveHashSprucePath('features', `${code}.plugin.ts`)
-			const plugin = diskUtil.doesFileExist(path) ? path : undefined
-
-			checks.push({
-				nodeModule: pkg.get(['dependencies', nodeModule])
-					? nodeModule
-					: undefined,
-				plugin,
-			})
-		}
-
-		for (const check of checks) {
-			if (check.nodeModule) {
-				pkg.unset(['dependencies', check.nodeModule])
-			}
-			if (check.plugin) {
-				diskUtil.deleteFile(check.plugin)
-			}
-		}
-
-		CommandService.setMockResponse(/yarn clean/, { code: 0 })
-		CommandService.setMockResponse(/yarn build.dev/, { code: 0 })
-
-		await this.Action('node', 'upgrade').execute({})
-
-		for (const check of checks) {
-			if (check.nodeModule) {
-				assert.isTruthy(
-					pkg.get(['dependencies', check.nodeModule]),
-					`${check.nodeModule} was not added back as a dependencies.`
-				)
-			}
-			if (check.plugin) {
-				assert.isTrue(
-					diskUtil.doesFileExist(check.plugin),
-					`${check.plugin} was not rewritten.`
-				)
-			}
-		}
 	}
 
 	private static clearFileIfAboutToBeUpdated(
