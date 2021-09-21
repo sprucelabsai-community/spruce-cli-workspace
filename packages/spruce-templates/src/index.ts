@@ -399,7 +399,7 @@ export const templates = {
 }
 
 export type Templates = typeof templates
-export { default as importExtractor } from './utilities/importExtractor.utility'
+export { default as importExtractorUtil } from './utilities/importExtractor.utility'
 
 export default handlebars
 export * from './types/templates.types'

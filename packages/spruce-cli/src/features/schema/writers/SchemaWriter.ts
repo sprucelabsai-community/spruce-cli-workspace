@@ -11,7 +11,7 @@ import {
 	SchemaBuilderTemplateItem,
 	ValueTypes,
 } from '@sprucelabs/spruce-templates'
-import importExtractorUtil from '@sprucelabs/spruce-templates/build/utilities/importExtractor.utility'
+import { importExtractorUtil } from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 import schemaDiskUtil from '../utilities/schemaDisk.utility'
