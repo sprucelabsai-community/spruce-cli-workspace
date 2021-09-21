@@ -8,7 +8,7 @@
     "namespace": "spruce-cli"
   },
   "license": "MIT",
-  "version": "14.21.0",
+  "version": "14.21.1",
   "bin": {
     "spruce": "./build/index.js"
   },
@@ -76,7 +76,7 @@
     "@sprucelabs/spruce-event-utils": "latest",
     "@sprucelabs/spruce-skill-booter": "latest",
     "@sprucelabs/spruce-skill-utils": "latest",
-    "@sprucelabs/spruce-templates": "^14.21.0",
+    "@sprucelabs/spruce-templates": "^14.21.1",
     "cfonts": "^2.9.3",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.2",
