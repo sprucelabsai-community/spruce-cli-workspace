@@ -405,6 +405,7 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 		})
 
 		const results = await this.Action('event', 'sync').execute({})
+
 		return { results, filename }
 	}
 

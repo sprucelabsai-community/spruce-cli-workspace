@@ -11,6 +11,7 @@ import {
 	SchemaBuilderTemplateItem,
 	ValueTypes,
 } from '@sprucelabs/spruce-templates'
+import importExtractorUtil from '@sprucelabs/spruce-templates/build/utilities/importExtractor.utility'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 import schemaDiskUtil from '../utilities/schemaDisk.utility'
@@ -147,6 +148,8 @@ export default class SchemaWriter extends AbstractWriter {
 				schemaTemplateItems: localItems,
 				fieldTemplateItems,
 				valueTypes,
+				schemaImports:
+					importExtractorUtil.extractSchemaImports(schemaTemplateItems),
 				globalSchemaNamespace: options.globalSchemaNamespace,
 				typesTemplate,
 			})
