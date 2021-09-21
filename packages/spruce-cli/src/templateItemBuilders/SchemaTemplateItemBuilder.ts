@@ -85,14 +85,10 @@ export default class SchemaTemplateItemBuilder {
 	private flattenSchema(schema: Schema, isNested = false) {
 		const localSchema = cloneDeep(schema)
 
-		const fields = localSchema.dynamicFieldSignature
-			? { dynamicField: localSchema.dynamicFieldSignature }
-			: localSchema.fields ?? {}
-
+		const namedFields = this.pluckFields(localSchema)
 		const dependencies: SchemaIdWithVersion[] = []
 
-		Object.keys(fields).forEach((name) => {
-			const field = fields[name]
+		namedFields.forEach(({ field, name }) => {
 			if (field.type === 'schema') {
 				const schemasOrIdsWithVersion =
 					SchemaField.mapFieldDefinitionToSchemasOrIdsWithVersion(field)
@@ -154,6 +150,18 @@ export default class SchemaTemplateItemBuilder {
 		})
 	}
 
+	private pluckFields(localSchema: Schema) {
+		const fields = localSchema.dynamicFieldSignature
+			? { dynamicField: localSchema.dynamicFieldSignature }
+			: localSchema.fields ?? {}
+
+		const namedFields = Object.keys(fields).map((name) => ({
+			name,
+			field: fields[name],
+		}))
+		return namedFields
+	}
+
 	private buildTemplateItem(options: {
 		schema: Schema
 		isNested: boolean
@@ -180,12 +188,36 @@ export default class SchemaTemplateItemBuilder {
 			namespace.toLowerCase() === this.localNamespace.toLowerCase() &&
 			schema.importsWhenLocal
 		) {
-			item.imports = schema.importsWhenLocal
+			item.imports = [...schema.importsWhenLocal]
 		} else if (
 			namespace.toLowerCase() !== this.localNamespace.toLowerCase() &&
 			schema.importsWhenRemote
 		) {
-			item.imports = schema.importsWhenRemote
+			item.imports = [...schema.importsWhenRemote]
+		}
+
+		const namedFields = this.pluckFields(schema)
+
+		for (const { field } of namedFields) {
+			if (field.type === 'schema') {
+				field.options.schemaIds?.forEach((idWithVersion) => {
+					const key = schemaUtil.generateCacheKey(idWithVersion)
+					const match = this.schemasByKey[key]
+
+					if (
+						match.schema.importsWhenRemote &&
+						match.schema.namespace &&
+						match.schema.namespace.toLowerCase() !==
+							this.localNamespace.toLowerCase()
+					) {
+						if (!item.imports) {
+							item.imports = []
+						}
+
+						item.imports.push(...match.schema.importsWhenRemote)
+					}
+				})
+			}
 		}
 
 		return item

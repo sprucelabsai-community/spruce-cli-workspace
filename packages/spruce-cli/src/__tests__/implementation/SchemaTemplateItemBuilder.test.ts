@@ -1085,17 +1085,17 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async canInstantiate() {
+	protected static canInstantiate() {
 		assert.isTruthy(this.itemBuilder)
 	}
 
 	@test()
-	protected static async hasGenerateFunction() {
+	protected static hasGenerateFunction() {
 		assert.isFunction(this.itemBuilder.buildTemplateItems)
 	}
 
 	@test()
-	protected static async turnsSingleDefinitionIntoTemplateItem() {
+	protected static turnsSingleDefinitionIntoTemplateItem() {
 		const results = this.itemBuilder.buildTemplateItems(
 			{ [CORE_NAMESPACE]: [personV1] },
 			'#spruce/schemas'
@@ -1180,7 +1180,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 		[localSchemaTemplateItem],
 		'Mercury'
 	)
-	protected static async generationTests(
+	protected static generationTests(
 		schemas: Schema[],
 		expected: SchemaTemplateItem[],
 		localNamespace = this.LOCAL_NAMESPACE
@@ -1201,7 +1201,7 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async setsImports() {
+	protected static setsImports() {
 		const results = this.itemBuilder.buildTemplateItems(
 			{
 				[this.LOCAL_NAMESPACE]: [
@@ -1240,6 +1240,140 @@ export default class SchemaTemplateItemBuilderTest extends AbstractCliTest {
 				isNested: false,
 				destinationDir: '#spruce/schemas',
 				imports: [`import local from "local"`],
+			},
+		])
+	}
+
+	@test()
+	protected static bringsImportsFromRemoteFromRelatedSchemas() {
+		const results = this.itemBuilder.buildTemplateItems(
+			{
+				[this.LOCAL_NAMESPACE]: [
+					buildSchema({
+						id: 'local',
+						importsWhenLocal: ['import local from "local"'],
+						importsWhenRemote: ['import remote from "remote"'],
+						fields: {
+							firstName: { type: 'text' },
+							remote: {
+								type: 'schema',
+								options: {
+									schema: { id: 'remote', namespace: 'AnotherNamespace' },
+								},
+							},
+							local: {
+								type: 'schema',
+								options: {
+									schema: { id: 'local', namespace: this.LOCAL_NAMESPACE },
+								},
+							},
+						},
+					}),
+					buildSchema({
+						id: 'local2',
+						importsWhenLocal: ['import local2 from "local2"'],
+						importsWhenRemote: ['import remote2 from "remote2"'],
+						fields: {
+							firstName: { type: 'text' },
+							remote: {
+								type: 'schema',
+								options: {
+									schema: { id: 'remote', namespace: 'AnotherNamespace' },
+								},
+							},
+						},
+					}),
+				],
+				AnotherNamespace: [
+					buildSchema({
+						id: 'remote',
+						importsWhenLocal: ['import local2 from "local2"'],
+						importsWhenRemote: ['import remote3 from "remote3"'],
+						fields: {
+							firstName: { type: 'text' },
+						},
+					}),
+				],
+			},
+			'#spruce/schemas'
+		)
+
+		assert.isEqualDeep(results, [
+			{
+				id: 'remote',
+				namespace: 'AnotherNamespace',
+				schema: {
+					id: 'remote',
+					namespace: 'AnotherNamespace',
+					importsWhenLocal: ['import local2 from "local2"'],
+					importsWhenRemote: ['import remote3 from "remote3"'],
+					fields: { firstName: { type: 'text' } },
+				},
+				nameReadable: 'remote',
+				nameCamel: 'remote',
+				namePascal: 'Remote',
+				isNested: false,
+				destinationDir: '#spruce/schemas',
+				imports: ['import remote3 from "remote3"'],
+			},
+			{
+				id: 'local2',
+				namespace: 'LocalNamespace',
+				schema: {
+					namespace: 'LocalNamespace',
+					id: 'local2',
+					importsWhenLocal: ['import local2 from "local2"'],
+					importsWhenRemote: ['import remote2 from "remote2"'],
+					fields: {
+						firstName: { type: 'text' },
+						remote: {
+							type: 'schema',
+							options: {
+								schemaIds: [{ id: 'remote', namespace: 'AnotherNamespace' }],
+							},
+						},
+					},
+				},
+				nameReadable: 'local2',
+				nameCamel: 'local2',
+				namePascal: 'Local2',
+				isNested: false,
+				destinationDir: '#spruce/schemas',
+				imports: [
+					'import local2 from "local2"',
+					'import remote3 from "remote3"',
+				],
+			},
+			{
+				id: 'local',
+				namespace: 'LocalNamespace',
+				schema: {
+					id: 'local',
+					namespace: 'LocalNamespace',
+					importsWhenLocal: ['import local from "local"'],
+					importsWhenRemote: ['import remote from "remote"'],
+					fields: {
+						firstName: { type: 'text' },
+						remote: {
+							type: 'schema',
+							options: {
+								schemaIds: [{ id: 'remote', namespace: 'AnotherNamespace' }],
+							},
+						},
+						local: {
+							type: 'schema',
+							options: {
+								schemaIds: [{ id: 'local', namespace: 'LocalNamespace' }],
+							},
+						},
+					},
+				},
+				nameReadable: 'local',
+				nameCamel: 'local',
+				namePascal: 'Local',
+				isNested: false,
+				destinationDir: '#spruce/schemas',
+				imports: ['import local from "local"', 'import remote3 from "remote3"'],
 			},
 		])
 	}

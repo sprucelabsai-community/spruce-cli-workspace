@@ -43,7 +43,6 @@ export const templates = {
 		schemaTemplateItems: SchemaTemplateItem[]
 		fieldTemplateItems: FieldTemplateItem[]
 		valueTypes: ValueTypes
-		schemaImports: string[]
 		globalSchemaNamespace?: string
 		typesTemplate?: string
 	}) {
@@ -54,9 +53,14 @@ export const templates = {
 			options.typesTemplate ?? 'schema/schemas.types.ts.hbs'
 		)
 
+		const schemaImports = importExtractorUtil.extractSchemaImports(
+			options.schemaTemplateItems
+		)
+
 		return template({
 			...options,
 			imports,
+			schemaImports,
 			globalSchemaNamespace:
 				options.globalSchemaNamespace ?? DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 		})
