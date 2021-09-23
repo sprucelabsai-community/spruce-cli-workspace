@@ -40,6 +40,9 @@ export default class EventFeature extends AbstractFeature {
 		{
 			name: '@sprucelabs/spruce-event-plugin',
 		},
+		{
+			name: '@sprucelabs/mercury-core-events',
+		},
 	]
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
