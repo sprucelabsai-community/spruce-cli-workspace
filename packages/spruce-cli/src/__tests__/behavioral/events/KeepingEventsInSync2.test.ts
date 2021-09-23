@@ -122,6 +122,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 							{
 								id: 'can-emit',
 								name: 'Can emit my new event',
+								defaults: {
+									guest: {
+										default: true,
+									},
+								},
 							},
 						],
 					}),
@@ -132,6 +137,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 							{
 								id: 'can-listen',
 								name: 'Can emit my new event',
+								defaults: {
+									guest: {
+										default: true,
+									},
+								},
 							},
 						],
 					}),
