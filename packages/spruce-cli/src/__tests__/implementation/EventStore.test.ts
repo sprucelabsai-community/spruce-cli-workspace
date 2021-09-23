@@ -87,6 +87,9 @@ export default class EventStoreTest extends AbstractEventTest {
 								{
 									id: 'can-emit-perms',
 									name: 'can emit perm',
+									defaults: {
+										skill: false,
+									},
 								},
 							],
 						}),

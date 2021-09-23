@@ -259,7 +259,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.Service('typeChecker').check(contract)
 	}
 
-	@test.only()
+	@test()
 	protected static async unRegisteredEventsAreRemoved() {
 		const { skillFixture, syncResults, skill2, contractFileName } =
 			await this.seedSkillsAndRegisterAndSyncEvents()
