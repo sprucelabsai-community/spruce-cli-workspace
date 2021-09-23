@@ -20,7 +20,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		)
 	}
 
-	@test()
+	@test.only()
 	protected static async registeringEventsOnBoot() {
 		const { skill2, currentSkill } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
