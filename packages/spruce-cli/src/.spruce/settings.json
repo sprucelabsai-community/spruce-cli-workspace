@@ -11,5 +11,26 @@
     "schemaTypesLookupDir": "#spruce/schemas",
     "skillEventContractTypesFile": "@sprucelabs/mercury-types/build/types/mercury.types",
     "eventBuilderFile": "@sprucelabs/mercury-types"
+  },
+  "writer": {
+    "skipped": [
+      "src/index.ts",
+      "tsconfig.json"
+    ]
+  },
+  "scriptUpdater": {
+    "skipped": [
+      "build.ci",
+      "build.dev",
+      "clean.all",
+      "lint.tsc",
+      "rebuild",
+      "update.dependencies",
+      "test",
+      "watch.build.dev",
+      "watch.lint",
+      "watch.rebuild",
+      "watch.tsc"
+    ]
   }
 }
