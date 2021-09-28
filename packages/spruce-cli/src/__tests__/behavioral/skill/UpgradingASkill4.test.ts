@@ -4,13 +4,13 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class UpgradingASkill4Test extends AbstractCliTest {
 	@test()
 	protected static async upgradeResetsEventCache() {
-		const settings = await this.installSetListenerCacheAndBlockExecute()
+		await this.installSetListenerCacheAndBlockExecute()
 
 		await assert.doesThrowAsync(() =>
 			this.Action('node', 'upgrade').execute({})
 		)
 
-		const value = settings.getListenerCache()
+		const value = this.Settings().getListenerCache()
 		assert.isFalsy(value)
 	}
 
@@ -27,13 +27,16 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 	private static async installSetListenerCacheAndBlockExecute() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
-		const settings = this.Service('eventSettings')
+		const settings = this.Settings()
 		settings.setListenerCache({ shouldBeDeleted: true })
 
 		const emitter = this.getEmitter()
 		void emitter.on('feature.will-execute', () => {
 			throw new Error('Stop!')
 		})
-		return settings
+	}
+
+	private static Settings() {
+		return this.Service('eventSettings')
 	}
 }
