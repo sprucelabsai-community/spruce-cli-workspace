@@ -15,7 +15,7 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async doesNotResetWithOtherAction() {
+	protected static async doesNotResetEventCacheWithOtherAction() {
 		await this.installSetListenerCacheAndBlockExecute()
 
 		await assert.doesThrowAsync(() => this.Action('schema', 'sync').execute({}))

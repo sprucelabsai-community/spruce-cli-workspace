@@ -96,8 +96,10 @@ export default class EventFeature extends AbstractFeature {
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
 
-		const settings = this.Service('eventSettings')
-		settings.clearListenerCache()
+		if (isInstalled) {
+			const settings = this.Service('eventSettings')
+			settings.clearListenerCache()
+		}
 
 		if (
 			isInstalled &&
