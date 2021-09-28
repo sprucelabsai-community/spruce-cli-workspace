@@ -59,17 +59,21 @@ export default class ActionFactory {
 		)
 
 		let Class: new (options: ActionOptions) => AbstractAction | undefined
+		let originalError: Error | undefined
 
 		try {
 			Class = require(classPath).default
 			// eslint-disable-next-line no-empty
-		} catch {}
+		} catch (err: any) {
+			originalError = err
+		}
 
 		//@ts-ignore
 		if (!Class) {
 			throw new SpruceError({
 				code: 'GENERIC',
 				friendlyMessage: `I could not find any action named '${actionCode}' for the ${feature.code} feature. Make sure it's the default export and extends AbstractAction.`,
+				originalError,
 			})
 		}
 

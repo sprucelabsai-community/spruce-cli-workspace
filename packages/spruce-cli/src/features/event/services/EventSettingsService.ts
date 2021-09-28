@@ -15,4 +15,16 @@ export default class EventSettingsService {
 	}) {
 		this.settings.set('events.lastSync', options)
 	}
+
+	public setListenerCache(value: Record<string, any>) {
+		this.settings.set('events.listenerCacheKeys', value)
+	}
+
+	public clearListenerCache() {
+		this.settings.unset('events.listenerCacheKeys')
+	}
+
+	public getListenerCache() {
+		return this.settings.get('events.listenerCacheKeys')
+	}
 }

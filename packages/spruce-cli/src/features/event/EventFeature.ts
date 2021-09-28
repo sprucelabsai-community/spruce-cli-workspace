@@ -96,37 +96,44 @@ export default class EventFeature extends AbstractFeature {
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
 
+		const settings = this.Service('eventSettings')
+		settings.clearListenerCache()
+
 		if (
 			isInstalled &&
 			(featureCode === 'event' || featureCode === 'eventContract') &&
 			actionCode !== 'setRemote'
 		) {
-			const remote = this.Service('remote')
-			const r = remote.getRemote()
-
-			if (!r) {
-				if (!TerminalInterface.doesSupportColor()) {
-					throw new Error(
-						`Dang! I couldn't find env.HOST. Once that is set, lets try again!`
-					)
-				}
-
-				this.ui.stopLoading()
-				this.ui.renderLine(
-					`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
-				)
-
-				const results = await this.Action('event', 'setRemote').execute({})
-
-				return results
-			} else {
-				return {
-					summaryLines: [`Remote: ${r}`, `Host: ${remote.getHost()}`],
-				}
-			}
+			return this.appendRemoteToResultsOrPrompt()
 		}
 
 		return {}
+	}
+
+	private async appendRemoteToResultsOrPrompt(): Promise<FeatureActionResponse> {
+		const remote = this.Service('remote')
+		const r = remote.getRemote()
+
+		if (!r) {
+			if (!TerminalInterface.doesSupportColor()) {
+				throw new Error(
+					`Dang! I couldn't find env.HOST. Once that is set, lets try again!`
+				)
+			}
+
+			this.ui.stopLoading()
+			this.ui.renderLine(
+				`Uh oh! It looks like you haven't configured your remote! We gotta do that.`
+			)
+
+			const results = await this.Action('event', 'setRemote').execute({})
+
+			return results
+		} else {
+			return {
+				summaryLines: [`Remote: ${r}`, `Host: ${remote.getHost()}`],
+			}
+		}
 	}
 
 	private async handleDidFetchSchemas(payload: { schemas?: Schema[] | null }) {

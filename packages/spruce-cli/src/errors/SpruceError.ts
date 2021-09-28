@@ -22,7 +22,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'GENERIC':
-				message = 'Oh shoot! 🤔'
+				message = options.friendlyMessage ?? 'Oh shoot! 🤔'
+
+				if (options.originalError) {
+					message += `\n\n${
+						options.originalError.stack ?? options.originalError.name
+					}`
+				}
 				break
 			case 'NOT_IMPLEMENTED':
 				message = ''
@@ -93,7 +99,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'FILE_EXISTS':
-				message = 'A fileExists just happened!'
+				message = 'A fail already exists.'
 				break
 
 			case 'VSCODE_NOT_INSTALLED':
@@ -241,8 +247,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = super.friendlyMessage()
 		}
 
-		const fullMessage = options.friendlyMessage ?? message
-		return fullMessage
+		return message
 	}
 
 	private cleanStdErr(stderr: string) {
