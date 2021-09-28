@@ -1,10 +1,12 @@
 {
-  "installed": [
+  "skipped": [
     "skill",
+    "event"
+  ],
+  "installed": [
     "schema",
     "error",
-    "test",
-    "event"
+    "test"
   ],
   "events.lastSync": {
     "contractDestinationDir": "#spruce/events",
