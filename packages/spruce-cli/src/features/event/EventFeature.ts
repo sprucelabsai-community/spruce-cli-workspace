@@ -96,7 +96,7 @@ export default class EventFeature extends AbstractFeature {
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
 
-		if (isInstalled) {
+		if (featureCode === 'node' || featureCode === 'upgrade') {
 			const settings = this.Service('eventSettings')
 			settings.clearListenerCache()
 		}
