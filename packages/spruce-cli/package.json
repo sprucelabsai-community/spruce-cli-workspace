@@ -112,11 +112,11 @@
     "terminal-kit": "sprucelabsai/terminal-kit",
     "tree-kill": "^1.2.2",
     "tsutils": "^3.21.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "@sprucelabs/jest-json-reporter": "^6.0.67"
   },
   "devDependencies": {
     "@sprucelabs/data-stores": "^6.1.92",
-    "@sprucelabs/jest-json-reporter": "^6.0.67",
     "@sprucelabs/jest-sheets-reporter": "^1.2.95",
     "@sprucelabs/mercury-core-events": "^1.2.209",
     "@sprucelabs/resolve-path-aliases": "^1.0.92",
