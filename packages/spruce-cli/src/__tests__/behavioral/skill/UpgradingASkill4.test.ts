@@ -16,11 +16,11 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 
 	@test()
 	protected static async doesNotResetWithOtherAction() {
-		const settings = await this.installSetListenerCacheAndBlockExecute()
+		await this.installSetListenerCacheAndBlockExecute()
 
 		await assert.doesThrowAsync(() => this.Action('schema', 'sync').execute({}))
 
-		const value = settings.getListenerCache()
+		const value = this.Settings().getListenerCache()
 		assert.isEqualDeep(value, { shouldBeDeleted: true })
 	}
 
