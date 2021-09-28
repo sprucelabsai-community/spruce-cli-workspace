@@ -60,9 +60,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'FAILED_TO_IMPORT':
-				message = `Failed to import "${options.file}". Original error:\n\n${
-					options.originalError?.message ?? '**MISSING**'
-				}`
+				message =
+					options.friendlyMessage ??
+					`Failed to import "${options.file}". Original error:\n\n${
+						options.originalError?.message ?? '**MISSING**'
+					}`
 				break
 
 			case 'LINT_FAILED':
