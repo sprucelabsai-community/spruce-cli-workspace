@@ -78,7 +78,7 @@
     "@sprucelabs/error": "^5.0.202",
     "@sprucelabs/heartwood-view-controllers": "^33.0.471",
     "@sprucelabs/jest-json-reporter": "^6.0.181",
-    "@sprucelabs/mercury-client": "^16.10.164",
+    "@sprucelabs/mercury-client": "^16.10.170",
     "@sprucelabs/mercury-event-emitter": "^16.10.164",
     "@sprucelabs/mercury-types": "^26.1.307",
     "@sprucelabs/schema": "^25.3.249",
