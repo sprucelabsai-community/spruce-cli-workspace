@@ -168,6 +168,8 @@ export type GlobalEmitter = MercuryEventEmitter<GlobalEventContract>
 
 export default class CliGlobalEmitter extends AbstractEventEmitter<GlobalEventContract> {
 	public static Emitter() {
-		return new CliGlobalEmitter(globalContract) as GlobalEmitter
+		return new CliGlobalEmitter(globalContract, {
+			shouldEmitSequentally: true,
+		}) as GlobalEmitter
 	}
 }
