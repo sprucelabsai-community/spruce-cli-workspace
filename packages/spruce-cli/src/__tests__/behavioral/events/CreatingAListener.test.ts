@@ -194,6 +194,12 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 				}
 			)
 
+		const currentClient = await this.connectToApi({
+			shouldAuthAsCurrentSkill: true,
+		})
+
+		await currentClient.disconnect()
+
 		const boot = await this.Action('skill', 'boot').execute({ local: true })
 
 		assert.isFalsy(boot.errors)
