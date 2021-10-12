@@ -569,7 +569,8 @@
             "upgradingSkillSyncsEvents": "I251",
             "upgradeCallsUpdateDependencies": "I252",
             "canAlwaysSkipFiles": "I264",
-            "upgradingWritesExpectedFiles": "I289"
+            "upgradingWritesExpectedFiles": "I289",
+            "globalEmitterEmitsSEquentally": "I328"
           }
         }
       ],
