@@ -131,6 +131,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 
 		for (const module of this.dependencies) {
 			if (!pkg.isInstalled(module.name)) {
+				// eslint-disable-next-line @typescript-eslint/no-extra-semi
 				;(response.packagesInstalled ?? []).push(module)
 			}
 		}
