@@ -69,8 +69,8 @@ export default class SettingLogTransportsInASkillTest extends AbstractSkillTest 
 		`
 
 		await this.createTransportWithContents(transportContents, 'File')
-
 		await this.Service('build').build()
+
 		const boot = await this.Action('skill', 'boot').execute({})
 
 		await boot.meta?.kill()

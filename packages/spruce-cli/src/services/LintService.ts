@@ -38,9 +38,9 @@ export default class LintService {
 			})
 		}
 
-		if (fixedFiles.results) {
-			for (let i = 0; i < fixedFiles.results.length; i += 1) {
-				const fixedFile = fixedFiles.results[i]
+		if (fixedFiles) {
+			for (let i = 0; i < fixedFiles.length; i += 1) {
+				const fixedFile = fixedFiles[i]
 				if (fixedFile && fixedFile.output) {
 					await fs.writeFile(fixedFile.filePath, fixedFile.output)
 					fixedPaths.push(fixedFile.filePath)
