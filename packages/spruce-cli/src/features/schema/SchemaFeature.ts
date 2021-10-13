@@ -32,6 +32,9 @@ export default class SchemaFeature extends AbstractFeature {
 			name: '@sprucelabs/spruce-core-schemas@latest',
 		},
 		{ name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
+		{
+			name: '@sprucelabs/spruce-skill-utils',
+		},
 	]
 
 	public code: FeatureCode = 'schema'
@@ -45,6 +48,11 @@ export default class SchemaFeature extends AbstractFeature {
 			'feature.will-execute',
 			this.handleWillExecute.bind(this)
 		)
+
+		void this.emitter.on(
+			'feature.did-execute',
+			this.handleDidExecute.bind(this)
+		)
 	}
 
 	private async handleWillExecute(payload: {
@@ -52,16 +60,33 @@ export default class SchemaFeature extends AbstractFeature {
 		featureCode: string
 	}) {
 		const isInstalled = await this.featureInstaller.isInstalled('schema')
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (
 			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade' &&
-			isInstalled &&
-			isSkillInstalled
+			isInstalled
 		) {
 			const files = await this.writePlugin()
 			return { files }
+		}
+
+		return {}
+	}
+
+	private async handleDidExecute(payload: {
+		actionCode: string
+		featureCode: string
+	}) {
+		const isInstalled = await this.featureInstaller.isInstalled('schema')
+
+		if (
+			payload.featureCode === 'node' &&
+			payload.actionCode === 'upgrade' &&
+			isInstalled
+		) {
+			const results = await this.Action('schema', 'sync').execute({})
+
+			return results
 		}
 
 		return {}

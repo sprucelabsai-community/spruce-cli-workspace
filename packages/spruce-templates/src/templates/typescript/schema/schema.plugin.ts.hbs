@@ -1,7 +1,7 @@
 import fs from "fs";
 import globby from "globby";
 import pathUtil from "path";
-import SpruceError from '../../errors/SpruceError'
+import { SchemaError } from '@sprucelabs/schema'
 import {
 	SchemaHealthCheckItem,
 	SkillFeature,
@@ -77,7 +77,7 @@ class SchemaFeature implements SkillFeature {
 						description: schema.description,
 					}
 				} catch (err:any) {
-					throw new SpruceError({ 
+					throw new SchemaError({ 
 						//@ts-ignore
 						code: 'FAILED_LOADING_SCHEMA', 
 						originalError: err, 
