@@ -195,6 +195,9 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 		})
 
 		await this.Action('view', 'sync').execute({})
+
+		await this.openInVsCode()
+
 		await this.Service('build').build()
 
 		const watchAction = this.Action('view', 'watch') as WatchAction
