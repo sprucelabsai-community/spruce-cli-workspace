@@ -42,7 +42,14 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 	@test()
 	protected static async doesWriteSchemaPluginWithSchemaAndNodeModule() {
 		await this.FeatureFixture().installCachedFeatures('schemasInNodeModule')
-		await this.Action('node', 'upgrade').execute({})
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await this.waitForInput()
+		await this.ui.sendInput('skip')
+		await this.ui.sendInput('\n')
+
+		await promise
 
 		const plugin = this.resolveHashSprucePath('features/schema.plugin.ts')
 		assert.isTrue(diskUtil.doesFileExist(plugin))
