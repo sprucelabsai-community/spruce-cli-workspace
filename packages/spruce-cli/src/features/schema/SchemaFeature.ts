@@ -60,11 +60,13 @@ export default class SchemaFeature extends AbstractFeature {
 		featureCode: string
 	}) {
 		const isInstalled = await this.featureInstaller.isInstalled('schema')
+		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
 
 		if (
 			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade' &&
-			isInstalled
+			isInstalled &&
+			isSkillInstalled
 		) {
 			const files = await this.writePlugin()
 			return { files }
