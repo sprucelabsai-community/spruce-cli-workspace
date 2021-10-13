@@ -69,6 +69,13 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'LINT_FAILED':
 				message = `Lint failed on pattern ${options.pattern}.`
+
+				if (options.originalError) {
+					message += `\n\nOriginal error:${
+						options.originalError.stack ?? options.originalError.message
+					}`
+				}
+
 				break
 
 			case 'EXECUTING_COMMAND_FAILED':

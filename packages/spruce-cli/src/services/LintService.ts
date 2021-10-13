@@ -1,4 +1,3 @@
-// import { CLIEngine } from 'eslint'
 import { SchemaError } from '@sprucelabs/schema'
 import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
@@ -24,11 +23,10 @@ export default class LintService {
 		let fixedFiles: any = {}
 		const fixedPaths: string[] = []
 		try {
+			const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', }); const result = await cli.lintFiles(['${pattern}']); console.log(JSON.stringify(result)); } catch (err) { console.log(err.toString()); }})()"`
+
 			const { stdout } = await this.command.execute('node', {
-				args: [
-					'-e',
-					`"try { const ESLint = require('eslint');const cli = new ESLint.CLIEngine({fix: true,cwd: '${this.cwd}'});const result=cli.executeOnFiles(['${pattern}']);console.log(JSON.stringify(result)); } catch(err) { console.log(err.toString()); }"`,
-				],
+				args: ['-e', script],
 			})
 
 			fixedFiles = JSON.parse(stdout)
