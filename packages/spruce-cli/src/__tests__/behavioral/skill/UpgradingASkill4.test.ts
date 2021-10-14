@@ -25,13 +25,28 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 		assert.isEqualDeep(value, { shouldBeDeleted: true })
 	}
 
-	@test()
-	protected static async shouldSyncSchemasIfSchemasIsInstalled() {
+	@test('syncs schemas when schemas installed and schemas folder exists', true)
+	@test(
+		'does not syncs schemas when schemas installed but schemas folder does not exist',
+		false
+	)
+	protected static async shouldSyncSchemasIfSchemasIsInstalledAndSchemaFolderExists(
+		shouldCreateSchema: boolean
+	) {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
 		CommandService.setMockResponse(new RegExp(/yarn/gis), {
 			code: 0,
 		})
+
+		if (shouldCreateSchema) {
+			await this.Action('schema', 'create').execute({
+				nameReadable: 'Test schema!',
+				namePascal: 'AnotherTest',
+				nameCamel: 'anotherTest',
+				description: 'this is so great!',
+			})
+		}
 
 		const emitter = this.getEmitter()
 
@@ -47,7 +62,7 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 
 		await this.Action('node', 'upgrade').execute({})
 
-		assert.isTrue(wasHit)
+		assert.isTrue(wasHit === shouldCreateSchema)
 	}
 
 	private static async installSetListenerCacheAndBlockExecute() {

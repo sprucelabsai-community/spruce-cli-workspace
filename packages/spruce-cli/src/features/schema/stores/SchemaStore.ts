@@ -42,6 +42,8 @@ interface FetchFieldsResults {
 	fields: FetchedField[]
 }
 
+const DEFAULT_LOCAL_SCHEMA_DIR = 'src/schemas'
+
 export default class SchemaStore extends AbstractStore {
 	public readonly name = 'schema'
 
@@ -56,7 +58,7 @@ export default class SchemaStore extends AbstractStore {
 		didUpdateHandler?: InternalUpdateHandler
 	}): Promise<FetchSchemasResults> {
 		const {
-			localSchemaLookupDir: localSchemaDir = 'src/schemas',
+			localSchemaLookupDir: localSchemaDir = DEFAULT_LOCAL_SCHEMA_DIR,
 			shouldFetchLocalSchemas = true,
 			shouldFetchRemoteSchemas = true,
 			shouldEnableVersioning = true,
@@ -156,15 +158,18 @@ export default class SchemaStore extends AbstractStore {
 		}
 	}
 
+	public async hasLocalSchemas() {
+		const matches = await this.globbyLocalBuilders(DEFAULT_LOCAL_SCHEMA_DIR)
+		return matches.length > 0
+	}
+
 	private async loadLocalSchemas(
 		localLookupDir: string,
 		localNamespace: string,
 		shouldEnableVersioning?: boolean,
 		didUpdateHandler?: InternalUpdateHandler
 	) {
-		const localMatches = await globby(
-			diskUtil.resolvePath(this.cwd, localLookupDir, '**/*.builder.[t|j]s')
-		)
+		const localMatches = await this.globbyLocalBuilders(localLookupDir)
 
 		const errors: SpruceError[] = []
 		const schemas: Schema[] = []
@@ -218,6 +223,12 @@ export default class SchemaStore extends AbstractStore {
 			schemas,
 			errors,
 		}
+	}
+
+	private async globbyLocalBuilders(localLookupDir: string) {
+		return await globby(
+			diskUtil.resolvePath(this.cwd, localLookupDir, '**/*.builder.[t|j]s')
+		)
 	}
 
 	private resolveLocalVersion(

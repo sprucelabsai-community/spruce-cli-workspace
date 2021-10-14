@@ -86,9 +86,12 @@ export default class SchemaFeature extends AbstractFeature {
 			payload.actionCode === 'upgrade' &&
 			isInstalled
 		) {
-			const results = await this.Action('schema', 'sync').execute({})
+			const hasLocalSchemas = await this.Store('schema').hasLocalSchemas()
+			if (hasLocalSchemas) {
+				const results = await this.Action('schema', 'sync').execute({})
 
-			return results
+				return results
+			}
 		}
 
 		return {}
