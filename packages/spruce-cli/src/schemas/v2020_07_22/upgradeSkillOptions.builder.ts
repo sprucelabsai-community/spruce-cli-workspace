@@ -3,7 +3,7 @@ import { buildSchema } from '@sprucelabs/schema'
 export default buildSchema({
 	id: 'upgradeSkillOptions',
 	name: 'Upgrade skill action',
-	description: 'Options skill.upgrade.',
+	description: 'Upgrade. Everything. Heads up, this can take a few minutes. ⏱',
 	fields: {
 		upgradeMode: {
 			type: 'select',

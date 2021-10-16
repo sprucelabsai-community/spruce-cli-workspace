@@ -6,7 +6,7 @@ import { ENABLE_NPM_CACHE_COMMAND } from '../constants'
 
 const optionsSchema = buildSchema({
 	id: 'enableCacheAction',
-	description: 'Enable caching so Sprucebot can go even faster!',
+	description: 'Enable npm caching so pulling node_modules is much faster.',
 	fields: {},
 })
 

@@ -1,11 +1,12 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import createErrorActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/createErrorOptions.schema'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'createLogTransportOptions',
+	description:
+		'Send logs wherever you want based on their severity. We like to send console.error to a Slack channel the team uses.',
 	fields: {
 		nameReadable: {
 			type: 'text',
@@ -21,7 +22,7 @@ type OptionsSchema = typeof optionsSchema
 type Options = SchemaValues<OptionsSchema>
 
 export default class CreateLogTransportAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema = createErrorActionSchema
+	public optionsSchema = optionsSchema
 	public invocationMessage = 'Creating a new log transport... ✍️'
 	public commandAliases = ['create.log.transport']
 

@@ -8,7 +8,7 @@ const upgradeSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkil
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Upgrade skill action',
-	description: 'Options skill.upgrade.',
+	description: 'Upgrade. Everything. Heads up, this can take a few minutes. ⏱',
 	    fields: {
 	            /** Upgrade mode. */
 	            'upgradeMode': {

@@ -4,7 +4,7 @@ import namedTemplateItemBuilder from './namedTemplateItem.builder'
 export default buildSchema({
 	id: 'createTestOptions',
 	name: 'Create test action',
-	description: 'Options for creating a new test.',
+	description: 'Your first failing test just a command away! ⚔️',
 	fields: {
 		type: {
 			type: 'select',

@@ -15,7 +15,8 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'createEventAction',
-	description: 'Create a new event to register with Mercury.',
+	description:
+		"Create a new event and I'll register it with Mercury when you boot the skill!",
 	fields: {
 		nameReadable: {
 			...namedTemplateItemBuilder.fields.nameReadable,

@@ -8,7 +8,7 @@ const bootSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptio
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Boot skill action',
-	description: 'The options for skill.boot.',
+	description: 'Boot your skill 💪',
 	    fields: {
 	            /** Run local. Will run using ts-node and typescript directly. Longer boot times */
 	            'local': {

@@ -8,7 +8,7 @@ const createTestOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOpt
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Create test action',
-	description: 'Options for creating a new test.',
+	description: 'Your first failing test just a command away! ⚔️',
 	    fields: {
 	            /** Type of test. */
 	            'type': {

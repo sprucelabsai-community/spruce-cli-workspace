@@ -5,7 +5,7 @@ import { FeatureActionResponse } from '../../features.types'
 export const optionsSchema = buildSchema({
 	id: 'dashboard',
 	name: 'Skill dashboard',
-	description: 'Coming soon',
+	description: 'Coming soon...',
 	fields: {},
 })
 

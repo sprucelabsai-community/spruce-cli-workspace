@@ -3,7 +3,7 @@ import { buildSchema } from '@sprucelabs/schema'
 export default buildSchema({
 	id: 'bootSkillOptions',
 	name: 'Boot skill action',
-	description: 'The options for skill.boot.',
+	description: 'Boot your skill 💪',
 	fields: {
 		local: {
 			type: 'boolean',

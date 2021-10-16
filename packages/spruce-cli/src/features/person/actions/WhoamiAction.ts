@@ -5,6 +5,7 @@ import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
 	id: 'whoAmI',
+	description: "Check who you're logged in as.",
 	fields: {},
 })
 
