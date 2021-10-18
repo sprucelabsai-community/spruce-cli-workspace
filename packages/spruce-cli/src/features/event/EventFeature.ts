@@ -103,7 +103,9 @@ export default class EventFeature extends AbstractFeature {
 
 		if (
 			isInstalled &&
-			(featureCode === 'event' || featureCode === 'eventContract') &&
+			(featureCode === 'event' ||
+				featureCode === 'eventContract' ||
+				actionCode === 'login') &&
 			actionCode !== 'setRemote'
 		) {
 			return this.appendRemoteToResultsOrPrompt()

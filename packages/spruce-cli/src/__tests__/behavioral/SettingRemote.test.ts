@@ -5,6 +5,7 @@ import {
 	REMOTE_SANDBOX,
 } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
+import { FeatureCode } from '../../features/features.types'
 import TerminalInterface from '../../interfaces/TerminalInterface'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
@@ -29,9 +30,12 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		assert.isEqual(host, expected)
 	}
 
-	@test('create.event asks for remote on IS TTY', 'create')
-	@test('sync.events asks for remote on IS TTY', 'sync')
+	@test('create.event asks for remote on IS TTY', 'event', 'create')
+	@test('sync.events asks for remote on IS TTY', 'event', 'sync')
+	@test('login asks for remote on IS TTY', 'person', 'login')
+	@test('skill.login asks for remote on IS TTY', 'skill', 'login')
 	protected static async shouldAskForRemoteBeforeEventActionIsInvokedIfTerminalSupportsIt(
+		feature: FeatureCode,
 		action: string
 	) {
 		TerminalInterface.setDoesSupportColor(true)
@@ -39,7 +43,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 		const env = this.Service('env')
 		env.unset('HOST')
 
-		void this.Action('event', action, {
+		void this.Action(feature, action, {
 			shouldAutoHandleDependencies: true,
 		}).execute({})
 
