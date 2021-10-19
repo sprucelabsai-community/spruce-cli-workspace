@@ -7,7 +7,8 @@ require('dotenv').config()
 
 run(process.argv)
 	.then((results: any) => {
-		process.exitCode = results?.errors?.length > 0 ? 1 : 0
+		const code = results?.errors?.length > 0 ? 1 : 0
+		process.exit(code)
 	})
 	.catch((err) => {
 		const term = new TerminalInterface(
@@ -15,5 +16,5 @@ run(process.argv)
 			process.env.CLI_RENDER_STACK_TRACES !== 'false'
 		)
 		term.renderError(err)
-		process.exitCode = 1
+		process.exit(1)
 	})
