@@ -6,8 +6,8 @@ import TerminalInterface from './interfaces/TerminalInterface'
 require('dotenv').config()
 
 run(process.argv)
-	.then(() => {
-		process.exit(0)
+	.then((results: any) => {
+		process.exitCode = results.errors?.length > 0 ? 1 : 0
 	})
 	.catch((err) => {
 		const term = new TerminalInterface(
@@ -15,5 +15,5 @@ run(process.argv)
 			process.env.CLI_RENDER_STACK_TRACES !== 'false'
 		)
 		term.renderError(err)
-		process.exit(1)
+		process.exitCode = 1
 	})

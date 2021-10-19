@@ -443,7 +443,11 @@ export async function run(argv: string[] = []): Promise<void> {
 
 	await setupInFlightEntertainment(terminal)
 
-	await program.parseAsync(argv)
+	const command = await program.parseAsync(argv)
+	//@ts-ignore
+	const results = await command._actionResults[0]
+
+	return results
 }
 
 async function setupInFlightEntertainment(ui: TerminalInterface) {

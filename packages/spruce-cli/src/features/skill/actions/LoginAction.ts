@@ -41,7 +41,6 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 			const phone = await this.ui.prompt({
 				type: 'phone',
 				label: 'Phone number',
-
 				isRequired: true,
 			})
 

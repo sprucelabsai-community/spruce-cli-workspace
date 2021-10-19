@@ -81,6 +81,8 @@ export default class FeatureCommandAttacher {
 				results,
 				action,
 			})
+
+			return results as any
 		})
 
 		const description = action.optionsSchema?.description
