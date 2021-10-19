@@ -7,7 +7,7 @@ require('dotenv').config()
 
 run(process.argv)
 	.then((results: any) => {
-		process.exitCode = results.errors?.length > 0 ? 1 : 0
+		process.exitCode = results?.errors?.length > 0 ? 1 : 0
 	})
 	.catch((err) => {
 		const term = new TerminalInterface(
