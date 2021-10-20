@@ -22,7 +22,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class RebuildAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['rebuild']
-	public invocationMessage = 'Rebuiding your skill... ⚡️'
+	public invocationMessage = 'Rebuilding your skill... ⚡️'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { shouldPlayGames } = this.validateAndNormalizeOptions(options)
