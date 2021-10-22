@@ -153,6 +153,9 @@ export default class EventContractBuilder {
 
 		const contractResults = await this.eventStore.fetchEventContracts({
 			localNamespace: namespace,
+			didUpdateHandler: (msg) => {
+				this.ui.startLoading(msg)
+			},
 		})
 
 		if (contractResults.errors.length > 0) {
