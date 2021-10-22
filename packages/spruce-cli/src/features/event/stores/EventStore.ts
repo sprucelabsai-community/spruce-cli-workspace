@@ -6,7 +6,7 @@ import {
 	SpruceSchemas,
 	validateEventContract,
 } from '@sprucelabs/mercury-types'
-import { Schema } from '@sprucelabs/schema'
+import { Schema, validateSchema } from '@sprucelabs/schema'
 import {
 	eventResponseUtil,
 	eventDiskUtil,
@@ -135,7 +135,12 @@ export default class EventStore extends AbstractStore {
 
 		const ns = namesUtil.toKebab(localNamespace)
 		const eventSignatures: Record<string, EventSignature> = {}
-		const importsByName: Record<string, EventImport> = {}
+		const filesByFqenAndEventKey: {
+			fqen: string
+			isSchema: boolean
+			match: string
+			eventKey: string
+		}[] = []
 
 		didUpdateHandler?.(
 			`Importing of ${localMatches.length} local event signature files...`
@@ -144,7 +149,7 @@ export default class EventStore extends AbstractStore {
 		await Promise.all(
 			localMatches.map(async (match) => {
 				let fqen: string | undefined
-				let key: keyof EventImport | undefined
+				let eventKey: keyof EventImport | undefined
 
 				try {
 					const { eventName, version } = eventDiskUtil.splitPathToEvent(match)
@@ -162,31 +167,56 @@ export default class EventStore extends AbstractStore {
 
 					if (map) {
 						//@ts-ignore
-						key = map.key
-						if (!importsByName[fqen]) {
-							importsByName[fqen] = {}
-						}
+						eventKey = map.key
 
-						if (map.isSchema) {
-							const importer = this.Service('schema')
-							//@ts-ignore
-							importsByName[fqen][map.key] = await importer.importSchema(match)
-						} else {
-							const importer = this.Service('import')
-							//@ts-ignore
-							importsByName[fqen][map.key] = await importer.importDefault(match)
-						}
+						filesByFqenAndEventKey.push({
+							fqen,
+							isSchema: map.isSchema,
+							match,
+							eventKey: eventKey as string,
+						})
 					}
 				} catch (err: any) {
 					throw new SpruceError({
 						code: 'INVALID_EVENT_CONTRACT',
 						fullyQualifiedEventName: fqen ?? 'Bad event name',
-						brokenProperty: key ?? '*** major failure ***',
+						brokenProperty: eventKey ?? '*** major failure ***',
 						originalError: err,
 					})
 				}
 			})
 		)
+
+		const matches = filesByFqenAndEventKey.map((o) => o.match)
+		const importsInOrder = (await this.Service('import').bulkImport(
+			matches
+		)) as Record<string, any>[]
+		const importsByName: Record<string, EventImport> = {}
+
+		for (let idx = 0; idx < filesByFqenAndEventKey.length; idx++) {
+			const imported = importsInOrder[idx]
+			const { fqen, eventKey, isSchema } = filesByFqenAndEventKey[idx]
+
+			if (isSchema) {
+				try {
+					validateSchema(imported)
+				} catch (err: any) {
+					throw new SpruceError({
+						code: 'INVALID_EVENT_CONTRACT',
+						fullyQualifiedEventName: fqen,
+						brokenProperty: eventKey,
+						originalError: err,
+					})
+				}
+			}
+
+			if (!importsByName[fqen]) {
+				importsByName[fqen] = {}
+			}
+
+			//@ts-ignore
+			importsByName[fqen][eventKey] = imported
+		}
 
 		Object.keys(importsByName).forEach((fqen) => {
 			const imported = importsByName[fqen]
