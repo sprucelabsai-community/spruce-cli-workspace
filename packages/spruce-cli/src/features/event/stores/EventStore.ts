@@ -63,9 +63,9 @@ export default class EventStore extends AbstractStore {
 	}): Promise<EventStoreFetchEventContractsResponse> {
 		const { localNamespace, didUpdateHandler } = options ?? {}
 
-		const contracts = await this.fetchRemoteContracts()
-
 		didUpdateHandler?.('Pulling remote contracts...')
+
+		const contracts = await this.fetchRemoteContracts()
 
 		const localContract =
 			localNamespace &&
