@@ -444,8 +444,13 @@ export async function run(argv: string[] = []): Promise<void> {
 	await setupInFlightEntertainment(terminal)
 
 	const command = await program.parseAsync(argv)
+
 	//@ts-ignore
 	const results = await command._actionResults[0]
+
+	for (const client of MercuryClientFactory.getClients()) {
+		await client.disconnect()
+	}
 
 	return results
 }
