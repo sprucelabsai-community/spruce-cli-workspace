@@ -233,7 +233,7 @@ export default class ImportService {
 					throw new SpruceError({
 						code: 'FAILED_TO_IMPORT',
 						file,
-						friendlyMessage: `Looks like this file does not export default.`,
+						friendlyMessage: `Looks like ${file} does not export default.`,
 					})
 				}
 			}

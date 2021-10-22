@@ -137,7 +137,7 @@ export default class EventStoreTest extends AbstractEventTest {
 			results.files
 		)
 
-		diskUtil.writeFile(match, '')
+		diskUtil.writeFile(match, 'export default {}')
 
 		const err = await assert.doesThrowAsync(
 			() => this.Store('event').loadLocalContract(skill.slug),

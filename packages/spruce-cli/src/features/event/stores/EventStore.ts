@@ -143,7 +143,7 @@ export default class EventStore extends AbstractStore {
 		}[] = []
 
 		didUpdateHandler?.(
-			`Importing of ${localMatches.length} local event signature files...`
+			`Importing ${localMatches.length} local event signature files...`
 		)
 
 		await Promise.all(
