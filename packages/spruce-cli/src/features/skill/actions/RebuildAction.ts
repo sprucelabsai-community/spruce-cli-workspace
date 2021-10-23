@@ -30,7 +30,10 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 
 		try {
 			if (shouldPlayGames) {
-				InFlightEntertainment.start()
+				InFlightEntertainment.start([
+					'Rebuild sequence initialized...',
+					'The only option is setting a new high score!',
+				])
 			} else {
 				this.ui.startLoading('Rebuilding....')
 			}
