@@ -37,6 +37,7 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 			} else {
 				this.ui.startLoading('Rebuilding....')
 			}
+
 			await command.execute('yarn rebuild', {
 				onData: (data: string) => {
 					InFlightEntertainment?.writeStatus(data)
@@ -44,6 +45,7 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 			})
 		} catch (err) {
 			this.resetUi()
+
 			return {
 				errors: [err],
 			}
