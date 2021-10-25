@@ -26,9 +26,13 @@ export default class SkillFixture {
 		this.apiClientFactory = apiClientFactory
 	}
 
-	public async seedDemoSkill(values: { name: string }) {
+	public async seedDemoSkill(
+		values: { name: string },
+		options?: { phone?: string }
+	) {
 		return this.registerCurrentSkill(values, {
 			isRegisteringCurrentSkill: false,
+			...options,
 		})
 	}
 
@@ -51,7 +55,7 @@ export default class SkillFixture {
 		SkillFixture.skillCount++
 		return `${namesUtil.toKebab(name)}-${new Date().getTime()}-count-${
 			SkillFixture.skillCount
-		}`
+		}-cli-test`
 	}
 
 	public async registerEventContract(

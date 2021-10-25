@@ -8,6 +8,7 @@ import { FeatureOptions } from './AbstractFeature'
 import ActionExecuter from './ActionExecuter'
 import CacheFeature from './cache/CacheFeature'
 import ConversationFeature from './conversation/ConversationFeature'
+import DependencyFeature from './dependencies/DependencyFeature'
 import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
@@ -48,6 +49,7 @@ export default class FeatureInstallerFactory {
 		ViewFeature,
 		CacheFeature,
 		LogFeature,
+		DependencyFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -70,6 +72,7 @@ export default class FeatureInstallerFactory {
 		'view',
 		'cache',
 		'log',
+		'dependency',
 	]
 
 	public static WithAllFeatures(options: {

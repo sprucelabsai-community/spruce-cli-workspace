@@ -207,7 +207,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'SKILL_NOT_FOUND':
-				message = `I couldn't find that skill!`
+				message = options.friendlyMessage ?? `I couldn't find that skill!`
 				break
 
 			case 'NO_SKILLS_REGISTERED':

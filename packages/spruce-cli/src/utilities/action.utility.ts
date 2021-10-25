@@ -31,12 +31,7 @@ const actionUtil = {
 	},
 
 	assertNoErrorsInResponse(response: MercuryAggregateResponse<any>) {
-		if (response.totalErrors > 0) {
-			throw (
-				response.responses[0]?.errors?.[0] ??
-				eventResponseUtil.getFirstResponseOrThrow(response)
-			)
-		}
+		eventResponseUtil.getFirstResponseOrThrow(response)
 	},
 }
 

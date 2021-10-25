@@ -357,27 +357,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async waitForInput() {
-		const ttl = 1000 * 60 * 5
-		const checkInterval = 100
-		let loops = ttl / checkInterval
-		let lastWriteCount = this.ui.invocations.length
-
-		while (!this.ui.isWaitingForInput()) {
-			if (loops-- === 0) {
-				assert.fail(`Waiting for input timed out.`)
-			}
-
-			const hasWritten = lastWriteCount != this.ui.invocations.length
-
-			if (hasWritten) {
-				loops = ttl / checkInterval
-				lastWriteCount = this.ui.invocations.length
-				if (process.env.SHOULD_RENDER_TEST_LOGS === 'true') {
-					testUtil.log('waitForInput timeout reset because of new output.')
-				}
-			}
-			await new Promise((resolve) => setTimeout(resolve, checkInterval))
-		}
+		return this.ui.waitForInput()
 	}
 
 	protected static async assertIsFeatureInstalled(code: FeatureCode) {

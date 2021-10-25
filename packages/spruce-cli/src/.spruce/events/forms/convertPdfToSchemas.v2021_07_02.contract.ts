@@ -12,19 +12,37 @@ const convertPdfToSchemasEventContract = buildEventContract({
 			emitPermissionContract: buildPermissionContract({
 				id: 'convertPdfToSchemasEmitPermissions',
 				name: 'convert pdf to schemas',
+				description: null,
 				requireAllPermissions: false,
 				permissions: [
 					{
 						id: 'can-convert-pdf-to-schemas',
 						name: 'Can convert pdf to schemas',
+						description: null,
+						requireAllStatuses: null,
 						defaults: {
-							loggedIn: {
-								default: true,
-							},
+							skill: null,
+							owner: null,
+							groupManager: null,
+							manager: null,
+							teammate: null,
+							guest: null,
 							anonymous: {
 								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
+							},
+							loggedIn: {
+								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
 							},
 						},
+						can: null,
 					},
 				],
 			}),

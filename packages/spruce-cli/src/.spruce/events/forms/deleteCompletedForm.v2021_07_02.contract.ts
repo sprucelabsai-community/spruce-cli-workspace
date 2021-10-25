@@ -12,19 +12,37 @@ const deleteCompletedFormEventContract = buildEventContract({
 			emitPermissionContract: buildPermissionContract({
 				id: 'deleteCompletedFormEmitPermissions',
 				name: 'delete completed form',
+				description: null,
 				requireAllPermissions: false,
 				permissions: [
 					{
 						id: 'can-delete-completed-form',
 						name: 'Can delete completed form',
+						description: null,
+						requireAllStatuses: null,
 						defaults: {
-							loggedIn: {
-								default: true,
-							},
+							skill: null,
+							owner: null,
+							groupManager: null,
+							manager: null,
+							teammate: null,
+							guest: null,
 							anonymous: {
 								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
+							},
+							loggedIn: {
+								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
 							},
 						},
+						can: null,
 					},
 				],
 			}),

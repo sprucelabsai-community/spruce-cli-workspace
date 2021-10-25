@@ -2,6 +2,7 @@ import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { namesUtil, testLog } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
+import testUtil from '../tests/utilities/test.utility'
 import { ExecutionResults } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 import {
@@ -83,7 +84,7 @@ export default class SpyInterface implements GraphicsInterface {
 		return this.invocations[this.invocations.length - 1]
 	}
 
-	public async sendInput(input: string): Promise<void> {
+	public async sendInput(input: string | string[]): Promise<void> {
 		this.trackInvocation('sendInput', input)
 
 		this.optionallyRenderLine(
@@ -105,7 +106,9 @@ export default class SpyInterface implements GraphicsInterface {
 			this.confirmResolver = undefined
 
 			resolver(
-				input === '\n' || input.length === 0 || input.toLowerCase() === 'y'
+				input === '\n' ||
+					input.length === 0 ||
+					(typeof input === 'string' && input.toLowerCase() === 'y')
 			)
 		} else {
 			throw new Error('Sent input before prompted for input')
@@ -271,6 +274,30 @@ export default class SpyInterface implements GraphicsInterface {
 		return new Promise((resolve) => {
 			this.waitForEnterResolver = resolve
 		})
+	}
+
+	public async waitForInput() {
+		const ttl = 1000 * 60 * 5
+		const checkInterval = 100
+		let loops = ttl / checkInterval
+		let lastWriteCount = this.invocations.length
+
+		while (!this.isWaitingForInput()) {
+			if (loops-- === 0) {
+				assert.fail(`Waiting for input timed out.`)
+			}
+
+			const hasWritten = lastWriteCount != this.invocations.length
+
+			if (hasWritten) {
+				loops = ttl / checkInterval
+				lastWriteCount = this.invocations.length
+				if (this.shouldRenderTestLogs()) {
+					testUtil.log('waitForInput timeout reset because of new output.')
+				}
+			}
+			await new Promise((resolve) => setTimeout(resolve, checkInterval))
+		}
 	}
 
 	public confirm(question: string): Promise<boolean> {
