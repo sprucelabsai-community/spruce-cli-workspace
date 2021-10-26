@@ -19,7 +19,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 			name: 'dependency manage 2',
 		})
 
-		this.Action('dependency', 'manage').execute({})
+		void this.Action('dependency', 'manage').execute({})
 
 		await this.waitForInput()
 
@@ -51,7 +51,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 			},
 		])
 
-		this.Action('dependency', 'manage').execute({})
+		void this.Action('dependency', 'manage').execute({})
 
 		await this.waitForInput()
 
@@ -100,7 +100,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 			name: 'current skill in managing deps',
 		})
 
-		this.Action('dependency', 'manage').execute({})
+		void this.Action('dependency', 'manage').execute({})
 
 		await this.waitForInput()
 

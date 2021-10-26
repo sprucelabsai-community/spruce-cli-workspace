@@ -61,7 +61,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 			label: otherSkill.name,
 		})
 
-		this.ui.sendInput(otherSkill.slug)
+		await this.ui.sendInput(otherSkill.slug)
 
 		const results = await promise
 		assert.isFalsy(results.errors)

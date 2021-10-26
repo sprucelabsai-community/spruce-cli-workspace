@@ -56,6 +56,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const skill2 = await skills.seedDemoSkill({ name: 'a temp skill' })
 
+		await this.Service('dependency').add({
+			id: skill2.id,
+			namespace: skill2.slug,
+		})
+
 		await skills.registerEventContract(skill2, {
 			eventSignatures: {
 				'test-sync::v2021_01_01': {
@@ -154,6 +159,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		await this.syncCoreEventsPretendingToBeMercuryTypes()
 
 		const results = await this.Action('schema', 'sync').execute({})
+
 		await this.assertValidSyncSchemasResults(results, true)
 	}
 

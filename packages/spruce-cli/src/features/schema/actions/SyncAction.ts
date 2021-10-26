@@ -2,6 +2,7 @@ import pathUtil from 'path'
 import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ValueTypes } from '@sprucelabs/spruce-templates'
+import uniq from 'lodash/uniq'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import syncSchemasActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncSchemasOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
@@ -189,12 +190,14 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		schemaTemplateItems: SchemaTemplateItem[],
 		forceInstall?: boolean
 	) {
-		const modules = schemaTemplateItems
-			.map((item) => item.importFrom)
-			.filter((i) => !!i) as string[]
+		const modules = uniq(
+			schemaTemplateItems.map((item) => item.importFrom).filter((i) => !!i)
+		) as string[]
+
 		const notInstalled: string[] = []
 
 		const pkg = this.Service('pkg')
+
 		for (const m of modules) {
 			if (!pkg.isInstalled(m) && notInstalled.indexOf(m) === -1) {
 				notInstalled.push(m)
