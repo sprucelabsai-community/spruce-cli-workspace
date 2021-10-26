@@ -59,13 +59,14 @@ export default class EventStore extends AbstractStore {
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
+		namespaces?: string[]
 		didUpdateHandler?: InternalUpdateHandler
 	}): Promise<EventStoreFetchEventContractsResponse> {
-		const { localNamespace, didUpdateHandler } = options ?? {}
+		const { localNamespace, didUpdateHandler, namespaces } = options ?? {}
 
 		didUpdateHandler?.('Pulling remote contracts...')
 
-		const contracts = await this.fetchRemoteContracts()
+		const contracts = await this.fetchRemoteContracts(namespaces)
 
 		const localContract =
 			localNamespace &&
@@ -92,10 +93,15 @@ export default class EventStore extends AbstractStore {
 		EventStore.contractCache = null
 	}
 
-	private async fetchRemoteContracts() {
+	private async fetchRemoteContracts(namespaces?: string[]) {
 		if (!EventStore.contractCache) {
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
-			const results = await client.emit('get-event-contracts::v2020_12_25')
+
+			const results = await client.emit('get-event-contracts::v2020_12_25', {
+				target: {
+					namespaces,
+				},
+			})
 			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 			EventStore.contractCache = contracts

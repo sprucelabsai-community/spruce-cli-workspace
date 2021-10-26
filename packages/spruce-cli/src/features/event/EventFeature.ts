@@ -172,6 +172,7 @@ export default class EventFeature extends AbstractFeature {
 				eventGenerator: this.Writer('event'),
 				eventStore: this.Store('event'),
 				skillStore: this.Store('skill'),
+				dependencyService: this.Service('dependency'),
 			})
 		}
 

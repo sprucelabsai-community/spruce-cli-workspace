@@ -7,6 +7,7 @@ import VsCodeService from '../features/vscode/services/VsCodeService'
 import AuthService from './AuthService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
+import DependencyService from './DependencyService'
 import ImportService from './ImportService'
 import LintService from './LintService'
 import PkgService from './PkgService'
@@ -26,6 +27,7 @@ export interface ServiceMap {
 	auth: AuthService
 	remote: RemoteService
 	eventSettings: EventSettingsService
+	dependency: DependencyService
 }
 
 export type Service = keyof ServiceMap
@@ -62,6 +64,10 @@ export default class ServiceFactory {
 				) as ServiceMap[S]
 			case 'settings':
 				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
+			case 'dependency':
+				return new DependencyService(
+					new SettingsService<FeatureCode>(cwd)
+				) as ServiceMap[S]
 			case 'import':
 				return this.buildImportService(cwd) as ServiceMap[S]
 			case 'build': {

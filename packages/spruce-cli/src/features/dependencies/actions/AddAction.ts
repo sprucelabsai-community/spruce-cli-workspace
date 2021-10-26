@@ -51,15 +51,10 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 			})
 		}
 
-		const settings = this.Service('settings')
-		const dependencies = settings.get('dependencies') ?? []
-
-		dependencies.push({
+		this.Service('dependency').add({
 			id: skill.id,
 			namespace: skill.slug,
 		})
-
-		settings.set('dependencies', dependencies)
 
 		return {
 			summaryLines: [`Added "${skill.name}" as a dependency!`],

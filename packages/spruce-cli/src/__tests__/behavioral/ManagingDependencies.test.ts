@@ -44,7 +44,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 			name: 'dependency manage 3',
 		})
 
-		this.Service('settings').set('dependencies', [
+		this.Service('dependency').set([
 			{
 				namespace: skill1.slug,
 				id: skill1.id,

@@ -7,6 +7,7 @@ import {
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import { isEqual } from 'lodash'
+import DependencyService from '../../../services/DependencyService'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import { GraphicsInterface } from '../../../types/cli.types'
 import { FeatureActionResponse } from '../../features.types'
@@ -25,6 +26,7 @@ export default class EventContractBuilder {
 	private cwd: string
 	private eventStore: EventStore
 	private skillStore: SkillStore
+	private dependencyService: DependencyService
 
 	public constructor(options: {
 		optionsSchema: OptionsSchema
@@ -33,6 +35,7 @@ export default class EventContractBuilder {
 		cwd: string
 		eventStore: EventStore
 		skillStore: SkillStore
+		dependencyService: DependencyService
 	}) {
 		this.optionsSchema = options.optionsSchema
 		this.ui = options.ui
@@ -40,6 +43,7 @@ export default class EventContractBuilder {
 		this.cwd = options.cwd
 		this.eventStore = options.eventStore
 		this.skillStore = options.skillStore
+		this.dependencyService = options.dependencyService
 	}
 
 	public async fetchAndWriteContracts(
@@ -151,8 +155,13 @@ export default class EventContractBuilder {
 
 		this.ui.startLoading('Fetching event contracts...')
 
+		const namespaces = shouldSyncOnlyCoreEvents
+			? ['core']
+			: this.dependencyService.get().map((d) => d.namespace)
+
 		const contractResults = await this.eventStore.fetchEventContracts({
 			localNamespace: namespace,
+			namespaces,
 			didUpdateHandler: (msg) => {
 				this.ui.startLoading(msg)
 			},
@@ -167,10 +176,8 @@ export default class EventContractBuilder {
 		}
 
 		if (shouldSyncOnlyCoreEvents) {
-			contractResults.contracts = [contractResults.contracts[0]]
 			namespace = undefined
 		} else {
-			contractResults.contracts.shift()
 			namespace = namesUtil.toKebab(namespace)
 		}
 

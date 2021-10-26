@@ -34,8 +34,8 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 			return 0
 		})
 
-		const settings = this.Service('settings')
-		const dependencies = settings.get('dependencies') ?? []
+		const dep = this.Service('dependency')
+		const dependencies = dep.get()
 
 		const currentSkill = await this.Store('skill').loadCurrentSkill()
 
@@ -66,11 +66,11 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 
 			return {
 				id,
-				namespace: skill?.slug,
+				namespace: skill?.slug ?? '**missing**',
 			}
 		})
 
-		settings.set('dependencies', updatedDependencies)
+		dep.set(updatedDependencies)
 
 		return {
 			summaryLines: [
