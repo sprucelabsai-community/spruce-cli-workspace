@@ -171,7 +171,10 @@ export default class SkillStore extends AbstractStore {
 		return this.fetchAllSkills({ showMineOnly: true })
 	}
 
-	public async fetchAllSkills(query?: { showMineOnly?: boolean }) {
+	public async fetchAllSkills(query?: {
+		showMineOnly?: boolean
+		namespaces?: string[]
+	}) {
 		const client = await this.connectToApi()
 
 		const response = await client.emit('list-skills::v2020_12_25', {

@@ -76,6 +76,11 @@ export default class ViewFeature extends AbstractFeature {
 	public async afterPackageInstall() {
 		const files = await this.Writer('view').writePlugin(this.cwd)
 
+		this.Service('dependency').add({
+			id: '**',
+			namespace: 'heartwood',
+		})
+
 		return { files }
 	}
 }

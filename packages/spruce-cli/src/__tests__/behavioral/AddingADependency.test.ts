@@ -12,6 +12,10 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 
 	@test()
 	protected static async errorsWhenPassedBadSlug() {
+		await this.getSkillFixture().registerCurrentSkill({
+			name: 'current skill in adding deps',
+		})
+
 		const results = await this.Action('dependency', 'add').execute({
 			namespace: 'waka-waka',
 		})

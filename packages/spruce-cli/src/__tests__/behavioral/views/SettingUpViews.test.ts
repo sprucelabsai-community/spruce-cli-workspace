@@ -8,4 +8,27 @@ export default class SettingUpViewsTest extends AbstractCliTest {
 		const feature = cli.getFeature('view')
 		assert.isTruthy(feature)
 	}
+
+	@test()
+	protected static async installingViewsAddsHeartwoodAsDependency() {
+		await this.FeatureFixture().installFeatures([
+			{
+				code: 'skill',
+				options: {
+					name: 'testing views',
+					description: 'this too, is a great test!',
+				},
+			},
+			{
+				code: 'view',
+			},
+		])
+
+		await this.getPersonFixture().loginAsDemoPerson()
+
+		const dependencies = this.Service('dependency').get()
+		assert.isLength(dependencies, 1)
+
+		assert.isEqual(dependencies[0].namespace, 'heartwood')
+	}
 }
