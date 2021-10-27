@@ -20,7 +20,7 @@ type Options = SchemaValues<OptionsSchema>
 
 export default class DeployAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
-	public commandAliases = ['add.dependency']
+	public commandAliases = ['add.dependency [namespace]']
 	public invocationMessage = 'Adding a dependency... 🔗'
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
