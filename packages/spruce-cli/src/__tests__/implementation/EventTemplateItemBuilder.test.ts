@@ -314,8 +314,8 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 		[contractWith2Signatures, contractWith2Signatures],
 		[
 			didBookTemplateItem,
-			willBookTemplateItem,
 			didBookTemplateItem,
+			willBookTemplateItem,
 			willBookTemplateItem,
 		]
 	)
@@ -359,5 +359,24 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 		const match = schemaTemplateItems.find((item) => item.id === 'eventSource')
 		assert.isTruthy(match)
+	}
+
+	@test()
+	protected static sortsEventsAlphabetically() {
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems({
+			contracts: [
+				{
+					eventSignatures: {
+						'zebra-cheeta': {},
+						'register-events':
+							coreEventContracts[0].eventSignatures['can-listen::v2020_12_25'],
+					},
+				},
+			],
+			localNamespace: 'testing',
+		})
+
+		assert.isEqual(eventContractTemplateItems[0].nameCamel, 'registerEvents')
+		assert.isEqual(eventContractTemplateItems[1].nameCamel, 'zebraCheeta')
 	}
 }

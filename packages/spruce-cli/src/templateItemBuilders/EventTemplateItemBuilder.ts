@@ -43,6 +43,16 @@ export default class EventTemplateItemBuilder {
 			schemaTemplateItems.push(...schemaItems)
 		}
 
+		eventContractTemplateItems.sort((a, b) => {
+			if (a.nameCamel > b.nameCamel) {
+				return 1
+			} else if (a.nameCamel < b.nameCamel) {
+				return -1
+			}
+
+			return 0
+		})
+
 		return { eventContractTemplateItems, schemaTemplateItems }
 	}
 
