@@ -277,6 +277,11 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		await skillFixture.registerEventContract(skill2, eventContract)
 
+		await this.Service('dependency').add({
+			id: skill2.id,
+			namespace: skill2.slug,
+		})
+
 		const results = await this.Action('event', 'listen').execute({
 			eventNamespace: skill2.slug,
 			eventName: `my-new-event`,

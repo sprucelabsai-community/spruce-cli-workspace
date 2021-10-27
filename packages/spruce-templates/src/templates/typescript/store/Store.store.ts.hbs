@@ -1,5 +1,5 @@
 import { AbstractStore, UniversalStoreOptions, PrepareOptions, PrepareResults } from '@sprucelabs/data-stores'
-import { buildSchema, dropFields, makeFieldsOptional, SchemaValues } from '@sprucelabs/schema'
+import { buildSchema, dropFields, makeFieldsOptional, SchemaValues, SchemaFieldNames } from '@sprucelabs/schema'
 
 // The structure of the data you'll be returning from finds
 const fullSchema = buildSchema({
@@ -85,12 +85,15 @@ export default class {{namePascalPlural}}Store extends AbstractStore<
 		return values
 	}
 
-	protected async prepareRecord<IncludePrivateFields extends boolean>(
-		values: Database{{namePascal}},
-		_options?: PrepareOptions<IncludePrivateFields>
+	
+	protected async prepareRecord<
+		IncludePrivateFields extends boolean,
+		F extends SchemaFieldNames<FullSchema> = SchemaFieldNames<FullSchema>
+	>(
+		record: Database{{namePascal}},
+		_options?: PrepareOptions<IncludePrivateFields, FullSchema, F>
 	) {
-		return values as PrepareResults<FullSchema, IncludePrivateFields>
+		return record as PrepareResults<FullSchema, IncludePrivateFields>
 	}
-
 
 }

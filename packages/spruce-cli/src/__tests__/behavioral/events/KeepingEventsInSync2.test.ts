@@ -52,6 +52,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		const client = await this.getMercuryFixture().connectToApi({
 			shouldAuthAsCurrentSkill: true,
 		})
+
 		await client.disconnect()
 
 		EventStore.clearCache()
@@ -149,6 +150,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
+		await this.Service('dependency').add({
+			id: skill2.id,
+			namespace: skill2.slug,
+		})
+
 		const results = await this.Action('event', 'sync').execute({})
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
@@ -224,6 +230,17 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
+		await this.Service('dependency').set([
+			{
+				id: skill2.id,
+				namespace: skill2.slug,
+			},
+			{
+				id: skill3.id,
+				namespace: skill3.slug,
+			},
+		])
+
 		const results = await this.Action('event', 'sync').execute({})
 
 		const contract = testUtil.assertFileByNameInGeneratedFiles(
@@ -257,6 +274,11 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 					}),
 				},
 			},
+		})
+
+		await this.Service('dependency').add({
+			id: skill2.id,
+			namespace: skill2.slug,
 		})
 
 		const results = await this.Action('event', 'sync').execute({})
@@ -412,6 +434,11 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 					...signature,
 				},
 			},
+		})
+
+		await this.Service('dependency').add({
+			id: skill.id,
+			namespace: skill.slug,
 		})
 
 		const results = await this.Action('event', 'sync').execute({})

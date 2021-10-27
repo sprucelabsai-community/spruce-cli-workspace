@@ -8,6 +8,7 @@ import testUtil from '../../tests/utilities/test.utility'
 
 export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'stores'
+
 	@test()
 	protected static async hasCreateStoreAction() {
 		assert.isFunction(this.Action('store', 'create').execute)
@@ -72,6 +73,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	@test()
 	protected static async getsSecondStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ isRunningLocally: true })
+
 		assert.isTruthy(health.store)
 		assert.isFalsy(health.store.errors)
 		assert.isLength(health.store.stores, 2)

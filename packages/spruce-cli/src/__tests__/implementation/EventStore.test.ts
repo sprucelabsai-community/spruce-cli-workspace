@@ -102,7 +102,8 @@ export default class EventStoreTest extends AbstractEventTest {
 			localNamespace: 'my-skill',
 		})
 
-		assert.isTrue(contracts.length >= 2)
+		assert.isTrue(contracts.length > 2)
+
 		const skillContract = contracts[1]
 
 		const sig = eventContractUtil.getSignatureByName(
@@ -206,9 +207,11 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		const { contracts } = await this.Store('event').fetchEventContracts({
 			localNamespace: skill.slug,
+			namespaces: ['core'],
 		})
 
-		assert.isTrue(contracts.length >= 2)
+		assert.isLength(contracts, 2)
+
 		const name = eventNameUtil.join({
 			eventName: EVENT_NAME,
 			eventNamespace: skill.slug,

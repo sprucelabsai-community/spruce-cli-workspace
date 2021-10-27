@@ -55,7 +55,7 @@ const eventFileNamesImportKeyMap = {
 
 export default class EventStore extends AbstractStore {
 	public name = 'event'
-	protected static contractCache: any
+	protected static contractCache: Record<string, any> = {}
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
@@ -90,11 +90,13 @@ export default class EventStore extends AbstractStore {
 	}
 
 	public static clearCache() {
-		EventStore.contractCache = null
+		EventStore.contractCache = {}
 	}
 
 	private async fetchRemoteContracts(namespaces?: string[]) {
-		if (!EventStore.contractCache) {
+		const key = namespaces?.join('|') ?? '_'
+
+		if (!EventStore.contractCache[key]) {
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
 			const results = await client.emit('get-event-contracts::v2020_12_25', {
@@ -104,10 +106,10 @@ export default class EventStore extends AbstractStore {
 			})
 			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
-			EventStore.contractCache = contracts
+			EventStore.contractCache[key] = contracts
 		}
 
-		return cloneDeep(EventStore.contractCache)
+		return cloneDeep(EventStore.contractCache[key])
 	}
 
 	private filterOutLocalEventsFromRemoteContractsMutating(
@@ -270,7 +272,7 @@ export default class EventStore extends AbstractStore {
 
 		eventResponseUtil.getFirstResponseOrThrow(results)
 
-		EventStore.contractCache = null
+		EventStore.contractCache = {}
 
 		return results
 	}
@@ -286,6 +288,6 @@ export default class EventStore extends AbstractStore {
 
 		eventResponseUtil.getFirstResponseOrThrow(results)
 
-		EventStore.contractCache = null
+		EventStore.contractCache = {}
 	}
 }
