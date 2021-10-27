@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.23.1](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.23.0...v14.23.1) (2021-10-27)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+# [14.23.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.22.10...v14.23.0) (2021-10-27)
+
+
+### Features
+
+* manage dependencies ([e4fbce2](https://github.com/sprucelabsai/spruce-cli-workspace/commit/e4fbce2))
+* sync only events for dependent skills ([173c027](https://github.com/sprucelabsai/spruce-cli-workspace/commit/173c027))
+
+
+
+
+
 ## [14.22.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.22.9...v14.22.10) (2021-10-24)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
