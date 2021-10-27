@@ -104,6 +104,7 @@ export default class EventStore extends AbstractStore {
 					namespaces,
 				},
 			})
+
 			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
 
 			EventStore.contractCache[key] = contracts

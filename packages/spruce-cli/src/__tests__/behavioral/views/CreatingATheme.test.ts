@@ -17,12 +17,6 @@ export default class CreatingAThemeTest extends AbstractSkillTest {
 			name: 'current skill in creating a theme',
 		})
 
-		const dependencyResults = await this.Action('dependency', 'add').execute({
-			namespace: 'heartwood',
-		})
-
-		assert.isFalsy(dependencyResults.errors)
-
 		const results = await this.Action('view', 'createTheme').execute({})
 		assert.isFalsy(results.errors)
 
