@@ -8,19 +8,26 @@ import {
 	Skill,
 	diskUtil,
 	HASH_SPRUCE_DIR_NAME,
+	BootCallback
 } from "@sprucelabs/spruce-skill-utils";
 
 class SchemaFeature implements SkillFeature {
 	private skill: Skill;
 	private _isBooted = false
+	private bootHandler?: BootCallback;
 
 	public constructor(skill: Skill) {
 		this.skill = skill;
 	}
 
+	public onBoot(cb: BootCallback) {
+		this.bootHandler = cb
+	}
+
 	public execute = async () => {
 		await this.loadSchemas();
 		this._isBooted = true
+		this.bootHandler?.()
 	};
 
 	public checkHealth = async () => {

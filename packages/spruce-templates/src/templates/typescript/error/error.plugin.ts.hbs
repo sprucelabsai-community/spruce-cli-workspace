@@ -5,18 +5,26 @@ import {
 	Skill,
 	diskUtil,
 	HASH_SPRUCE_DIR_NAME,
+	BootCallback
 } from "@sprucelabs/spruce-skill-utils";
 
 class ErrorSkillFeature implements SkillFeature {
 	private skill: Skill;
 	private _isBooted = false
+	private bootHandler?: BootCallback;
+
 
 	public constructor(skill: Skill) {
 		this.skill = skill;
 	}
 
+	public onBoot(cb: BootCallback) {
+		this.bootHandler = cb
+	}
+
 	public execute = async () => {
 		this._isBooted = true
+		this.bootHandler?.()
 	 };
 
 	public checkHealth = async () => {
