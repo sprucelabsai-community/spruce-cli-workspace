@@ -204,11 +204,6 @@ export default class TerminalInterface implements GraphicsInterface {
 			lines: summaryLines,
 		})
 
-		if (errors.length > 0) {
-			this.renderHeadline('Errors')
-			errors.forEach((err) => this.renderError(err))
-		}
-
 		if (packagesInstalled.length > 0) {
 			const table = new Table({
 				head: ['Name', 'Dev'],
@@ -253,6 +248,11 @@ export default class TerminalInterface implements GraphicsInterface {
 				headline: 'Read below 👇',
 				lines: results.hints,
 			})
+		}
+
+		if (errors.length > 0) {
+			this.renderHeadline('Errors')
+			errors.forEach((err) => this.renderError(err))
 		}
 
 		if (results.totalTime) {

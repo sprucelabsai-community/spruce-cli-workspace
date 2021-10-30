@@ -191,12 +191,25 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(passedHealth.skill.status, 'passed')
 	}
 
-	@test('Upgrades error.plugin', 'error.plugin.ts', 'errors')
-	@test('Upgrades schema.plugin', 'schema.plugin.ts', 'schemas')
+	@test.only(
+		'Upgrades error.plugin (even if skill is broken)',
+		'error.plugin.ts',
+		'errors'
+	)
 	@test(
-		'Upgrades conversation.plugin',
+		'Upgrades schema.plugin (even if skill is broken)',
+		'schema.plugin.ts',
+		'schemas'
+	)
+	@test(
+		'Upgrades conversation.plugin (even if skill is broken)',
 		'conversation.plugin.ts',
 		'conversation'
+	)
+	@test(
+		'Upgrades view.plugin (even if skill is broken)',
+		'view.plugin.ts',
+		'views'
 	)
 	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
@@ -206,15 +219,19 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
-		diskUtil.writeFile(pluginPath, '')
+		diskUtil.writeFile(pluginPath, 'aoeuaoeuaoeuaoeu')
 
 		const results = await this.Action('node', 'upgrade').execute({})
+
+		assert.isFalsy(results.errors)
 
 		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
 
 		const updatedContents = diskUtil.readFile(pluginPath)
 
 		assert.isEqual(updatedContents, originalContents)
+
+		assert.doesInclude(results.summaryLines ?? [], 'rebuilt')
 	}
 
 	@test()

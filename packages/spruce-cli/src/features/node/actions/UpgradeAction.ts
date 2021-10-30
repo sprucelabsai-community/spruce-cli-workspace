@@ -32,18 +32,9 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 			const dependencyResults = await this.reInstallPackageDependencies()
 
-			await this.Service('command').execute('yarn clean.build')
-			await this.Service('command').execute('yarn build.dev')
-
-			let results = {
-				summaryLines: ['Build folder cleared.', 'Build complete.'],
-			}
-
-			results = actionUtil.mergeActionResults(results, dependencyResults, {
+			return actionUtil.mergeActionResults(dependencyResults, {
 				headline: 'Upgrade',
 			})
-
-			return results
 		} finally {
 			InFlightEntertainment.stop()
 

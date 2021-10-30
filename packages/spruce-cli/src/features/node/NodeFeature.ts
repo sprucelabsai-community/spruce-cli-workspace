@@ -5,7 +5,7 @@ import nodeFeatureOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/node
 import { FileDescription, GeneratedFile } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { FeatureCode } from '../features.types'
+import { ActionOptions, FeatureCode } from '../features.types'
 import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
@@ -43,6 +43,39 @@ export default class NodeFeature<
 	]
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+
+	public constructor(options: ActionOptions) {
+		super(options)
+
+		this.emitter.on('feature.did-execute', async (payload) => {
+			if (payload.featureCode === 'node' && payload.actionCode === 'upgrade') {
+				try {
+					this.ui.startLoading('Cleaning build...')
+					await this.Service('command').execute('yarn clean.build')
+
+					this.ui.startLoading('Applying lint rules...')
+					await this.Service('command').execute('yarn fix.lint')
+
+					this.ui.startLoading('Rebuilding...')
+					await this.Service('command').execute('yarn build.dev')
+
+					return {
+						summaryLines: [
+							'Build folder cleared.',
+							'Lint rules applied.',
+							'Rebuild Complete',
+						],
+					}
+				} catch (err) {
+					return {
+						errors: [err],
+					}
+				}
+			}
+
+			return {}
+		})
+	}
 
 	public async beforePackageInstall(options: Options) {
 		const destination = this.resolveDestination(options)

@@ -84,7 +84,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async callsCleanAndBuildDev() {
+	protected static async callsCleanFixLintAndBuildDev() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
 		let wasCleanBuildCalled = false
@@ -92,10 +92,18 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 			return {}
 		}
 
+		let wasFixLintCalled = false
 		CommandService.setMockResponse('yarn clean.build', {
 			code: 0,
 			callback: () => {
 				wasCleanBuildCalled = true
+			},
+		})
+
+		CommandService.setMockResponse('yarn fix.lint', {
+			code: 0,
+			callback: () => {
+				wasFixLintCalled = true
 			},
 		})
 
@@ -113,6 +121,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 		assert.isFalsy(results.errors)
 		assert.isTrue(wasCleanBuildCalled)
 		assert.isTrue(wasBuildDevCalled)
+		assert.isTrue(wasFixLintCalled)
 	}
 
 	@test()

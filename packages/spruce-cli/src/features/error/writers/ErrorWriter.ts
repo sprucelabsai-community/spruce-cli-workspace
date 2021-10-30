@@ -135,7 +135,7 @@ export default class ErrorWriter extends AbstractWriter {
 		return results
 	}
 
-	public writePlugin(cwd: string) {
+	public async writePlugin(cwd: string) {
 		const destination = diskUtil.resolveHashSprucePath(
 			cwd,
 			'features',
@@ -149,6 +149,8 @@ export default class ErrorWriter extends AbstractWriter {
 			pluginContents,
 			'Supports your skill with Error generation and handling.'
 		)
+
+		await this.lint(destination)
 
 		return results
 	}
