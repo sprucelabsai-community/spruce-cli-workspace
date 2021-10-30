@@ -53,7 +53,7 @@ export default class NodeFeature<
 					this.ui.startLoading('Cleaning build...')
 					await this.Service('command').execute('yarn clean.build')
 
-					this.ui.startLoading('Applying lint rules...')
+					this.ui.startLoading('Applying lint rules to all files...')
 					await this.Service('command').execute('yarn fix.lint')
 
 					this.ui.startLoading('Rebuilding...')
