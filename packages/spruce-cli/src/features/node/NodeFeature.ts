@@ -47,7 +47,7 @@ export default class NodeFeature<
 	public constructor(options: ActionOptions) {
 		super(options)
 
-		this.emitter.on('feature.did-execute', async (payload) => {
+		void this.emitter.on('feature.did-execute', async (payload) => {
 			if (payload.featureCode === 'node' && payload.actionCode === 'upgrade') {
 				try {
 					this.ui.startLoading('Cleaning build...')
