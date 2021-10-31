@@ -4,7 +4,6 @@ import {
 } from '@sprucelabs/spruce-event-utils'
 import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import EventStore from '../../features/event/stores/EventStore'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 
 const EVENT_NAME_READABLE = 'did book appointment'
@@ -42,8 +41,6 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiKey: skill2.apiKey,
 		})
 
-		EventStore.clearCache()
-
 		const contractResults = await this.Store('event', {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
@@ -71,18 +68,18 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		})
 
 		assert.doesInclude(sig.responsePayloadSchema, {
-			id: 'didBookAppointmentResponsePayload',
+			id: 'myFantasticallyAmazingEventResponsePayload',
 			version,
 			namespace,
 		})
 		assert.doesInclude(sig.emitPermissionContract, {
-			id: 'didBookAppointmentEmitPermissions',
-			name: 'did book appointment',
+			id: 'myFantasticallyAmazingEventEmitPermissions',
+			name: 'my fantastically amazing event',
 		})
 
 		assert.doesInclude(sig.listenPermissionContract, {
-			id: 'didBookAppointmentListenPermissions',
-			name: 'did book appointment',
+			id: 'myFantasticallyAmazingEventListenPermissions',
+			name: 'my fantastically amazing event',
 		})
 	}
 }

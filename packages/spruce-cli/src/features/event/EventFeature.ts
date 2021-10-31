@@ -9,6 +9,7 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureActionResponse, FeatureCode } from '../features.types'
 import EventContractBuilder from './builders/EventContractBuilder'
+import EventStore from './stores/EventStore'
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
@@ -49,6 +50,7 @@ export default class EventFeature extends AbstractFeature {
 
 	public readonly fileDescriptions: FileDescription[] = []
 	private contractBuilder?: EventContractBuilder
+	private initiatingAction?: string
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -74,25 +76,17 @@ export default class EventFeature extends AbstractFeature {
 		return {}
 	}
 
-	private async handleDidExecute(payload: {
-		featureCode: string
-		actionCode: string
-	}) {
-		const { featureCode, actionCode } = payload
-		const isInstalled = await this.featureInstaller.isInstalled('event')
-
-		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			return this.Action('event', 'sync').execute({})
-		}
-
-		return {}
-	}
-
 	private async handleWillExecute(payload: {
 		featureCode: string
 		actionCode: string
 	}): Promise<FeatureActionResponse> {
 		const { featureCode, actionCode } = payload
+
+		if (!this.initiatingAction) {
+			EventStore.clearCache()
+			const combined = this.combineCodes(featureCode, actionCode)
+			this.initiatingAction = combined
+		}
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
 
@@ -112,6 +106,30 @@ export default class EventFeature extends AbstractFeature {
 		}
 
 		return {}
+	}
+
+	private async handleDidExecute(payload: {
+		featureCode: string
+		actionCode: string
+	}) {
+		const { featureCode, actionCode } = payload
+		const isInstalled = await this.featureInstaller.isInstalled('event')
+
+		let results = {}
+
+		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
+			results = this.Action('event', 'sync').execute({})
+		}
+
+		if (this.initiatingAction === this.combineCodes(featureCode, actionCode)) {
+			EventStore.clearCache()
+		}
+
+		return results
+	}
+
+	private combineCodes(featureCode: string, actionCode: string) {
+		return `${featureCode}.${actionCode}`
 	}
 
 	private async appendRemoteToResultsOrPrompt(): Promise<FeatureActionResponse> {

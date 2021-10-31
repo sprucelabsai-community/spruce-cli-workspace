@@ -16,7 +16,6 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import EventStore from '../../../features/event/stores/EventStore'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
@@ -54,8 +53,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		})
 
 		await client.disconnect()
-
-		EventStore.clearCache()
 
 		const results2 = await this.Action('schema', 'sync').execute({})
 

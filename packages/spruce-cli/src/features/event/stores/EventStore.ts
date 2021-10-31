@@ -56,7 +56,12 @@ const eventFileNamesImportKeyMap = {
 export default class EventStore extends AbstractStore {
 	public name = 'event'
 	protected static contractCache: Record<string, any> = {}
-	private localEventCache?: SpruceSchemas.Mercury.v2020_12_25.EventContract
+	private static localEventCache?: SpruceSchemas.Mercury.v2020_12_25.EventContract
+
+	public static clearCache() {
+		EventStore.localEventCache = undefined
+		EventStore.contractCache = {}
+	}
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
@@ -88,10 +93,6 @@ export default class EventStore extends AbstractStore {
 			contracts,
 			errors: [],
 		}
-	}
-
-	public static clearCache() {
-		EventStore.contractCache = {}
 	}
 
 	private async fetchRemoteContracts(namespaces?: string[]) {
@@ -134,7 +135,9 @@ export default class EventStore extends AbstractStore {
 		localNamespace: string,
 		didUpdateHandler?: InternalUpdateHandler
 	): Promise<EventContract | null> {
-		let didChange = false
+		if (EventStore.localEventCache) {
+			return EventStore.localEventCache
+		}
 
 		const localMatches = await globby(
 			diskUtil.resolvePath(
@@ -171,10 +174,6 @@ export default class EventStore extends AbstractStore {
 						eventNamespace: ns,
 					})
 
-					if (!didChange) {
-						didChange = diskUtil.hasFileChanged(match)
-					}
-
 					const filename = pathUtil.basename(
 						match
 					) as keyof typeof eventFileNamesImportKeyMap
@@ -202,10 +201,6 @@ export default class EventStore extends AbstractStore {
 				}
 			})
 		)
-
-		if (!didChange && this.localEventCache) {
-			return this.localEventCache
-		}
 
 		const matches = filesByFqenAndEventKey.map((o) => o.match)
 		const importsInOrder = (await this.Service('import').bulkImport(
@@ -265,7 +260,7 @@ export default class EventStore extends AbstractStore {
 
 			validateEventContract(cleaned)
 
-			this.localEventCache = cleaned
+			EventStore.localEventCache = cleaned
 
 			return cleaned
 		}
