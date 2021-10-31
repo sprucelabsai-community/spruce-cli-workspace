@@ -134,9 +134,7 @@ export default class EventStore extends AbstractStore {
 		localNamespace: string,
 		didUpdateHandler?: InternalUpdateHandler
 	): Promise<EventContract | null> {
-		if (this.localEventCache) {
-			return this.localEventCache
-		}
+		let didChange = false
 
 		const localMatches = await globby(
 			diskUtil.resolvePath(
@@ -173,6 +171,10 @@ export default class EventStore extends AbstractStore {
 						eventNamespace: ns,
 					})
 
+					if (!didChange) {
+						didChange = diskUtil.hasFileChanged(match)
+					}
+
 					const filename = pathUtil.basename(
 						match
 					) as keyof typeof eventFileNamesImportKeyMap
@@ -200,6 +202,11 @@ export default class EventStore extends AbstractStore {
 				}
 			})
 		)
+
+		if (!didChange && this.localEventCache) {
+			debugger
+			return this.localEventCache
+		}
 
 		const matches = filesByFqenAndEventKey.map((o) => o.match)
 		const importsInOrder = (await this.Service('import').bulkImport(

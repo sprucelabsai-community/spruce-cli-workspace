@@ -191,7 +191,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 		assert.isEqual(passedHealth.skill.status, 'passed')
 	}
 
-	@test.only(
+	@test(
 		'Upgrades error.plugin (even if skill is broken)',
 		'error.plugin.ts',
 		'errors'
@@ -231,7 +231,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		assert.isEqual(updatedContents, originalContents)
 
-		assert.doesInclude(results.summaryLines ?? [], 'rebuilt')
+		assert.doesInclude(results.summaryLines ?? [], 'Rebuild Complete')
 	}
 
 	@test()

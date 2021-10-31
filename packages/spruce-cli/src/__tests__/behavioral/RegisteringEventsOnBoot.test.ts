@@ -20,7 +20,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async registeringEventsOnBoot() {
 		const { skill2, currentSkill } =
 			await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg()
@@ -64,25 +64,25 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 		const namespace = namesUtil.toPascal(currentSkill.slug)
 		const sig = eventContractUtil.getSignatureByName(contracts[1], name)
 
-		assert.doesInclude(sig, {
-			emitPayloadSchema: {
-				id: 'didBookAppointmentEmitTargetAndPayload',
-				version,
-				namespace,
-			},
-			responsePayloadSchema: {
-				id: 'myFantasticallyAmazingEventResponsePayload',
-				version,
-				namespace,
-			},
-			emitPermissionContract: {
-				id: 'myFantasticallyAmazingEventEmitPermissions',
-				name: 'my fantastically amazing event',
-			},
-			listenPermissionContract: {
-				id: 'myFantasticallyAmazingEventListenPermissions',
-				name: 'my fantastically amazing event',
-			},
+		assert.doesInclude(sig.emitPayloadSchema, {
+			id: 'didBookAppointmentEmitTargetAndPayload',
+			version,
+			namespace,
+		})
+
+		assert.doesInclude(sig.responsePayloadSchema, {
+			id: 'didBookAppointmentResponsePayload',
+			version,
+			namespace,
+		})
+		assert.doesInclude(sig.emitPermissionContract, {
+			id: 'didBookAppointmentEmitPermissions',
+			name: 'did book appointment',
+		})
+
+		assert.doesInclude(sig.listenPermissionContract, {
+			id: 'didBookAppointmentListenPermissions',
+			name: 'did book appointment',
 		})
 	}
 }
