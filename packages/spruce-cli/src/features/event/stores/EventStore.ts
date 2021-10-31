@@ -204,7 +204,6 @@ export default class EventStore extends AbstractStore {
 		)
 
 		if (!didChange && this.localEventCache) {
-			debugger
 			return this.localEventCache
 		}
 
