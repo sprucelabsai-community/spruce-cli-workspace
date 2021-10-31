@@ -56,6 +56,7 @@ const eventFileNamesImportKeyMap = {
 export default class EventStore extends AbstractStore {
 	public name = 'event'
 	protected static contractCache: Record<string, any> = {}
+	private localEventCache?: SpruceSchemas.Mercury.v2020_12_25.EventContract
 
 	public async fetchEventContracts(options?: {
 		localNamespace?: string
@@ -133,6 +134,10 @@ export default class EventStore extends AbstractStore {
 		localNamespace: string,
 		didUpdateHandler?: InternalUpdateHandler
 	): Promise<EventContract | null> {
+		if (this.localEventCache) {
+			return this.localEventCache
+		}
+
 		const localMatches = await globby(
 			diskUtil.resolvePath(
 				this.cwd,
@@ -253,6 +258,8 @@ export default class EventStore extends AbstractStore {
 			})
 
 			validateEventContract(cleaned)
+
+			this.localEventCache = cleaned
 
 			return cleaned
 		}

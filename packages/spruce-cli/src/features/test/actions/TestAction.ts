@@ -199,7 +199,10 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 	private doWeCareAboutThisFileChanging(path: string) {
 		const ext = pathUtil.extname(path)
 
-		if (path.search('testDirsAndFiles') > -1) {
+		if (
+			path.search('testDirsAndFiles') > -1 ||
+			path.search('.change_cache') > -1
+		) {
 			return false
 		}
 

@@ -38,7 +38,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		} finally {
 			InFlightEntertainment.stop()
 
-			this.ui.renderHero('Finishing upgrade')
+			this.ui.renderHero('Upgrade')
 		}
 	}
 
