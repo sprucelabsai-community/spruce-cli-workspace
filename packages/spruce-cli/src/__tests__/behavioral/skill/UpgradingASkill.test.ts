@@ -204,17 +204,23 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 	@test(
 		'Upgrades conversation.plugin (even if skill is broken)',
 		'conversation.plugin.ts',
-		'conversation'
+		'conversation',
+		false
 	)
 	@test(
 		'Upgrades view.plugin (even if skill is broken)',
 		'view.plugin.ts',
-		'views'
+		'views',
+		false
 	)
-	protected static async upgradesPlugins(pluginName: string, cacheKey: string) {
+	protected static async upgradesPlugins(
+		pluginName: string,
+		cacheKey: string,
+		shouldMockYarn = true
+	) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
-		CommandService.setMockResponse(/yarn/, { code: 0 })
+		shouldMockYarn && CommandService.setMockResponse(/yarn/, { code: 0 })
 
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)

@@ -33,8 +33,8 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		return versionUtil.generateVersion()
 	}
 
-	@test()
-	protected static async syncingSchemasWithBrokenConnectionStopsWithError() {
+	@test.skip('find how to simulate connection errors')
+	protected static async syncingSchemasWithDisconnectedStopsWithError() {
 		await this.FeatureFixture().installCachedFeatures('events')
 
 		await this.syncCoreEventsPretendingToBeMercuryTypes()
