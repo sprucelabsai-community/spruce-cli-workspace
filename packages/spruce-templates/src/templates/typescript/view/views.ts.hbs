@@ -35,6 +35,12 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
         {{/each}}
 	}
+
+    interface ViewControllerOptionsMap {
+		 {{#each vcTemplateItems}}
+		'{{../namespaceKebab}}.{{id}}': ConstructorParameters<typeof {{namePascal}}>[0]
+        {{/each}}
+	}
 }
 
 

@@ -186,6 +186,18 @@ export const svcId: SkillViewControllerId = 'testing-views.root'`,
 		assert.isTruthy(imported.vcId)
 	}
 
+	@test()
+	protected static async typesViewControllerOptions() {
+		const viewsFile = this.resolveHashSprucePath('views', 'views.ts')
+		const viewContents = diskUtil.readFile(viewsFile)
+
+		assert.doesInclude(viewContents, `interface ViewControllerOptionsMap`)
+		assert.doesInclude(
+			viewContents,
+			`'testing-views.appointments-card': ConstructorParameters<typeof AppointmentsCardViewController>[0]`
+		)
+	}
+
 	private static buildTestfile(options: {
 		code: string
 		idInterfaceName: 'SkillViewControllerId' | 'ViewControllerId'
