@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.25.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.24.9...v14.25.0) (2021-11-05)
+
+
+### Features
+
+* Gave developers the ability to get code assistance when building custom views in heartwood ([c38fd2d](https://github.com/sprucelabsai/spruce-cli-workspace/commit/c38fd2d))
+
+
+
+
+
 ## [14.24.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.24.8...v14.24.9) (2021-11-05)
 
 **Note:** Version bump only for package spruce-cli-workspace
