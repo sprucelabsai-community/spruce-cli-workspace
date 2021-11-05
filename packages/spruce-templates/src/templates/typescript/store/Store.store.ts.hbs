@@ -81,8 +81,8 @@ export default class {{namePascalPlural}}Store extends AbstractStore<
 		return values
 	}
 
-	protected async willUpdate(values: Update{{namePascal}}): Promise<Partial<Database{{namePascal}}>> {
-		return values
+	protected async willUpdate(values: Update{{namePascal}}) {
+		return values as Partial<Database{{namePascal}}>
 	}
 
 	
