@@ -65,7 +65,7 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 		assert.isTrue(wasHit === shouldCreateSchema)
 	}
 
-	@test.only()
+	@test()
 	protected static async modulesMovedFromDevToProdDependenciesStayThere() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
