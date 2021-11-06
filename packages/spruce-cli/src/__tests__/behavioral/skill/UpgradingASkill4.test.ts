@@ -60,9 +60,54 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 			return {}
 		})
 
-		await this.Action('node', 'upgrade').execute({})
+		await this.Action('node', 'upgrad`e').execute({})
 
 		assert.isTrue(wasHit === shouldCreateSchema)
+	}
+
+	@test.only()
+	protected static async modulesMovedFromDevToProdDependenciesStayThere() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
+		await this.moveDependencyToDev('@sprucelabs/error')
+
+		let wasMovedBackToDev = false
+		let wasMovedBackToProd = false
+
+		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+			code: 0,
+			callback: (_, args) => {
+				if (
+					args.indexOf('-D') > -1 &&
+					args.indexOf('@sprucelabs/resolve-path-aliases') > -1
+				) {
+					wasMovedBackToDev = true
+				} else if (
+					args.indexOf('-D') === -1 &&
+					args.indexOf('@sprucelabs/error') > -1
+				) {
+					wasMovedBackToProd = true
+				}
+			},
+		})
+
+		await this.Action('node', 'upgrade').execute({})
+
+		assert.isFalse(wasMovedBackToDev, 'dependency moved back to dev')
+		assert.isFalse(wasMovedBackToProd, 'dependency moved back to prod')
+	}
+
+	private static async moveDependencyToDev(name: string) {
+		const pkg = this.Service('pkg')
+		await pkg.uninstall(name)
+		await pkg.install(name, { isDev: true })
+	}
+	private static async moveDependencyToProd(name: string) {
+		const pkg = this.Service('pkg')
+
+		await pkg.uninstall(name)
+		await pkg.install(name)
 	}
 
 	private static async installSetListenerCacheAndBlockExecute() {

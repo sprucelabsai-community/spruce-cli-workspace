@@ -237,7 +237,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		assert.isEqual(updatedContents, originalContents)
 
-		assert.doesInclude(results.summaryLines ?? [], 'Rebuild Complete')
+		assert.doesInclude(results.summaryLines ?? [], 'successfully')
 	}
 
 	@test()

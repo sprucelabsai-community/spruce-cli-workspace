@@ -61,9 +61,9 @@ export default class NodeFeature<
 
 					return {
 						summaryLines: [
-							'Build folder cleared.',
-							'Lint rules applied.',
-							'Rebuild Complete',
+							'Build cleared.',
+							'Lint rules applied to source.',
+							'Code rebuilt successfully.',
 						],
 					}
 				} catch (err) {

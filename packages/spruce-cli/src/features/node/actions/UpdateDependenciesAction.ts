@@ -71,15 +71,20 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 
 		for (const feature of features) {
 			for (const dep of feature.packageDependencies as NpmPackage[]) {
-				if (dep.isDev) {
+				const stripped = pkg.stripLatest(dep.name)
+				const name = pkg.buildPackageName(dep)
+				const isDev =
+					dep.isDev || devDependencies.find((d) => d.stripped === stripped)
+
+				if (isDev) {
 					devDependencies.unshift({
-						stripped: pkg.stripLatest(dep.name),
-						name: pkg.buildPackageName(dep),
+						stripped,
+						name,
 					})
 				} else {
 					dependencies.unshift({
-						stripped: pkg.stripLatest(dep.name),
-						name: pkg.buildPackageName(dep),
+						stripped,
+						name,
 					})
 				}
 			}
