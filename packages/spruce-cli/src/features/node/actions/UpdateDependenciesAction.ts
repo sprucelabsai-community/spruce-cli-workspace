@@ -19,7 +19,7 @@ type Options = SchemaValues<OptionsSchema>
 export default class UpdateDependenciesAction extends AbstractAction<OptionsSchema> {
 	public code = 'updateDependencies'
 	public optionsSchema = optionsSchema
-	public commandAliases = ['update.dependencies']
+	public commandAliases = ['update.dependencies', 'upgrade.dependencies']
 	public invocationMessage = 'Updating dependencies... 💪'
 
 	public async execute(_options: Options): Promise<FeatureActionResponse> {
