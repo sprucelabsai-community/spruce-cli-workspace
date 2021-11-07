@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.26.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.25.0...v14.26.0) (2021-11-07)
+
+
+### Features
+
+* update.dependencies has a new alias: upgrade.dependencies ([4fd36d2](https://github.com/sprucelabsai/spruce-cli-workspace/commit/4fd36d2))
+* upgrading a skill will keep dev and prod dependencies in their spot ([42ddd04](https://github.com/sprucelabsai/spruce-cli-workspace/commit/42ddd04))
+
+
+
+
+
 # [14.25.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.24.9...v14.25.0) (2021-11-05)
 
 
