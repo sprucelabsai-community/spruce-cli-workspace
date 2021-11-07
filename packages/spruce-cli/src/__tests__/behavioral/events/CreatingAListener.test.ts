@@ -2,7 +2,7 @@ import { EventSignature } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
 import {
 	buildEmitTargetAndPayloadSchema,
-	eventErrorAssertUtil,
+	eventAssertUtil,
 	eventResponseUtil,
 	eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
@@ -252,7 +252,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			eventResponseUtil.getFirstResponseOrThrow(results)
 		)
 
-		eventErrorAssertUtil.assertError(error, 'LISTENER_NOT_IMPLEMENTED')
+		eventAssertUtil.assertError(error, 'LISTENER_NOT_IMPLEMENTED')
 
 		const responderRef = results.responses[0].responderRef
 		assert.isEqual(

@@ -1,4 +1,4 @@
-import { eventErrorAssertUtil } from '@sprucelabs/spruce-event-utils'
+import { eventAssertUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert, assertUtil } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -43,10 +43,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		})
 
 		assert.isTruthy(anonResults.errors)
-		eventErrorAssertUtil.assertError(
-			anonResults.errors[0],
-			'UNAUTHORIZED_ACCESS'
-		)
+		eventAssertUtil.assertError(anonResults.errors[0], 'UNAUTHORIZED_ACCESS')
 	}
 
 	@test()
