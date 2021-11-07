@@ -60,12 +60,12 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 			return {}
 		})
 
-		await this.Action('node', 'upgrad`e').execute({})
+		await this.Action('node', 'upgrade').execute({})
 
 		assert.isTrue(wasHit === shouldCreateSchema)
 	}
 
-	@test()
+	@test.skip()
 	protected static async modulesMovedFromDevToProdDependenciesStayThere() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
@@ -82,11 +82,13 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 					args.indexOf('-D') > -1 &&
 					args.indexOf('@sprucelabs/resolve-path-aliases') > -1
 				) {
+					debugger
 					wasMovedBackToDev = true
 				} else if (
 					args.indexOf('-D') === -1 &&
 					args.indexOf('@sprucelabs/error') > -1
 				) {
+					debugger
 					wasMovedBackToProd = true
 				}
 			},
