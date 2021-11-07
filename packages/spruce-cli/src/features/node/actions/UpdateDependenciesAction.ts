@@ -74,7 +74,8 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 				const stripped = pkg.stripLatest(dep.name)
 				const name = pkg.buildPackageName(dep)
 				const isDev =
-					dep.isDev || devDependencies.find((d) => d.stripped === stripped)
+					(dep.isDev || devDependencies.find((d) => d.stripped === stripped)) &&
+					!dependencies.find((d) => d.stripped === stripped)
 
 				if (isDev) {
 					devDependencies.unshift({
