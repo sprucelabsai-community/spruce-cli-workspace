@@ -82,13 +82,11 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 					args.indexOf('-D') > -1 &&
 					args.indexOf('@sprucelabs/resolve-path-aliases') > -1
 				) {
-					debugger
 					wasMovedBackToDev = true
 				} else if (
 					args.indexOf('-D') === -1 &&
 					args.indexOf('@sprucelabs/error') > -1
 				) {
-					debugger
 					wasMovedBackToProd = true
 				}
 			},
