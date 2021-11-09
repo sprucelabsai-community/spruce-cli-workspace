@@ -40,6 +40,8 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			runningPromise = this.boot(command, script, resolve, reject)
 		})
 
+		const hints = ['Skill booted succesfully!', 'Skill torn down cleanly.']
+
 		const meta = {
 			isBooted: false,
 			kill: command.kill.bind(command),
@@ -52,7 +54,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			bootPromise = bootPromise
 				.then(() => {
 					meta.isBooted = true
-					return { meta }
+					return { meta, hints }
 				})
 				.catch((err) => {
 					reject(err)
@@ -60,12 +62,13 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 				})
 
 			if (!options.shouldReturnImmediately) {
-				void bootPromise.then(() => resolve({ meta }))
+				void bootPromise.then(() => resolve({ meta, hints }))
 			} else {
 				meta.bootPromise = bootPromise
 
 				resolve({
 					meta,
+					hints,
 				})
 			}
 		})
