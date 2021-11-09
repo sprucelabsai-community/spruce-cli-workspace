@@ -40,7 +40,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
 			runningPromise = this.boot(command, script, resolve, reject)
 		})
 
-		const hints = ['Skill booted succesfully!', 'Skill torn down cleanly.']
+		const hints = ['Skill booted succesfully!', 'Skill torn down cleanly!']
 
 		const meta = {
 			isBooted: false,
