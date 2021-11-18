@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.26.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.26.9...v14.26.10) (2021-11-18)
+
+**Note:** Version bump only for package @sprucelabs/spruce-templates
+
+
+
+
+
 ## [14.26.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.26.8...v14.26.9) (2021-11-17)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
