@@ -56,9 +56,9 @@
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
-		"@sprucelabs/mercury-types": "^26.1.834",
-		"@sprucelabs/schema": "^25.3.517",
-		"@sprucelabs/spruce-skill-utils": "^22.0.92",
+		"@sprucelabs/mercury-types": "^26.1.839",
+		"@sprucelabs/schema": "^25.3.519",
+		"@sprucelabs/spruce-skill-utils": "^22.0.95",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",
