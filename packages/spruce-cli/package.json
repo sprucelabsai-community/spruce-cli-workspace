@@ -17,7 +17,7 @@
     ]
   },
   "license": "MIT",
-  "version": "14.26.12",
+  "version": "14.26.13",
   "bin": {
     "spruce": "./build/index.js"
   },
@@ -87,7 +87,7 @@
     "@sprucelabs/spruce-event-utils": "^17.1.124",
     "@sprucelabs/spruce-skill-booter": "^14.0.3",
     "@sprucelabs/spruce-skill-utils": "^22.0.110",
-    "@sprucelabs/spruce-templates": "^14.26.12",
+    "@sprucelabs/spruce-templates": "^14.26.13",
     "cfonts": "^2.10.0",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.2",
