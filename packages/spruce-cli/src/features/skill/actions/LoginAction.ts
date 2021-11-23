@@ -52,7 +52,7 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 		const client = await this.connectToApi()
 		const skillResults = await client.emit('list-skills::v2020_12_25', {
 			payload: {
-				showMineOnly: true,
+				shouldOnlyShowMine: true,
 			},
 		})
 

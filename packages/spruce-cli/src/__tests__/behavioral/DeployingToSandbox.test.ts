@@ -189,7 +189,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	private static async fetchSkills(client: ApiClient) {
 		const results = await client.emit(`list-skills::v2020_12_25`, {
 			payload: {
-				showMineOnly: true,
+				shouldOnlyShowMine: true,
 			},
 		})
 
@@ -218,7 +218,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
 	private static async getTotalSkills(client: ApiClient) {
 		const results2 = await client.emit(`list-skills::v2020_12_25`, {
-			payload: { showMineOnly: true },
+			payload: { shouldOnlyShowMine: true },
 		})
 
 		const { skills: skills2 } =

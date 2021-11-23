@@ -168,11 +168,11 @@ export default class SkillStore extends AbstractStore {
 	}
 
 	public async fetchMySkills() {
-		return this.fetchAllSkills({ showMineOnly: true })
+		return this.fetchAllSkills({ shouldOnlyShowMine: true })
 	}
 
 	public async fetchAllSkills(query?: {
-		showMineOnly?: boolean
+		shouldOnlyShowMine?: boolean
 		namespaces?: string[]
 	}) {
 		const client = await this.connectToApi()

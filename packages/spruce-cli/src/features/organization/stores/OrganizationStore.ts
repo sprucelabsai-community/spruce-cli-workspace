@@ -42,7 +42,7 @@ export default class OrganizationStore extends AbstractStore {
 		const client = await this.connectToApi()
 		const results = await client.emit('list-organizations::v2020_12_25', {
 			payload: {
-				showMineOnly: true,
+				shouldOnlyShowMine: true,
 			},
 		})
 
