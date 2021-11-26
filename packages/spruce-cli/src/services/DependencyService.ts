@@ -1,4 +1,5 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../errors/SpruceError'
 
 interface Dependency {
 	id: string
@@ -16,9 +17,22 @@ export default class DependencyService {
 	}
 
 	public add(dependency: Dependency) {
+		this.assertDependencyDoesNotExist(dependency.namespace)
+
 		const dependencies = this.settings.get('dependencies') ?? []
 		dependencies.push(dependency)
 		this.settings.set('dependencies', dependencies)
+	}
+	private assertDependencyDoesNotExist(namespace: string) {
+		const dependencies = this.get()
+		const match = dependencies.find((d) => d.namespace === namespace)
+
+		if (match) {
+			throw new SpruceError({
+				code: 'DEPENDENCY_EXISTS',
+				namespace,
+			})
+		}
 	}
 
 	public get(): Dependency[] {

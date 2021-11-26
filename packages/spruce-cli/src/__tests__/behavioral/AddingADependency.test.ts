@@ -4,6 +4,11 @@ import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
 export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'skills'
+	private static parentSkill: {
+		id: string
+		slug: string
+		name: string
+	}
 
 	@test()
 	protected static async hasAddDependencyAction() {
@@ -11,7 +16,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async errorsWhenPassedBadSlug() {
+	protected static async errorsWhenPassedBadNamespace() {
 		await this.getSkillFixture().registerCurrentSkill({
 			name: 'current skill in adding deps',
 		})
@@ -26,30 +31,44 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async succeedsWhenPassedGoodSlug() {
-		const otherSkill = await this.getSkillFixture().seedDemoSkill({
+	protected static async succeedsWhenPassedGoodNamespace() {
+		const parentSkill = await this.getSkillFixture().seedDemoSkill({
 			name: 'dependent skill',
 		})
 
 		const results = await this.Action('dependency', 'add').execute({
-			namespace: otherSkill.slug,
+			namespace: parentSkill.slug,
 		})
 
 		assert.isFalsy(results.errors)
+
+		this.parentSkill = parentSkill
 
 		const settings = this.Service('settings')
 		const dependencies = settings.get('dependencies')
 
 		assert.isEqualDeep(dependencies, [
 			{
-				id: otherSkill.id,
-				namespace: otherSkill.slug,
+				id: parentSkill.id,
+				namespace: parentSkill.slug,
 			},
 		])
 	}
 
 	@test()
-	protected static async asksToSelectSkillWhenNoSlugPassed() {
+	protected static async cantAddDependencyTwice() {
+		const err = assert.doesThrow(() =>
+			this.Service('dependency').add({
+				id: this.parentSkill.id,
+				namespace: this.parentSkill.slug,
+			})
+		)
+
+		errorAssertUtil.assertError(err, 'DEPENDENCY_EXISTS')
+	}
+
+	@test()
+	protected static async asksToSelectSkillWhenNoNamespacePassed() {
 		const otherSkill = await this.getSkillFixture().seedDemoSkill({
 			name: 'dependent skill',
 		})
@@ -76,6 +95,24 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 		assert.isEqualDeep(dependencies[1], {
 			id: otherSkill.id,
 			namespace: otherSkill.slug,
+		})
+	}
+
+	@test()
+	protected static async doesNotShowSkillsThatAreAlreadySetAsADependency() {
+		await this.getPersonFixture().loginAsDemoPerson()
+
+		void this.Action('dependency', 'add').execute({})
+
+		await this.waitForInput()
+
+		const last = this.ui.lastInvocation()
+
+		this.ui.reset()
+
+		assert.doesNotInclude(last.options.options.choices, {
+			value: this.parentSkill.slug,
+			label: this.parentSkill.name,
 		})
 	}
 

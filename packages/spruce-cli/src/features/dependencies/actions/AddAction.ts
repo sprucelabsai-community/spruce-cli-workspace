@@ -27,17 +27,24 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 		let { namespace } = this.validateAndNormalizeOptions(options)
 
 		const skills = await this.Store('skill').fetchAllSkills()
+		const dependencyService = this.Service('dependency')
 
 		if (!namespace) {
+			const dependencies = dependencyService.get().map((d) => d.namespace)
+
+			const choices = skills
+				.filter((s) => dependencies.indexOf(s.slug) === -1)
+				.map((s) => ({
+					value: s.slug,
+					label: s.name,
+				}))
+
 			namespace = await this.ui.prompt({
 				type: 'select',
 				label: 'Which skill would you like to add as a dependency?',
 				isRequired: true,
 				options: {
-					choices: skills.map((s) => ({
-						value: s.slug,
-						label: s.name,
-					})),
+					choices,
 				},
 			})
 		}
@@ -51,7 +58,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 			})
 		}
 
-		this.Service('dependency').add({
+		dependencyService.add({
 			id: skill.id,
 			namespace: skill.slug,
 		})

@@ -252,6 +252,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `A transport named '${options.name}' already exists!`
 				break
 
+			case 'DEPENDENCY_EXISTS':
+				message = `You already have ${options.namespace} as a dependency!`
+				break
+
 			default:
 				message = super.friendlyMessage()
 		}

@@ -970,6 +970,35 @@ export declare namespace SpruceErrors.SpruceCli {
 
 export declare namespace SpruceErrors.SpruceCli {
 
+	
+	export interface DependencyExists {
+		
+			
+			'namespace': string
+	}
+
+	export interface DependencyExistsSchema extends SpruceSchema.Schema {
+		id: 'dependencyExists',
+		namespace: 'SpruceCli',
+		name: 'Dependency exists',
+		    fields: {
+		            /** . */
+		            'namespace': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type DependencyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.DependencyExistsSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
 	/** Autoloader creation failed */
 	export interface CreateAutoloaderFailed {
 		
