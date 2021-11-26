@@ -96,7 +96,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		await this.waitForInput()
 
-		let lastInvocation = this.ui.lastInvocation()
+		let lastInvocation = this.ui.getLastInvocation()
 
 		assert.isEqual(lastInvocation.command, 'prompt')
 		assert.doesInclude(lastInvocation.options.label, 'namespace')
@@ -105,7 +105,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		await this.waitForInput()
 
-		lastInvocation = this.ui.lastInvocation()
+		lastInvocation = this.ui.getLastInvocation()
 
 		assert.doesInclude(lastInvocation.options.label, 'event')
 

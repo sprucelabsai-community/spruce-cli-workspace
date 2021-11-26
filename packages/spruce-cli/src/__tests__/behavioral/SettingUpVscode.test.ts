@@ -15,7 +15,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		assert.isEqualDeep(this.ui.lastInvocation(), {
+		assert.isEqualDeep(this.ui.getLastInvocation(), {
 			command: 'confirm',
 			options: 'Want me to setup debugging for you?',
 		})
@@ -24,7 +24,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		assert.isEqualDeep(this.ui.lastInvocation(), {
+		assert.isEqualDeep(this.ui.getLastInvocation(), {
 			command: 'confirm',
 			options:
 				'Want me to setup vscode settings for building, testing and linting on save?',
@@ -34,7 +34,7 @@ export default class SettingUpVscodeTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		assert.isEqualDeep(this.ui.lastInvocation(), {
+		assert.isEqualDeep(this.ui.getLastInvocation(), {
 			command: 'confirm',
 			options: 'Want me to setup tasks for building and testing?',
 		})

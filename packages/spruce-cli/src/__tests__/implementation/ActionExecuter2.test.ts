@@ -107,7 +107,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 
 		await this.waitForInput()
 
-		assert.doesNotInclude(this.ui.lastInvocation(), {
+		assert.doesNotInclude(this.ui.getLastInvocation(), {
 			command: 'prompt',
 			options: {
 				type: 'select',
@@ -158,7 +158,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		await this.waitForInput()
 
 		this.ui.reset()
-		const lastQuestion = this.ui.lastInvocation()
+		const lastQuestion = this.ui.getLastInvocation()
 
 		assert.isEqual(lastQuestion.command, 'prompt')
 		assert.doesInclude(
@@ -227,7 +227,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		assert.doesInclude(message, /2 required/gi)
 		assert.doesInclude(message, /1 optional/gi)
 
-		assert.doesInclude(this.ui.lastInvocation(), {
+		assert.doesInclude(this.ui.getLastInvocation(), {
 			command: 'prompt',
 			options: {
 				type: 'select',

@@ -1,6 +1,5 @@
 import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
@@ -132,9 +131,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 		resolvedDestination: string,
 		fallbackVersion: string
 	) {
-		const versions = diskUtil.doesDirExist(resolvedDestination)
-			? versionUtil.getAllVersions(resolvedDestination)
-			: []
+		const versions = versionUtil.getAllVersions(resolvedDestination)
 		const todaysVersion = versionUtil.generateVersion()
 
 		let version = fallbackVersion

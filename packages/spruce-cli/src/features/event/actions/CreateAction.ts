@@ -68,7 +68,10 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
 		try {
 			const destinationDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
-			const resolvedVersion = await this.resolveVersion(version, destinationDir)
+			const resolvedVersion = await this.resolveVersion(
+				version,
+				diskUtil.resolvePath(destinationDir, '**', '*')
+			)
 
 			const files = await this.Writer('event').writeEvent(destinationDir, {
 				nameKebab,

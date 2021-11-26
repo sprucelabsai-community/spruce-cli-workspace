@@ -117,7 +117,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.assertFailedHealthCheck(cli)
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.doesInclude(last, {
 			'options.options.choices[].value': FILE_ACTION_OVERWRITE,
@@ -251,7 +251,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		assert.doesInclude(last.options.options.choices, { value: 'skip' })
@@ -277,14 +277,14 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		let last = this.ui.lastInvocation()
+		let last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('skip')
 
 		await this.waitForInput()
 
-		last = this.ui.lastInvocation()
+		last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('skip')
@@ -307,7 +307,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		let last = this.ui.lastInvocation()
+		let last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('skipAll')
@@ -329,7 +329,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		let last = this.ui.lastInvocation()
+		let last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('overwrite')
@@ -431,7 +431,7 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		return { last, promise }
 	}
 

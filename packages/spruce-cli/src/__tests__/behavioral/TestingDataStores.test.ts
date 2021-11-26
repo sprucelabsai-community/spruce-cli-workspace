@@ -21,7 +21,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		assert.isTruthy(last.options.options.choices)
 		assert.doesInclude(last.options.options.choices, {
 			label: 'AbstractStoreTest (requires install)',
@@ -43,7 +43,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		assert.isTruthy(last.options.options.choices)
 		assert.doesInclude(last.options.options.choices, {
 			label: 'AbstractStoreTest',

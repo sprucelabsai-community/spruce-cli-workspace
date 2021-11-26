@@ -10,6 +10,7 @@ import { CliInterface } from '../../../cli'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
+import uiAssertUtil from '../../../tests/utilities/uiAssert.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
 import actionUtil from '../../../utilities/action.utility'
 
@@ -29,7 +30,16 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	@test()
 	protected static async cantCreateEventWithoutBeingRegistered() {
 		await this.FeatureFixture().installCachedFeatures('events')
-		await this.assertCantCreateWithoutBeingRegistered()
+
+		const results = await this.Action('event', 'create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+			version: this.expectedVersion,
+		})
+
+		assert.isArray(results.errors)
+		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
 	}
 
 	@test()
@@ -71,7 +81,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 	}
 
 	@test()
-	protected static async createsEventWitPayloadsPermissionsAndOptions() {
+	protected static async createsEventWithPayloadsPermissionsAndOptions() {
 		const { results, cli, skill } = await this.createEvent()
 		assert.isFalsy(results.errors)
 
@@ -137,10 +147,41 @@ export default createFormEmitPayloadBuilder
 		assert.isFalsy(syncResults.errors)
 	}
 
-	private static async createEvent() {
+	@test()
+	protected static async asksForVersionIfPreviousVersionExistsOnDifferentDay() {
+		await this.createEvent({
+			version: versionUtil.generateVersion('2020_01_10').constValue,
+		})
+
+		void this.Action('event', 'create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+		})
+
+		await uiAssertUtil.assertRendersSelect(this.ui)
+
+		this.ui.reset()
+	}
+
+	private static async createEvent(options?: { version?: string }) {
 		const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.getSkillFixture().registerCurrentSkill(
+		const skill = await this.registerCurrentSkill()
+
+		const results = await this.Action('event', 'create').execute({
+			nameReadable: EVENT_NAME_READABLE,
+			nameKebab: EVENT_NAME,
+			nameCamel: EVENT_CAMEL,
+			version: this.expectedVersion,
+			...options,
+		})
+
+		return { results, cli, skill }
+	}
+
+	private static async registerCurrentSkill() {
+		return await this.getSkillFixture().registerCurrentSkill(
 			{
 				name: 'my new skill',
 			},
@@ -148,14 +189,6 @@ export default createFormEmitPayloadBuilder
 				phone: process.env.DEMO_NUMBER_CREATING_AN_EVENT,
 			}
 		)
-
-		const results = await this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
-
-		return { results, cli, skill }
 	}
 
 	private static async assertCreatesOptionsFile(
@@ -217,17 +250,6 @@ export default createFormEmitPayloadBuilder
 			assert.isEqual(match, path)
 			assert.isTrue(diskUtil.doesFileExist(path))
 		}
-	}
-
-	protected static async assertCantCreateWithoutBeingRegistered() {
-		const results = await this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
-
-		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
 	}
 
 	private static async assertReturnsEventFromHealthCheck(

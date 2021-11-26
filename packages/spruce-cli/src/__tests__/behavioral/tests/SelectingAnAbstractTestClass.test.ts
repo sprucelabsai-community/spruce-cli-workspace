@@ -185,7 +185,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		const { choices } = last.options.options ?? {}
 
 		return { promise, choices } as {

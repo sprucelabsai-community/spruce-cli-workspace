@@ -15,7 +15,7 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		assert.doesInclude(last.options.options.choices, {
 			label: 'AbstractViewControllerTest (requires install)',
 		})
@@ -29,7 +29,7 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		assert.doesInclude(last.options.options.choices, {
 			label: 'AbstractViewControllerTest',
 		})

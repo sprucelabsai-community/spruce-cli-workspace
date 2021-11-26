@@ -23,7 +23,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.options.type, 'select')
 
@@ -55,7 +55,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.isEqualDeep(last.options.value, [skill1.id])
 
@@ -104,7 +104,7 @@ export default class ManagingDependenciesTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.doesNotInclude(last.options.options.choices, {
 			value: skill.id,

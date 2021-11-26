@@ -30,7 +30,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'confirm')
 
@@ -90,7 +90,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		let last = this.ui.lastInvocation()
+		let last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 
@@ -120,7 +120,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		assert.doesInclude(last.options.options.choices, {

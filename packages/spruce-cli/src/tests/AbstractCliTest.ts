@@ -465,7 +465,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static selectOptionBasedOnLabel(label: string) {
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 		assert.doesInclude(last.options.options.choices, {
 			label,
 		})

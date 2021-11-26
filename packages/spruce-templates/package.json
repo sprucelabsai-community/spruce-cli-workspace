@@ -58,7 +58,7 @@
 	"dependencies": {
 		"@sprucelabs/mercury-types": "^26.1.916",
 		"@sprucelabs/schema": "^25.4.26",
-		"@sprucelabs/spruce-skill-utils": "^22.0.142",
+		"@sprucelabs/spruce-skill-utils": "^22.1.0",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",

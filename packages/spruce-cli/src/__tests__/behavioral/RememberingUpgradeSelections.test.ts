@@ -65,7 +65,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.doesInclude(last, {
 			'options.options.choices[].value': FILE_ACTION_ALWAYS_SKIP,

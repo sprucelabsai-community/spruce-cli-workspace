@@ -80,7 +80,7 @@ export default class SpyInterface implements GraphicsInterface {
 		clearTimeout(this.promptTimeout)
 	}
 
-	public lastInvocation() {
+	public getLastInvocation() {
 		return this.invocations[this.invocations.length - 1]
 	}
 

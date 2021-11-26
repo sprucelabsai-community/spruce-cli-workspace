@@ -147,7 +147,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 			},
 		})
 
-		await this.Service('dependency').add({
+		this.Service('dependency').add({
 			id: skill2.id,
 			namespace: skill2.slug,
 		})

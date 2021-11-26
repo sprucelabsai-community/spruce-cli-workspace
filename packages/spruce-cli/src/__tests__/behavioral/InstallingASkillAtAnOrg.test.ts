@@ -91,10 +91,10 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		await this.waitForInput()
 
 		assert.doesInclude(
-			this.ui.lastInvocation().command,
+			this.ui.getLastInvocation().command,
 			'confirm',
 			`ui didn't get back a confirm, got back \n\n${assertUtil.stringify(
-				this.ui.lastInvocation()
+				this.ui.getLastInvocation()
 			)}`
 		)
 
@@ -132,7 +132,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		assert.doesInclude(this.ui.lastInvocation().options, {
+		assert.doesInclude(this.ui.getLastInvocation().options, {
 			type: 'select',
 		})
 

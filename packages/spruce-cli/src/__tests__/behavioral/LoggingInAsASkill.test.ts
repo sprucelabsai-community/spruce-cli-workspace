@@ -33,7 +33,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		assert.doesInclude(this.ui.lastInvocation().options.label, 'Phone')
+		assert.doesInclude(this.ui.getLastInvocation().options.label, 'Phone')
 
 		this.ui.reset()
 	}
@@ -85,10 +85,10 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		assert.doesInclude(this.ui.lastInvocation().command, 'prompt')
-		assert.doesInclude(this.ui.lastInvocation().options.type, 'select')
+		assert.doesInclude(this.ui.getLastInvocation().command, 'prompt')
+		assert.doesInclude(this.ui.getLastInvocation().options.type, 'select')
 		assert.isEqualDeep(
-			this.ui.lastInvocation().options.options.choices,
+			this.ui.getLastInvocation().options.options.choices,
 			[this.skill1, this.skill2].map((s) => ({
 				label: s.name,
 				value: s.id,

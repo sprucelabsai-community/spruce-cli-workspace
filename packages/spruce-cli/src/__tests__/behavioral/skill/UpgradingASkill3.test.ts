@@ -96,12 +96,12 @@ export default class UpgradingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		let last = this.ui.lastInvocation()
+		let last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('overwrite')
 
-		last = this.ui.lastInvocation()
+		last = this.ui.getLastInvocation()
 
 		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('overwrite')

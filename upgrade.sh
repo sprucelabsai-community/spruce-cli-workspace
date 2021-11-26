@@ -5,3 +5,5 @@ yarn add -D @sprucelabs/data-stores @sprucelabs/jest-sheets-reporter @sprucelabs
 cd ../spruce-templates
 yarn add @sprucelabs/mercury-types @sprucelabs/schema @sprucelabs/spruce-skill-utils handlebars lodash sha1
 yarn add -D @types/lodash @types/node chokidar-cli concurrently conventional-changelog-sprucelabs prettier typescript
+
+yarn rebuild

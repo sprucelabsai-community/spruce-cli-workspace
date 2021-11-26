@@ -49,7 +49,7 @@ export default class SettingRemoteTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		const last = this.ui.lastInvocation()
+		const last = this.ui.getLastInvocation()
 
 		assert.doesInclude(last.options.label, 'remote')
 
