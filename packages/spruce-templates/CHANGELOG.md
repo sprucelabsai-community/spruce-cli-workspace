@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.27.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.26.19...v14.27.0) (2021-11-29)
+
+
+### Features
+
+* Sprucebot won't let devs accidently add a dependency twice! ([5b421ec](https://github.com/sprucelabsai/spruce-cli-workspace/commit/5b421ec))
+
+
+
+
+
 ## [14.26.19](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.26.18...v14.26.19) (2021-11-25)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
