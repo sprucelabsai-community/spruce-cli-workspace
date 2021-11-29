@@ -222,7 +222,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(locationSchemaContents, 'SchemaRegistry')
 	}
 
-	@test()
+	@test.only()
 	protected static async canHandleHyphenSchemaIds() {
 		await this.syncSchemas('schemas')
 
@@ -230,6 +230,8 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			nameReadable: 'Test schema',
 			nameCamel: 'testSchema',
 		})
+
+		assert.isFalsy(createResponse.errors)
 
 		const builderPath = testUtil.assertFileByNameInGeneratedFiles(
 			'testSchema.builder.ts',
