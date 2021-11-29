@@ -222,7 +222,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		assert.doesInclude(locationSchemaContents, 'SchemaRegistry')
 	}
 
-	@test.only()
+	@test()
 	protected static async canHandleHyphenSchemaIds() {
 		await this.syncSchemas('schemas')
 
