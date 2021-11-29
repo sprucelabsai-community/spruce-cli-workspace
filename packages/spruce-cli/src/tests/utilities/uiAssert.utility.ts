@@ -24,6 +24,22 @@ const uiAssertUtil = {
 			label,
 		})
 	},
+
+	async assertRendersConfirmWriteFile(ui: SpyInterface) {
+		await ui.waitForInput()
+
+		const last = ui.getLastInvocation()
+
+		assert.isEqual(last.options.type, 'select')
+		assert.isEqualDeep(last.options.options.choices, [
+			{
+				label: 'Overwrite',
+				value: 'overwrite',
+			},
+			{ value: 'skip', label: 'Skip' },
+			{ value: 'alwaysSkip', label: 'Always skip' },
+		])
+	},
 }
 
 export default uiAssertUtil

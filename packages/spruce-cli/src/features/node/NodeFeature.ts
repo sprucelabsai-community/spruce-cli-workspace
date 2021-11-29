@@ -5,7 +5,11 @@ import nodeFeatureOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/node
 import { FileDescription, GeneratedFile } from '../../types/cli.types'
 import ScriptUpdater from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
-import { ActionOptions, FeatureCode } from '../features.types'
+import {
+	ActionOptions,
+	FeatureActionResponse,
+	FeatureCode,
+} from '../features.types'
 import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
@@ -49,32 +53,35 @@ export default class NodeFeature<
 
 		void this.emitter.on('feature.did-execute', async (payload) => {
 			if (payload.featureCode === 'node' && payload.actionCode === 'upgrade') {
-				try {
-					this.ui.startLoading('Cleaning build...')
-					await this.Service('command').execute('yarn clean.build')
-
-					this.ui.startLoading('Applying lint rules to all files...')
-					await this.Service('command').execute('yarn fix.lint')
-
-					this.ui.startLoading('Rebuilding...')
-					await this.Service('command').execute('yarn build.dev')
-
-					return {
-						summaryLines: [
-							'Build cleared.',
-							'Lint rules applied to source.',
-							'Code rebuilt successfully.',
-						],
-					}
-				} catch (err) {
-					return {
-						errors: [err],
-					}
-				}
+				return this.handleUpgrade()
 			}
 
 			return {}
 		})
+	}
+	private async handleUpgrade(): Promise<FeatureActionResponse> {
+		try {
+			this.ui.startLoading('Cleaning build...')
+			await this.Service('command').execute('yarn clean.build')
+
+			this.ui.startLoading('Applying lint rules to all files...')
+			await this.Service('command').execute('yarn fix.lint')
+
+			this.ui.startLoading('Rebuilding...')
+			await this.Service('command').execute('yarn build.dev')
+
+			return {
+				summaryLines: [
+					'Build cleared.',
+					'Lint rules applied to source.',
+					'Code rebuilt successfully.',
+				],
+			}
+		} catch (err) {
+			return {
+				errors: [err],
+			}
+		}
 	}
 
 	public async beforePackageInstall(options: Options) {
@@ -94,8 +101,7 @@ export default class NodeFeature<
 
 		await this.Service('command', destination).execute('yarn init -y')
 
-		const nodeWriter = this.Writer('node')
-		const written = await nodeWriter.writeNodeModule(destination)
+		const written = await this.Writer('node').writeNodeModule(destination)
 
 		files.push(...written)
 

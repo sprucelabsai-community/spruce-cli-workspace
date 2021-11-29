@@ -1,15 +1,36 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { DirectoryTemplateCode } from '@sprucelabs/spruce-templates'
-import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
+import { GeneratedFile } from '../../../types/cli.types'
+import AbstractWriter, {
+	WriteDirectoryTemplateOptions,
+	WriteResults,
+} from '../../../writers/AbstractWriter'
 
 export default class NodeWriter extends AbstractWriter {
-	public async writeNodeModule(destinationDir: string): Promise<WriteResults> {
-		const contents = '//exports go here\n'
-		const destination = diskUtil.resolvePath(destinationDir, 'src', 'index.ts')
+	public async writeNodeModule(
+		destinationDir: string,
+		options?: Partial<WriteDirectoryTemplateOptions> & {
+			shouldWriteIndex?: boolean
+		}
+	): Promise<WriteResults> {
+		let files: GeneratedFile[] = []
+		if (options?.shouldWriteIndex !== false) {
+			const contents = '//exports go here\n'
+			const destination = diskUtil.resolvePath(
+				destinationDir,
+				'src',
+				'index.ts'
+			)
+			diskUtil.writeFile(destination, contents)
+			files.push({
+				name: 'src/index.ts',
+				description: 'Placeholder entry file!',
+				action: 'generated',
+				path: destination,
+			})
+		}
 
-		diskUtil.writeFile(destination, contents)
-
-		const files = await this.writeDirectoryTemplate({
+		const directoryTemplateFiles = await this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,
 			filesToWrite: [
@@ -20,16 +41,9 @@ export default class NodeWriter extends AbstractWriter {
 				'.nvmrc',
 			],
 			context: { name: 'ignored', description: 'ignored' },
+			...options,
 		})
 
-		return [
-			{
-				name: 'src/index.ts',
-				description: 'Placeholder entry file!',
-				action: 'generated',
-				path: destination,
-			},
-			...files,
-		]
+		return [...files, ...directoryTemplateFiles]
 	}
 }

@@ -24,6 +24,13 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		})
 
 		try {
+			const files = await this.Writer('node', {
+				upgradeMode: 'askForChanged',
+			}).writeNodeModule(this.cwd, {
+				shouldConfirmBeforeWriting: true,
+				shouldWriteIndex: false,
+			})
+
 			InFlightEntertainment.start([
 				"Let's start the upgrade!",
 				'While things are going, see if you can beat 1k points!',
@@ -34,10 +41,10 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 			return actionUtil.mergeActionResults(dependencyResults, {
 				headline: 'Upgrade',
+				files,
 			})
 		} finally {
 			InFlightEntertainment.stop()
-
 			this.ui.renderHero('Upgrade')
 		}
 	}

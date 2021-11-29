@@ -16,11 +16,20 @@ export type WriteResults = GeneratedFile[]
 export interface WriterOptions {
 	templates: Templates
 	term: GraphicsInterface
-	askBeforeUpdating?: boolean
 	upgradeMode?: UpgradeMode
 	fileDescriptions: FileDescription[]
 	linter?: LintService
 	settings: SettingsService
+}
+
+export interface WriteDirectoryTemplateOptions {
+	destinationDir: string
+	code: DirectoryTemplateCode
+	filesToWrite?: string[]
+	filesToSkip?: string[]
+	context: any
+	shouldConfirmBeforeWriting?: boolean
+	firstFileWriteMessage?: string
 }
 
 export default abstract class AbstractWriter {
@@ -59,15 +68,9 @@ export default abstract class AbstractWriter {
 		this.isLintingEnabled = true
 	}
 
-	protected async writeDirectoryTemplate(options: {
-		destinationDir: string
-		code: DirectoryTemplateCode
-		filesToWrite?: string[]
-		filesToSkip?: string[]
-		context: any
-		shouldConfirmBeforeWriting?: boolean
-		firstFileWriteMessage?: string
-	}) {
+	protected async writeDirectoryTemplate(
+		options: WriteDirectoryTemplateOptions
+	) {
 		const {
 			context,
 			destinationDir,
@@ -93,6 +96,7 @@ export default abstract class AbstractWriter {
 				!filesToWrite || filesToWrite.indexOf(generated.filename) > -1
 			const shouldSkip =
 				filesToSkip && filesToSkip.indexOf(generated.filename) > -1
+
 			if (shouldWrite && !shouldSkip) {
 				results = await this.writeFileIfChangedMixinResults(
 					pathUtil.join(destinationDir, generated.relativePath),
@@ -128,6 +132,7 @@ export default abstract class AbstractWriter {
 
 		if (!diskUtil.doesFileExist(destination)) {
 			let write = true
+
 			if (
 				this.shouldConfirmBeforeWriting &&
 				fileDescription?.confirmPromptOnFirstWrite

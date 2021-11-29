@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
+import uiAssertUtil from '../../tests/utilities/uiAssert.utility'
 
 export default class UpgradingANodeModuleTest extends AbstractCliTest {
 	protected static async beforeEach() {
@@ -42,5 +43,28 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 			const doesExist = diskUtil.doesFileExist(this.resolvePath(search))
 			assert.isFalse(doesExist, `Should not have found ${search}`)
 		}
+	}
+
+	@test()
+	protected static async shouldReWriteNodeDirsAndSkipIndx() {
+		for (const file of ['tsconfig.json', 'src/index.ts']) {
+			const tsConfig = this.resolvePath(file)
+			diskUtil.writeFile(tsConfig, 'beenChanged')
+		}
+
+		CommandService.setMockResponse(/yarn/gi, {
+			code: 0,
+		})
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await uiAssertUtil.assertRendersConfirmWriteFile(this.ui)
+
+		assert.isEqual(
+			diskUtil.readFile(this.resolvePath('src/index.ts')),
+			'beenChanged'
+		)
+
+		await promise
 	}
 }
