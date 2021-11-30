@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.28.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.27.0...v14.28.0) (2021-11-30)
+
+
+### Features
+
+* upgrading a node module writes the expected files and asks about them too ([91b6534](https://github.com/sprucelabsai/spruce-cli-workspace/commit/91b6534))
+
+
+
+
+
 # [14.27.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.26.19...v14.27.0) (2021-11-29)
 
 
