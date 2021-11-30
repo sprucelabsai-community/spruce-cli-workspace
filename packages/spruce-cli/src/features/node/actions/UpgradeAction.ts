@@ -25,7 +25,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 		try {
 			const files = await this.Writer('node', {
-				upgradeMode: 'askForChanged',
+				upgradeMode: normalizedOptions.upgradeMode,
 			}).writeNodeModule(this.cwd, {
 				shouldConfirmBeforeWriting: true,
 				shouldWriteIndex: false,

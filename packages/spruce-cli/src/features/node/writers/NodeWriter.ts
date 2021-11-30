@@ -6,6 +6,13 @@ import AbstractWriter, {
 	WriteResults,
 } from '../../../writers/AbstractWriter'
 
+export const NODE_FILES_TO_UPGRADE = [
+	'tsconfig.json',
+	'.eslintrc.js',
+	'.eslintignore',
+	'.gitignore',
+	'.nvmrc',
+]
 export default class NodeWriter extends AbstractWriter {
 	public async writeNodeModule(
 		destinationDir: string,
@@ -33,13 +40,7 @@ export default class NodeWriter extends AbstractWriter {
 		const directoryTemplateFiles = await this.writeDirectoryTemplate({
 			destinationDir,
 			code: DirectoryTemplateCode.Skill,
-			filesToWrite: [
-				'tsconfig.json',
-				'.eslintrc.js',
-				'.eslintignore',
-				'.gitignore',
-				'.nvmrc',
-			],
+			filesToWrite: NODE_FILES_TO_UPGRADE,
 			context: { name: 'ignored', description: 'ignored' },
 			...options,
 		})

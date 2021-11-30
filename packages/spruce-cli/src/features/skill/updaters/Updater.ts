@@ -3,6 +3,7 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import SpruceError from '../../../errors/SpruceError'
 import { GlobalEmitter } from '../../../GlobalEmitter'
 import AbstractFeature from '../../AbstractFeature'
+import { NODE_FILES_TO_UPGRADE } from '../../node/writers/NodeWriter'
 
 type UpgradeOptions = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions
 
@@ -35,7 +36,7 @@ export default class Updater {
 			SpruceError
 		)
 
-		const filesToSkip = ['package.json']
+		const filesToSkip = [...NODE_FILES_TO_UPGRADE, 'package.json']
 
 		for (const payload of payloads) {
 			if (payload.filesToSkip) {
