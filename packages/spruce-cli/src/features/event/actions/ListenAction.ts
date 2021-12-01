@@ -54,8 +54,15 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			const skill = await this.Store('skill').loadCurrentSkill()
 
 			const { contracts } = skill.slug
-				? await eventStore.fetchEventContracts({ localNamespace: skill.slug })
-				: await eventStore.fetchEventContracts()
+				? await eventStore.fetchEventContracts({
+						localNamespace: skill.slug,
+						namespaces: eventNamespace ? [eventNamespace] : undefined,
+						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
+				  })
+				: await eventStore.fetchEventContracts({
+						namespaces: eventNamespace ? [eventNamespace] : undefined,
+						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
+				  })
 
 			this.ui.stopLoading()
 
