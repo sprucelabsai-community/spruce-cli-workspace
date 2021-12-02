@@ -72,7 +72,13 @@ export default class EventStore extends AbstractStore {
 
 		didUpdateHandler?.('Pulling remote contracts...')
 
-		const contracts = await this.fetchRemoteContracts(namespaces)
+		let contracts
+		try {
+			contracts = await this.fetchRemoteContracts(namespaces)
+		} catch (err: any) {
+			const error = err.options.responseErrors[0]
+			throw error
+		}
 
 		const localContract =
 			localNamespace &&

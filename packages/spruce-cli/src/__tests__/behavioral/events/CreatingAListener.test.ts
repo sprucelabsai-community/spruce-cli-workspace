@@ -24,14 +24,14 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async throwsWithBadNamespace() {
 		await this.installEventFeature('events')
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'taco-bell',
+			namespace: 'taco-bell',
 		})
 
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
 
-		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
-			parameters: ['eventNamespace'],
+		errorAssertUtil.assertError(err, 'INVALID_NAMESPACES', {
+			namespaces: ['taco-bell'],
 		})
 	}
 
@@ -39,7 +39,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async throwsWithBadEventName() {
 		await this.installEventFeature('events')
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'mercury',
+			namespace: 'heartwood',
 			eventName: 'bad-time',
 		})
 
@@ -58,7 +58,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		const version = 'v2020_01_01'
 
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			eventName: 'will-boot',
 			version,
 		})
@@ -283,7 +283,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		})
 
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: skill2.slug,
+			namespace: skill2.slug,
 			eventName: `my-new-event`,
 			version: expectedVersion,
 		})
