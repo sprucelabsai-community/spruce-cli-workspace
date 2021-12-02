@@ -7,7 +7,7 @@ export default buildSchema({
 	description: 'Options for event.listen.',
 	fields: {
 		...syncEventOptionsBuilder.fields,
-		eventNamespace: {
+		namespace: {
 			type: 'text',
 			label: 'Namespace',
 		},

@@ -48,7 +48,7 @@ const listenEventOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventO
 	                options: undefined
 	            },
 	            /** Namespace. */
-	            'eventNamespace': {
+	            'namespace': {
 	                label: 'Namespace',
 	                type: 'text',
 	                options: undefined

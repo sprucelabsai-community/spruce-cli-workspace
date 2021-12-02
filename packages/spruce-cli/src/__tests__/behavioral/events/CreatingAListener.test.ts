@@ -24,7 +24,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async throwsWithBadNamespace() {
 		await this.installEventFeature('events')
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'taco-bell',
+			namespace: 'taco-bell',
 		})
 
 		assert.isTruthy(results.errors)
@@ -35,11 +35,11 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		})
 	}
 
-	@test()
+	@test.only()
 	protected static async throwsWithBadEventName() {
 		await this.installEventFeature('events')
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'mercury',
+			namespace: 'mercury',
 			eventName: 'bad-time',
 		})
 
@@ -58,7 +58,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		const version = 'v2020_01_01'
 
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			eventName: 'will-boot',
 			version,
 		})
@@ -83,7 +83,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(health.event.listeners, {
 			eventName: 'will-boot',
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			version,
 		})
 	}
@@ -283,7 +283,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		})
 
 		const results = await this.Action('event', 'listen').execute({
-			eventNamespace: skill2.slug,
+			namespace: skill2.slug,
 			eventName: `my-new-event`,
 			version: expectedVersion,
 		})
