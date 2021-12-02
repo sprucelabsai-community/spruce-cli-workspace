@@ -18,7 +18,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 	public async execute(): Promise<FeatureActionResponse> {
 		const createListenerAction = this.Action('event', 'listen')
 		const results = await createListenerAction.execute({
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			eventName: 'will-boot',
 		})
 
