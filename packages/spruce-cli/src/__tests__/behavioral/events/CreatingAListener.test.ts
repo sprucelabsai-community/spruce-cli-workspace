@@ -30,16 +30,16 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
 
-		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
-			parameters: ['eventNamespace'],
+		errorAssertUtil.assertError(err, 'INVALID_NAMESPACES', {
+			namespaces: ['taco-bell'],
 		})
 	}
 
-	@test.only()
+	@test()
 	protected static async throwsWithBadEventName() {
 		await this.installEventFeature('events')
 		const results = await this.Action('event', 'listen').execute({
-			namespace: 'mercury',
+			namespace: 'heartwood',
 			eventName: 'bad-time',
 		})
 
@@ -83,7 +83,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		assert.doesInclude(health.event.listeners, {
 			eventName: 'will-boot',
-			namespace: 'skill',
+			eventNamespace: 'skill',
 			version,
 		})
 	}

@@ -76,7 +76,8 @@ export default class EventStore extends AbstractStore {
 		try {
 			contracts = await this.fetchRemoteContracts(namespaces)
 		} catch (err: any) {
-			debugger
+			const error = err.options.responseErrors[0]
+			throw error
 		}
 
 		const localContract =

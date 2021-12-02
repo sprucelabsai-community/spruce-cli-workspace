@@ -12,37 +12,20 @@ const generateUrlEventContract = buildEventContract({
 			emitPermissionContract: buildPermissionContract({
 				id: 'generateUrlEmitPermissions',
 				name: 'Generate url',
-				description: null,
 				requireAllPermissions: false,
 				permissions: [
 					{
-						id: 'can-generate-url',
 						name: 'Can generate  url',
-						description: null,
-						requireAllStatuses: null,
+						id: 'can-generate-url',
 						defaults: {
-							skill: true,
-							owner: null,
-							groupManager: null,
-							manager: null,
-							teammate: null,
-							guest: null,
-							anonymous: {
-								default: true,
-								clockedIn: null,
-								clockedOut: null,
-								onPrem: null,
-								offPrem: null,
-							},
 							loggedIn: {
 								default: true,
-								clockedIn: null,
-								clockedOut: null,
-								onPrem: null,
-								offPrem: null,
 							},
+							anonymous: {
+								default: true,
+							},
+							skill: true,
 						},
-						can: null,
 					},
 				],
 			}),
