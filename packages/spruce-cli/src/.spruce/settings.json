@@ -21,6 +21,12 @@
       "tsconfig.json"
     ]
   },
+  "dependencies": [
+    {
+      "id": "615c8e8940810e9c9fa1cf0a",
+      "namespace": "heartwood"
+    }
+  ],
   "scriptUpdater": {
     "skipped": [
       "build.ci",

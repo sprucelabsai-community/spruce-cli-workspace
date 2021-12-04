@@ -42,7 +42,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				listenerDestinationDir,
 				version: versionOptions,
 				eventName,
-				eventNamespace,
+				namespace,
 				schemaTypesLookupDir,
 				contractDestinationDir,
 			} = normalizedOptions
@@ -53,49 +53,52 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 
 			const skill = await this.Store('skill').loadCurrentSkill()
 
+			const namespacesForFetch =
+				namespace && namespace !== 'skill' ? [namespace] : undefined
+
 			const { contracts } = skill.slug
 				? await eventStore.fetchEventContracts({
 						localNamespace: skill.slug,
-						namespaces: eventNamespace ? [eventNamespace] : undefined,
+						namespaces: namespacesForFetch,
 						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
 				  })
 				: await eventStore.fetchEventContracts({
-						namespaces: eventNamespace ? [eventNamespace] : undefined,
+						namespaces: namespacesForFetch,
 						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
 				  })
 
 			this.ui.stopLoading()
 
-			if (!eventNamespace) {
-				eventNamespace = await this.collectNamespace(contracts)
+			if (!namespace) {
+				namespace = await this.collectNamespace(contracts)
 			}
 
 			const { eventChoicesByNamespace } =
 				this.mapContractsToSelectChoices(contracts)
 
-			if (!eventChoicesByNamespace[eventNamespace]) {
+			if (!eventChoicesByNamespace[namespace]) {
 				throw new SchemaError({
 					code: 'INVALID_PARAMETERS',
-					friendlyMessage: `${eventNamespace} is not a valid event namespace. Try: \n\n${Object.keys(
+					friendlyMessage: `${namespace} is not a valid event namespace. Try: \n\n${Object.keys(
 						eventChoicesByNamespace
 					).join('\n')}`,
-					parameters: ['eventNamespace'],
+					parameters: ['namespace'],
 				})
 			}
 
 			if (!eventName) {
-				eventName = await this.collectEvent(contracts, eventNamespace)
+				eventName = await this.collectEvent(contracts, namespace)
 			}
 
 			const fqen = eventNameUtil.join({
 				eventName,
-				eventNamespace,
+				eventNamespace: namespace,
 				version: versionOptions,
 			})
 
 			let { version } = eventNameUtil.split(fqen)
 
-			const isValidEvent = !!eventChoicesByNamespace[eventNamespace].find(
+			const isValidEvent = !!eventChoicesByNamespace[namespace].find(
 				(e) => e.value === eventName || e.value === fqen
 			)
 
@@ -103,7 +106,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				throw new SchemaError({
 					code: 'INVALID_PARAMETERS',
 					friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
-						eventNamespace
+						namespace
 					]
 						.map((i) => i.value)
 						.join('\n')}`,
@@ -126,7 +129,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				schemaTypesLookupDir
 			)
 
-			const isSkillEvent = eventNamespace !== SKILL_EVENT_NAMESPACE
+			const isSkillEvent = namespace !== SKILL_EVENT_NAMESPACE
 
 			let emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
 			let responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
@@ -136,7 +139,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
 					eventNameUtil.join({
-						eventNamespace,
+						eventNamespace: namespace,
 						eventName,
 						version: resolvedVersion,
 					})
@@ -153,10 +156,10 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				...normalizedOptions,
 				version: resolvedVersion,
 				eventName,
-				eventNamespace,
+				eventNamespace: namespace,
 				fullyQualifiedEventName: eventNameUtil.join({
 					eventName,
-					eventNamespace,
+					eventNamespace: namespace,
 					version: resolvedVersion,
 				}),
 				emitPayloadSchemaTemplateItem,
@@ -190,11 +193,11 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 
 	private async collectEvent(
 		contracts: EventContract[],
-		eventNamespace: string
+		namespace: string
 	): Promise<string> {
 		const eventChoices: SelectChoice[] =
 			this.mapContractsToSelectChoices(contracts).eventChoicesByNamespace[
-				eventNamespace
+				namespace
 			]
 
 		const eventName = await this.ui.prompt({
@@ -212,7 +215,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 	private async collectNamespace(contracts: EventContract[]): Promise<string> {
 		const { namespaceChoices } = this.mapContractsToSelectChoices(contracts)
 
-		const eventNamespace = await this.ui.prompt({
+		const namespace = await this.ui.prompt({
 			type: 'select',
 			label: 'Select an event namespace',
 			isRequired: true,
@@ -221,7 +224,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			},
 		})
 
-		return eventNamespace
+		return namespace
 	}
 
 	private mapContractsToSelectChoices(contracts: EventContract[]) {

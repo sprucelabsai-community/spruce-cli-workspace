@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "14.28.1",
+	"version": "14.28.4",
 	"files": [
 		"build/**/*",
 		"tsconfig.json",
@@ -56,9 +56,9 @@
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
-		"@sprucelabs/mercury-types": "^26.1.950",
-		"@sprucelabs/schema": "^25.4.47",
-		"@sprucelabs/spruce-skill-utils": "^22.1.27",
+		"@sprucelabs/mercury-types": "^26.1.973",
+		"@sprucelabs/schema": "^25.4.58",
+		"@sprucelabs/spruce-skill-utils": "^22.1.40",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",

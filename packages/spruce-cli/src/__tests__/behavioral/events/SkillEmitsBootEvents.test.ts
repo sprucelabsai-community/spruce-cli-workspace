@@ -9,7 +9,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		const version = 'v2020_01_01'
 
 		await this.Action('event', 'listen').execute({
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			eventName: 'will-boot',
 			version,
 		})
@@ -27,7 +27,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		const version = 'v2020_01_01'
 
 		await this.Action('event', 'listen').execute({
-			eventNamespace: 'skill',
+			namespace: 'skill',
 			eventName: 'did-boot',
 			version,
 		})
