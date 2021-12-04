@@ -25,7 +25,6 @@ class SchemaFeature implements SkillFeature {
 	}
 
 	public execute = async () => {
-		await this.loadSchemas();
 		this._isBooted = true
 		this.bootHandler?.()
 	};
