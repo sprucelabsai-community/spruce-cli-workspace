@@ -14,6 +14,8 @@ export default class BootingWithBadFilesTest extends AbstractCliTest {
 	@test()
 	protected static async disablesSchemaCheckingWithFlag() {
 		process.env.SHOULD_VALIDATE_SCHEMAS_ON_BOOT = 'false'
+		const bootResults = await this.breakSchemaAndBoot()
+		assert.isFalsy(bootResults.errors)
 	}
 
 	private static async breakSchemaAndBoot() {
