@@ -84,7 +84,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async callsCleanFixLintAndBuildDev() {
+	protected static async callsCleanFixAndBuildDev() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
 		let wasCleanBuildCalled = false

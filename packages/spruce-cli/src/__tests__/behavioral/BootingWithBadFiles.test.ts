@@ -6,6 +6,7 @@ import testUtil from '../../tests/utilities/test.utility'
 export default class BootingWithBadFilesTest extends AbstractCliTest {
 	@test()
 	protected static async bootingWithAEmptySchemaThrowsErrorWithNameOfBadSchema() {
+		await this.FeatureFixture().installCachedFeatures('schemas')
 		const bootResults = await this.breakSchemaAndBoot()
 		assert.isTruthy(bootResults.errors)
 		assert.doesInclude(bootResults.errors[0].message, 'location.schema.ts')
@@ -13,14 +14,16 @@ export default class BootingWithBadFilesTest extends AbstractCliTest {
 
 	@test()
 	protected static async disablesSchemaCheckingWithFlag() {
-		process.env.SHOULD_VALIDATE_SCHEMAS_ON_BOOT = 'false'
+		await this.FeatureFixture().installCachedFeatures('schemas')
+		diskUtil.writeFile(
+			this.resolvePath('.env'),
+			'SHOULD_VALIDATE_SCHEMAS_ON_BOOT=false'
+		)
 		const bootResults = await this.breakSchemaAndBoot()
 		assert.isFalsy(bootResults.errors)
 	}
 
 	private static async breakSchemaAndBoot() {
-		await this.FeatureFixture().installCachedFeatures('schemas')
-
 		const results = await this.Action('schema', 'sync').execute({})
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
