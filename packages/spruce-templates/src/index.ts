@@ -364,6 +364,10 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('store/stores.types.ts.hbs')
 		return template(options)
 	},
+	stores(options: { stores: StoreTemplateItem[] }) {
+		const template = templateImportUtil.getTemplate('store/stores.ts.hbs')
+		return template(options)
+	},
 
 	skillViewController(options: { namePascal: string; nameKebab: string }) {
 		const template = templateImportUtil.getTemplate('view/View.svc.ts.hbs')

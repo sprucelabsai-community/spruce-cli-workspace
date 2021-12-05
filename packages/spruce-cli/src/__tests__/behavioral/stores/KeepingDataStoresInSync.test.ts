@@ -1,8 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import testUtil from '../../tests/utilities/test.utility'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'stores'

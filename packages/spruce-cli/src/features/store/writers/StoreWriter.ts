@@ -59,6 +59,18 @@ export default class StoreWriter extends AbstractWriter {
 		return results
 	}
 
+	public async writeTypesAndMap(
+		destination: string,
+		options: { stores: StoreTemplateItem[] }
+	) {
+		const [types, map] = await Promise.all([
+			this.writeTypes(destination, options),
+			this.writeMap(destination, options),
+		])
+
+		return [...types, ...map]
+	}
+
 	public async writeTypes(
 		destination: string,
 		options: { stores: StoreTemplateItem[] }
@@ -71,6 +83,24 @@ export default class StoreWriter extends AbstractWriter {
 			file,
 			typesContent,
 			'The type merging for so the StoreFactory properly types you stores.'
+		)
+
+		await this.lint(file)
+
+		return files
+	}
+
+	public async writeMap(
+		destination: string,
+		options: { stores: StoreTemplateItem[] }
+	) {
+		const file = diskUtil.resolvePath(destination, 'stores.ts')
+		const mapContent = this.templates.stores(options)
+
+		const files = this.writeFileIfChangedMixinResults(
+			file,
+			mapContent,
+			'A reference to all your data stores for easy inclusion.'
 		)
 
 		await this.lint(file)

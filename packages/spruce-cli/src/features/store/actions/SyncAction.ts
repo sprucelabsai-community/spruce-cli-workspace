@@ -31,7 +31,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 				const builder = new StoreTemplateItemBuilder()
 				const templateItems = builder.buildTemplateItems(stores, destination)
 
-				files = await this.Writer('store').writeTypes(destination, {
+				const writer = this.Writer('store')
+				files = await writer.writeTypesAndMap(destination, {
 					stores: templateItems,
 				})
 			}

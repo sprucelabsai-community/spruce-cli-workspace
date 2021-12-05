@@ -2,9 +2,9 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import '@sprucelabs/spruce-store-plugin'
-import CommandService from '../../services/CommandService'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import testUtil from '../../tests/utilities/test.utility'
+import CommandService from '../../../services/CommandService'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'stores'
@@ -16,7 +16,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async getsNoStoresBackFromHealthCheck() {
-		const health = await this.cli.checkHealth({ isRunningLocally: true })
+		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
 
 		assert.isFalsy(health.skill.errors)
 		assert.isTruthy(health.store)
@@ -44,8 +44,14 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	}
 
 	@test()
+	protected static async generatesAMapFile() {
+		const file = this.resolveHashSprucePath('stores', 'stores.ts')
+		assert.isTrue(diskUtil.doesFileExist(file))
+	}
+
+	@test()
 	protected static async getsOneStoresBackFromHealthCheck() {
-		const health = await this.cli.checkHealth({ isRunningLocally: true })
+		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
 		assert.isTruthy(health.store)
 		assert.isFalsy(health.store.errors)
 		assert.isLength(health.store.stores, 1)
@@ -72,7 +78,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async getsSecondStoresBackFromHealthCheck() {
-		const health = await this.cli.checkHealth({ isRunningLocally: true })
+		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
 
 		assert.isTruthy(health.store)
 		assert.isFalsy(health.store.errors)

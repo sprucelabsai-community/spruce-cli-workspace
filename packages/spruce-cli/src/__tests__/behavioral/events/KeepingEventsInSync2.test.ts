@@ -79,7 +79,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		await this.Service('build').build()
 
-		const health = await cli.checkHealth({ isRunningLocally: false })
+		const health = await cli.checkHealth({ shouldRunOnSourceFiles: false })
 
 		assert.isTruthy(health.skill)
 		assert.isFalsy(health.skill.errors)

@@ -45,7 +45,7 @@ import { argParserUtil } from './utilities/argParser.utility'
 import WriterFactory from './writers/WriterFactory'
 
 interface HealthOptions {
-	isRunningLocally?: boolean
+	shouldRunOnSourceFiles?: boolean
 }
 
 export interface CliInterface extends MercuryEventEmitter<GlobalEventContract> {
@@ -153,7 +153,7 @@ export default class Cli implements CliInterface {
 		try {
 			const commandService = this.serviceFactory.Service(this.cwd, 'command')
 			const command =
-				options?.isRunningLocally === false
+				options?.shouldRunOnSourceFiles === false
 					? 'yarn health'
 					: 'yarn health.local'
 			const results = await commandService.execute(command)
