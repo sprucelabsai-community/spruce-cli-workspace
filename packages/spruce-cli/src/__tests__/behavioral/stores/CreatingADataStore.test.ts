@@ -47,6 +47,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static async generatesAMapFile() {
 		const file = this.resolveHashSprucePath('stores', 'stores.ts')
 		assert.isTrue(diskUtil.doesFileExist(file))
+		await this.Service('typeChecker').check(file)
 	}
 
 	@test()

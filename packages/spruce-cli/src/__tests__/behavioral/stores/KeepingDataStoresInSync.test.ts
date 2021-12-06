@@ -29,10 +29,6 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 		assert.isLength(results.files, 0)
 	}
 
-	private static async syncStores() {
-		return this.Action('store', 'sync').execute({})
-	}
-
 	@test()
 	protected static async badFileReturnsError() {
 		diskUtil.writeFile(this.badStoreDest, 'throw new Error("Cheese!")')
@@ -62,5 +58,9 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 		)
 
 		await this.Service('typeChecker').check(typesFile)
+	}
+
+	private static async syncStores() {
+		return this.Action('store', 'sync').execute({})
 	}
 }

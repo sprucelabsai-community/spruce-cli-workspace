@@ -1,3 +1,7 @@
+{{#each stores}}
+import {{namePascalPlural}}Store from '{{path}}'
+{{/each}}
+
 export default {
     {{#each stores}}
             {{nameCamelPlural}}: {{namePascalPlural}}Store
