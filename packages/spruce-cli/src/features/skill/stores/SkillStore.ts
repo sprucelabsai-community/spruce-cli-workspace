@@ -70,6 +70,7 @@ export default class SkillStore extends AbstractStore {
 		const currentSkill = this.Service('auth').getCurrentSkill()
 
 		if (currentSkill) {
+			debugger
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 			const response = await client.emit('get-skill::v2020_12_25', {
 				target: {
