@@ -73,7 +73,12 @@ export default class EventFeature extends AbstractFeature {
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
-		return await this.Action('event', 'sync.listeners').execute({})
+		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		if (isSkillInstalled) {
+			return await this.Action('event', 'sync.listeners').execute({})
+		}
+
+		return {}
 	}
 
 	private async handleWillExecute(payload: {
