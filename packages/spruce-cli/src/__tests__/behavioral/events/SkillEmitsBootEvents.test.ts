@@ -1,8 +1,14 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import LintService from '../../../services/LintService'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 
 export default class SkillEmitsBootEventsTest extends AbstractEventTest {
+	protected static async beforeEach() {
+		await super.beforeEach()
+		LintService.enableLinting()
+	}
+
 	@test()
 	protected static async skillEmitsWillBootEvents() {
 		await this.installEventFeature('events')

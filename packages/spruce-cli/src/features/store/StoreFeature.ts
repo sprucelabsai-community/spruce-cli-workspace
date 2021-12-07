@@ -37,8 +37,8 @@ export default class StoreFeature extends AbstractFeature {
 			this.registerAbstractTestClassHandler.bind(this)
 		)
 		void this.emitter.on(
-			'feature.did-execute',
-			this.didExecuterHandler.bind(this)
+			'feature.will-execute',
+			this.handleWillExecute.bind(this)
 		)
 	}
 
@@ -55,7 +55,7 @@ export default class StoreFeature extends AbstractFeature {
 		}
 	}
 
-	private async didExecuterHandler(payload: {
+	private async handleWillExecute(payload: {
 		featureCode: string
 		actionCode: string
 	}) {

@@ -3,6 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import TerminalInterface from '../../interfaces/TerminalInterface'
 import { FileDescription } from '../../types/cli.types'
+import actionUtil from '../../utilities/action.utility'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
@@ -87,19 +88,26 @@ export default class EventFeature extends AbstractFeature {
 	}): Promise<FeatureActionResponse> {
 		const { featureCode, actionCode } = payload
 
+		let results: FeatureActionResponse = {}
+
 		if (!this.initiatingAction) {
 			EventStore.clearCache()
 			const combined = this.combineCodes(featureCode, actionCode)
 			this.initiatingAction = combined
 		}
 
-		const isInstalled = await this.featureInstaller.isInstalled('event')
-
 		if (featureCode === 'node' || featureCode === 'upgrade') {
 			const settings = this.Service('eventSettings')
 			settings.clearListenerCache()
 		}
 
+		const isInstalled = await this.featureInstaller.isInstalled('event')
+		if (featureCode === 'node' && actionCode === 'upgrade' && isInstalled) {
+			const syncResults = await this.Action('event', 'sync.listeners').execute(
+				{}
+			)
+			results = actionUtil.mergeActionResults(results, syncResults)
+		}
 		if (
 			isInstalled &&
 			(featureCode === 'event' ||
@@ -107,10 +115,11 @@ export default class EventFeature extends AbstractFeature {
 				actionCode === 'login') &&
 			actionCode !== 'setRemote'
 		) {
-			return this.appendRemoteToResultsOrPrompt()
+			const remoteResults = this.appendRemoteToResultsOrPrompt()
+			results = actionUtil.mergeActionResults(results, remoteResults)
 		}
 
-		return {}
+		return results
 	}
 
 	private async handleDidExecute(payload: {

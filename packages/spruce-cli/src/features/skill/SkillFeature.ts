@@ -196,7 +196,7 @@ export default class SkillFeature<
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			const updater = new Updater(this, this.emitter)
-			const files = await updater.updateFiles(upgradeOptions as any)
+			const files = await updater.updateFiles(upgradeOptions ?? {})
 			return {
 				files,
 			}

@@ -70,11 +70,13 @@ export default class AuthServiceTest extends AbstractCliTest {
 
 	@test()
 	protected static getCurrentSkillReturnsNull() {
+		this.writePackageJson()
 		assert.isNull(this.auth.getCurrentSkill())
 	}
 
 	@test()
 	protected static canSetCurrentSkill() {
+		this.writePackageJson()
 		const skill = {
 			id: '123467aaoeuaoeu',
 			apiKey: 'taco',
@@ -85,5 +87,9 @@ export default class AuthServiceTest extends AbstractCliTest {
 		this.auth.updateCurrentSkill(skill)
 
 		assert.isEqualDeep(this.auth.getCurrentSkill(), skill)
+	}
+
+	private static writePackageJson() {
+		diskUtil.writeFile(this.resolvePath('package.json'), '{}')
 	}
 }

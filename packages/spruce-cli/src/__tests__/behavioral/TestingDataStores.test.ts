@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
+import LintService from '../../services/LintService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -32,6 +33,7 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async letsYouSelectAbstractStoreTest() {
+		LintService.enableLinting()
 		this.cli.getFeature('store').isInstalled = async () => true
 
 		const promise = this.Action('test', 'create').execute({
