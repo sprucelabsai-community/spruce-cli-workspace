@@ -55,7 +55,7 @@ export default class ServiceFactory {
 					command: new CommandService(cwd),
 				}) as ServiceMap[S]
 			case 'lint':
-				return new LintService(cwd, new CommandService(cwd)) as ServiceMap[S]
+				return new LintService(cwd) as ServiceMap[S]
 			case 'command': {
 				return new CommandService(cwd) as ServiceMap[S]
 			}
@@ -77,7 +77,7 @@ export default class ServiceFactory {
 				const commandService = new CommandService(cwd)
 				return new BuildService(
 					commandService,
-					new LintService(cwd, commandService)
+					new LintService(cwd)
 				) as ServiceMap[S]
 			}
 			case 'eventSettings':
