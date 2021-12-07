@@ -83,9 +83,10 @@ export default class KeepingDataStoresInSyncTest extends AbstractSkillTest {
 			results.files
 		)
 
-		const checker = this.Service('typeChecker')
-
-		await Promise.all([checker.check(typesFile), checker.check(mapFile)])
+		await Promise.all([
+			this.Service('typeChecker').check(typesFile),
+			this.Service('typeChecker').check(mapFile),
+		])
 	}
 
 	private static async syncStores() {

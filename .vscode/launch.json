@@ -17,7 +17,7 @@
 			"port": 25981,
 			"restart": true,
 			"timeout": 10000,
-			"localRoot": "${workspaceFolder}/packagets/spruce-cli",
+			"localRoot": "${workspaceFolder}/packages/spruce-cli",
 			"remoteRoot": "/media/ramdisk/spruce-cli-workspace/packages/spruce-cli"
 		},
 		{
