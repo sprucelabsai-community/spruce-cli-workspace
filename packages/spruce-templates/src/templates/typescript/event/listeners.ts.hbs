@@ -1,0 +1,14 @@
+import { EventFeatureListener } from '@sprucelabs/spruce-event-utils'
+
+const listeners: EventFeatureListener[] = [
+    {{#each listeners}}
+    {
+        eventName: '{{eventName}}',
+        eventNamespace: '{{eventNamespace}}',
+        version: '{{version}}',
+        callback: require('{{path}}').default,
+    },
+    {{/each}}
+]
+
+export default listeners

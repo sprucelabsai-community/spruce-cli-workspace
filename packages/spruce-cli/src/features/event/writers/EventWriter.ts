@@ -9,6 +9,7 @@ import {
 import {
 	EventContractTemplateItem,
 	EventListenerOptions,
+	ListenerTemplateItem,
 } from '@sprucelabs/spruce-templates'
 import { GeneratedFile } from '../../../types/cli.types'
 import AbstractWriter from '../../../writers/AbstractWriter'
@@ -178,6 +179,24 @@ export default class EventWriter extends AbstractWriter {
 		)
 
 		await this.lint(resolvedDestination)
+
+		return results
+	}
+
+	public async writeListenerMap(
+		destinationDir: string,
+		options: {
+			listeners: ListenerTemplateItem[]
+		}
+	) {
+		const destination = diskUtil.resolvePath(destinationDir, 'listeners.ts')
+		const contents = this.templates.listeners({ listeners: options.listeners })
+
+		const results = await this.writeFileIfChangedMixinResults(
+			destination,
+			contents,
+			'An object holding all your data stores for easy import!'
+		)
 
 		return results
 	}

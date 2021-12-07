@@ -1,5 +1,6 @@
 import ConversationStore from '../features/conversation/stores/ConversationStore'
 import EventStore from '../features/event/stores/EventStore'
+import ListenerStore from '../features/event/stores/ListenerStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
@@ -20,6 +21,7 @@ export interface StoreMap {
 	conversation: ConversationStore
 	store: StoreStore
 	view: ViewStore
+	listener: ListenerStore
 }
 
 export type StoreCode = keyof StoreMap
@@ -33,6 +35,7 @@ const storeMap = {
 	conversation: ConversationStore,
 	store: StoreStore,
 	view: ViewStore,
+	listener: ListenerStore,
 }
 
 export interface StoreFactoryMethodOptions {

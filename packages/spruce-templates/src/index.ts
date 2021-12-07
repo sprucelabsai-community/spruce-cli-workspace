@@ -29,6 +29,7 @@ import {
 	StoreTemplateOptions,
 	StoreTemplateItem,
 	ViewsOptions,
+	ListenerTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
 import importExtractorUtil from './utilities/importExtractor.utility'
@@ -223,6 +224,13 @@ export const templates = {
 		const template = templateImportUtil.getTemplate('event/listener.ts.hbs')
 		return template({
 			globalSchemaNamespace: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
+			...options,
+		})
+	},
+
+	listeners(options: { listeners: ListenerTemplateItem[] }) {
+		const template = templateImportUtil.getTemplate('event/listeners.ts.hbs')
+		return template({
 			...options,
 		})
 	},

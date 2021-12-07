@@ -1,5 +1,6 @@
 import { EventContract, EventSignature } from '@sprucelabs/mercury-types'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
+import { EventFeatureListener } from '@sprucelabs/spruce-event-utils'
 import { SchemaImport } from '../utilities/importExtractor.utility'
 
 export enum DirectoryTemplateCode {
@@ -130,4 +131,8 @@ export interface ViewsOptions {
 	namespaceKebab: string
 	svcTemplateItems: VcTemplateItem[]
 	vcTemplateItems: VcTemplateItem[]
+}
+
+export type ListenerTemplateItem = Omit<EventFeatureListener, 'callback'> & {
+	path: string
 }

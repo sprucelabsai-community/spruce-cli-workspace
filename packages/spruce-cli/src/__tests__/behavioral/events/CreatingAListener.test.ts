@@ -52,18 +52,21 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	}
 
 	@test()
+	protected static async generatesMapFile() {
+		const { results } = await this.installEventsAndCreateListener()
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			`listeners.ts`,
+			results.files
+		)
+
+		await this.Service('typeChecker').check(match)
+	}
+
+	@test()
 	protected static async createsValidListener() {
-		const cli = await this.installEventFeature('events')
-
-		const version = 'v2020_01_01'
-
-		const results = await this.Action('event', 'listen').execute({
-			namespace: 'skill',
-			eventName: 'will-boot',
-			version,
-		})
-
-		assert.isFalsy(results.errors)
+		const { version, results, cli } =
+			await this.installEventsAndCreateListener()
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
 			`will-boot.${version}.listener.ts`,
@@ -76,6 +79,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const health = await cli.checkHealth()
 
+		assert.isFalsy(health?.event?.errors)
 		assert.isTruthy(health.skill)
 
 		assert.isUndefined(health.skill.errors)
@@ -259,6 +263,21 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			responderRef,
 			`skill:${currentSkill.id}:${currentSkill.slug}`
 		)
+	}
+
+	private static async installEventsAndCreateListener() {
+		const cli = await this.installEventFeature('events')
+
+		const version = 'v2020_01_01'
+
+		const results = await this.Action('event', 'listen').execute({
+			namespace: 'skill',
+			eventName: 'will-boot',
+			version,
+		})
+
+		assert.isFalsy(results.errors)
+		return { version, results, cli }
 	}
 
 	private static async setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
