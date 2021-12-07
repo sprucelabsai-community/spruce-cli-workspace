@@ -102,12 +102,7 @@ export default class EventFeature extends AbstractFeature {
 		}
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
-		if (featureCode === 'node' && actionCode === 'upgrade' && isInstalled) {
-			const syncResults = await this.Action('event', 'sync.listeners').execute(
-				{}
-			)
-			results = actionUtil.mergeActionResults(results, syncResults)
-		}
+
 		if (
 			isInstalled &&
 			(featureCode === 'event' ||
@@ -115,8 +110,16 @@ export default class EventFeature extends AbstractFeature {
 				actionCode === 'login') &&
 			actionCode !== 'setRemote'
 		) {
-			const remoteResults = this.appendRemoteToResultsOrPrompt()
+			const remoteResults = await this.appendRemoteToResultsOrPrompt()
+
 			results = actionUtil.mergeActionResults(results, remoteResults)
+		}
+
+		if (featureCode === 'node' && actionCode === 'upgrade' && isInstalled) {
+			const syncResults = await this.Action('event', 'sync.listeners').execute(
+				{}
+			)
+			results = actionUtil.mergeActionResults(results, syncResults)
 		}
 
 		return results
