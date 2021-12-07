@@ -86,6 +86,7 @@ export default class SkillStore extends AbstractStore {
 				isRegistered: true,
 				apiKey: currentSkill.apiKey,
 			}
+
 			return SkillStore.currentSkill as CurrentSkill
 		}
 

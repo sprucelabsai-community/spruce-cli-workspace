@@ -23,6 +23,7 @@ import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import CommandService from '../services/CommandService'
 import ImportService from '../services/ImportService'
+import LintService from '../services/LintService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
@@ -32,7 +33,6 @@ import StoreFactory, {
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import { OptionOverrides } from '../types/cli.types'
-import AbstractWriter from '../writers/AbstractWriter'
 import WriterFactory from '../writers/WriterFactory'
 import FeatureFixture, {
 	FeatureFixtureOptions,
@@ -66,7 +66,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		await super.beforeAll()
 		await this.cleanTestDirsAndFiles()
 
-		AbstractWriter.disableLinting()
+		LintService.disableLinting()
 
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 		ImportService.enableCaching()

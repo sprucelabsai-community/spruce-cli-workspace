@@ -39,7 +39,6 @@ export default abstract class AbstractWriter {
 	private upgradeMode: UpgradeMode
 	private fileDescriptions: FileDescription[] = []
 	private shouldConfirmBeforeWriting = true
-	private static isLintingEnabled = true
 	private firstFileWriteMessage?: string
 	private hasShownFirstWriteMessage = false
 	private settings: SettingsService<string>
@@ -54,18 +53,8 @@ export default abstract class AbstractWriter {
 	}
 
 	protected async lint(file: string) {
-		if (AbstractWriter.isLintingEnabled) {
-			this.ui.startLoading(`Linting ${pathUtil.basename(file)}...`)
-			await this.linter?.fix(file).catch(() => {})
-		}
-	}
-
-	public static disableLinting() {
-		this.isLintingEnabled = false
-	}
-
-	public static enableLinting() {
-		this.isLintingEnabled = true
+		this.ui.startLoading(`Linting ${pathUtil.basename(file)}...`)
+		await this.linter?.fix(file).catch(() => {})
 	}
 
 	protected async writeDirectoryTemplate(
