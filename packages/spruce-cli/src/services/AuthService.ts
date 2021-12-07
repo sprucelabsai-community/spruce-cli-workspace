@@ -1,7 +1,8 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { normalizeSchemaValues, validateSchemaValues } from '@sprucelabs/schema'
-import { EnvService } from '@sprucelabs/spruce-skill-utils'
+import { EnvService, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import personWithTokenSchema from '#spruce/schemas/spruceCli/v2020_07_22/personWithToken.schema'
+import PkgService from './PkgService'
 
 type PersonWithToken = SpruceSchemas.SpruceCli.v2020_07_22.PersonWithToken
 
@@ -16,9 +17,11 @@ const LOGGED_IN_PERSON_KEY = 'LOGGED_IN_PERSON'
 
 export default class AuthService {
 	private env: EnvService
+	private pkg: PkgService
 
-	public constructor(envService: EnvService) {
+	public constructor(envService: EnvService, pkgService: PkgService) {
 		this.env = envService
+		this.pkg = pkgService
 	}
 
 	public getLoggedInPerson(): PersonWithToken | null {
@@ -51,7 +54,7 @@ export default class AuthService {
 		const id = this.env.get('SKILL_ID') as string
 		const apiKey = this.env.get('SKILL_API_KEY') as string
 		const name = this.env.get('SKILL_NAME') as string
-		const slug = this.env.get('SKILL_SLUG') as string
+		const slug = this.pkg.get('skill.namespace') as string
 
 		if (id && apiKey) {
 			return {
@@ -69,13 +72,20 @@ export default class AuthService {
 		this.env.unset('SKILL_ID')
 		this.env.unset('SKILL_API_KEY')
 		this.env.unset('SKILL_NAME')
-		this.env.unset('SKILL_SLUG')
 	}
 
 	public updateCurrentSkill(skill: SkillAuth) {
 		this.env.set('SKILL_ID', skill.id)
 		this.env.set('SKILL_API_KEY', skill.apiKey)
 		this.env.set('SKILL_NAME', skill.name)
-		this.env.set('SKILL_SLUG', skill.slug)
+
+		this.updateCurrentSkillNamespace(skill.slug)
+	}
+
+	public updateCurrentSkillNamespace(namespace: string) {
+		this.pkg.set({
+			path: 'skill.namespace',
+			value: namesUtil.toKebab(namespace),
+		})
 	}
 }

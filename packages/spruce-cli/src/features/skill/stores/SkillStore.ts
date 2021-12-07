@@ -133,12 +133,11 @@ export default class SkillStore extends AbstractStore {
 		if (isRegistered) {
 			throw new SpruceError({
 				code: 'GENERIC',
-				friendlyMessage: `You can't change the namespace of a skill that is registered.`,
+				friendlyMessage: `You can't set the namespace of a skill that is registered.`,
 			})
 		}
 
-		const pkg = this.Service('pkg')
-		pkg.set({ path: 'skill.namespace', value: namesUtil.toKebab(namespace) })
+		this.Service('auth').updateCurrentSkillNamespace(namespace)
 	}
 
 	private getEventNamespaceForNotRegistered() {

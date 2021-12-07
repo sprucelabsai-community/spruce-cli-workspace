@@ -8,7 +8,7 @@ export default class SyncingEventsOnlyFromDependenciesTest extends AbstractSkill
 	protected static skillCacheKey = 'events'
 
 	@test()
-	protected static async doesntSyncAnythingToStart() {
+	protected static async doesntSyncAnythingButListenersToStart() {
 		const skills = this.getSkillFixture()
 		await skills.registerCurrentSkill({
 			name: 'events in sync skill',
@@ -22,9 +22,11 @@ export default class SyncingEventsOnlyFromDependenciesTest extends AbstractSkill
 
 		assert.isFalse(diskUtil.doesDirExist(eventFolder))
 
-		const contents = fsUtil.readdirSync(this.resolveHashSprucePath('events'))
+		const files = fsUtil.readdirSync(this.resolveHashSprucePath('events'))
 
-		assert.isLength(contents, 1)
+		assert.isLength(files, 2, 'The wrong number of files were generated.')
+		assert.isEqual(files[0], 'events.contract.ts')
+		assert.isEqual(files[1], 'listeners.ts')
 	}
 
 	@test()
@@ -43,9 +45,12 @@ export default class SyncingEventsOnlyFromDependenciesTest extends AbstractSkill
 
 		assert.isTrue(diskUtil.doesDirExist(eventFolder))
 
-		const contents = fsUtil.readdirSync(this.resolveHashSprucePath('events'))
+		const files = fsUtil.readdirSync(this.resolveHashSprucePath('events'))
 
-		assert.isLength(contents, 2)
+		assert.isLength(files, 3, 'The wrong number of files were generated.')
+		assert.isEqual(files[0], namesUtil.toCamel(skill.slug))
+		assert.isEqual(files[1], 'events.contract.ts')
+		assert.isEqual(files[2], 'listeners.ts')
 	}
 
 	private static async registerGlobalEvent() {
