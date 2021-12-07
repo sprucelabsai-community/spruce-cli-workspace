@@ -1,10 +1,12 @@
 import { SchemaError } from '@sprucelabs/schema'
-import { ESLint } from 'eslint'
+// import { ESLint } from 'eslint'
 import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
+import CommandService from './CommandService'
 
 export default class LintService {
 	public cwd: string
+	private command: CommandService
 
 	private static isLintingEnabled = true
 
@@ -16,8 +18,9 @@ export default class LintService {
 		this.isLintingEnabled = true
 	}
 
-	public constructor(cwd: string) {
+	public constructor(cwd: string, commandService: CommandService) {
 		this.cwd = cwd
+		this.command = commandService
 	}
 
 	public fix = async (pattern: string): Promise<string[]> => {
@@ -35,8 +38,15 @@ export default class LintService {
 		let fixedFiles: any = {}
 		const fixedPaths: string[] = []
 		try {
-			const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
-			fixedFiles = await cli.lintFiles([pattern])
+			// const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
+			// fixedFiles = await cli.lintFiles([pattern])
+			const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', }); const result = await cli.lintFiles(['${pattern}']); console.log(JSON.stringify(result)); } catch (err) { console.log(err.toString()); }})()"`
+
+			const { stdout } = await this.command.execute('node', {
+				args: ['-e', script],
+			})
+
+			fixedFiles = JSON.parse(stdout)
 		} catch (err: any) {
 			throw new SpruceError({
 				code: 'LINT_FAILED',
