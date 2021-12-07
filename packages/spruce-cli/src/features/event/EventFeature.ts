@@ -73,7 +73,7 @@ export default class EventFeature extends AbstractFeature {
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
-		return {}
+		return await this.Action('event', 'sync.listeners').execute({})
 	}
 
 	private async handleWillExecute(payload: {

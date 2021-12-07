@@ -20,6 +20,7 @@ export default class ListenerStore extends AbstractStore {
 
 		for (const match of matches) {
 			const listener = eventDiskUtil.splitPathToListener(match)
+
 			listeners.push({
 				...listener,
 				path: match,

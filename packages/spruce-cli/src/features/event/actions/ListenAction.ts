@@ -21,7 +21,6 @@ import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplat
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
-import ListenerTemplateItemBuilder from '../builders/ListenerTemplateItemBuilder'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
 type OptionsSchema =
@@ -169,9 +168,9 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				schemaTypesLookupDir: resolvedSchemaTypesLookupDir,
 			})
 
-			const mapFiles = await this.writeMapFile()
+			const syncResults = await this.syncListeners()
 
-			response.files = [...response.files, ...mapFiles]
+			response = actionUtil.mergeActionResults(syncResults, response)
 
 			if (isSkillEvent) {
 				const syncOptions = normalizeSchemaValues(
@@ -194,21 +193,8 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 		}
 	}
 
-	private async writeMapFile() {
-		const listeners = await this.Store('listener').loadListeners()
-		const builder = new ListenerTemplateItemBuilder()
-
-		const templateItems = builder.buildTemplateItems({
-			listeners,
-			cwd: this.cwd,
-		})
-
-		return this.Writer('event').writeListenerMap(
-			diskUtil.resolveHashSprucePath(this.cwd, 'events'),
-			{
-				listeners: templateItems,
-			}
-		)
+	private async syncListeners() {
+		return this.Action('event', 'sync.listeners').execute({})
 	}
 
 	private async collectEvent(
