@@ -11,6 +11,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.cli = await this.Cli()
+		diskUtil.writeFile(this.resolvePath('package.json'), '{}')
 	}
 
 	@test()
