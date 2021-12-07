@@ -13,11 +13,14 @@ export default class StoreFeatureTest extends AbstractCliTest {
 
 		let hitCount = 0
 		const emitter = this.getEmitter()
-		emitter.on('feature.will-execute', async ({ featureCode, actionCode }) => {
-			if (featureCode === 'store' && actionCode === 'sync') {
-				hitCount++
+		await emitter.on(
+			'feature.will-execute',
+			async ({ featureCode, actionCode }) => {
+				if (featureCode === 'store' && actionCode === 'sync') {
+					hitCount++
+				}
 			}
-		})
+		)
 
 		await emitter.emit('feature.will-execute', {
 			featureCode: 'node',
