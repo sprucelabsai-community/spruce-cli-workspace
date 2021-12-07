@@ -1,4 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
+import LintService from '../../../services/LintService'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -30,6 +31,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		'AbstractStoreTest (requires install)'
 	)
 	protected static async canCreateBehavioralTest(testName: string) {
+		LintService.enableLinting()
 		await this.installTests()
 		const promise = this.Action('test', 'create').execute({
 			type: 'behavioral',

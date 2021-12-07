@@ -7,6 +7,11 @@ import testUtil from '../../../tests/utilities/test.utility'
 export default class TestingViewControllersTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'viewsWithTests'
 
+	protected static async beforeEach() {
+		await super.beforeEach()
+		LintService.enableLinting()
+	}
+
 	@test()
 	protected static async showsNotInstalled() {
 		const viewFeature = this.cli.getFeature('view')
@@ -40,7 +45,6 @@ export default class TestingViewControllersTest extends AbstractSkillTest {
 
 	@test()
 	protected static async testsRun() {
-		LintService.enableLinting()
 		const promise = this.executeCreate()
 
 		await this.waitForInput()

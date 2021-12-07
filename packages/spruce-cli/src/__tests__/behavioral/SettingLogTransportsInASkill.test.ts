@@ -1,6 +1,7 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
+import LintService from '../../services/LintService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -48,6 +49,7 @@ export default class SettingLogTransportsInASkillTest extends AbstractSkillTest 
 
 	@test()
 	protected static async logsWriteToTransports() {
+		LintService.enableLinting()
 		const transportContents = `
 		import { diskUtil, Level, LogTransport } from '@sprucelabs/spruce-skill-utils'
 		

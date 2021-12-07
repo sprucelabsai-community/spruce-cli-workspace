@@ -29,6 +29,7 @@ export default class EventStoreTest extends AbstractEventTest {
 	public static async beforeEach() {
 		await super.beforeEach()
 		this.createAction = this.Action<CreateAction>('event', 'create')
+		diskUtil.writeFile(this.resolvePath('package.json'), '{}')
 	}
 
 	@test()
