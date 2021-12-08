@@ -63,7 +63,7 @@ export default class LintService {
 				if (fixedFile?.output) {
 					await fs.writeFile(fixedFile.filePath, fixedFile.output)
 					fixedPaths.push(fixedFile.filePath)
-				} else if (fixedFile?.messages) {
+				} else if (fixedFile?.messages && fixedFile?.errorCount > 0) {
 					throw new SpruceError({
 						code: 'LINT_FAILED',
 						pattern,
