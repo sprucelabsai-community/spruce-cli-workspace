@@ -70,7 +70,10 @@ export default class StoreFeature extends AbstractFeature {
 				ui: this.ui,
 				headline: 'Resyncing data stores...',
 			})
-			return this.Action('store', 'sync').execute({})
+
+			const results = await this.Action('store', 'sync').execute({})
+
+			return results
 		}
 
 		return {}

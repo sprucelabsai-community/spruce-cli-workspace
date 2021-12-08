@@ -41,6 +41,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 				files,
 			}
 		} catch (err) {
+			debugger
 			return {
 				errors: [err],
 			}

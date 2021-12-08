@@ -6,7 +6,7 @@ import CommandService from './CommandService'
 
 export default class LintService {
 	public cwd: string
-	private command: CommandService
+	private getCommand: () => CommandService
 
 	private static isLintingEnabled = true
 
@@ -18,9 +18,9 @@ export default class LintService {
 		this.isLintingEnabled = true
 	}
 
-	public constructor(cwd: string, commandService: CommandService) {
+	public constructor(cwd: string, commandServiceFactory: () => CommandService) {
 		this.cwd = cwd
-		this.command = commandService
+		this.getCommand = commandServiceFactory
 	}
 
 	public fix = async (pattern: string): Promise<string[]> => {
@@ -37,12 +37,13 @@ export default class LintService {
 
 		let fixedFiles: any = {}
 		const fixedPaths: string[] = []
+
 		try {
 			// const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
 			// fixedFiles = await cli.lintFiles([pattern])
 			const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', }); const result = await cli.lintFiles(['${pattern}']); console.log(JSON.stringify(result)); } catch (err) { console.log(err.toString()); }})()"`
 
-			const { stdout } = await this.command.execute('node', {
+			const { stdout } = await this.getCommand().execute('node', {
 				args: ['-e', script],
 			})
 
@@ -58,9 +59,20 @@ export default class LintService {
 		if (fixedFiles) {
 			for (let i = 0; i < fixedFiles.length; i += 1) {
 				const fixedFile = fixedFiles[i]
-				if (fixedFile && fixedFile.output) {
+
+				if (fixedFile?.output) {
 					await fs.writeFile(fixedFile.filePath, fixedFile.output)
 					fixedPaths.push(fixedFile.filePath)
+				} else if (fixedFile?.messages) {
+					throw new SpruceError({
+						code: 'LINT_FAILED',
+						pattern,
+						friendlyMessage: `Lint error with '${
+							fixedFile.filePath
+						}':\n\n${fixedFile.messages
+							.map((m: any) => m?.message)
+							.join('\n')}`,
+					})
 				}
 			}
 		}

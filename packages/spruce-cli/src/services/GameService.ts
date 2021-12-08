@@ -20,6 +20,7 @@ export default class GameService {
 
 	public async play(introductionSentences: string[] = []) {
 		const sentencesToPlay = [...introductionSentences]
+		this.ui.stopLoading()
 		this.killed = false
 
 		while (sentencesToPlay.length > 0) {
