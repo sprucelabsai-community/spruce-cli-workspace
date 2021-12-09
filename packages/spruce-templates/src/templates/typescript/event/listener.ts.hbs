@@ -1,7 +1,7 @@
 import SpruceError from '#spruce/../errors/SpruceError'
 import { SpruceEvent, SpruceEventResponse } from '@sprucelabs/spruce-event-utils'
 {{#if emitPayloadSchemaTemplateItem}}import { SkillEventContract } from '@sprucelabs/mercury-types'{{/if}}
-{{#if emitPayloadSchemaTemplateItem}}import { {{globalSchemaNamespace}} } from '{{schemaTypesFile}}'{{/if}}
+{{#if shouldImportGlobalSchema}}import { {{globalSchemaNamespace}} } from '{{schemaTypesFile}}'{{/if}}
 
 {{#if emitPayloadSchemaTemplateItem}}
 type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaTemplateItem }}}

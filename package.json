@@ -16,7 +16,7 @@
     "build.ci": "lerna run build.ci",
     "build.dev": "lerna run build.dev",
     "build.types": "lerna run build.types",
-    "cache.tests": "lerna run cache.tests --parallel",
+    "cache.tests": "cd packages/spruce-cli && yarn cache.tests --parallel",
     "clean": "lerna run clean --parallel",
     "clean.all": "yarn clean.cache ; yarn clean.dependencies && yarn clean.build",
     "clean.build": "for d in packages/*; do echo $d; cd $d; yarn clean.build; cd ../..; done",

@@ -225,6 +225,9 @@ export const templates = {
 		return template({
 			globalSchemaNamespace: DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 			...options,
+			shouldImportGlobalSchema:
+				options.emitPayloadSchemaTemplateItem ||
+				options.responsePayloadSchemaTemplateItem,
 		})
 	},
 

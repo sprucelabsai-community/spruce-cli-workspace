@@ -265,6 +265,26 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		)
 	}
 
+	@test()
+	protected static async listeningToAnEventWithNoEmitTargetOrPayloadGeneratesValidListener() {
+		const { listenerPath } =
+			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
+				{
+					isGlobal: true,
+					responsePayloadSchema: {
+						id: 'test',
+						fields: {
+							id: {
+								type: 'id',
+							},
+						},
+					},
+				}
+			)
+
+		await this.Service('typeChecker').check(listenerPath)
+	}
+
 	private static async installEventsAndCreateListener() {
 		const cli = await this.installEventFeature('events')
 

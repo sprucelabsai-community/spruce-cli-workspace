@@ -1,8 +1,8 @@
 import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractEventTest from '../../tests/AbstractEventTest'
-import testUtil from '../../tests/utilities/test.utility'
+import AbstractEventTest from '../../../tests/AbstractEventTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class ListeningToAnEventYouCreateTest extends AbstractEventTest {
 	@test()
