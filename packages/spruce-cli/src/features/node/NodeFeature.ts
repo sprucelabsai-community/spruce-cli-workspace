@@ -62,6 +62,9 @@ export default class NodeFeature<
 
 	private async handleUpgrade(): Promise<FeatureActionResponse> {
 		try {
+			this.ui.clear()
+			this.ui.renderHero('Upgrade')
+
 			this.ui.startLoading('Cleaning build...')
 			await this.Service('command').execute('yarn clean.build')
 
