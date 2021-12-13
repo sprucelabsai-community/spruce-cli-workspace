@@ -111,7 +111,6 @@ export default class EventFeature extends AbstractFeature {
 			actionCode !== 'setRemote'
 		) {
 			const remoteResults = await this.appendRemoteToResultsOrPrompt()
-
 			results = actionUtil.mergeActionResults(results, remoteResults)
 		}
 

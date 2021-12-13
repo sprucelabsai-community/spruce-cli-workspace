@@ -10,12 +10,6 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		await this.getOrganizationFixture().clearAllOrgs()
 	}
 
-	private static async login() {
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_INSTALL_SKILL
-		)
-	}
-
 	@test()
 	protected static async hasInstallAction() {
 		await this.Cli()
@@ -148,5 +142,11 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		)
 
 		assert.isTruthy(isInstalled)
+	}
+
+	private static async login() {
+		await this.getPersonFixture().loginAsDemoPerson(
+			process.env.DEMO_NUMBER_INSTALL_SKILL
+		)
 	}
 }
