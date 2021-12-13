@@ -4,6 +4,7 @@ import {
 	FeatureActionResponse,
 } from '../features/features.types'
 import { GraphicsInterface as IGraphicsInterface } from './graphicsInterface.types'
+export { NpmPackage } from '@sprucelabs/spruce-skill-utils'
 
 export interface GraphicsInterface extends IGraphicsInterface {
 	renderActionSummary(results: ExecutionResults & { totalTime?: number }): void
@@ -19,12 +20,6 @@ export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
 export type GeneratedDir = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir
 export type GeneratedFileOrDir =
 	SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayload['changes'][number]
-
-export interface NpmPackage {
-	name: string
-	version?: string
-	isDev?: boolean
-}
 
 export interface ExecutionResults extends FeatureActionResponse {
 	featureCode: string

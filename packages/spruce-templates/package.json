@@ -59,7 +59,7 @@
 		"@sprucelabs/mercury-types": "^26.1.1050",
 		"@sprucelabs/schema": "^25.4.102",
 		"@sprucelabs/spruce-event-utils": "^17.1.339",
-		"@sprucelabs/spruce-skill-utils": "^22.1.89",
+		"@sprucelabs/spruce-skill-utils": "^22.2.3",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",

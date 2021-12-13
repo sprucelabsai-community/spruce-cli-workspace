@@ -1,9 +1,8 @@
 import pathUtil from 'path'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import fs from 'fs-extra'
-import { set, get } from 'lodash'
-import SpruceError from '../errors/SpruceError'
-import { NpmPackage } from '../types/cli.types'
+import {
+	diskUtil,
+	PkgService as BasePkgService,
+} from '@sprucelabs/spruce-skill-utils'
 import isCi from '../utilities/isCi'
 import CommandService from './CommandService'
 
@@ -13,68 +12,12 @@ export interface AddOptions {
 	shouldCleanupLockFiles?: boolean
 }
 
-export default class PkgService extends CommandService {
-	private _parsedPkg?: Record<string, any>
+export default class PkgService extends BasePkgService {
+	private commandService: CommandService
 
-	public get(path: string | string[]) {
-		const contents = this.readPackage()
-		return get(contents, path)
-	}
-
-	public set(options: {
-		path: string | string[]
-		value: string | Record<string, any> | undefined
-	}) {
-		const { path, value } = options
-		const contents = this.readPackage()
-		const updated = set(contents, path, value)
-		const destination = this.buildPath()
-
-		fs.outputFileSync(destination, JSON.stringify(updated, null, 2))
-		this._parsedPkg = undefined
-	}
-
-	public doesExist() {
-		return diskUtil.doesFileExist(this.buildPath())
-	}
-
-	public unset(path: string | string[]) {
-		this.set({ path, value: undefined })
-	}
-
-	public readPackage(): Record<string, any | undefined> {
-		if (this._parsedPkg) {
-			return this._parsedPkg
-		}
-		const packagePath = this.buildPath()
-
-		try {
-			const contents = fs.readFileSync(packagePath).toString()
-			const parsed = JSON.parse(contents)
-			this._parsedPkg = parsed
-
-			return parsed
-		} catch (err: any) {
-			throw new SpruceError({
-				code: 'FAILED_TO_IMPORT',
-				file: packagePath,
-				originalError: err,
-			})
-		}
-	}
-
-	private buildPath() {
-		return pathUtil.join(this.cwd, 'package.json')
-	}
-
-	public isInstalled(pkg: string) {
-		try {
-			const contents = this.readPackage()
-
-			return !!contents.dependencies?.[pkg] || !!contents.devDependencies?.[pkg]
-		} catch (e) {
-			return false
-		}
+	public constructor(cwd: string, commandService: CommandService) {
+		super(cwd)
+		this.commandService = commandService
 	}
 
 	public async install(pkg?: string[] | string, options?: AddOptions) {
@@ -84,7 +27,7 @@ export default class PkgService extends CommandService {
 			: () => {}
 
 		if (!pkg) {
-			await this.execute('yarn', { args: ['install'] })
+			await this.commandService.execute('yarn', { args: ['install'] })
 			deleteLockFile()
 			return { totalInstalled: -1, totalSkipped: -1 }
 		}
@@ -115,13 +58,13 @@ export default class PkgService extends CommandService {
 				options
 			)
 
-			await this.execute(executable, {
+			await this.commandService.execute(executable, {
 				args,
 			})
 		} else if (
 			!diskUtil.doesDirExist(pathUtil.join(this.cwd, 'node_modules'))
 		) {
-			await this.execute('yarn', { args: ['install'] })
+			await this.commandService.execute('yarn', { args: ['install'] })
 		}
 
 		deleteLockFile()
@@ -150,38 +93,15 @@ export default class PkgService extends CommandService {
 		return { executable, args }
 	}
 
-	public deleteLockFile() {
-		const files = ['package-lock.json', 'yarn.lock']
-		for (const file of files) {
-			const lock = pathUtil.join(this.cwd, file)
-			if (diskUtil.doesFileExist(lock)) {
-				diskUtil.deleteFile(lock)
-			}
-		}
-	}
-
 	public async uninstall(pkg: string[] | string) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const args: string[] = ['uninstall', ...packages]
-		await this.execute('npm', {
+		await this.commandService.execute('npm', {
 			args,
 		})
 
 		this._parsedPkg = undefined
 
 		await this.install()
-	}
-
-	public stripLatest(name: string): string {
-		return name.replace('@latest', '')
-	}
-
-	public buildPackageName(dep: NpmPackage): string {
-		const { name, version } = dep
-		if (!version) {
-			return name
-		}
-
-		return `${name}@${version}`
 	}
 }

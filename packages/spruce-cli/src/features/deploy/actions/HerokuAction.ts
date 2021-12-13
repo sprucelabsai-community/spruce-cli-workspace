@@ -1,7 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil, SkillAuth } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
-import { SkillAuth } from '../../../services/AuthService'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'

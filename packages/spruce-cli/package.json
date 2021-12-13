@@ -87,7 +87,7 @@
     "@sprucelabs/spruce-event-plugin": "^18.3.3",
     "@sprucelabs/spruce-event-utils": "^17.1.339",
     "@sprucelabs/spruce-skill-booter": "^18.3.3",
-    "@sprucelabs/spruce-skill-utils": "^22.1.89",
+    "@sprucelabs/spruce-skill-utils": "^22.2.3",
     "@sprucelabs/spruce-templates": "^14.29.4",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",

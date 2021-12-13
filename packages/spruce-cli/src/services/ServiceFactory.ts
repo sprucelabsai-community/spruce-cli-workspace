@@ -1,10 +1,13 @@
-import { SettingsService, EnvService } from '@sprucelabs/spruce-skill-utils'
+import {
+	SettingsService,
+	EnvService,
+	AuthService,
+} from '@sprucelabs/spruce-skill-utils'
 import EventSettingsService from '../features/event/services/EventSettingsService'
 import RemoteService from '../features/event/services/RemoteService'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
-import AuthService from './AuthService'
 import BuildService from './BuildService'
 import CommandService from './CommandService'
 import DependencyService from './DependencyService'
@@ -39,12 +42,12 @@ export default class ServiceFactory {
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
 		switch (type) {
 			case 'auth':
-				return new AuthService(
-					new EnvService(cwd),
-					new PkgService(cwd)
-				) as ServiceMap[S]
+				return AuthService.Auth(cwd) as ServiceMap[S]
 			case 'pkg':
-				return new PkgService(cwd) as ServiceMap[S]
+				return new PkgService(
+					cwd,
+					this.Service(cwd, 'command')
+				) as ServiceMap[S]
 			case 'env':
 				return new EnvService(cwd) as ServiceMap[S]
 			case 'vsCode':

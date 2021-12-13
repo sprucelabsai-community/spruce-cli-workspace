@@ -1,7 +1,10 @@
-import { diskUtil, HASH_SPRUCE_DIR } from '@sprucelabs/spruce-skill-utils'
+import {
+	AuthService,
+	diskUtil,
+	HASH_SPRUCE_DIR,
+} from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
-import AuthService from '../../services/AuthService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class AuthServiceTest extends AbstractCliTest {

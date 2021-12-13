@@ -15,8 +15,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canCreatePkgService() {
-		const pkg = PkgServiceTest.beforeEach()
-		assert.isTruthy(pkg)
+		assert.isTruthy(this.pkg)
 	}
 
 	@test()
