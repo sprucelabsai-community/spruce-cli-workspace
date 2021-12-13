@@ -361,6 +361,9 @@ export default class Cli implements CliInterface {
 
 		let auth: SpruceSchemas.Mercury.v2020_12_25.AuthenticateEmitPayload = {}
 
+		const pkg = serviceFactory.Service(cwd, 'pkg')
+		const doesPkgExist = pkg.doesExist()
+
 		if (options?.skillId && options?.apiKey) {
 			auth = {
 				skillId: options.skillId,
@@ -375,7 +378,7 @@ export default class Cli implements CliInterface {
 					apiKey: skill.apiKey,
 				}
 			}
-		} else if (shouldAuthAsLoggedInPerson) {
+		} else if (doesPkgExist && shouldAuthAsLoggedInPerson) {
 			const person = serviceFactory.Service(cwd, 'auth').getLoggedInPerson()
 
 			if (person) {
