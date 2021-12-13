@@ -67,6 +67,9 @@ export default class RegisterAction extends AbstractAction<OptionsSchema> {
 			}
 		} catch (err) {
 			return {
+				hints: [
+					`If you've already registered your skill, try 'spruce skill.login'!`,
+				],
 				errors: [err],
 			}
 		}
