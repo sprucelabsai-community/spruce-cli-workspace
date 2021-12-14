@@ -56,10 +56,10 @@
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
-		"@sprucelabs/mercury-types": "^26.1.1050",
-		"@sprucelabs/schema": "^25.4.102",
-		"@sprucelabs/spruce-event-utils": "^17.1.339",
-		"@sprucelabs/spruce-skill-utils": "^22.2.3",
+		"@sprucelabs/mercury-types": "^26.1.1056",
+		"@sprucelabs/schema": "^25.4.105",
+		"@sprucelabs/spruce-event-utils": "^17.1.345",
+		"@sprucelabs/spruce-skill-utils": "^22.2.6",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",
@@ -72,7 +72,7 @@
 		"concurrently": "^6.4.0",
 		"conventional-changelog-sprucelabs": "^1.1.2",
 		"prettier": "^2.5.1",
-		"typescript": "^4.5.3"
+		"typescript": "^4.5.4"
 	},
 	"yarn-upgrade-all": {
 		"ignore": [
