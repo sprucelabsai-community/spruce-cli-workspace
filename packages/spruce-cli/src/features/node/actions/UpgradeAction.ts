@@ -31,6 +31,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 				shouldWriteIndex: false,
 			})
 
+			this.ui.clear()
 			InFlightEntertainment.start([
 				"Let's start the upgrade!",
 				'While things are going, see if you can beat 1k points!',
