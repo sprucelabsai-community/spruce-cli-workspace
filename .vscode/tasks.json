@@ -74,9 +74,6 @@
 			},
 			"promptOnClose": false,
 			"group": "test",
-			"runOptions": {
-				"runOn": "folderOpen"
-			},
 			"presentation": {
 				"panel": "shared",
 				"focus": true
