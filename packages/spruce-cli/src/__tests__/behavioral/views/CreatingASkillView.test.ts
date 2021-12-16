@@ -198,6 +198,22 @@ export const svcId: SkillViewControllerId = 'testing-views.root'`,
 		)
 	}
 
+	@test()
+	protected static async typesSkillViewControllerLoadOptionsOptions() {
+		const viewsFile = this.resolveHashSprucePath('views', 'views.ts')
+		const viewContents = diskUtil.readFile(viewsFile)
+
+		assert.doesInclude(viewContents, `interface SkillViewControllerArgsMap`)
+		assert.doesInclude(
+			viewContents,
+			`type LoadOptions<Args extends Record<string,any>[]> = Args[0]['args'] extends Record<string, any> ? Args[0]['args'] : Record<never, any>`
+		)
+		assert.doesInclude(
+			viewContents,
+			`'testing-views.root': LoadOptions<Parameters<RootSkillViewController['load']>>`
+		)
+	}
+
 	private static buildTestfile(options: {
 		code: string
 		idInterfaceName: 'SkillViewControllerId' | 'ViewControllerId'
