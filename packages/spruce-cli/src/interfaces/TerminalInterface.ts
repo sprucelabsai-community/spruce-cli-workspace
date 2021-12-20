@@ -288,7 +288,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	}
 
 	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
-		fonts.say(message, {
+		fonts.say(message.replace(/[aeiou]/gi, ''), {
 			// Font: 'tiny',
 			align: 'left',
 			gradient: [GraphicsTextEffect.Red, GraphicsTextEffect.Blue],
