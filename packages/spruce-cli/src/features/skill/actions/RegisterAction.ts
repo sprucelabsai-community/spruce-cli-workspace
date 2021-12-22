@@ -16,7 +16,7 @@ const optionsSchema = buildSchema({
 		},
 		nameKebab: {
 			type: 'text',
-			label: 'Slug',
+			label: 'Namespace',
 			isRequired: true,
 		},
 		description: {
