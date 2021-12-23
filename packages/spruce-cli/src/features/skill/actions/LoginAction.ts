@@ -13,7 +13,7 @@ const optionsSchema = buildSchema({
 	fields: {
 		skillSlug: {
 			type: 'text',
-			label: 'Skill slug',
+			label: 'Namespace',
 		},
 	},
 })

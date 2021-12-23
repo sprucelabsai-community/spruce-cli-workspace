@@ -13,7 +13,7 @@ export default buildSchema({
 		},
 		skillSlug: {
 			type: 'text',
-			label: 'Skill slug',
+			label: 'Namespace',
 			isRequired: true,
 		},
 	},

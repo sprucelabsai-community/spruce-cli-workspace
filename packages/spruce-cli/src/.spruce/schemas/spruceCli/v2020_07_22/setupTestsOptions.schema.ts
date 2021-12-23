@@ -17,9 +17,9 @@ const setupTestsOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOpt
 	                isRequired: true,
 	                options: undefined
 	            },
-	            /** Skill slug. */
+	            /** Namespace. */
 	            'skillSlug': {
-	                label: 'Skill slug',
+	                label: 'Namespace',
 	                type: 'text',
 	                isRequired: true,
 	                options: undefined
