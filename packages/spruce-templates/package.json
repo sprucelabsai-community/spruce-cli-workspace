@@ -56,10 +56,10 @@
 		"watch.tsc": "tsc -w"
 	},
 	"dependencies": {
-		"@sprucelabs/mercury-types": "^26.1.1124",
-		"@sprucelabs/schema": "^25.5.21",
-		"@sprucelabs/spruce-event-utils": "^17.1.412",
-		"@sprucelabs/spruce-skill-utils": "^22.2.74",
+		"@sprucelabs/mercury-types": "^26.1.1127",
+		"@sprucelabs/schema": "^25.5.24",
+		"@sprucelabs/spruce-event-utils": "^17.1.415",
+		"@sprucelabs/spruce-skill-utils": "^22.2.78",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",
@@ -67,7 +67,7 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.178",
-		"@types/node": "^17.0.4",
+		"@types/node": "^17.0.5",
 		"chokidar-cli": "^3.0.0",
 		"concurrently": "^6.5.1",
 		"conventional-changelog-sprucelabs": "^1.1.2",
