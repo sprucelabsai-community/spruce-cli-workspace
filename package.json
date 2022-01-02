@@ -43,6 +43,6 @@
   "dependencies": {},
   "devDependencies": {
     "lerna": "^4.0.0",
-    "yarn-upgrade-all": "^0.5.4"
+    "yarn-upgrade-all": "^0.6.1"
   }
 }
