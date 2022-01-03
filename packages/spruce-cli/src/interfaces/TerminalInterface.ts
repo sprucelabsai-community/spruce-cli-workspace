@@ -288,7 +288,13 @@ export default class TerminalInterface implements GraphicsInterface {
 	}
 
 	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
-		fonts.say(message.replace(/[aeiou]/gi, ''), {
+		const shouldStripVowels = process.stdout.columns < 80
+
+		const stripped = shouldStripVowels
+			? message.replace(/[aeiou]/gi, '')
+			: message
+
+		fonts.say(stripped, {
 			// Font: 'tiny',
 			align: 'left',
 			gradient: [GraphicsTextEffect.Red, GraphicsTextEffect.Blue],
