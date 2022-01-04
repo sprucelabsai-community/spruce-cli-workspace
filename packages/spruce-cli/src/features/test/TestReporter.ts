@@ -62,7 +62,7 @@ export default class TestReporter {
 	private isDebugging = false
 	private watchMode: WatchMode = 'off'
 	private status: TestRunnerStatus = 'ready'
-	private countDownTimeInterval?: number
+	private countDownTimeInterval?: any
 	private cwd: string | undefined
 	private orientation: TestReporterOrientation = 'landscape'
 

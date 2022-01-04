@@ -37,7 +37,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 	private originalInspect!: number
 	private watcher?: WatchFeature
 	private watchMode: WatchMode = 'off'
-	private fileChangeTimeout?: number
+	private fileChangeTimeout?: any
 	private hasWatchEverBeenEnabled = false
 
 	private readonly watchDelaySec = 2
