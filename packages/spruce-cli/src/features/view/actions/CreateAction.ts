@@ -19,13 +19,14 @@ const viewTypeChoices = [
 ]
 
 const viewModels = [
+	'BigForm',
 	'Button',
-	'Dialog',
 	'Card',
 	'CardBody',
 	'CardHeader',
+	'Dialog',
 	'Form',
-	'BigForm',
+	'List',
 ].sort()
 
 const optionsSchema = buildSchema({
