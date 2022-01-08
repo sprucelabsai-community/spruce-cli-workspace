@@ -123,6 +123,11 @@ export default class Cli implements CliInterface {
 		return this.emitter.emit(...args)
 	}
 
+	public async emitAndFlattenResponses(...args: any[]) {
+		//@ts-ignore
+		return this.emitter.emitAndFlattenResponses(...args)
+	}
+
 	public async installFeatures(options: InstallFeatureOptions) {
 		return this.featureInstaller.install(options)
 	}
