@@ -66,7 +66,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 	protected static async installingSpruceAndOtherModulesDoesntRemoveSpruceModule() {
 		const { totalInstalled } = await this.pkg.install([
 			'moment',
-			'@sprucelabs/spruce-calendar-utils',
+			'@sprucelabs/calendar-utils',
 		])
 
 		assert.isEqual(totalInstalled, 2)
@@ -74,7 +74,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 		const expectedPath = this.resolvePath(
 			'node_modules',
 			'@sprucelabs',
-			'spruce-calendar-utils'
+			'calendar-utils'
 		)
 
 		assert.isTrue(

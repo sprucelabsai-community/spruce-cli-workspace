@@ -14,7 +14,7 @@ import testUtil from '../../tests/utilities/test.utility'
 const LOCAL_NAMESPACE = 'TestingSchemas'
 const REMOTE_NAMESPACE = 'RemoteSchemas'
 
-const REMOTE_MODULE = '@sprucelabs/spruce-calendar-utils'
+const REMOTE_MODULE = '@sprucelabs/calendar-utils'
 const REMOTE_MODULE2 = '@sprucelabs/spruce-templates'
 
 export default class SettingUpSchemasForModuleDistributionTest extends AbstractSkillTest {
@@ -25,7 +25,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 		version: 'v2021_09_20',
 		namespace: 'TestingSchemas',
 		name: 'Schema imported as module',
-		moduleToImportFromWhenRemote: '@sprucelabs/spruce-calendar-utils',
+		moduleToImportFromWhenRemote: '@sprucelabs/calendar-utils',
 		fields: {
 			fieldName1: { label: 'First Field', type: 'text', isRequired: true },
 			fieldName2: {
@@ -497,7 +497,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 
 		assert.isEqual(
 			calendarEventContents.trim(),
-			`export { calendarEventSchema as default } from '@sprucelabs/spruce-calendar-utils'`
+			`export { calendarEventSchema as default } from '@sprucelabs/calendar-utils'`
 		)
 	}
 
