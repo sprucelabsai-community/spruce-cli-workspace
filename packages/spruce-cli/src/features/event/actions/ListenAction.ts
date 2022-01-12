@@ -23,6 +23,8 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
+const CORE_EVENT_NAMESPACE = 'mercury'
+
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
 export default class ListenAction extends AbstractAction<OptionsSchema> {
@@ -44,28 +46,11 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				eventName,
 				namespace,
 				schemaTypesLookupDir,
-				contractDestinationDir,
 			} = normalizedOptions
 
 			this.ui.startLoading('Loading event contracts...')
 
-			const eventStore = this.Store('event')
-
-			const skill = await this.Store('skill').loadCurrentSkill()
-
-			const namespacesForFetch =
-				namespace && namespace !== 'skill' ? [namespace] : undefined
-
-			const { contracts } = skill.slug
-				? await eventStore.fetchEventContracts({
-						localNamespace: skill.slug,
-						namespaces: namespacesForFetch,
-						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
-				  })
-				: await eventStore.fetchEventContracts({
-						namespaces: namespacesForFetch,
-						didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
-				  })
+			const contracts = await this.fetchEventContracts(namespace)
 
 			this.ui.stopLoading()
 
@@ -90,6 +75,11 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				eventName = await this.collectEvent(contracts, namespace)
 			}
 
+			const isCoreEvent = namespace === CORE_EVENT_NAMESPACE
+			if (isCoreEvent) {
+				namespace = undefined
+			}
+
 			const fqen = eventNameUtil.join({
 				eventName,
 				eventNamespace: namespace,
@@ -98,21 +88,12 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 
 			let { version } = eventNameUtil.split(fqen)
 
-			const isValidEvent = !!eventChoicesByNamespace[namespace].find(
-				(e) => e.value === eventName || e.value === fqen
+			this.assertIsValidChoice(
+				eventChoicesByNamespace,
+				namespace ?? 'mercury',
+				eventName,
+				fqen
 			)
-
-			if (!isValidEvent) {
-				throw new SchemaError({
-					code: 'INVALID_PARAMETERS',
-					friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
-						namespace
-					]
-						.map((i) => i.value)
-						.join('\n')}`,
-					parameters: ['eventName'],
-				})
-			}
 
 			const resolvedDestination = diskUtil.resolvePath(
 				this.cwd,
@@ -122,11 +103,6 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			const resolvedVersion = await this.resolveVersion(
 				version,
 				resolvedDestination
-			)
-
-			const resolvedSchemaTypesLookupDir = diskUtil.resolvePath(
-				this.cwd,
-				schemaTypesLookupDir
 			)
 
 			const isSkillEvent = namespace !== SKILL_EVENT_NAMESPACE
@@ -139,7 +115,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				const templateItems = builder.buildEventTemplateItemForName(
 					contracts,
 					eventNameUtil.join({
-						eventNamespace: namespace,
+						eventNamespace: !isCoreEvent ? namespace : undefined,
 						eventName,
 						version: resolvedVersion,
 					})
@@ -151,21 +127,14 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 					templateItems.responsePayloadSchemaTemplateItem
 			}
 
-			const writer = this.Writer('event')
-			response.files = await writer.writeListener(resolvedDestination, {
-				...normalizedOptions,
+			response.files = await this.writeListener({
+				schemaTypesLookupDir,
+				resolvedDestination,
 				version: resolvedVersion,
 				eventName,
-				eventNamespace: namespace,
-				fullyQualifiedEventName: eventNameUtil.join({
-					eventName,
-					eventNamespace: namespace,
-					version: resolvedVersion,
-				}),
+				namespace,
 				emitPayloadSchemaTemplateItem,
-				contractDestinationDir,
 				responsePayloadSchemaTemplateItem,
-				schemaTypesLookupDir: resolvedSchemaTypesLookupDir,
 			})
 
 			const syncResults = await this.syncListeners()
@@ -173,15 +142,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			response = actionUtil.mergeActionResults(syncResults, response)
 
 			if (isSkillEvent) {
-				const syncOptions = normalizeSchemaValues(
-					syncEventActionSchema,
-					options
-				)
-
-				const syncResults = await this.Action('event', 'sync').execute(
-					syncOptions
-				)
-
+				const syncResults = await this.syncEvents(options)
 				response = actionUtil.mergeActionResults(syncResults, response)
 			}
 
@@ -190,6 +151,98 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			return {
 				errors: [err],
 			}
+		}
+	}
+
+	private async fetchEventContracts(namespace?: string) {
+		const eventStore = this.Store('event')
+		const skill = await this.Store('skill').loadCurrentSkill()
+
+		const namespacesForFetch =
+			namespace &&
+			namespace !== SKILL_EVENT_NAMESPACE &&
+			namespace !== CORE_EVENT_NAMESPACE
+				? [namespace]
+				: undefined
+
+		const { contracts } = skill.slug
+			? await eventStore.fetchEventContracts({
+					localNamespace: skill.slug,
+					namespaces: namespacesForFetch,
+					didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
+			  })
+			: await eventStore.fetchEventContracts({
+					namespaces: namespacesForFetch,
+					didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
+			  })
+
+		return contracts
+	}
+
+	private async syncEvents(
+		options: SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptions
+	) {
+		const syncOptions = normalizeSchemaValues(syncEventActionSchema, options)
+
+		const syncResults = await this.Action('event', 'sync').execute(syncOptions)
+		return syncResults
+	}
+
+	private async writeListener(options: {
+		resolvedDestination: string
+		schemaTypesLookupDir: string
+		namespace?: string | undefined
+		eventName: string
+		emitPayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+		version: string
+		responsePayloadSchemaTemplateItem: SchemaTemplateItem | undefined
+	}) {
+		const {
+			resolvedDestination,
+			schemaTypesLookupDir,
+			namespace,
+			eventName,
+			version,
+		} = options
+
+		const resolvedSchemaTypesLookupDir = diskUtil.resolvePath(
+			this.cwd,
+			schemaTypesLookupDir
+		)
+		const writer = this.Writer('event')
+		const files = await writer.writeListener(resolvedDestination, {
+			...options,
+			fullyQualifiedEventName: eventNameUtil.join({
+				eventName,
+				eventNamespace: namespace,
+				version,
+			}),
+			schemaTypesLookupDir: resolvedSchemaTypesLookupDir,
+		})
+
+		return files
+	}
+
+	private assertIsValidChoice(
+		eventChoicesByNamespace: Record<string, SelectChoice[]>,
+		namespace: string,
+		eventName: string | undefined,
+		fqen: string
+	) {
+		const isValidEvent = !!eventChoicesByNamespace[namespace].find(
+			(e) => e.value === eventName || e.value === fqen
+		)
+
+		if (!isValidEvent) {
+			throw new SchemaError({
+				code: 'INVALID_PARAMETERS',
+				friendlyMessage: `${eventName} is not a valid event . Try: \n\n${eventChoicesByNamespace[
+					namespace
+				]
+					.map((i) => i.value)
+					.join('\n')}`,
+				parameters: ['eventName'],
+			})
 		}
 	}
 

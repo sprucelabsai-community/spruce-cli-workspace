@@ -88,6 +88,9 @@ export default class EventTemplateItemBuilder {
 		throw new SchemaError({
 			code: 'INVALID_PARAMETERS',
 			parameters: ['fullyQualifiedEventName'],
+			friendlyMessages: [
+				`I could not find any events that match ${fullyQualifiedEventName}.`,
+			],
 		})
 	}
 

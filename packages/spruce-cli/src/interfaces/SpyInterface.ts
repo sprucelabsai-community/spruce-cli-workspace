@@ -245,7 +245,9 @@ export default class SpyInterface implements GraphicsInterface {
 					this.reset()
 
 					try {
-						assert.fail(`Timed out waiting for input: ${definition.label}`)
+						assert.fail(
+							`Timed out waiting for input with label: '${definition.label}'\n\nConsider passing what you need to Action().execute({ something })`
+						)
 					} catch (err: any) {
 						reject(err)
 					}

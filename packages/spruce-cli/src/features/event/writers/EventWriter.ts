@@ -1,9 +1,8 @@
 import pathUtil from 'path'
 import { SchemaTemplateItem } from '@sprucelabs/schema'
-import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
+import { eventDiskUtil, eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import {
 	diskUtil,
-	namesUtil,
 	DEFAULT_SCHEMA_TYPES_FILENAME,
 } from '@sprucelabs/spruce-skill-utils'
 import {
@@ -129,30 +128,15 @@ export default class EventWriter extends AbstractWriter {
 
 	public async writeListener(
 		destinationDir: string,
-		options: Omit<
-			EventListenerOptions,
-			'nameConst' | 'schemaTypesFile' | 'contractsFile'
-		> & {
-			version: string
+		options: Omit<EventListenerOptions, 'schemaTypesFile'> & {
 			schemaTypesLookupDir: string
-			contractDestinationDir: string
 		}
 	) {
-		const {
-			eventName,
-			eventNamespace,
-			version,
-			schemaTypesLookupDir,
-			contractDestinationDir,
-		} = options
+		const { schemaTypesLookupDir, fullyQualifiedEventName } = options
 
 		const resolvedDestination = eventDiskUtil.resolveListenerPath(
 			destinationDir,
-			{
-				eventName,
-				eventNamespace,
-				version,
-			}
+			eventNameUtil.split(fullyQualifiedEventName) as any
 		)
 
 		const relativeTypesFile = this.resolveSchemaTypesFile(
@@ -160,22 +144,15 @@ export default class EventWriter extends AbstractWriter {
 			resolvedDestination
 		)
 
-		const contractsFile = pathUtil.join(
-			contractDestinationDir,
-			CONTRACT_FILE_NAME.replace('.ts', '')
-		)
-
 		const listenerContents = this.templates.listener({
 			...options,
-			nameConst: namesUtil.toConst(`${eventNamespace}_${eventName}`),
 			schemaTypesFile: relativeTypesFile,
-			contractsFile,
 		})
 
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,
 			listenerContents,
-			`Listener for ${eventNamespace}.${eventName}.`
+			`Listener for ${fullyQualifiedEventName}.`
 		)
 
 		await this.lint(resolvedDestination)
@@ -195,7 +172,7 @@ export default class EventWriter extends AbstractWriter {
 		const results = await this.writeFileIfChangedMixinResults(
 			destination,
 			contents,
-			'An object holding all your data stores for easy import!'
+			'All your listeners imported to one place for your skill to use when booting!'
 		)
 
 		return results
