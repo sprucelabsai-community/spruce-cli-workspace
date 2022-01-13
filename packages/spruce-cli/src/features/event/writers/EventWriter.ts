@@ -292,6 +292,10 @@ export default class EventWriter extends AbstractWriter {
 			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
 
+		if (!diskUtil.doesFileExist(schemaTypesFile)) {
+			return '@sprucelabs/mercury-types'
+		}
+
 		let relativeTypesFile = pathUtil.relative(
 			pathUtil.dirname(resolvedDestination),
 			schemaTypesFile
