@@ -187,7 +187,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 		await createPromise
 	}
 
-	// should only have 2 options, none of which one "new version" since that was created in secondAnswers
+	// should only have 2 options, none of which are "new version" since that was created in secondAnswers
 	private static async assertAnswersSecondTime(
 		action: FeatureAction,
 		newVersion: { intValue: number; constValue: string; dirValue: string }
