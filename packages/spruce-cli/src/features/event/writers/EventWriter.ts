@@ -134,15 +134,17 @@ export default class EventWriter extends AbstractWriter {
 	) {
 		const { schemaTypesLookupDir, fullyQualifiedEventName } = options
 
+		const event = eventNameUtil.split(fullyQualifiedEventName)
 		const resolvedDestination = eventDiskUtil.resolveListenerPath(
 			destinationDir,
-			eventNameUtil.split(fullyQualifiedEventName) as any
+			event as any
 		)
 
-		const relativeTypesFile = this.resolveSchemaTypesFile(
+		const relativeTypesFile = this.resolveSchemaTypesFile({
+			namespace: event.eventNamespace,
 			schemaTypesLookupDir,
-			resolvedDestination
-		)
+			resolvedDestination,
+		})
 
 		const listenerContents = this.templates.listener({
 			...options,
@@ -283,18 +285,21 @@ export default class EventWriter extends AbstractWriter {
 		return files
 	}
 
-	private resolveSchemaTypesFile(
-		schemaTypesLookupDir: string,
+	private resolveSchemaTypesFile(options: {
+		namespace?: string
+		schemaTypesLookupDir: string
 		resolvedDestination: string
-	) {
+	}) {
+		const { schemaTypesLookupDir, resolvedDestination, namespace } = options
+
+		if (!namespace) {
+			return '@sprucelabs/mercury-types'
+		}
+
 		const schemaTypesFile = pathUtil.join(
 			schemaTypesLookupDir,
 			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
-
-		if (!diskUtil.doesFileExist(schemaTypesFile)) {
-			return '@sprucelabs/mercury-types'
-		}
 
 		let relativeTypesFile = pathUtil.relative(
 			pathUtil.dirname(resolvedDestination),
