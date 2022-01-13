@@ -21,6 +21,7 @@ const viewTypeChoices = [
 const viewModels = [
 	'BigForm',
 	'Button',
+	'Calendar',
 	'Card',
 	'CardBody',
 	'CardHeader',
