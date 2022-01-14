@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.30.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.29.31...v14.30.0) (2022-01-14)
+
+
+### Features
+
+* calendar can now be selected when creating a view ([b47a375](https://github.com/sprucelabsai/spruce-cli-workspace/commit/b47a375))
+
+
+
+
+
 ## [14.29.31](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v14.29.30...v14.29.31) (2022-01-13)
 
 **Note:** Version bump only for package spruce-cli-workspace
