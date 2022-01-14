@@ -1,4 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
+import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import setupVscodeSchema from '#spruce/schemas/spruceCli/v2020_07_22/setupVscodeOptions.schema'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -16,10 +17,15 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Setting up sandbox support... 🏝'
 
 	public async execute(): Promise<FeatureActionResponse> {
+		const listeners = this.Store('listener')
+		const existing = await listeners.loadListeners()
+		const version = existing.find((e) => e.eventNamespace === 'skill')?.version
+
 		const createListenerAction = this.Action('event', 'listen')
 		const results = await createListenerAction.execute({
 			namespace: 'skill',
 			eventName: 'will-boot',
+			version: version ?? versionUtil.generateVersion().dirValue,
 		})
 
 		if (results.errors) {

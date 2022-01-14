@@ -26,7 +26,7 @@ export default class SandboxFeature extends AbstractFeature {
 	public constructor(options: ActionOptions) {
 		super(options)
 
-		void this.emitter.on('feature.did-execute', async (payload) => {
+		void this.emitter.on('feature.will-execute', async (payload) => {
 			const isSkillInstalled = await this.featureInstaller.isInstalled(
 				'sandbox'
 			)
