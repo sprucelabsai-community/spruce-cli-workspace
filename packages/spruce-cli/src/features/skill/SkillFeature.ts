@@ -42,7 +42,7 @@ export default class SkillFeature<
 		{ name: '@sprucelabs/spruce-event-utils' },
 		{ name: '@sprucelabs/spruce-event-plugin' },
 		{ name: '@sprucelabs/spruce-core-schemas' },
-		{ name: 'dotenv' },
+		{ name: 'dotenv', version: '11.0.0' },
 		{ name: 'globby', version: '^11.0.4' },
 		{
 			name: '@sprucelabs/mercury-types',
