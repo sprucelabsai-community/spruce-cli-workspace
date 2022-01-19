@@ -19,9 +19,13 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
 
 		assert.isFalsy(health.skill.errors)
+		//@ts-ignore
 		assert.isTruthy(health.store)
+		//@ts-ignore
 		assert.isFalsy(health.store.errors)
+		//@ts-ignore
 		assert.isArray(health.store.stores)
+		//@ts-ignore
 		assert.isLength(health.store.stores, 0)
 	}
 
@@ -53,9 +57,13 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	@test()
 	protected static async getsOneStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
+		//@ts-ignore
 		assert.isTruthy(health.store)
+		//@ts-ignore
 		assert.isFalsy(health.store.errors)
+		//@ts-ignore
 		assert.isLength(health.store.stores, 1)
+		//@ts-ignore
 		assert.isEqual(health.store.stores[0].name, 'People')
 	}
 
@@ -81,10 +89,15 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 	protected static async getsSecondStoresBackFromHealthCheck() {
 		const health = await this.cli.checkHealth({ shouldRunOnSourceFiles: true })
 
+		//@ts-ignore
 		assert.isTruthy(health.store)
+		//@ts-ignore
 		assert.isFalsy(health.store.errors)
+		//@ts-ignore
 		assert.isLength(health.store.stores, 2)
+		//@ts-ignore
 		assert.isEqual(health.store.stores[0].name, 'Bids')
+		//@ts-ignore
 		assert.isEqual(health.store.stores[1].name, 'People')
 	}
 
