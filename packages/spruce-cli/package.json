@@ -574,7 +574,7 @@
             "canAlwaysSkipFiles": "I264",
             "upgradingWritesExpectedFiles": "I289",
             "globalEmitterEmitsSEquentally": "I328",
-            "skill.login asks for remote on IS TTY": "I338",
+            "login.skill asks for remote on IS TTY": "I338",
             "syncsEventsForSkillsWeveAddedAsDependencies": "I347"
           }
         }
