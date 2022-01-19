@@ -38,9 +38,13 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 
 	private static async assertHealthCheckResultsAreValid(cli: CliInterface) {
 		const health = await cli.checkHealth()
+		//@ts-ignore
 		assert.isTruthy(health.conversation)
+		//@ts-ignore
 		assert.isArray(health.conversation.topics)
+		//@ts-ignore
 		assert.isLength(health.conversation.topics, 1)
+		//@ts-ignore
 		assert.doesInclude(health.conversation.topics, 'bookAnAppointment')
 	}
 }
