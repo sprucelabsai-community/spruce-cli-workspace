@@ -40,16 +40,13 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 			assert.fail('what the!!??')
 		}) as any)
 
-
 		const results = await this.Action('skill', 'register').execute({
 			nameReadable: 'My great skill',
 			nameKebab: slug,
 		})
 
-
 		assert.isTruthy(results.errors)
 		assert.doesInclude(results.errors[0].message, 'what the!!??')
-
 	}
 
 	@test()
