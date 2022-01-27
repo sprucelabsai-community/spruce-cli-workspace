@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
@@ -104,6 +105,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		SkillStore.clearCurrentSkill()
 		EventStore.clearCache()
 		CommandService.clearMockResponses()
+		MercuryClientFactory.reset()
 	}
 
 	protected static async afterEach() {
@@ -231,7 +233,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this.mercuryFixture
 	}
 
-	protected static getPersonFixture() {
+	protected static get people() {
 		if (!this.personFixture) {
 			this.personFixture = new PersonFixture(
 				this.getMercuryFixture().getApiClientFactory()
@@ -285,7 +287,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static getOrganizationFixture() {
 		if (!this.organizationFixture) {
 			this.organizationFixture = new OrganizationFixture(
-				this.getPersonFixture(),
+				this.people,
 				this.StoreFactory()
 			)
 		}
@@ -296,7 +298,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static getSkillFixture() {
 		if (!this.skillFixture) {
 			this.skillFixture = new SkillFixture(
-				this.getPersonFixture(),
+				this.people,
 				this.StoreFactory(),
 				this.getMercuryFixture().getApiClientFactory()
 			)

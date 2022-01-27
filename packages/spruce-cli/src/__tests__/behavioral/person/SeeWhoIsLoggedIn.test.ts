@@ -21,7 +21,7 @@ export default class SeeWhoIsLoggedInTest extends AbstractCliTest {
 	@test()
 	protected static async canSeeWhoIsLoggedIn() {
 		await this.FeatureFixture().installCachedFeatures('skills')
-		await this.getPersonFixture().loginAsDemoPerson()
+		await this.people.loginAsDemoPerson()
 
 		const results = await this.Action('person', 'whoami').execute({})
 

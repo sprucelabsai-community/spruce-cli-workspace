@@ -12,14 +12,12 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_LOGIN_AS_SKILL
-		)
+		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_LOGIN_AS_SKILL)
 
 		const skillFixture = this.getSkillFixture()
 		await skillFixture.clearAllSkills()
 
-		await this.getPersonFixture().logout()
+		await this.people.logout()
 	}
 
 	@test()
@@ -50,7 +48,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	}
 
 	private static async login() {
-		const person = await this.getPersonFixture().loginAsDemoPerson(
+		const person = await this.people.loginAsDemoPerson(
 			process.env.DEMO_NUMBER_LOGIN_AS_SKILL
 		)
 

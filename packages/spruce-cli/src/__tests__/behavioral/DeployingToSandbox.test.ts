@@ -21,7 +21,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		const personFixture = this.getPersonFixture()
+		const personFixture = this.people
 		await personFixture.loginAsDemoPerson(this.sandboxDemoNumber)
 	}
 

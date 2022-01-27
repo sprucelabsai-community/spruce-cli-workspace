@@ -18,9 +18,7 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_GLOBAL_EVENTS
-		)
+		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_GLOBAL_EVENTS)
 
 		await this.resetAccount()
 

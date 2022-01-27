@@ -66,7 +66,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
 		const slug = `awesome-skill-${new Date().getTime()}`
-		await this.getPersonFixture().loginAsDemoPerson()
+		await this.people.loginAsDemoPerson()
 
 		const skillStore = this.Store('skill')
 

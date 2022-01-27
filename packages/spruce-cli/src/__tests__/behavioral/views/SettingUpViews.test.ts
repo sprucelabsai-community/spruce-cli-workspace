@@ -24,7 +24,7 @@ export default class SettingUpViewsTest extends AbstractCliTest {
 			},
 		])
 
-		await this.getPersonFixture().loginAsDemoPerson()
+		await this.people.loginAsDemoPerson()
 
 		const dependencies = this.Service('dependency').get()
 		assert.isLength(dependencies, 1)

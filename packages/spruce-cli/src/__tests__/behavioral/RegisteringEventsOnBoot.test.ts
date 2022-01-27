@@ -14,9 +14,7 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_EVENTS_ON_BOOT
-		)
+		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_EVENTS_ON_BOOT)
 	}
 
 	@test()

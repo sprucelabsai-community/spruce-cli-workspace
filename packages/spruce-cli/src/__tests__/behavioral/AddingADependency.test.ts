@@ -101,7 +101,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 
 	@test()
 	protected static async doesNotShowSkillsThatAreAlreadySetAsADependency() {
-		await this.getPersonFixture().loginAsDemoPerson()
+		await this.people.loginAsDemoPerson()
 
 		void this.Action('dependency', 'add').execute({})
 
@@ -122,9 +122,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 			name: 'global dependency skill',
 		})
 
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_GLOBAL_EVENTS
-		)
+		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_GLOBAL_EVENTS)
 
 		const results = await this.Action('dependency', 'add').execute({
 			namespace: skill.slug,

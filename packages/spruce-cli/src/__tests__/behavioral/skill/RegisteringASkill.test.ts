@@ -1,3 +1,4 @@
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
@@ -27,9 +28,34 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 	}
 
 	@test()
+	protected static async returnsErrorWhenRegistrationFails() {
+		MercuryClientFactory.setIsTestMode(true)
+
+		await this.people.loginAsDemoPerson()
+		await this.FeatureFixture().installCachedFeatures('skills')
+		const slug = `my-new-skill-${new Date().getTime()}`
+
+		const client = await this.connectToApi()
+		await client.on('register-skill::v2020_12_25', (() => {
+			assert.fail('what the!!??')
+		}) as any)
+
+
+		const results = await this.Action('skill', 'register').execute({
+			nameReadable: 'My great skill',
+			nameKebab: slug,
+		})
+
+
+		assert.isTruthy(results.errors)
+		assert.doesInclude(results.errors[0].message, 'what the!!??')
+
+	}
+
+	@test()
 	protected static async canRegisterSkill() {
 		await this.FeatureFixture().installCachedFeatures('skills')
-		await this.getPersonFixture().loginAsDemoPerson()
+		await this.people.loginAsDemoPerson()
 
 		const slug = `my-new-skill-${new Date().getTime()}`
 		const results = await this.Action('skill', 'register').execute({

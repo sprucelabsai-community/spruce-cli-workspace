@@ -28,7 +28,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 			name: 'my amazing skill',
 		})
 
-		await this.getPersonFixture().logout()
+		await this.people.logout()
 
 		await this.Cli()
 
@@ -145,8 +145,6 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	}
 
 	private static async login() {
-		await this.getPersonFixture().loginAsDemoPerson(
-			process.env.DEMO_NUMBER_INSTALL_SKILL
-		)
+		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_INSTALL_SKILL)
 	}
 }
