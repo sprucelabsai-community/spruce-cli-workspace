@@ -28,6 +28,7 @@ const viewModels = [
 	'Dialog',
 	'Form',
 	'List',
+	'CalendarEvent',
 ].sort()
 
 const optionsSchema = buildSchema({
