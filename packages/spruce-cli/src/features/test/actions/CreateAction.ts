@@ -19,7 +19,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 		const { testDestinationDir, namePascal, nameCamel, type } =
 			normalizedOptions
 
-		const resolvedDestination = diskUtil.resolvePath(
+		let resolvedDestination = diskUtil.resolvePath(
 			this.cwd,
 			testDestinationDir,
 			type
@@ -28,7 +28,6 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 		this.ui.startLoading('Checking potential parent test classes')
 
 		const testFeature = this.parent as TestFeature
-		const candidates = await testFeature.buildParentClassCandidates()
 
 		this.ui.stopLoading()
 
@@ -36,34 +35,22 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			| undefined
 			| { name: string; importPath: string; isDefaultExport: boolean }
 
+		const candidates = await testFeature.buildParentClassCandidates()
+
 		if (candidates.length > 0) {
-			const idx = await this.ui.prompt({
-				type: 'select',
-				isRequired: true,
-				label: 'Which abstract test class do you want to extend?',
-				options: {
-					choices: [
-						{ value: '', label: 'AbstractSpruceTest (default)' },
-						...candidates.map((candidate, idx) => ({
-							value: `${idx}`,
-							label: candidate.label,
-						})),
-					],
-				},
-			})
+			parentTestClass =
+				await this.promptForParentTestClassAndOptionallyInstallDependencies(
+					candidates,
+					parentTestClass,
+					resolvedDestination
+				)
+		}
 
-			if (idx !== '' && candidates[+idx]) {
-				const match = candidates[+idx]
-
-				if (match) {
-					await this.optionallyInstallFeatureBasedOnSelection(match)
-
-					parentTestClass = this.buildParentClassFromCandidate(
-						match,
-						resolvedDestination
-					)
-				}
-			}
+		if (diskUtil.doesDirExist(resolvedDestination)) {
+			resolvedDestination = await this.promptForSubDir(
+				resolvedDestination,
+				type
+			)
 		}
 
 		this.ui.startLoading('Generating test file...')
@@ -83,6 +70,74 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			hints: ["run `spruce test` in your skill when you're ready!"],
 		}
 	}
+	private async promptForSubDir(resolvedDestination: string, type: string) {
+		const subdirs = diskUtil
+			.readDir(resolvedDestination)
+			.filter((d) =>
+				diskUtil.isDir(diskUtil.resolvePath(resolvedDestination, d))
+			)
+
+		if (subdirs.length > 0) {
+			const match = await this.ui.prompt({
+				type: 'select',
+				label: 'Where should I write this test?',
+				isRequired: true,
+				options: {
+					choices: [
+						{
+							value: '.',
+							label: `${type}`,
+						},
+						...subdirs.map((dir) => ({
+							value: `${dir}`,
+							label: `${type}/${dir}`,
+						})),
+					],
+				},
+			})
+
+			resolvedDestination = diskUtil.resolvePath(resolvedDestination, match)
+		}
+		return resolvedDestination
+	}
+
+	private async promptForParentTestClassAndOptionallyInstallDependencies(
+		candidates: ParentClassCandidate[],
+		parentTestClass:
+			| { name: string; importPath: string; isDefaultExport: boolean }
+			| undefined,
+		resolvedDestination: string
+	) {
+		const idx = await this.ui.prompt({
+			type: 'select',
+			isRequired: true,
+			label: 'Which abstract test class do you want to extend?',
+			options: {
+				choices: [
+					{ value: '', label: 'AbstractSpruceTest (default)' },
+					...candidates.map((candidate, idx) => ({
+						value: `${idx}`,
+						label: candidate.label,
+					})),
+				],
+			},
+		})
+
+		if (idx !== '' && candidates[+idx]) {
+			const match = candidates[+idx]
+
+			if (match) {
+				await this.optionallyInstallFeatureBasedOnSelection(match)
+
+				parentTestClass = this.buildParentClassFromCandidate(
+					match,
+					resolvedDestination
+				)
+			}
+		}
+		return parentTestClass
+	}
+
 	private async optionallyInstallFeatureBasedOnSelection(
 		match: ParentClassCandidate
 	) {

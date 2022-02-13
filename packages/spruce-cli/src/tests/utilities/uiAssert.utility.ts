@@ -1,7 +1,7 @@
 import { assert } from '@sprucelabs/test'
 import SpyInterface from '../../interfaces/SpyInterface'
 
-const uiAssertUtil = {
+const uiAssert = {
 	async assertRendersSelect(ui: SpyInterface) {
 		await ui.waitForInput()
 
@@ -10,6 +10,8 @@ const uiAssertUtil = {
 			last.options.options.choices,
 			`I expected a select, I did not find one!`
 		)
+
+		return last.options
 	},
 
 	assertSelectDidNotRenderChoice(
@@ -20,6 +22,15 @@ const uiAssertUtil = {
 		const last = ui.getLastInvocation()
 
 		assert.doesNotInclude(last.options.options.choices, {
+			value,
+			label,
+		})
+	},
+
+	assertSelectRenderChoice(ui: SpyInterface, value: string, label: string) {
+		const last = ui.getLastInvocation()
+
+		assert.doesInclude(last.options.options.choices, {
 			value,
 			label,
 		})
@@ -42,4 +53,4 @@ const uiAssertUtil = {
 	},
 }
 
-export default uiAssertUtil
+export default uiAssert

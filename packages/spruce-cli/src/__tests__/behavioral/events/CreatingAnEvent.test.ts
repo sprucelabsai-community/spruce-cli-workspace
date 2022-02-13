@@ -10,7 +10,7 @@ import { CliInterface } from '../../../cli'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
-import uiAssertUtil from '../../../tests/utilities/uiAssert.utility'
+import uiAssert from '../../../tests/utilities/uiAssert.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
 import actionUtil from '../../../utilities/action.utility'
 
@@ -159,7 +159,7 @@ export default createFormEmitPayloadBuilder
 			nameCamel: EVENT_CAMEL,
 		})
 
-		await uiAssertUtil.assertRendersSelect(this.ui)
+		await uiAssert.assertRendersSelect(this.ui)
 
 		this.ui.reset()
 	}

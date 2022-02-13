@@ -2,7 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
-import uiAssertUtil from '../../tests/utilities/uiAssert.utility'
+import uiAssert from '../../tests/utilities/uiAssert.utility'
 
 export default class UpgradingANodeModuleTest extends AbstractCliTest {
 	protected static async beforeEach() {
@@ -58,7 +58,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 		const promise = this.Action('node', 'upgrade').execute({})
 
-		await uiAssertUtil.assertRendersConfirmWriteFile(this.ui)
+		await uiAssert.assertRendersConfirmWriteFile(this.ui)
 
 		assert.isEqual(
 			diskUtil.readFile(this.resolvePath('src/index.ts')),

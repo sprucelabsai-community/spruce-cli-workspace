@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssertUtil } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import uiAssertUtil from '../../tests/utilities/uiAssert.utility'
+import uiAssert from '../../tests/utilities/uiAssert.utility'
 
 export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'skills'
@@ -107,7 +107,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 
 		await this.waitForInput()
 
-		uiAssertUtil.assertSelectDidNotRenderChoice(
+		uiAssert.assertSelectDidNotRenderChoice(
 			this.ui,
 			this.parentSkill.slug,
 			this.parentSkill.name
