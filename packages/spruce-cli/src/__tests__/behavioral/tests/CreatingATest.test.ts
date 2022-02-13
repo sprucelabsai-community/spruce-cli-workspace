@@ -29,7 +29,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		'AbstractSpruceFixtureTest'
 	)
 	@test(
-		'can create behavioral test with AbstractSpruceFixtureTest',
+		'can create behavioral test with AbstractStoreTest',
 		'AbstractStoreTest (requires install)'
 	)
 	protected static async canCreateBehavioralTest(testName: string) {
@@ -64,7 +64,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		this.createTestSubDir(testType, 'dummy1')
 
-		const { promise } = await this.installStartTestSelectSubclassWaitForInput(
+		const { promise } = await this.installAndStartTestActionAndWaitForInput(
 			testType
 		)
 
@@ -72,6 +72,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		uiAssert.assertSelectRenderChoice(this.ui, `dummy1`, `${testType}/dummy1`)
 
 		await this.ui.sendInput('.')
+		await this.waitAndSelectSubClass()
 
 		await promise
 	}
@@ -86,13 +87,15 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 			this.createTestSubDir('behavioral', dir)
 		}
 
-		const { promise } = await this.installStartTestSelectSubclassWaitForInput()
+		const { promise } = await this.installAndStartTestActionAndWaitForInput()
 
 		for (const dir of dirs) {
 			uiAssert.assertSelectRenderChoice(this.ui, `${dir}`, `behavioral/${dir}`)
 		}
 
 		await this.ui.sendInput('.')
+
+		await this.waitAndSelectSubClass()
 
 		await promise
 	}
@@ -103,11 +106,13 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		await this.installTests()
 		this.createTestSubDir('behavioral', dirName)
 
-		const { promise } = await this.installStartTestSelectSubclassWaitForInput(
+		const { promise } = await this.installAndStartTestActionAndWaitForInput(
 			'behavioral'
 		)
 
 		await this.ui.sendInput(`${dirName}`)
+
+		await this.waitAndSelectSubClass()
 
 		const results = await promise
 
@@ -130,7 +135,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		const file = this.resolveTestDir('behavioral', 'test.ts')
 		diskUtil.writeFile(file, 'what the!?')
 
-		const { promise } = await this.installStartTestSelectSubclassWaitForInput()
+		await this.installAndStartTestActionAndWaitForInput()
 
 		uiAssert.assertSelectDidNotRenderChoice(
 			this.ui,
@@ -138,22 +143,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 			`behavioral/test/test.ts`
 		)
 
-		await promise
-	}
-
-	private static async installStartTestSelectSubclassWaitForInput(
-		testType?: string,
-		selectedSubClass?: string
-	) {
-		const { promise } = await this.installAndStartTestActionAndWaitForInput(
-			testType
-		)
-
-		await this.ui.sendInput(selectedSubClass ?? '')
-
-		await uiAssert.assertRendersSelect(this.ui)
-
-		return { promise }
+		this.ui.reset()
 	}
 
 	private static createTestSubDir(...testDirs: string[]) {
@@ -178,5 +168,10 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		await this.waitForInput()
 		return { promise }
+	}
+
+	private static async waitAndSelectSubClass(selectedSubClass?: string) {
+		await this.waitForInput()
+		await this.ui.sendInput(selectedSubClass ?? '')
 	}
 }

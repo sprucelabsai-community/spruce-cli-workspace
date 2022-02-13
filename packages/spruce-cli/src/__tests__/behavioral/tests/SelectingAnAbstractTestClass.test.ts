@@ -27,17 +27,7 @@ const featuresWithRegisteredTests: {
 export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	@test()
 	protected static async asksForYouToSelectABaseClass() {
-		await this.installTests()
-		await this.copyTestFiles()
-
-		const { choices, promise } =
-			await this.executeCreateUntilAbstractClassSelection()
-
-		for (const expected of expectedAbstractTests) {
-			assert.doesInclude(choices, { label: expected })
-		}
-
-		this.selectOptionBasedOnLabel('AbstractBananaTestDifferentThanFileName')
+		const { promise } = await this.installCopyTestFilesSelectLocalAbstractTest()
 
 		const results = await promise
 
@@ -46,12 +36,27 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			results.files
 		)
 
-		await this.Service('build').build()
+		await this.buildAndAssertTestFailsAsExpected()
+	}
 
-		await assert.doesThrowAsync(
-			() => this.Service('command').execute('yarn test'),
-			/false.*?does not equal.*?true/gis
-		)
+	@test()
+	protected static async canSelectAbstractClassWhileSelectingSubDir() {
+		const testDir = this.resolvePath('src', '__tests__', 'behavioral', 'taco')
+		diskUtil.createDir(testDir)
+
+		await this.installAndCopyTestFiles()
+
+		const { promise } = await this.invokeCreateActionAndWaitForInput()
+
+		await this.ui.sendInput('taco')
+
+		await this.waitForInput()
+
+		this.selectOptionBasedOnLabel('AbstractBananaTestDifferentThanFileName')
+
+		await promise
+
+		await this.buildAndAssertTestFailsAsExpected()
 	}
 
 	@test()
@@ -169,6 +174,35 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 		}
 	}
 
+	private static async buildAndAssertTestFailsAsExpected() {
+		await this.Service('build').build()
+
+		await assert.doesThrowAsync(
+			() => this.Service('command').execute('yarn test'),
+			/false.*?does not equal.*?true/gis
+		)
+	}
+
+	private static async installCopyTestFilesSelectLocalAbstractTest() {
+		await this.installAndCopyTestFiles()
+
+		const { choices, promise } =
+			await this.executeCreateUntilAbstractClassSelection()
+
+		for (const expected of expectedAbstractTests) {
+			assert.doesInclude(choices, { label: expected })
+		}
+
+		this.selectOptionBasedOnLabel('AbstractBananaTestDifferentThanFileName')
+
+		return { promise }
+	}
+
+	private static async installAndCopyTestFiles() {
+		await this.installTests()
+		await this.copyTestFiles()
+	}
+
 	private static async copyTestFiles() {
 		const source = this.resolveTestPath('abstract_tests')
 		const destination = this.resolvePath('src')
@@ -177,13 +211,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	}
 
 	private static async executeCreateUntilAbstractClassSelection() {
-		const promise = this.Action('test', 'create').execute({
-			type: 'behavioral',
-			nameReadable: 'Can book appointment',
-			nameCamel: 'canBookAppointment',
-		})
-
-		await this.waitForInput()
+		const { promise } = await this.invokeCreateActionAndWaitForInput()
 
 		const last = this.ui.getLastInvocation()
 		const { choices } = last.options.options ?? {}
@@ -192,5 +220,16 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			promise: Promise<any>
 			choices: SelectChoice[]
 		}
+	}
+
+	private static async invokeCreateActionAndWaitForInput() {
+		const promise = this.Action('test', 'create').execute({
+			type: 'behavioral',
+			nameReadable: 'Can book appointment',
+			nameCamel: 'canBookAppointment',
+		})
+
+		await this.waitForInput()
+		return { promise }
 	}
 }

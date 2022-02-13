@@ -13,6 +13,8 @@ export default class TestGenerator extends AbstractWriter {
 		const resolvedDestination = pathUtil.join(destinationDir, filename)
 		const testContent = this.templates.test(options)
 
+		debugger
+
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,
 			testContent,

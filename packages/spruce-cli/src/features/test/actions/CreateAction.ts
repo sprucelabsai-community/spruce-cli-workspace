@@ -37,6 +37,13 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
 		const candidates = await testFeature.buildParentClassCandidates()
 
+		if (diskUtil.doesDirExist(resolvedDestination)) {
+			resolvedDestination = await this.promptForSubDir(
+				resolvedDestination,
+				type
+			)
+		}
+
 		if (candidates.length > 0) {
 			parentTestClass =
 				await this.promptForParentTestClassAndOptionallyInstallDependencies(
@@ -44,13 +51,6 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 					parentTestClass,
 					resolvedDestination
 				)
-		}
-
-		if (diskUtil.doesDirExist(resolvedDestination)) {
-			resolvedDestination = await this.promptForSubDir(
-				resolvedDestination,
-				type
-			)
 		}
 
 		this.ui.startLoading('Generating test file...')
