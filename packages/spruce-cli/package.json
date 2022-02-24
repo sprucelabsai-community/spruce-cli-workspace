@@ -83,7 +83,7 @@
     "@sprucelabs/mercury-event-emitter": "^21.0.115",
     "@sprucelabs/mercury-types": "^27.0.137",
     "@sprucelabs/schema": "^27.0.1",
-    "@sprucelabs/spruce-core-schemas": "^25.0.0",
+    "@sprucelabs/spruce-core-schemas": "^25.0.1",
     "@sprucelabs/spruce-event-plugin": "^25.1.5",
     "@sprucelabs/spruce-event-utils": "^18.0.141",
     "@sprucelabs/spruce-skill-booter": "^25.1.5",
