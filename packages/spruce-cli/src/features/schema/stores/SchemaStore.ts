@@ -6,7 +6,7 @@ import {
 	normalizeSchemaToIdWithVersion,
 	SchemaError,
 } from '@sprucelabs/schema'
-import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
+import { coreSchemas } from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
