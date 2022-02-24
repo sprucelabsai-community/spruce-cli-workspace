@@ -205,7 +205,7 @@ export default class SchemaStore extends AbstractStore {
 					errors.push(
 						new SpruceError({
 							code: 'SCHEMA_FAILED_TO_IMPORT',
-							file: err?.options?.file ?? '**UNKWOWN**',
+							file: err?.options?.file ?? '**UNKNOWN**',
 							originalError: err?.originalError ?? err,
 						})
 					)
@@ -214,7 +214,7 @@ export default class SchemaStore extends AbstractStore {
 		} catch (err: any) {
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
-				file: err?.options?.file ?? '**UNKWOWN**',
+				file: err?.options?.file ?? '**UNKNOWN**',
 				originalError: err?.originalError ?? err,
 			})
 		}
