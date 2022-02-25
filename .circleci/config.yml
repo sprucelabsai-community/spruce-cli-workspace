@@ -5,7 +5,7 @@ jobs:
   setup_for_test:
     docker:
       - image: circleci/node:16
-    resource_class: medium
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
