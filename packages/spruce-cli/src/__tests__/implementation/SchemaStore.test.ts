@@ -4,7 +4,6 @@ import {
 	Schema,
 	validateSchema,
 } from '@sprucelabs/schema'
-import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import {
 	CORE_NAMESPACE,
 	diskUtil,
@@ -13,6 +12,7 @@ import {
 import { test, assert } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
+import { coreSchemas } from '../../features/schema/stores/SchemaStore'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
 const LOCAL_NAMESPACE = 'TestSkill'
