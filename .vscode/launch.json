@@ -26,6 +26,7 @@
 			"name": "debug.cli",
 			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
+			"autoAttachChildProcesses": true,
 			"runtimeArgs": [
 				"run",
 				"local"

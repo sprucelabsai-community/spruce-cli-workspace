@@ -6,7 +6,7 @@ import {
 	normalizeSchemaToIdWithVersion,
 	SchemaError,
 } from '@sprucelabs/schema'
-import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
+import { schemas as coreSchemas } from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -205,7 +205,7 @@ export default class SchemaStore extends AbstractStore {
 					errors.push(
 						new SpruceError({
 							code: 'SCHEMA_FAILED_TO_IMPORT',
-							file: err?.options?.file ?? '**UNKWOWN**',
+							file: err?.options?.file ?? '**UNKNOWN**',
 							originalError: err?.originalError ?? err,
 						})
 					)
@@ -214,7 +214,7 @@ export default class SchemaStore extends AbstractStore {
 		} catch (err: any) {
 			throw new SpruceError({
 				code: 'SCHEMA_FAILED_TO_IMPORT',
-				file: err?.options?.file ?? '**UNKWOWN**',
+				file: err?.options?.file ?? '**UNKNOWN**',
 				originalError: err?.originalError ?? err,
 			})
 		}
