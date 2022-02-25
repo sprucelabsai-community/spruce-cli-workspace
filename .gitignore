@@ -71,6 +71,4 @@ api-docs.json
 
 .env.local
 
-yarn.lock
-
 .clinic/
