@@ -3191,7 +3191,7 @@
     "@sprucelabs/spruce-skill-utils" "^25.0.1"
     "@sprucelabs/spruce-test-fixtures" "^25.1.8"
 
-"@sprucelabs/spruce-event-utils@^18.0.138", "@sprucelabs/spruce-event-utils@^18.0.141", "@sprucelabs/spruce-event-utils@^18.0.142":
+"@sprucelabs/spruce-event-utils@^18.0.141", "@sprucelabs/spruce-event-utils@^18.0.142":
   version "18.0.142"
   resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-event-utils/-/spruce-event-utils-18.0.142.tgz#985dcf62891811e7eb48df14ef964f10f8ac21f9"
   integrity sha512-bvBIrbL/qnPunY2DaQBJMnP7yw07IxzYjfL+kMEZ+mjBXpLpPmBQZIXLJjKdgTjwkW3zFjCbQq8TtOHcfsqjqQ==
@@ -5546,9 +5546,9 @@ engine.io-parser@~5.0.0:
     "@socket.io/base64-arraybuffer" "~1.0.2"
 
 enhanced-resolve@^5.8.3:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.0.tgz#49ac24953ac8452ed8fed2ef1340fc8e043667ee"
-  integrity sha512-weDYmzbBygL7HzGGS26M3hGQx68vehdEg6VUmqSOaFzXExFqlnKuSvsEJCVGQHScS8CQMbrAqftT+AzzHNt/YA==
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.1.tgz#e898cea44d9199fd92137496cff5691b910fb43e"
+  integrity sha512-jdyZMwCQ5Oj4c5+BTnkxPgDZO/BJzh/ADDmKebayyzNwjVX1AFCeGkOfxNx0mHi2+8BKC5VxUYiw3TIvoT7vhw==
   dependencies:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
