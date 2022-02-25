@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import StoreStore from '../../features/store/stores/StoreStore'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -46,7 +46,7 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 		const err = await assert.doesThrowAsync(() => this.store.fetchStores())
 
-		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT', {
+		errorAssert.assertError(err, 'FAILED_TO_IMPORT', {
 			file: 'Bad.store.ts',
 		})
 	}
@@ -105,7 +105,7 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 
 		const err = await assert.doesThrowAsync(() => this.store.fetchStores())
 
-		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT', {
+		errorAssert.assertError(err, 'FAILED_TO_IMPORT', {
 			file: 'Bad.store.ts',
 		})
 	}

@@ -6,7 +6,22 @@ import {
 	normalizeSchemaToIdWithVersion,
 	SchemaError,
 } from '@sprucelabs/schema'
-import { schemas as coreSchemas } from '@sprucelabs/spruce-core-schemas'
+import {
+	personSchema,
+	profileImageSchema,
+	skillSchema,
+	skillCreatorSchema,
+	locationSchema,
+	organizationSchema,
+	personOrganizationSchema,
+	personLocationSchema,
+	roleSchema,
+	messageSchema,
+	messageSourceSchema,
+	messageTargetSchema,
+	sendMessageSchema,
+	fullMessageChoicesSchema,
+} from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -16,6 +31,23 @@ import { isEqual, uniqBy } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 import { InternalUpdateHandler } from '../../../types/cli.types'
+
+export const coreSchemas = {
+	personSchema,
+	profileImageSchema,
+	skillSchema,
+	skillCreatorSchema,
+	locationSchema,
+	organizationSchema,
+	personOrganizationSchema,
+	personLocationSchema,
+	roleSchema,
+	messageSchema,
+	messageSourceSchema,
+	messageTargetSchema,
+	sendMessageSchema,
+	fullMessageChoicesSchema,
+}
 
 interface AddonItem {
 	path: string

@@ -78,7 +78,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	// 		.execute({ shouldRunSilently: true })
 
 	// 	assert.isTruthy(test.errors)
-	// 	errorAssertUtil.assertError(test.errors[0], 'EXECUTING_COMMAND_FAILED', {
+	// 	errorAssert.assertError(test.errors[0], 'EXECUTING_COMMAND_FAILED', {
 	// 		stderr: 'oh no!',
 	// 	})
 	// }

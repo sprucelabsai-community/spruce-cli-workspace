@@ -1,7 +1,7 @@
 import pathUil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import ImportService from '../../services/ImportService'
 import ServiceFactory from '../../services/ServiceFactory'
 
@@ -86,7 +86,7 @@ export default class BulkImportingTest extends AbstractSpruceTest {
 			])
 		)
 
-		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		errorAssert.assertError(err, 'FAILED_TO_IMPORT')
 		assert.doesInclude((err as any).options.file, 'badSchema.builder.ts')
 	}
 
@@ -106,7 +106,7 @@ export default class BulkImportingTest extends AbstractSpruceTest {
 			])
 		)
 
-		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		errorAssert.assertError(err, 'FAILED_TO_IMPORT')
 		assert.doesInclude((err as any).options.file, 'anotherBad.builder.ts')
 	}
 
@@ -122,7 +122,7 @@ export default class BulkImportingTest extends AbstractSpruceTest {
 			])
 		)
 
-		errorAssertUtil.assertError(err, 'FAILED_TO_IMPORT')
+		errorAssert.assertError(err, 'FAILED_TO_IMPORT')
 		assert.doesInclude((err as any).options.file, 'notDefault.builder.ts')
 	}
 

@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
 
@@ -19,7 +19,7 @@ export default class SettingUpSchemasTests extends AbstractSchemaTest {
 			})
 		)
 
-		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
+		errorAssert.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

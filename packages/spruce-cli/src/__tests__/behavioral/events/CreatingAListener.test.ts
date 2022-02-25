@@ -12,7 +12,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -30,7 +30,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
 
-		errorAssertUtil.assertError(err, 'INVALID_NAMESPACES', {
+		errorAssert.assertError(err, 'INVALID_NAMESPACES', {
 			namespaces: ['taco-bell'],
 		})
 	}
@@ -46,7 +46,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		assert.isTruthy(results.errors)
 		const err = results.errors[0]
 
-		errorAssertUtil.assertError(err, 'INVALID_PARAMETERS', {
+		errorAssert.assertError(err, 'INVALID_PARAMETERS', {
 			parameters: ['eventName'],
 		})
 	}

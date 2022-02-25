@@ -5,7 +5,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import { FeatureActionResponse } from '../../features/features.types'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
@@ -210,7 +210,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			}
 		} else {
 			assert.isTruthy(results.errors)
-			errorAssertUtil.assertError(results.errors[0], 'ACTION_CANCELLED')
+			errorAssert.assertError(results.errors[0], 'ACTION_CANCELLED')
 		}
 	}
 

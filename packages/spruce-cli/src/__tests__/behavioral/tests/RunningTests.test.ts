@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 
 export default class RunningTestsTest extends AbstractTestTest {
@@ -50,7 +50,7 @@ export default class RunningTestsTest extends AbstractTestTest {
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
 
-		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
+		errorAssert.assertError(results.errors[0], 'TEST_FAILED')
 
 		assert.isTruthy(results.meta)
 		assert.isTruthy(results.meta?.testResults)

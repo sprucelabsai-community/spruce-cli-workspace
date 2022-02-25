@@ -5,7 +5,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
@@ -39,7 +39,7 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		})
 
 		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
+		errorAssert.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
 	}
 
 	@test()

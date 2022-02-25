@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import MockProgramFactory from '../../tests/MockProgramFactory'
 
@@ -23,7 +23,7 @@ export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTe
 		const results = await executer.Action('schema', 'sync').execute()
 
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'COMMAND_BLOCKED')
+		errorAssert.assertError(results.errors[0], 'COMMAND_BLOCKED')
 	}
 
 	@test()
@@ -50,6 +50,6 @@ export default class OverridingCommandsInPackageJsonTest extends AbstractSkillTe
 		})
 
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'COMMAND_BLOCKED')
+		errorAssert.assertError(results.errors[0], 'COMMAND_BLOCKED')
 	}
 }

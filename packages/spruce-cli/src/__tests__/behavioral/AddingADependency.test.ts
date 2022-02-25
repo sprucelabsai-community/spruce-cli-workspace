@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import uiAssert from '../../tests/utilities/uiAssert.utility'
 
@@ -28,7 +28,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_FOUND')
+		errorAssert.assertError(results.errors[0], 'SKILL_NOT_FOUND')
 	}
 
 	@test()
@@ -65,7 +65,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 			})
 		)
 
-		errorAssertUtil.assertError(err, 'DEPENDENCY_EXISTS')
+		errorAssert.assertError(err, 'DEPENDENCY_EXISTS')
 	}
 
 	@test()

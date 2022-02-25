@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import CommandService from '../../services/CommandService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
@@ -32,6 +32,6 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
 		assert.isArray(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'EXECUTING_COMMAND_FAILED')
+		errorAssert.assertError(results.errors[0], 'EXECUTING_COMMAND_FAILED')
 	}
 }

@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import '@sprucelabs/spruce-store-plugin'
 import CommandService from '../../../services/CommandService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
@@ -110,7 +110,7 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 		})
 
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'STORE_EXISTS')
+		errorAssert.assertError(results.errors[0], 'STORE_EXISTS')
 	}
 
 	@test()

@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import { ENABLE_NPM_CACHE_COMMAND } from '../../features/cache/constants'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -31,7 +31,7 @@ export default class ActionExecuter4Test extends AbstractCliTest {
 			this.Action('cache', 'enable').execute({})
 		)
 
-		errorAssertUtil.assertError(err, 'LISTENER_ERROR', {
+		errorAssert.assertError(err, 'LISTENER_ERROR', {
 			'originalError.message': msg,
 		})
 	}

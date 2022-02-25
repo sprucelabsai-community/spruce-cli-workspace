@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractErrorTest from '../../../tests/AbstractErrorTest'
 
 export default class SettingUpErrorTest extends AbstractErrorTest {
@@ -14,7 +14,7 @@ export default class SettingUpErrorTest extends AbstractErrorTest {
 			])
 		)
 
-		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
+		errorAssert.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

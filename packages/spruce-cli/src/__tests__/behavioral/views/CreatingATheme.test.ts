@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class CreatingAThemeTest extends AbstractSkillTest {
@@ -46,7 +46,7 @@ export default class CreatingAThemeTest extends AbstractSkillTest {
 	protected static async cantRunTwice() {
 		const results = await this.Action('view', 'createTheme').execute({})
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'THEME_EXISTS')
+		errorAssert.assertError(results.errors[0], 'THEME_EXISTS')
 	}
 
 	@test()

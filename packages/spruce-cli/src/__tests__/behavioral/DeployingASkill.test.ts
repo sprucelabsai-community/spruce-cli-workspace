@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import CommandService from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -72,7 +72,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'skill',
 		})
 	}
@@ -93,7 +93,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'building',
 		})
 	}
@@ -134,7 +134,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 		assert.isArray(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'TEST_FAILED')
+		errorAssert.assertError(results.errors[0], 'TEST_FAILED')
 	}
 
 	@test()
@@ -155,7 +155,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+		errorAssert.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
 			'dependencies[0].name': 'heroku',
 		})
 	}
@@ -178,7 +178,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+		errorAssert.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
 			'dependencies[0].name': 'git',
 		})
 	}
@@ -208,7 +208,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 		const results = await promise
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'git',
 		})
 	}
@@ -260,7 +260,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'heroku',
 		})
 	}
@@ -289,7 +289,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'procfile',
 		})
 	}
@@ -352,7 +352,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'remote',
 		})
 	}
@@ -454,7 +454,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DEPLOY_FAILED', {
+		errorAssert.assertError(results.errors[0], 'DEPLOY_FAILED', {
 			stage: 'git',
 		})
 	}

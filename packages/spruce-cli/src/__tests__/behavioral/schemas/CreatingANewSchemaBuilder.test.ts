@@ -1,7 +1,7 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import {
 	FeatureActionResponse,
 	FeatureAction,
@@ -23,7 +23,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
 			})
 		)
 
-		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
+		errorAssert.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()

@@ -1,5 +1,4 @@
 import pathUtil from 'path'
-import * as coreSchemas from '@sprucelabs/spruce-core-schemas'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
@@ -8,7 +7,8 @@ import {
 	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
+import { coreSchemas } from '../../../features/schema/stores/SchemaStore'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -36,7 +36,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 			this.Action('schema', 'sync').execute({})
 		)
 
-		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
+		errorAssert.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()
@@ -367,7 +367,7 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
 		await this.assertValidActionResponseFiles(results)
 	}
 
-	@test('syncs minAraryLength, importsWhenRemote')
+	@test('syncs minArrayLength, importsWhenRemote')
 	protected static async syncsExpectedFields() {
 		await this.syncSchemas('schemas')
 

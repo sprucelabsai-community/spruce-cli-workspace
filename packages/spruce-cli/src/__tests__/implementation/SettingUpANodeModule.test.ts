@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class SettingUpANodeModuleTest extends AbstractCliTest {
@@ -18,7 +18,7 @@ export default class SettingUpANodeModuleTest extends AbstractCliTest {
 			})
 		)
 
-		errorAssertUtil.assertError(err, 'VALIDATION_FAILED')
+		errorAssert.assertError(err, 'VALIDATION_FAILED')
 	}
 
 	@test()

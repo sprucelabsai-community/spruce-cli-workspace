@@ -11,7 +11,7 @@ import {
 	namesUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
@@ -137,8 +137,8 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 2)
 
-		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
-		errorAssertUtil.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
+		errorAssert.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
+		errorAssert.assertError(results.errors[1], 'SCHEMA_FAILED_TO_IMPORT')
 
 		results.errors = results.errors.sort((a, b) =>
 			//@ts-ignore
@@ -147,7 +147,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 				: -1
 		)
 
-		errorAssertUtil.assertError(
+		errorAssert.assertError(
 			// @ts-ignore
 			results.errors[0].originalError,
 			// @ts-ignore
@@ -158,7 +158,7 @@ export default class SchemaStoreTest extends AbstractSchemaTest {
 			}
 		)
 
-		errorAssertUtil.assertError(
+		errorAssert.assertError(
 			// @ts-ignore
 			results.errors[1].originalError,
 			// @ts-ignore

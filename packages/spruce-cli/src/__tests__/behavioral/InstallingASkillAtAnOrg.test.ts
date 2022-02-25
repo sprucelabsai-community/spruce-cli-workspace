@@ -1,6 +1,6 @@
 import { eventAssertUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert, assertUtil } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
@@ -51,7 +51,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		const anonResults = await this.Action('organization', 'install').execute({})
 
 		assert.isTruthy(anonResults.errors)
-		errorAssertUtil.assertError(anonResults.errors[0], 'NO_ORGANIZATIONS_FOUND')
+		errorAssert.assertError(anonResults.errors[0], 'NO_ORGANIZATIONS_FOUND')
 	}
 
 	@test()
@@ -65,7 +65,7 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 		const anonResults = await this.Action('organization', 'install').execute({})
 
 		assert.isTruthy(anonResults.errors)
-		errorAssertUtil.assertError(anonResults.errors[0], 'SKILL_NOT_REGISTERED')
+		errorAssert.assertError(anonResults.errors[0], 'SKILL_NOT_REGISTERED')
 	}
 
 	@test()

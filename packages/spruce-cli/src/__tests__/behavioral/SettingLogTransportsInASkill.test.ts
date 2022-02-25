@@ -1,6 +1,6 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import LintService from '../../services/LintService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import testUtil from '../../tests/utilities/test.utility'
@@ -42,7 +42,7 @@ export default class SettingLogTransportsInASkillTest extends AbstractSkillTest 
 	protected static async cantCreateTransportThatAlreadyExists() {
 		const results = await this.createTransport('Slack')
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'TRANSPORT_ALREADY_EXISTS', {
+		errorAssert.assertError(results.errors[0], 'TRANSPORT_ALREADY_EXISTS', {
 			name: 'Slack',
 		})
 	}

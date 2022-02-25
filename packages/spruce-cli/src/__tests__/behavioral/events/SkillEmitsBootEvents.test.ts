@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import LintService from '../../../services/LintService'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 
@@ -24,7 +24,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		const response = await this.Action('skill', 'boot').execute({})
 		assert.isTruthy(response.errors)
-		errorAssertUtil.assertError(response.errors[0], 'LISTENER_NOT_IMPLEMENTED')
+		errorAssert.assertError(response.errors[0], 'LISTENER_NOT_IMPLEMENTED')
 	}
 
 	@test()
@@ -42,6 +42,6 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 
 		const response = await this.Action('skill', 'boot').execute({})
 		const err = await assert.doesThrowAsync(() => response.meta?.promise)
-		errorAssertUtil.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
+		errorAssert.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
 	}
 }

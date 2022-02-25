@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import CreateAction from '../../../features/view/actions/CreateAction'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import testUtil from '../../../tests/utilities/test.utility'
@@ -77,7 +77,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors?.[0], 'SKILL_VIEW_EXISTS', {
+		errorAssert.assertError(results.errors?.[0], 'SKILL_VIEW_EXISTS', {
 			name: 'Root',
 		})
 	}

@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import { FeatureCode } from '../../../features/features.types'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 
@@ -17,7 +17,7 @@ export default class SettingUpTestsTest extends AbstractTestTest {
 		const command = this.Service('command')
 		const err = await assert.doesThrowAsync(() => command.execute('yarn test'))
 
-		errorAssertUtil.assertError(err, 'EXECUTING_COMMAND_FAILED')
+		errorAssert.assertError(err, 'EXECUTING_COMMAND_FAILED')
 		//@ts-ignore
 		assert.doesInclude(err.options.stdout, /passWithNoTests/)
 	}

@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 
@@ -18,7 +18,7 @@ export default class SyncingBadSchemasProvidesHelpfulErrorMessagesTest extends A
 		const results = await this.Action('schema', 'sync').execute({})
 		assert.isArray(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
+		errorAssert.assertError(results.errors[0], 'SCHEMA_FAILED_TO_IMPORT')
 		assert.doesInclude(results.errors[0].message, 'no is not defined')
 	}
 

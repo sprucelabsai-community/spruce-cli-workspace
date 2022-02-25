@@ -10,7 +10,7 @@ import {
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
 import EventStore from '../../features/event/stores/EventStore'
 import AbstractEventTest from '../../tests/AbstractEventTest'
@@ -150,7 +150,7 @@ export default class EventStoreTest extends AbstractEventTest {
 			)
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT')
+		errorAssert.assertError(err, 'INVALID_EVENT_CONTRACT')
 	}
 
 	@test()
@@ -185,7 +185,7 @@ export default class EventStoreTest extends AbstractEventTest {
 			)
 		)
 
-		errorAssertUtil.assertError(err, 'INVALID_EVENT_CONTRACT')
+		errorAssert.assertError(err, 'INVALID_EVENT_CONTRACT')
 	}
 
 	@test()

@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 
 export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
@@ -16,7 +16,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 		const err = await assert.doesThrowAsync(() =>
 			this.Action('skill', 'create').execute({})
 		)
-		errorAssertUtil.assertError(err, 'FEATURE_NOT_INSTALLED')
+		errorAssert.assertError(err, 'FEATURE_NOT_INSTALLED')
 	}
 
 	@test()

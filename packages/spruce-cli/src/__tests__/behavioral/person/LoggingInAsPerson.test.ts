@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { DEMO_NUMBER } from '../../../tests/fixtures/PersonFixture'
 
@@ -80,7 +80,7 @@ export default class LoggingInAsPersonTest extends AbstractCliTest {
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
 
-		errorAssertUtil.assertError(results.errors[0], 'NOT_LOGGED_IN')
+		errorAssert.assertError(results.errors[0], 'NOT_LOGGED_IN')
 	}
 
 	@test()

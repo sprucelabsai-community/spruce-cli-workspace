@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import { RegisteredSkill } from '../../types/cli.types'
 
@@ -44,7 +44,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 		assert.isTruthy(results.errors)
 		assert.isLength(results.errors, 1)
-		errorAssertUtil.assertError(results.errors[0], 'NO_SKILLS_REGISTERED')
+		errorAssert.assertError(results.errors[0], 'NO_SKILLS_REGISTERED')
 	}
 
 	private static async login() {
@@ -110,7 +110,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'SKILL_NOT_FOUND')
+		errorAssert.assertError(results.errors[0], 'SKILL_NOT_FOUND')
 	}
 
 	@test()

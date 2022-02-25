@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class SkillStoreTest extends AbstractCliTest {
@@ -21,7 +21,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 				slug: 'awesome-skill',
 			})
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssert.assertError(err, 'DIRECTORY_NOT_SKILL')
 	}
 
 	@test()
@@ -29,7 +29,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const err = await assert.doesThrowAsync(() =>
 			this.Store('skill').loadCurrentSkill()
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssert.assertError(err, 'DIRECTORY_NOT_SKILL')
 	}
 
 	@test()
@@ -37,7 +37,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const err = await assert.doesThrowAsync(() =>
 			this.Store('skill').isCurrentSkillRegistered()
 		)
-		errorAssertUtil.assertError(err, 'DIRECTORY_NOT_SKILL')
+		errorAssert.assertError(err, 'DIRECTORY_NOT_SKILL')
 	}
 
 	@test()
@@ -112,7 +112,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 			skillStore.setCurrentSkillsNamespace('test')
 		)
 
-		errorAssertUtil.assertError(err, 'GENERIC')
+		errorAssert.assertError(err, 'GENERIC')
 
 		const pkg = this.Service('pkg')
 		const namespace = pkg.get('skill.namespace')

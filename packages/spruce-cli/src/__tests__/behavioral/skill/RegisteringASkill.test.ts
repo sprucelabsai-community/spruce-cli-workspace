@@ -1,7 +1,7 @@
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class RegisteringASkillTest extends AbstractCliTest {
@@ -20,8 +20,8 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 		})
 
 		assert.isTruthy(results.errors)
-		errorAssertUtil.assertError(results.errors[0], 'MERCURY_RESPONSE_ERROR')
-		errorAssertUtil.assertError(
+		errorAssert.assertError(results.errors[0], 'MERCURY_RESPONSE_ERROR')
+		errorAssert.assertError(
 			results.errors[0].options.responseErrors[0],
 			'UNAUTHORIZED_ACCESS'
 		)

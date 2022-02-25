@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import {
 	DISABLE_NPM_CACHE_COMMAND,
 	ENABLE_NPM_CACHE_COMMAND,
@@ -28,7 +28,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 		const results = await this.Action('cache', 'enable').execute({})
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+		errorAssert.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
 			dependencies: [
 				{
 					name: 'Docker',
@@ -46,7 +46,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 		const results = await this.Action('cache', 'enable').execute({})
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'DOCKER_NOT_STARTED')
+		errorAssert.assertError(results.errors[0], 'DOCKER_NOT_STARTED')
 	}
 
 	@test()
@@ -79,7 +79,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 		const results = await this.Action('cache', 'disable').execute({})
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+		errorAssert.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
 			dependencies: [
 				{
 					name: 'Docker',
@@ -100,7 +100,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 		const results = await this.Action('cache', 'disable').execute({})
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
+		errorAssert.assertError(results.errors[0], 'MISSING_DEPENDENCIES', {
 			dependencies: [
 				{
 					name: 'Docker',
@@ -119,7 +119,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 		const results = await this.Action('cache', 'disable').execute({})
 		assert.isTruthy(results.errors)
 
-		errorAssertUtil.assertError(results.errors[0], 'CACHE_NOT_ENABLED')
+		errorAssert.assertError(results.errors[0], 'CACHE_NOT_ENABLED')
 	}
 
 	@test()

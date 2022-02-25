@@ -1,6 +1,6 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import { errorAssertUtil } from '@sprucelabs/test-utils'
+import { errorAssert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../cli'
 import { SpruceTestResults } from '../../features/test/test.types'
 import TestRunner from '../../features/test/TestRunner'
@@ -25,7 +25,7 @@ export default class TestRunnerTest extends AbstractTestTest {
 	@test()
 	protected static async runningOnDirWithNoTestsConfiguredThrows() {
 		const err = await assert.doesThrowAsync(() => this.testRunner.run())
-		errorAssertUtil.assertError(err, 'INVALID_TEST_DIRECTORY', {
+		errorAssert.assertError(err, 'INVALID_TEST_DIRECTORY', {
 			dir: this.cwd,
 		})
 	}
