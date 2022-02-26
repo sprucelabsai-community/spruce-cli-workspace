@@ -42,9 +42,9 @@
   "scripts": {
     "build.ci": "yarn build.babel && yarn build.types && yarn build.resolve-paths && yarn lint",
     "build.dev": "yarn build.babel ; yarn build.types.resolve-paths.lint",
-    "build.babel": "NODE_OPTIONS=--max_old_space_size=6144 babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
+    "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
     "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
-    "build.types": "NODE_OPTIONS=--max_old_space_size=6144 tsc --emitDeclarationOnly && echo PASS TYPES || (echo FAIL TYPES && false)",
+    "build.types": "tsc --emitDeclarationOnly && echo PASS TYPES || (echo FAIL TYPES && false)",
     "build.resolve-paths": "resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
     "build.types.resolve-paths.lint": "yarn build.types && yarn resolve-paths.lint",
     "resolve-paths.lint": "yarn build.resolve-paths ; yarn lint",
@@ -56,8 +56,8 @@
     "clean.cache": "rm -rf src/.spruce/tmp && node build/tests/cleanTestCache ; echo '******** TEST CACHE CLEARED ********'",
     "clean.cache.disabled": "echo 'CLEAN.CACHE DISABLED'",
     "clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock",
-    "fix.lint": "NODE_OPTIONS=--max_old_space_size=6144 eslint --fix --cache '**/*.ts'",
-    "lint": "NODE_OPTIONS=--max_old_space_size=6144 eslint --cache '**/*.ts'",
+    "fix.lint": "eslint --fix --cache '**/*.ts'",
+    "lint": "eslint --cache '**/*.ts'",
     "lint.tsc": "tsc --noEmit && echo 'spruce-cli PASS'",
     "local": "DEBUG=@sprucelabs/cli~debug node --inspect=5200 . $COMMANDS ; echo 'DONE'",
     "rebuild": "cd ../ && yarn rebuild",
@@ -65,11 +65,11 @@
     "start": "DEBUG=@sprucelabs/cli~debug node . $COMMANDS",
     "test": "yarn cache.tests && jest",
     "update.dependencies": "cd ../ && yarn update.dependencies",
-    "watch.build.dev": "concurrently 'NODE_OPTIONS=--max_old_space_size=6144 tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.resolve-paths'\"",
+    "watch.build.dev": "concurrently 'tsc --emitDeclarationOnly -w' 'yarn build.babel --watch' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.resolve-paths'\"",
     "watch.lint": "chokidar 'src/**/*' '../spruce-templates/src/**' -c 'yarn lint.tsc'",
     "watch.rebuild": "cd ../ && yarn watch.rebuild",
     "watch.tests": "yarn cache.tests && jest --watch",
-    "watch.tsc": "NODE_OPTIONS=--max_old_space_size=6144 tsc -w --sourceMap"
+    "watch.tsc": "tsc -w --sourceMap"
   },
   "dependencies": {
     "@babel/cli": "^7.17.6",
