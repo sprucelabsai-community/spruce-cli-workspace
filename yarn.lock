@@ -2707,22 +2707,22 @@
   dependencies:
     "@nlpjs/core" "^4.22.7"
 
-"@nlpjs/nlp@^4.23.0":
-  version "4.23.0"
-  resolved "https://registry.yarnpkg.com/@nlpjs/nlp/-/nlp-4.23.0.tgz#af4f38a197918d2cd13ff336586ccf7384e9989a"
-  integrity sha512-mLP/9wOoduYwHuvEV9tLI7rHu5ow2j3TQ/a3HGD5ZFRlrtIP0n0dSi/+xgqA7IshADmc3SUpsfanLsAl22NPeA==
+"@nlpjs/nlp@^4.23.1":
+  version "4.23.1"
+  resolved "https://registry.yarnpkg.com/@nlpjs/nlp/-/nlp-4.23.1.tgz#8fbb60473a17d521a4f3c8c6426a31215712d9e3"
+  integrity sha512-GF+nen4a48aoS1VFQYuQUhbBxIJdlm0wyOzA4lu3PIJwwI0wuf15LkC2UHHJ3LPHyHzIfDh1WQ1nVjF8vmiP5w==
   dependencies:
     "@nlpjs/core" "^4.22.7"
     "@nlpjs/ner" "^4.23.0"
     "@nlpjs/nlg" "^4.22.7"
-    "@nlpjs/nlu" "^4.23.0"
+    "@nlpjs/nlu" "^4.23.1"
     "@nlpjs/sentiment" "^4.22.7"
     "@nlpjs/slot" "^4.22.17"
 
-"@nlpjs/nlu@^4.22.7", "@nlpjs/nlu@^4.23.0":
-  version "4.23.0"
-  resolved "https://registry.yarnpkg.com/@nlpjs/nlu/-/nlu-4.23.0.tgz#701b5cb171cb6ca7f2dfd6feb900a4ad9ca4519f"
-  integrity sha512-onvG6ceHtRBJ5/zU/YE1HjMcN4RH4ces/Eq7Zj10Im5gS5BBflWDrMoFW50iJQmrNM021pLYp/ar+4TU+v06Ug==
+"@nlpjs/nlu@^4.23.0", "@nlpjs/nlu@^4.23.1":
+  version "4.23.1"
+  resolved "https://registry.yarnpkg.com/@nlpjs/nlu/-/nlu-4.23.1.tgz#557f2bee6a1053dae30754b43c283f2759ead606"
+  integrity sha512-dkiPcThAGHmsPZcoiBsusEV5rKDndZomQ7FEWOIwPBWbbZWmFJgyqHK+0dYzQC9OGp7o6Gvo71w3CrxESBVGAQ==
   dependencies:
     "@nlpjs/core" "^4.22.7"
     "@nlpjs/language-min" "^4.22.7"
@@ -2986,62 +2986,105 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.0.0.tgz#8863915676f837d9dad7b76f50cb500c1e9422e9"
   integrity sha512-2pTGuibAXJswAPJjaKisthqS/NOK5ypG4LYT6tEAV0S/mxW0zOIvYvGK0V8w8+SHxAm6vRMSjqSalFXeBAqs+Q==
 
-"@sprucelabs/calendar-utils@^14.3.68":
-  version "14.3.68"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/calendar-utils/-/calendar-utils-14.3.68.tgz#8bd12c9a52b88ff3ebdb4668a21e4e27b10df30c"
-  integrity sha512-D/X8Z4heqQ+6jFfjK/Or1j4Ds+lXjMGa0CLR5eO1TTPVoDKkvEMbA44NN2n++e52Y4MG1Og+AlvE09s3V4BtVA==
+"@sprucelabs/calendar-utils@^16.0.2":
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/calendar-utils/-/calendar-utils-16.0.2.tgz#5598605cce19776fa534e8131365c37fd3f06282"
+  integrity sha512-1uronMXqESsApyShRwhU4JJT8MIceb0X+UMDnCTrbSwvUzxfQ1FEKzscqmVgOg+/YsgVH4kMzA6pl/OWpklvOA==
   dependencies:
-    "@sprucelabs/mercury-types" "^27.0.149"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-event-utils" "^18.0.153"
-    "@sprucelabs/spruce-skill-utils" "^25.0.10"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
     date-fns "^2.28.0"
     lodash "^4.17.21"
     rrule "^2.6.8"
 
-"@sprucelabs/data-stores@^9.0.10", "@sprucelabs/data-stores@^9.0.14":
-  version "9.0.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/data-stores/-/data-stores-9.0.14.tgz#4cbfbc953e5b0246ecc0d36ade94d3bfb6f24d92"
-  integrity sha512-Jizx103p9nNH7WxVLdGD31lHLw52GHemGr489zaGOt8puPss6SE21tDkvP5a4f7+gkIUCNg7DP427R2gXWRT3A==
+"@sprucelabs/calendar-utils@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/calendar-utils/-/calendar-utils-17.0.0.tgz#1671c681eaf4ff92e74c3257485baf35142348aa"
+  integrity sha512-UEUEz8QLeV2TyZ4zECctnAlyI4HZbgjqn/JQNpdlgCVnEdVNsjs/RgPXWQEMAwrn1rO8a+aFVdKDoCmfZkmDLw==
+  dependencies:
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    date-fns "^2.28.0"
+    lodash "^4.17.21"
+    rrule "^2.6.8"
+
+"@sprucelabs/data-stores@^9.0.16":
+  version "9.0.16"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/data-stores/-/data-stores-9.0.16.tgz#4dbbce35f3d7a792aa60d9f2f647809e62fea0a3"
+  integrity sha512-fpzeeRJBcP0S2otYAfMwXbrv5CNu7bEwFwTcygPY4Ft15nGx6+D2Ai2mycDxeDXeYKyVCtQtPJPwOxsgFj/WLQ==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.10"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
     globby "^11.0.4"
     lodash "^4.17.21"
     mongodb "^4.1.0"
     nedb "^1.8.0"
 
-"@sprucelabs/error@^5.0.408", "@sprucelabs/error@^5.0.410":
+"@sprucelabs/error@^5.0.410":
   version "5.0.410"
   resolved "https://registry.yarnpkg.com/@sprucelabs/error/-/error-5.0.410.tgz#f8a949ccf5b1f749a79bec6a621d3aacce7491d7"
   integrity sha512-gWwY0YwxF6hcCg3xMkVOycUL1hn+hkhxPkrt6A1yWI8MEBFkkiEG/GGd5jCN0UrwKR6tsgIf7G/+YSn0k7FCTg==
 
-"@sprucelabs/heartwood-view-controllers@^65.3.10", "@sprucelabs/heartwood-view-controllers@^65.3.15":
-  version "65.3.15"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/heartwood-view-controllers/-/heartwood-view-controllers-65.3.15.tgz#33a57a267ac56ea36edf4e577c2f6660aa4dd3ba"
-  integrity sha512-ZfT+rcoeSMwvYYiJ2z79a9RLu3U72EWUG8rSb6dYR4KSb3DH4rYayrBVPd6ggq+K51rT3tW9Saw+z1NouY0e3g==
+"@sprucelabs/heartwood-view-controllers@^67.0.1":
+  version "67.0.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/heartwood-view-controllers/-/heartwood-view-controllers-67.0.1.tgz#07509a56cc7f83614f4bfd3db7aeb856f4fdac96"
+  integrity sha512-yoKciX8eh/XQsMNQzzvRTUMt7oEJyAr7dU8wYlG1+5tbGksVU8nBy6vn2YpmCIPoDeNqc4FLxTSn/WX+KpAJ3A==
   dependencies:
     "@babel/core" "^7.17.5"
     "@babel/plugin-proposal-class-properties" "^7.16.7"
     "@babel/plugin-transform-runtime" "^7.17.0"
     "@babel/preset-env" "^7.16.11"
     "@babel/preset-typescript" "^7.16.7"
-    "@sprucelabs/calendar-utils" "^14.3.68"
+    "@sprucelabs/calendar-utils" "^16.0.2"
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/mercury-core-events" "^2.1.17"
-    "@sprucelabs/mercury-types" "^27.0.149"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-event-utils" "^18.0.153"
-    "@sprucelabs/spruce-skill-utils" "^25.0.10"
+    "@sprucelabs/mercury-core-events" "^3.0.2"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
     "@swc/core" "1.2.103"
     babel-loader "^8.2.3"
     babel-plugin-module-resolver "^4.1.0"
     dotenv "^16.0.0"
     esbuild "^0.14.23"
+    globby "^11.0.4"
+    lodash-es "^4.17.21"
+    terser-webpack-plugin "^5.3.1"
+    uglify-js "^3.15.2"
+    webpack "^5.69.1"
+
+"@sprucelabs/heartwood-view-controllers@^68.0.0":
+  version "68.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/heartwood-view-controllers/-/heartwood-view-controllers-68.0.0.tgz#7a42f065e1135bcd44162d68eab47e75e2133f55"
+  integrity sha512-kScWdVbV9nnLiNMg5NPp+1EmVI2QUaPYweVNZIrBpoiwjaUkNn6k08QiifT1UqRlocJDp/vtyfvWrgeQbRglkg==
+  dependencies:
+    "@babel/core" "^7.17.5"
+    "@babel/plugin-proposal-class-properties" "^7.16.7"
+    "@babel/plugin-transform-runtime" "^7.17.0"
+    "@babel/preset-env" "^7.16.11"
+    "@babel/preset-typescript" "^7.16.7"
+    "@sprucelabs/calendar-utils" "^17.0.0"
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/mercury-core-events" "^3.0.2"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    "@swc/core" "1.2.103"
+    babel-loader "^8.2.3"
+    babel-plugin-module-resolver "^4.1.0"
+    dotenv "^16.0.0"
+    esbuild "^0.14.24"
     globby "^11.0.4"
     lodash-es "^4.17.21"
     terser-webpack-plugin "^5.3.1"
@@ -3061,46 +3104,46 @@
     dotenv "^16.0.0"
     google-spreadsheet "^3.2.0"
 
-"@sprucelabs/mercury-client@^21.0.124", "@sprucelabs/mercury-client@^21.0.127":
-  version "21.0.127"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-client/-/mercury-client-21.0.127.tgz#70a0c8a3cef4b2e32428b7532a846865f3dd5648"
-  integrity sha512-vId0KX62xBeZczcNi/7vEpH3Z7pVjMO70Tw+WsKuizgDTX7/UMwnzWd/HGBa9/Vc8lVYd+x51Y93nJ8mqJiFkQ==
+"@sprucelabs/mercury-client@^22.0.1":
+  version "22.0.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-client/-/mercury-client-22.0.1.tgz#5958e5c8b246bfd25bf333aa960c122fd94d0775"
+  integrity sha512-SxKiJiEAcChmCasJo4DP70CaSw6mImDtADb5ys1hElE3CUBjGFbSEAHHiUuWGLidPT8xSaVub0WH4OzC3Ijbjg==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-event-utils" "^18.0.153"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
     dotenv "^16.0.0"
     socket.io-client "^4.4.1"
 
-"@sprucelabs/mercury-core-events@^2.1.13", "@sprucelabs/mercury-core-events@^2.1.17":
-  version "2.1.17"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-core-events/-/mercury-core-events-2.1.17.tgz#bcf55743bc4bdc9cca444620737a1df9433df21b"
-  integrity sha512-WZSqd2AXDcKaA/kTXHe7H+i3gxWxXOHkMQye6XfSdJXZoPRfa3W6NHIInoE6EWmFHN01F3xLbXxoG2F26LUUYg==
+"@sprucelabs/mercury-core-events@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-core-events/-/mercury-core-events-3.0.2.tgz#447b3c0e4e09f40c9881e6616c4dbc81904bb93d"
+  integrity sha512-4sWXRQUsP0eagQTGxRwrHw5RMV6X4nZLG2ZcRbJLbO4JrglmlgdO8JFzxcRBEySg96RUyKzf5R0JMMork+cUAQ==
   dependencies:
-    "@sprucelabs/mercury-types" "^27.0.149"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-event-utils" "^18.0.153"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
 
-"@sprucelabs/mercury-event-emitter@^21.0.124", "@sprucelabs/mercury-event-emitter@^21.0.127":
-  version "21.0.127"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-21.0.127.tgz#77b2db8bb2ac66be7feb9af79b013cbc07c85ef3"
-  integrity sha512-vAIkZ3iDHva6A6UYZwnzGMxKRKG3x7WRg8Ko8uCKCS+TSvgXRzqIubVwLSSYmRTb4enKWXxUiR9sSdBrllp20g==
+"@sprucelabs/mercury-event-emitter@^22.0.1":
+  version "22.0.1"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-event-emitter/-/mercury-event-emitter-22.0.1.tgz#0f23cbe1a41b4e53d0f9cb89cb784f123cefc51d"
+  integrity sha512-bNsJjFeYtquzqPYW2UtXhBg9FMHSMZ2y3su95rWwylD71SEmIiy1a6lPR7jOwVDB2BXmAISz/mOMyB/OAUv4Xg==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/mercury-types" "^27.0.149"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-event-utils" "^18.0.153"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
 
-"@sprucelabs/mercury-types@^27.0.145", "@sprucelabs/mercury-types@^27.0.149":
-  version "27.0.149"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-27.0.149.tgz#22dda5b305c50714f96e5a0af2d1b3dd4b436510"
-  integrity sha512-TUccRs2f4u0ac11I5CLnJF2h7sJ1eyJXnvS8KgDkpk/VZzZ585YngwFw8Txai+Yf+AaB5WezUhYy5veUOgatWQ==
+"@sprucelabs/mercury-types@^27.0.150":
+  version "27.0.150"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/mercury-types/-/mercury-types-27.0.150.tgz#bc96e1e366da894248a82165b625974f825113c4"
+  integrity sha512-WiMmI9u1opZRdFgIRKNQkmRnZOqf7C3bmmO/kZ53z8ndmKVMugUf+10mDsOKRv6i2YzKF5YyqTHNaRwgCTEF6g==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
 
 "@sprucelabs/resolve-path-aliases@^1.1.4":
   version "1.1.4"
@@ -3112,10 +3155,10 @@
     tsconfig-paths "^3.12.0"
     yargs "^17.3.1"
 
-"@sprucelabs/schema@^27.0.10", "@sprucelabs/schema@^27.0.6":
-  version "27.0.10"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-27.0.10.tgz#2730fb46ede8bb646534a614c88fd75bca911c0f"
-  integrity sha512-HtBx2L4TcTm1n1BHQReF/eb10Oy/ZfvuAAzfPqBmKJrCdCHOzK/Te+OoHbJWQqao62gYYmtRJ0yCfUwUZd4VZA==
+"@sprucelabs/schema@^27.1.0":
+  version "27.1.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/schema/-/schema-27.1.0.tgz#6cb34b543c48d96acc134ff99d20b2311abbfcc5"
+  integrity sha512-FJSxykFobVGbmbmtwgV7zkILLioAgXmwZ7F1WeqqHqtEToRHZePIkHJOjYhHS26OCLigUZy8MkOfgMJXG4Ee2Q==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
     "@sprucelabs/test" "^7.7.284"
@@ -3124,89 +3167,89 @@
     mime-db "^1.52.0"
     mime-type "^4.0.0"
 
-"@sprucelabs/spruce-conversation-plugin@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-conversation-plugin/-/spruce-conversation-plugin-25.1.14.tgz#9059de89652d52ed62d389f1221d531bcb7197b1"
-  integrity sha512-SGyBnxA/mLbz+SBakBbYgtS4wOpQNhbzkGJe/+7+9AQhVkOTNMtMSTOIfL6r3UVTf/YzRW2wq8BNG7Q/VRpRPQ==
+"@sprucelabs/spruce-conversation-plugin@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-conversation-plugin/-/spruce-conversation-plugin-27.0.0.tgz#1cf75231478eca6b6ae757dbf7aa429f39f13d86"
+  integrity sha512-QT3w75HzpPEGGD9UYaO+YcvNFl0edYafZcWGKAWyWUHJe7bf3NCsrpxFH6CH/V3nFTV8SK8rnh9JM8WMlXZ3xg==
   dependencies:
-    "@nlpjs/nlu" "^4.22.7"
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/mercury-core-events" "^2.1.13"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-core-schemas" "^25.0.10"
-    "@sprucelabs/spruce-event-plugin" "^25.1.14"
-    "@sprucelabs/spruce-event-utils" "^18.0.149"
-    "@sprucelabs/spruce-skill-booter" "^25.1.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
-    "@sprucelabs/spruce-test-fixtures" "^25.1.14"
+    "@nlpjs/nlu" "^4.23.0"
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/mercury-core-events" "^3.0.2"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-plugin" "^27.0.0"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-booter" "^27.0.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    "@sprucelabs/spruce-test-fixtures" "^27.0.0"
     fuzzyset "^1.0.7"
     globby "^11.0.4"
     inquirer "^8.2.0"
-    node-nlp "^4.22.18"
+    node-nlp "^4.23.0"
     random "^3.0.6"
 
-"@sprucelabs/spruce-core-schemas@^25.0.10", "@sprucelabs/spruce-core-schemas@^25.0.14":
-  version "25.0.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-25.0.14.tgz#f40dad7e5133f7354260d204a14a1565fe849ba3"
-  integrity sha512-e1PljJDDOui77uGbXHxGy+6IL7Ddr1zMU5bIGFJuLmmykfZfzFNgE3T9HZxDC426pWFeYOSWjNvgwsI2zDTtUg==
+"@sprucelabs/spruce-core-schemas@^25.0.16":
+  version "25.0.16"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-core-schemas/-/spruce-core-schemas-25.0.16.tgz#11f9db252e0af590c8d0cecad1cf893bebdef5f5"
+  integrity sha512-nrMMtKNy25ocITbh++d9WdhAhXO0gENDOGb2k42wrpZqwsHhAyBZ2OtRXsk9wQxGXJtoT/oIrKBDtH0DpmQQPA==
   dependencies:
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-skill-utils" "^25.0.10"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
 
-"@sprucelabs/spruce-deploy-plugin@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-deploy-plugin/-/spruce-deploy-plugin-25.1.14.tgz#c493f092a2f7c0f460f157dd5678c30b2a13bda3"
-  integrity sha512-DVXs7Mb9HHwmVbcJrxoFB01hwOGyqsK4s4muAAGMWs3mhQa07ZkXQIVcS/D8yu32HqsQ13qOuApSRoDDBKVfpA==
-  dependencies:
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-event-utils" "^18.0.149"
-    "@sprucelabs/spruce-skill-booter" "^25.1.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
-    heroku-client "^3.1.0"
-
-"@sprucelabs/spruce-event-plugin@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-event-plugin/-/spruce-event-plugin-25.1.14.tgz#0b8f99090e9174ccd9bfa5863eac636cd097e839"
-  integrity sha512-TSCM89x4As1M3hUBCZREBiboWBxAOQHL5B9UqvDaOrceKZN2DdgghX898IP5YestvXd3X1BKOF/KtjlhqRni8w==
-  dependencies:
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/mercury-types" "^27.0.145"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-core-schemas" "^25.0.10"
-    "@sprucelabs/spruce-event-utils" "^18.0.149"
-    "@sprucelabs/spruce-skill-booter" "^25.1.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
-    "@sprucelabs/spruce-test-fixtures" "^25.1.14"
-
-"@sprucelabs/spruce-event-utils@^18.0.149", "@sprucelabs/spruce-event-utils@^18.0.153":
-  version "18.0.153"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-event-utils/-/spruce-event-utils-18.0.153.tgz#e8e326055795429b48ecd918cf36f79afe6ca95e"
-  integrity sha512-+ldLtHBDJnrkIrEI7G9M83qIZKCNbvZqh8eMvEWqZ6dRh/wklmzB+11QT5TzZ69ThaU8ifkMcc1OMyaGyw7rHw==
+"@sprucelabs/spruce-deploy-plugin@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-deploy-plugin/-/spruce-deploy-plugin-27.0.0.tgz#ac90f77af30c247268a7e0652c70b98284ac2582"
+  integrity sha512-RvS0o8w4l+i+px4kB3ShzAN5k1YD22Z1RyAWY+87uoE+eaBAxgMz68hhEWYPu9l69mYupGufzQ6n0Ixt3QJmaQ==
   dependencies:
     "@sprucelabs/error" "^5.0.410"
-    "@sprucelabs/mercury-types" "^27.0.149"
-    "@sprucelabs/schema" "^27.0.10"
-    "@sprucelabs/spruce-core-schemas" "^25.0.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.10"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-booter" "^27.0.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    heroku-client "^3.1.0"
+
+"@sprucelabs/spruce-event-plugin@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-event-plugin/-/spruce-event-plugin-27.0.0.tgz#6e1769e398e0e93d36e12a01192bb91d07420631"
+  integrity sha512-VQvJ47+Y6Mbiio2XrKXwQ9LH//MLdcXaXuxK30OUJXDgDBUVfwE/vRzzKiNYLdkAExRuBoQ/L4vAVONh6TtiKg==
+  dependencies:
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-booter" "^27.0.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    "@sprucelabs/spruce-test-fixtures" "^27.0.0"
+
+"@sprucelabs/spruce-event-utils@^19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-event-utils/-/spruce-event-utils-19.0.2.tgz#ccaf5e6ef9ec71e8b71795b68edc7a000b15a374"
+  integrity sha512-mKW/NKZ1O/gV8ItZPahCM3mQaEWRykWnWsyldRA6xTlv3Ml1MAPBAvDpgzvL0+7oWL+m6fysjhVlCw2FvOD15Q==
+  dependencies:
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/mercury-types" "^27.0.150"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
     "@sprucelabs/test" "^7.7.284"
     "@sprucelabs/test-utils" "^3.0.485"
 
-"@sprucelabs/spruce-skill-booter@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-booter/-/spruce-skill-booter-25.1.14.tgz#2f4e6c3b72fa255bb3ce07cb3d6e74c4c040d7ed"
-  integrity sha512-a8pSRgEQG41SMDTBqI+oKXuLwUFJnjMTD9vFwvkc/6iwz/0s5LIyWRiKf5xs2daehUYLuV0/+FnrnRCQmWgoZg==
+"@sprucelabs/spruce-skill-booter@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-booter/-/spruce-skill-booter-27.0.0.tgz#67df45deee5b383c18cd9ce0d7db399827201adf"
+  integrity sha512-JiktcXNP/Z0CBJb09A/o3Awb74l7mT06mB38uEo80EG5bUihYhPCuNuJD+U3nYwl9vYJbTM2LWHCIeasVTQi1A==
   dependencies:
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
 
-"@sprucelabs/spruce-skill-utils@^25.0.10", "@sprucelabs/spruce-skill-utils@^25.0.6":
-  version "25.0.10"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-25.0.10.tgz#78c730a8de3df2ffc4c180d84c490c9a768ce5b6"
-  integrity sha512-p4GeFfEjTGSTpLROt+y2hPHEyTQQHY+25Ay+czm+S5S16doSRDFTUQpsC8hhH/NjGnCWXk67KAwB9usqWskN+A==
+"@sprucelabs/spruce-skill-utils@^25.0.11":
+  version "25.0.11"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-skill-utils/-/spruce-skill-utils-25.0.11.tgz#a88f3cd657e31f5bbd8997b9812fd2e00ca4c00a"
+  integrity sha512-/5mOpa4oB3snFB581IcOUVgBnfxtkE4MVbHm7RnkDYL6y+WFhJMKoJU8tv5IWAezwTmLjk+q51NhCAxUyUgRiA==
   dependencies:
-    "@sprucelabs/schema" "^27.0.10"
+    "@sprucelabs/schema" "^27.1.0"
     chalk "^4.1.2"
     dotenv "^16.0.0"
     fs-extra "^10.0.1"
@@ -3215,38 +3258,38 @@
     lodash "^4.17.21"
     uuid "^8.3.2"
 
-"@sprucelabs/spruce-store-plugin@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-store-plugin/-/spruce-store-plugin-25.1.14.tgz#84b038025e215a9d43d7fa8bca8c390481d4de14"
-  integrity sha512-7vVTkq0T+XMOofLHLaHxS28qVaH9jGvXAomnwEm62Thi4jtCDnBk2ueNe1NBFcxakVeH3eaMwtmPHOY9uA/RDA==
+"@sprucelabs/spruce-store-plugin@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-store-plugin/-/spruce-store-plugin-27.0.0.tgz#a6b01bdc52aff56b2ce2541e29759a74ec1919cc"
+  integrity sha512-kDPPy8GRhmqav1Fz9dtaLby+Q+sS15PLaeqLf1qYnnFVJkfsdOa3UMgsgihJOz4f70aOf3rqWR2LL+naDnFzKg==
   dependencies:
-    "@sprucelabs/data-stores" "^9.0.10"
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-core-schemas" "^25.0.10"
-    "@sprucelabs/spruce-event-utils" "^18.0.149"
-    "@sprucelabs/spruce-skill-booter" "^25.1.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
-    "@sprucelabs/spruce-test-fixtures" "^25.1.14"
+    "@sprucelabs/data-stores" "^9.0.16"
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-booter" "^27.0.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
+    "@sprucelabs/spruce-test-fixtures" "^27.0.0"
     globby "^11.0.4"
     heroku-client "^3.1.0"
 
-"@sprucelabs/spruce-test-fixtures@^25.1.14":
-  version "25.1.14"
-  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-test-fixtures/-/spruce-test-fixtures-25.1.14.tgz#dd561c0c32e17a5b3b260fea0bc150a1ebeda6b9"
-  integrity sha512-zTOkfmKNzjH4mqOxDB6sNTMq+51hKFtQS9NEwtiEJkt8GiUYvdRpwTUncOlZKFdeXUYF7EpuLxLP0DJl3GUOlA==
+"@sprucelabs/spruce-test-fixtures@^27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@sprucelabs/spruce-test-fixtures/-/spruce-test-fixtures-27.0.0.tgz#40fb8a7f1e03d701e7ce696e32188b19d58c2cf4"
+  integrity sha512-y2tvGH7XVk2pXBjIt55p0dfPxhKFgwQwd2nbflUHQKag3ITDcaVOAe2qu9Std+FAqRlwC1IsyDBdK2DfYCTEdQ==
   dependencies:
-    "@sprucelabs/data-stores" "^9.0.10"
-    "@sprucelabs/error" "^5.0.408"
-    "@sprucelabs/heartwood-view-controllers" "^65.3.10"
-    "@sprucelabs/mercury-client" "^21.0.124"
-    "@sprucelabs/mercury-core-events" "^2.1.13"
-    "@sprucelabs/mercury-event-emitter" "^21.0.124"
-    "@sprucelabs/schema" "^27.0.6"
-    "@sprucelabs/spruce-core-schemas" "^25.0.10"
-    "@sprucelabs/spruce-event-utils" "^18.0.149"
-    "@sprucelabs/spruce-skill-booter" "^25.1.14"
-    "@sprucelabs/spruce-skill-utils" "^25.0.6"
+    "@sprucelabs/data-stores" "^9.0.16"
+    "@sprucelabs/error" "^5.0.410"
+    "@sprucelabs/heartwood-view-controllers" "^67.0.1"
+    "@sprucelabs/mercury-client" "^22.0.1"
+    "@sprucelabs/mercury-core-events" "^3.0.2"
+    "@sprucelabs/mercury-event-emitter" "^22.0.1"
+    "@sprucelabs/schema" "^27.1.0"
+    "@sprucelabs/spruce-core-schemas" "^25.0.16"
+    "@sprucelabs/spruce-event-utils" "^19.0.2"
+    "@sprucelabs/spruce-skill-booter" "^27.0.0"
+    "@sprucelabs/spruce-skill-utils" "^25.0.11"
     dotenv "^16.0.0"
     unique-names-generator "^4.7.1"
 
@@ -3653,9 +3696,9 @@
     "@types/webidl-conversions" "*"
 
 "@types/yargs-parser@*":
-  version "20.2.1"
-  resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.1.tgz#3b9ce2489919d9e4fea439b76916abc34b2df129"
-  integrity sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw==
+  version "21.0.0"
+  resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-21.0.0.tgz#0c60e537fa790f5f9472ed2776c2b71ec117351b"
+  integrity sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==
 
 "@types/yargs@^16.0.0":
   version "16.0.4"
@@ -5534,9 +5577,9 @@ engine.io-parser@~5.0.0:
     "@socket.io/base64-arraybuffer" "~1.0.2"
 
 enhanced-resolve@^5.8.3:
-  version "5.9.1"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.1.tgz#e898cea44d9199fd92137496cff5691b910fb43e"
-  integrity sha512-jdyZMwCQ5Oj4c5+BTnkxPgDZO/BJzh/ADDmKebayyzNwjVX1AFCeGkOfxNx0mHi2+8BKC5VxUYiw3TIvoT7vhw==
+  version "5.9.2"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.2.tgz#0224dcd6a43389ebfb2d55efee517e5466772dd9"
+  integrity sha512-GIm3fQfwLJ8YZx2smuHpBKkXC1yOk+OBEmKckVyL0i/ea8mqDEykK3ld5dgH1QYPNyT/lIllxV2LULnxCHaHkA==
   dependencies:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
@@ -5617,125 +5660,131 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild-android-arm64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-android-arm64/-/esbuild-android-arm64-0.14.23.tgz#c89b3c50b4f47668dcbeb0b34ee4615258818e71"
-  integrity sha512-k9sXem++mINrZty1v4FVt6nC5BQCFG4K2geCIUUqHNlTdFnuvcqsY7prcKZLFhqVC1rbcJAr9VSUGFL/vD4vsw==
+esbuild-android-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-android-64/-/esbuild-android-64-0.14.24.tgz#d826ac29a9b983dc200a0ca407c34c64d2480b38"
+  integrity sha512-mbhO8NepmUZ84cP/axGR8IzH1Trth+uknEJzz36cZl8FfMA3ooaiBsMyzJ35s70QEAreiEt1XzltZ4pcfOsVUA==
 
-esbuild-darwin-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-darwin-64/-/esbuild-darwin-64-0.14.23.tgz#1c131e8cb133ed935ca32f824349a117c896a15b"
-  integrity sha512-lB0XRbtOYYL1tLcYw8BoBaYsFYiR48RPrA0KfA/7RFTr4MV7Bwy/J4+7nLsVnv9FGuQummM3uJ93J3ptaTqFug==
+esbuild-android-arm64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-android-arm64/-/esbuild-android-arm64-0.14.24.tgz#f8aaf28dbd4d7b80d30b0323c7a645e3a12b5de9"
+  integrity sha512-wM3iuLZjaA9BhlMOH6mWvTGXwPJsLOuAbMkGiczSY+NLeG2WF1ouCcuhFz2jZCbnw9lnI30QWgzebNBQi9K8SA==
 
-esbuild-darwin-arm64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.14.23.tgz#3c6245a50109dd84953f53d7833bd3b4f0e8c6fa"
-  integrity sha512-yat73Z/uJ5tRcfRiI4CCTv0FSnwErm3BJQeZAh+1tIP0TUNh6o+mXg338Zl5EKChD+YGp6PN+Dbhs7qa34RxSw==
+esbuild-darwin-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-darwin-64/-/esbuild-darwin-64-0.14.24.tgz#9f6e4b94066e9c5e521b19176a85edd7f94ac074"
+  integrity sha512-GDaCV5e9mdrJkrGT91W8WCqQ/+fvB/nsULIu4l7Ik7dlQd5uB4qeKRcFFl5Vz5ODK/C/UWZmKmMQWokZsLNWLQ==
 
-esbuild-freebsd-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-freebsd-64/-/esbuild-freebsd-64-0.14.23.tgz#0cdc54e72d3dd9cd992f9c2960055e68a7f8650c"
-  integrity sha512-/1xiTjoLuQ+LlbfjJdKkX45qK/M7ARrbLmyf7x3JhyQGMjcxRYVR6Dw81uH3qlMHwT4cfLW4aEVBhP1aNV7VsA==
+esbuild-darwin-arm64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.14.24.tgz#6b8ce7f2a3e1210cc672c73d658669e5f88b8efb"
+  integrity sha512-reU7/vEdXsg+zZWxKL/gaHsJkGMCC49Y4pqbsaBmx0YAF00K0+V7w5BHBF+iY5jvtJ1ZCYRHTN/iAbYVOnoV0w==
 
-esbuild-freebsd-arm64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.14.23.tgz#1d11faed3a0c429e99b7dddef84103eb509788b2"
-  integrity sha512-uyPqBU/Zcp6yEAZS4LKj5jEE0q2s4HmlMBIPzbW6cTunZ8cyvjG6YWpIZXb1KK3KTJDe62ltCrk3VzmWHp+iLg==
+esbuild-freebsd-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-freebsd-64/-/esbuild-freebsd-64-0.14.24.tgz#b586d8aa290bfcdf0aa73fdfcf64c092d49795f2"
+  integrity sha512-Mp35Rz/XoixG7Uka6l54hU/XUxAEwQozgKoHPusJzX+Fu1vANil0Ypos0RJkidu7skSkd0xisNIT+gtD36BxpA==
 
-esbuild-linux-32@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-32/-/esbuild-linux-32-0.14.23.tgz#fd9f033fc27dcab61100cb1eb1c936893a68c841"
-  integrity sha512-37R/WMkQyUfNhbH7aJrr1uCjDVdnPeTHGeDhZPUNhfoHV0lQuZNCKuNnDvlH/u/nwIYZNdVvz1Igv5rY/zfrzQ==
+esbuild-freebsd-arm64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.14.24.tgz#4e7098de07791089b6ef6b4f17a8ce6124da7bec"
+  integrity sha512-+tf4a4zYaHP1XXPt286mxOc2bmj13K57GZYjqYz/G3c3sgNXa0JBkcPlUATIj96WfXhWM115n3nHe9wF88+ZGQ==
 
-esbuild-linux-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-64/-/esbuild-linux-64-0.14.23.tgz#c04c438514f1359ecb1529205d0c836d4165f198"
-  integrity sha512-H0gztDP60qqr8zoFhAO64waoN5yBXkmYCElFklpd6LPoobtNGNnDe99xOQm28+fuD75YJ7GKHzp/MLCLhw2+vQ==
+esbuild-linux-32@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-32/-/esbuild-linux-32-0.14.24.tgz#afe7345f3e8ee58eede36c0254e128924680b305"
+  integrity sha512-8jMZErn5aLnlSQqzK365yoWRr67ZkGNcoTmk1CK5Bk1EB9g7uwCfdZsmWcclLWPGkIhMbdk4OvzQ+Wp0popwWA==
 
-esbuild-linux-arm64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.23.tgz#d1b3ab2988ab0734886eb9e811726f7db099ab96"
-  integrity sha512-c4MLOIByNHR55n3KoYf9hYDfBRghMjOiHLaoYLhkQkIabb452RWi+HsNgB41sUpSlOAqfpqKPFNg7VrxL3UX9g==
+esbuild-linux-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-64/-/esbuild-linux-64-0.14.24.tgz#ce7b95e8ed96076dcb329d1d34e4b9ef084e02cf"
+  integrity sha512-D/JCsk9OY2IZj+fkU74pKD4rD2pjeiYUbze1cS5D6+U0pz8j71GjZY5UkfwHhBBbNyPe6DPCyex97txQUlHwWw==
 
-esbuild-linux-arm@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-arm/-/esbuild-linux-arm-0.14.23.tgz#df7558b6a5076f5eb9fd387c8704f768b61d97fb"
-  integrity sha512-x64CEUxi8+EzOAIpCUeuni0bZfzPw/65r8tC5cy5zOq9dY7ysOi5EVQHnzaxS+1NmV+/RVRpmrzGw1QgY2Xpmw==
+esbuild-linux-arm64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.24.tgz#f8aee4eb78309fd3c064e86393a698e33908e8ec"
+  integrity sha512-DypWEDQLE+PoHGMa4FLcmKvS+yQLsYlsN03R496rTpDOiVQGrRdo0LbYtf+uHpDxa1KRrHZsQim6n8m3VBHP6g==
 
-esbuild-linux-mips64le@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.14.23.tgz#bb4c47fccc9493d460ffeb1f88e8a97a98a14f8b"
-  integrity sha512-kHKyKRIAedYhKug2EJpyJxOUj3VYuamOVA1pY7EimoFPzaF3NeY7e4cFBAISC/Av0/tiV0xlFCt9q0HJ68IBIw==
+esbuild-linux-arm@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-arm/-/esbuild-linux-arm-0.14.24.tgz#eaccc0a4d7d17e7290e5b20c383e6969c6769bf7"
+  integrity sha512-N+vvGpJAUWv3j+YZGOMEtrHwrrSG582TuAThBwoRE7d2N4zFE2WQBCiSYaAVckMQhvMOPqnCdqeTDUse5nlKTw==
 
-esbuild-linux-ppc64le@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.14.23.tgz#a332dbc8a1b4e30cfe1261bfaa5cef57c9c8c02a"
-  integrity sha512-7ilAiJEPuJJnJp/LiDO0oJm5ygbBPzhchJJh9HsHZzeqO+3PUzItXi+8PuicY08r0AaaOe25LA7sGJ0MzbfBag==
+esbuild-linux-mips64le@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.14.24.tgz#9db94b62bbcbaad6229087ea27a6d7dc3fc878d6"
+  integrity sha512-eMk9pEHba1yd5bOuPZUJfFucigvysdcE2d/wV4M0eUdb/VjyH9fcGqz8byvSjmYSOt3WCn/V4jLVI+pwDSHWYw==
 
-esbuild-linux-riscv64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-riscv64/-/esbuild-linux-riscv64-0.14.23.tgz#85675f3f931f5cd7cfb238fd82f77a62ffcb6d86"
-  integrity sha512-fbL3ggK2wY0D8I5raPIMPhpCvODFE+Bhb5QGtNP3r5aUsRR6TQV+ZBXIaw84iyvKC8vlXiA4fWLGhghAd/h/Zg==
+esbuild-linux-ppc64le@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.14.24.tgz#194d59a5ebfcdbfc7e710d13893e6c62216baa77"
+  integrity sha512-4vQ/Y6EV5Z2BjO7RdpEyTCv702WmOPc95d2CbUcFvg78FpGQAmrbIrHXu/yX4+rdUU6vMNBn3M+7M7/lxmxjjg==
 
-esbuild-linux-s390x@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-linux-s390x/-/esbuild-linux-s390x-0.14.23.tgz#a526282a696e6d846f4c628f5315475518c0c0f0"
-  integrity sha512-GHMDCyfy7+FaNSO8RJ8KCFsnax8fLUsOrj9q5Gi2JmZMY0Zhp75keb5abTFCq2/Oy6KVcT0Dcbyo/bFb4rIFJA==
+esbuild-linux-riscv64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-riscv64/-/esbuild-linux-riscv64-0.14.24.tgz#0d8cbbcd2f3b7cc4365ebc8fac8d00fdc95691d2"
+  integrity sha512-pAN9/+NZ487Wo9PmlOM6Ra95SrhG8JQw7fCgi3z7dUufwTApTNTPGs5UOMD4Bmorju+DeGb0f0GddLaeabvqDg==
 
-esbuild-netbsd-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-netbsd-64/-/esbuild-netbsd-64-0.14.23.tgz#8e456605694719aa1be4be266d6cd569c06dfaf5"
-  integrity sha512-ovk2EX+3rrO1M2lowJfgMb/JPN1VwVYrx0QPUyudxkxLYrWeBxDKQvc6ffO+kB4QlDyTfdtAURrVzu3JeNdA2g==
+esbuild-linux-s390x@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-s390x/-/esbuild-linux-s390x-0.14.24.tgz#460e726f5d827f1171f9eac8c9bbcad8e6574ec5"
+  integrity sha512-ZR+VMHP2WS3022x2sK/85cBfKGgPalIZzpquDWjra9nUb+WdEzuK9i9bRsstLmjIPs3uIkGfe6xXUh/7PNLllw==
 
-esbuild-openbsd-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-openbsd-64/-/esbuild-openbsd-64-0.14.23.tgz#f2fc51714b4ddabc86e4eb30ca101dd325db2f7d"
-  integrity sha512-uYYNqbVR+i7k8ojP/oIROAHO9lATLN7H2QeXKt2H310Fc8FJj4y3Wce6hx0VgnJ4k1JDrgbbiXM8rbEgQyg8KA==
+esbuild-netbsd-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-netbsd-64/-/esbuild-netbsd-64-0.14.24.tgz#8f6f4c68b8e84e1e011330096f118013cc275601"
+  integrity sha512-1PzXU++e0PEaSuGpkhrVb+fDUw9mSp4laY9KRsjJkAuXPDj0rHz7KxK7CAbzY/ucufeIR9Ca8/oMpdVyWdaOGw==
 
-esbuild-sunos-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-sunos-64/-/esbuild-sunos-64-0.14.23.tgz#a408f33ea20e215909e20173a0fd78b1aaad1f8e"
-  integrity sha512-hAzeBeET0+SbScknPzS2LBY6FVDpgE+CsHSpe6CEoR51PApdn2IB0SyJX7vGelXzlyrnorM4CAsRyb9Qev4h9g==
+esbuild-openbsd-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-openbsd-64/-/esbuild-openbsd-64-0.14.24.tgz#6fbfc089103d154d74d4ea5a3aefc2844189094a"
+  integrity sha512-PvXh7JJAFM1kR87XDWbRrUkaOGVMS6Dq/IRXE2E02maio21JELk/jNRijTe81ztr8v+8K9osB3rG9zKqIdTxhQ==
 
-esbuild-windows-32@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-windows-32/-/esbuild-windows-32-0.14.23.tgz#b9005bbff54dac3975ff355d5de2b5e37165d128"
-  integrity sha512-Kttmi3JnohdaREbk6o9e25kieJR379TsEWF0l39PQVHXq3FR6sFKtVPgY8wk055o6IB+rllrzLnbqOw/UV60EA==
+esbuild-sunos-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-sunos-64/-/esbuild-sunos-64-0.14.24.tgz#09931dbbc610f88feda1c071f2844e7d8867f46e"
+  integrity sha512-5iYi76kGQdyCqvSUknqjTZ0T19KvQD6hiklPAY6kVoQ1YoDUGCGILRI9eM/3zLNLG1bUFgcdJ2ktaBxwyXuHyA==
 
-esbuild-windows-64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-windows-64/-/esbuild-windows-64-0.14.23.tgz#2b5a99befeaca6aefdad32d738b945730a60a060"
-  integrity sha512-JtIT0t8ymkpl6YlmOl6zoSWL5cnCgyLaBdf/SiU/Eg3C13r0NbHZWNT/RDEMKK91Y6t79kTs3vyRcNZbfu5a8g==
+esbuild-windows-32@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-32/-/esbuild-windows-32-0.14.24.tgz#3c8dddffaec6dce9a3ac8ef2bec939ec5af17e68"
+  integrity sha512-oDxcNu4P1FWTk2ompKB0uKHfxYw1QuubH189+PlfrrWT9tVu+mxT9dSwJu2erfUDz5dnr6h8rgkg95NGboeJxg==
 
-esbuild-windows-arm64@0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild-windows-arm64/-/esbuild-windows-arm64-0.14.23.tgz#edc560bbadb097eb45fc235aeacb942cb94a38c0"
-  integrity sha512-cTFaQqT2+ik9e4hePvYtRZQ3pqOvKDVNarzql0VFIzhc0tru/ZgdLoXd6epLiKT+SzoSce6V9YJ+nn6RCn6SHw==
+esbuild-windows-64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-64/-/esbuild-windows-64-0.14.24.tgz#e97081ee16d51c5a210cd1de15454689ac09fc8b"
+  integrity sha512-0uxXF1yLcGEM2es0OMDgQYQGZXQEEIdq8cG3IWhY2GGfFRLXpMgic1iUE+SKCh+b82t1ftUVoyG0zIFRn5NOIA==
 
-esbuild@^0.14.23:
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.14.23.tgz#95e842cb22bc0c7d82c140adc16788aac91469fe"
-  integrity sha512-XjnIcZ9KB6lfonCa+jRguXyRYcldmkyZ99ieDksqW/C8bnyEX299yA4QH2XcgijCgaddEZePPTgvx/2imsq7Ig==
+esbuild-windows-arm64@0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-arm64/-/esbuild-windows-arm64-0.14.24.tgz#0fcff2b58c772874f8dc52638557f817609ed699"
+  integrity sha512-unwaYRaIK/4OaZm0jnM3pLKMPEjaQqmT5teTciSZ86VYaiYZF27Ki7BW7R5ngk27gIw0ovIfUcn9DhJgp7qAlw==
+
+esbuild@^0.14.23, esbuild@^0.14.24:
+  version "0.14.24"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.14.24.tgz#543899cf9ff0ebe206dc3de2ac18b9122d9f5697"
+  integrity sha512-NjfmycVQqY0+iKXoHXsvMAKx4XF/bD/dDm8pK6C/3aJO/i/uby+7AR4z8vu0qkiihkB5Y43+9BjdY2MGnswC/A==
   optionalDependencies:
-    esbuild-android-arm64 "0.14.23"
-    esbuild-darwin-64 "0.14.23"
-    esbuild-darwin-arm64 "0.14.23"
-    esbuild-freebsd-64 "0.14.23"
-    esbuild-freebsd-arm64 "0.14.23"
-    esbuild-linux-32 "0.14.23"
-    esbuild-linux-64 "0.14.23"
-    esbuild-linux-arm "0.14.23"
-    esbuild-linux-arm64 "0.14.23"
-    esbuild-linux-mips64le "0.14.23"
-    esbuild-linux-ppc64le "0.14.23"
-    esbuild-linux-riscv64 "0.14.23"
-    esbuild-linux-s390x "0.14.23"
-    esbuild-netbsd-64 "0.14.23"
-    esbuild-openbsd-64 "0.14.23"
-    esbuild-sunos-64 "0.14.23"
-    esbuild-windows-32 "0.14.23"
-    esbuild-windows-64 "0.14.23"
-    esbuild-windows-arm64 "0.14.23"
+    esbuild-android-64 "0.14.24"
+    esbuild-android-arm64 "0.14.24"
+    esbuild-darwin-64 "0.14.24"
+    esbuild-darwin-arm64 "0.14.24"
+    esbuild-freebsd-64 "0.14.24"
+    esbuild-freebsd-arm64 "0.14.24"
+    esbuild-linux-32 "0.14.24"
+    esbuild-linux-64 "0.14.24"
+    esbuild-linux-arm "0.14.24"
+    esbuild-linux-arm64 "0.14.24"
+    esbuild-linux-mips64le "0.14.24"
+    esbuild-linux-ppc64le "0.14.24"
+    esbuild-linux-riscv64 "0.14.24"
+    esbuild-linux-s390x "0.14.24"
+    esbuild-netbsd-64 "0.14.24"
+    esbuild-openbsd-64 "0.14.24"
+    esbuild-sunos-64 "0.14.24"
+    esbuild-windows-32 "0.14.24"
+    esbuild-windows-64 "0.14.24"
+    esbuild-windows-arm64 "0.14.24"
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -5770,9 +5819,9 @@ escodegen@^2.0.0:
     source-map "~0.6.1"
 
 eslint-config-prettier@^8.3.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.4.0.tgz#8e6d17c7436649e98c4c2189868562921ef563de"
-  integrity sha512-CFotdUcMY18nGRo5KGsnNxpznzhkopOcOo0InID+sgQssPrzjvsyKZPvOgymTFeHrFuC3Tzdf2YndhXtULK9Iw==
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz#5a81680ec934beca02c7b1a61cf8ca34b66feab1"
+  integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
 
 eslint-config-spruce@^10.11.2:
   version "10.11.2"
@@ -8803,10 +8852,10 @@ node-int64@^0.4.0:
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=
 
-node-nlp@^4.22.18:
-  version "4.23.0"
-  resolved "https://registry.yarnpkg.com/node-nlp/-/node-nlp-4.23.0.tgz#1328af9139b167fa339573d8e9f16c44849966a2"
-  integrity sha512-YnwLpk4/0GcSrM4hMZXVXq1VWEStBdD0ZF9WzWVxAcqWR4yHflRXQ2Lt6kFMtn/8YKQJL0k3hrkhrGK6lHuh/A==
+node-nlp@^4.23.0:
+  version "4.23.1"
+  resolved "https://registry.yarnpkg.com/node-nlp/-/node-nlp-4.23.1.tgz#d70a5a522f40e0d24d0a6040bb96feeb489a7dc0"
+  integrity sha512-VauOAKcJz5BzkRkIbkh67PUuj/ZY6xlEn+vM9DHqPBpAEHAFN2fZhkU1KsVuRW4h6M3JufnMEJKGE/lsoTzPHA==
   dependencies:
     "@nlpjs/builtin-duckling" "^4.22.7"
     "@nlpjs/builtin-microsoft" "^4.22.7"
@@ -8817,8 +8866,8 @@ node-nlp@^4.22.18:
     "@nlpjs/language" "^4.22.7"
     "@nlpjs/neural" "^4.22.7"
     "@nlpjs/nlg" "^4.22.7"
-    "@nlpjs/nlp" "^4.23.0"
-    "@nlpjs/nlu" "^4.23.0"
+    "@nlpjs/nlp" "^4.23.1"
+    "@nlpjs/nlu" "^4.23.1"
     "@nlpjs/request" "^4.22.7"
     "@nlpjs/sentiment" "^4.22.7"
     "@nlpjs/similarity" "^4.22.7"
@@ -11503,9 +11552,9 @@ xhr@^2.0.1:
     xtend "^4.0.0"
 
 xlsx@^0.18.0:
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.18.2.tgz#b30b80659623d0260173b3c96c4ad308e9a5151e"
-  integrity sha512-BWLS+GO5yg5Hnro8mpbNkZq/a+dZ8689otFuHmb9wgCtiMpL+I9dpc+Sans6K9yYxTLEZ235Kr/JkmoTEMunzQ==
+  version "0.18.3"
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.18.3.tgz#03a95a1082b0ac436afa0fcbc50adb98ee4b288e"
+  integrity sha512-iNBdKSJO11bI59C/dJjYWfR2gglRUrbWtDK9YoKKvu+RA1dinyWU3XXc0BaZUoSYFkxvPrO/9dwBGu6mhVNVGQ==
   dependencies:
     adler-32 "~1.3.0"
     cfb "~1.2.1"
