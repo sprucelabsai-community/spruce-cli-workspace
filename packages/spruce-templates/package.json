@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "15.2.7",
+	"version": "15.2.10",
 	"files": [
 		"build/**/*",
 		"tsconfig.json",
@@ -58,7 +58,7 @@
 	"dependencies": {
 		"@sprucelabs/mercury-types": "^27.0.154",
 		"@sprucelabs/schema": "^27.1.4",
-		"@sprucelabs/spruce-event-utils": "^18.0.138",
+		"@sprucelabs/spruce-event-utils": "^19.1.5",
 		"@sprucelabs/spruce-skill-utils": "^25.0.15",
 		"globby": "^11.0.4",
 		"handlebars": "^4.7.7",
