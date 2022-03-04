@@ -18,7 +18,7 @@
     ]
   },
   "license": "MIT",
-  "version": "15.2.9",
+  "version": "15.2.10",
   "bin": {
     "spruce": "./build/index.js"
   },
@@ -88,7 +88,7 @@
     "@sprucelabs/spruce-event-utils": "^19.1.5",
     "@sprucelabs/spruce-skill-booter": "^29.0.2",
     "@sprucelabs/spruce-skill-utils": "^25.0.15",
-    "@sprucelabs/spruce-templates": "^15.2.9",
+    "@sprucelabs/spruce-templates": "^15.2.10",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "cfonts": "^2.10.0",
