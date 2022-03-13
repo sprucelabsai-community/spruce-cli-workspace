@@ -100,7 +100,7 @@
     "core-js": "3.21.1",
     "emphasize": "4.2.0",
     "fs-extra": "10.0.1",
-    "gifwrap": "SimenB/gifwrap#patch-1",
+    "gifwrap": "0.9.3",
     "globby": "11.0.4",
     "inflection": "1.13.2",
     "inquirer": "8.2.1",
