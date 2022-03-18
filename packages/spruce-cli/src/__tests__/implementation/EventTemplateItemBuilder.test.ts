@@ -120,14 +120,14 @@ const relatedToRelatedToProximitySchema = buildSchema({
 })
 
 const relatedToRelatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
-	namespace: 'Proximity',
+	namespace: 'proximity',
 	id: relatedToRelatedToProximitySchema.id,
 	nameCamel: 'relatedToRelatedToProximitySchema',
 	namePascal: 'RelatedToRelatedToProximitySchema',
 	nameReadable: 'relatedToRelatedToProximitySchema',
 	schema: {
 		...relatedToRelatedToProximitySchema,
-		namespace: 'Proximity',
+		namespace: 'proximity',
 	},
 	isNested: true,
 	destinationDir: '#spruce/events',
@@ -150,14 +150,14 @@ const relatedToProximitySchema = buildSchema({
 })
 
 const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
-	namespace: 'Proximity',
+	namespace: 'proximity',
 	id: relatedToProximitySchema.id,
 	nameCamel: 'relatedToProximitySchema',
 	namePascal: 'RelatedToProximitySchema',
 	nameReadable: 'relatedToProximitySchema',
 	schema: {
 		id: 'relatedToProximitySchema',
-		namespace: 'Proximity',
+		namespace: 'proximity',
 		version: expectedVersion,
 		fields: {
 			boolField: {
@@ -169,7 +169,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 					schemaIds: [
 						{
 							id: 'relatedToRelatedToProximitySchema',
-							namespace: 'Proximity',
+							namespace: 'proximity',
 							version: expectedVersion,
 						},
 					],
@@ -184,6 +184,7 @@ const relatedToProximitySchemaTemplateItem: SchemaTemplateItem = {
 const proximityEmitPayloadSchema = buildSchema({
 	version: expectedVersion,
 	id: 'proximityEmitPayload',
+	namespace: 'proximity',
 	fields: {
 		textField: {
 			type: 'text',
@@ -198,14 +199,14 @@ const proximityEmitPayloadSchema = buildSchema({
 })
 
 const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
-	namespace: 'Proximity',
+	namespace: 'proximity',
 	id: proximityEmitPayloadSchema.id,
 	nameCamel: 'proximityEmitPayload',
 	namePascal: 'ProximityEmitPayload',
 	nameReadable: 'proximityEmitPayload',
 	schema: {
 		id: 'proximityEmitPayload',
-		namespace: 'Proximity',
+		namespace: 'proximity',
 		version: expectedVersion,
 		fields: {
 			textField: {
@@ -217,7 +218,7 @@ const proximityEmitPayloadTemplateItem: SchemaTemplateItem = {
 					schemaIds: [
 						{
 							id: 'relatedToProximitySchema',
-							namespace: 'Proximity',
+							namespace: 'proximity',
 							version: expectedVersion,
 						},
 					],
@@ -339,7 +340,6 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 			eventContractTemplateItems,
 			expectedEventContractTemplateItems
 		)
-
 		assert.isEqualDeep(schemaTemplateItems, expectedSchemaTemplateItems)
 	}
 
@@ -378,5 +378,120 @@ export default class EventTemplateItemBuilderTest extends AbstractCliTest {
 
 		assert.isEqual(eventContractTemplateItems[0].nameCamel, 'registerEvents')
 		assert.isEqual(eventContractTemplateItems[1].nameCamel, 'zebraCheeta')
+	}
+
+	@test()
+	protected static eventContractTemplateItemsHaveProperNamespacesImports() {
+		const groupsExpectedImports = [
+			{
+				package:
+					'#spruce/schemas/groups/v2021_12_01/listEmitTargetAndPayload.schema',
+				importAs: 'listEmitTargetAndPayloadSchema',
+			},
+			{
+				package:
+					'#spruce/schemas/groups/v2021_12_01/listResponsePayload.schema',
+				importAs: 'listResponsePayloadSchema',
+			},
+			{
+				importAs: '{ buildEventContract }',
+				package: '@sprucelabs/mercury-types',
+			},
+			{
+				importAs: '{ buildPermissionContract }',
+				package: '@sprucelabs/mercury-types',
+			},
+		]
+
+		const appointmentsExpectedImports = [
+			{
+				package:
+					'#spruce/schemas/appointments/v2021_06_23/listEmitTargetAndPayload.schema',
+				importAs: 'listEmitTargetAndPayloadSchema',
+			},
+			{
+				package:
+					'#spruce/schemas/appointments/v2021_06_23/listResponsePayload.schema',
+				importAs: 'listResponsePayloadSchema',
+			},
+			{
+				importAs: '{ buildEventContract }',
+				package: '@sprucelabs/mercury-types',
+			},
+			{
+				importAs: '{ buildPermissionContract }',
+				package: '@sprucelabs/mercury-types',
+			},
+		]
+
+		const { eventContractTemplateItems } = this.itemBuilder.buildTemplateItems({
+			contracts: [
+				{
+					eventSignatures: {
+						'groups.list::v2021_12_01': {
+							emitPayloadSchema: {
+								id: 'listEmitTargetAndPayload',
+								version: 'v2021_12_01',
+								namespace: 'Groups',
+								name: '',
+								fields: {},
+							},
+							responsePayloadSchema: {
+								id: 'listResponsePayload',
+								version: 'v2021_12_01',
+								namespace: 'Groups',
+								name: '',
+								fields: {},
+							},
+							emitPermissionContract: {
+								id: 'listEmitPermissions',
+								name: 'list',
+								requireAllPermissions: false,
+								permissions: [],
+							},
+						},
+
+						'appointments.list::v2021_06_23': {
+							emitPayloadSchema: {
+								id: 'listEmitTargetAndPayload',
+								version: 'v2021_06_23',
+								namespace: 'Appointments',
+								name: '',
+								fields: {},
+							},
+							responsePayloadSchema: {
+								id: 'listResponsePayload',
+								version: 'v2021_06_23',
+								namespace: 'Appointments',
+								name: '',
+								fields: {},
+							},
+							emitPermissionContract: {
+								id: 'listEmitPermissions',
+								name: 'list appointments',
+								requireAllPermissions: false,
+								permissions: [],
+							},
+							listenPermissionContract: {
+								id: 'listListenPermissions',
+								name: 'list appointments',
+								requireAllPermissions: false,
+								permissions: [],
+							},
+						},
+					},
+				},
+			],
+			localNamespace: 'testing',
+		})
+
+		assert.isEqualDeep(
+			eventContractTemplateItems[0].imports,
+			groupsExpectedImports
+		)
+		assert.isEqualDeep(
+			eventContractTemplateItems[1].imports,
+			appointmentsExpectedImports
+		)
 	}
 }

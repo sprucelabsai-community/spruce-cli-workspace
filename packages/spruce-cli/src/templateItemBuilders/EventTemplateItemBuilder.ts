@@ -197,13 +197,17 @@ export default class EventTemplateItemBuilder {
 
 		if (emitPayloadSchema) {
 			signatureTemplateItem.emitPayloadSchema = schemaItems.find(
-				(i) => i.id === emitPayloadSchema.id
+				(i) =>
+					i.id === emitPayloadSchema.id &&
+					i.namespace === emitPayloadSchema.namespace
 			)
 		}
 
 		if (responsePayloadSchema) {
 			signatureTemplateItem.responsePayloadSchema = schemaItems.find(
-				(i) => i.id === responsePayloadSchema.id
+				(i) =>
+					i.id === responsePayloadSchema.id &&
+					i.namespace === responsePayloadSchema.namespace
 			)
 		}
 		return signatureTemplateItem
