@@ -199,7 +199,8 @@ export default class EventTemplateItemBuilder {
 			signatureTemplateItem.emitPayloadSchema = schemaItems.find(
 				(i) =>
 					i.id === emitPayloadSchema.id &&
-					i.namespace === emitPayloadSchema.namespace
+					(!emitPayloadSchema.namespace ||
+						i.namespace === emitPayloadSchema.namespace)
 			)
 		}
 
@@ -207,7 +208,8 @@ export default class EventTemplateItemBuilder {
 			signatureTemplateItem.responsePayloadSchema = schemaItems.find(
 				(i) =>
 					i.id === responsePayloadSchema.id &&
-					i.namespace === responsePayloadSchema.namespace
+					(!responsePayloadSchema.namespace ||
+						i.namespace === responsePayloadSchema.namespace)
 			)
 		}
 		return signatureTemplateItem
