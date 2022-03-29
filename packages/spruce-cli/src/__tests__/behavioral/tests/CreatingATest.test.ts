@@ -34,16 +34,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	)
 	protected static async canCreateBehavioralTest(testName: string) {
 		LintService.enableLinting()
-		const { promise } = await this.installAndStartTestActionAndWaitForInput()
-
-		this.selectOptionBasedOnLabel(testName)
-
-		const response = await promise
-
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			'CanBookAppointment.test.ts',
-			response.files
-		)
+		const match = await this.createTestAndGetFile(testName)
 
 		assert.doesInclude(match, 'behavioral')
 
@@ -100,8 +91,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		await promise
 	}
 
-	@test('can select subdir 1', 'test')
-	@test('can select subdir 2', 'test-2')
+	@test('can select sub dir 1', 'test')
+	@test('can select sub dir 2', 'test-2')
 	protected static async selectingAnOptionRendersToSubDir(dirName: string) {
 		await this.installTests()
 		this.createTestSubDir('behavioral', dirName)
@@ -146,6 +137,13 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		this.ui.reset()
 	}
 
+	@test()
+	protected static async allTestsComeFakedToStart() {
+		const testFile = await this.createTestAndGetFile()
+		const contents = diskUtil.readFile(testFile)
+		assert.doesInclude(contents, 'fake.login()')
+	}
+
 	private static createTestSubDir(...testDirs: string[]) {
 		const newDir = this.resolveTestDir(...testDirs)
 		diskUtil.createDir(newDir)
@@ -153,6 +151,15 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 	private static resolveTestDir(...testDirs: string[]) {
 		return this.resolvePath('src', '__tests__', ...testDirs)
+	}
+
+	private static async createTest(testName = 'AbstractSpruceFixtureTest') {
+		const { promise } = await this.installAndStartTestActionAndWaitForInput()
+
+		this.selectOptionBasedOnLabel(testName)
+
+		const response = await promise
+		return response
 	}
 
 	private static async installAndStartTestActionAndWaitForInput(
@@ -173,5 +180,15 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	private static async waitAndSelectSubClass(selectedSubClass?: string) {
 		await this.waitForInput()
 		await this.ui.sendInput(selectedSubClass ?? '')
+	}
+
+	private static async createTestAndGetFile(testName?: string) {
+		const response = await this.createTest(testName)
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			'CanBookAppointment.test.ts',
+			response.files
+		)
+		return match
 	}
 }
