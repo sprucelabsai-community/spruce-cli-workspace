@@ -141,11 +141,6 @@ workflows:
           requires:
             - setup_for_test
           context: public_package_publish
-      - cleanup_test:
-          requires:
-            - setup_for_test
-            - test
-          context: public_package_publish
       - merge_auto_upgrade:
           requires:
             - setup_for_test
