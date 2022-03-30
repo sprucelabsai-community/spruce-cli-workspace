@@ -8,6 +8,9 @@ import heartwoodGenerateUrlEventContract_v2021_02_11, {
 import heartwoodGetSkillViewsEventContract_v2021_02_11, {
 	GetSkillViewsEventContract as HeartwoodGetSkillViewsEventContract_v2021_02_11,
 } from '#spruce/events/heartwood/getSkillViews.v2021_02_11.contract'
+import heartwoodListViewsEventContract_v2021_02_11, {
+	ListViewsEventContract as HeartwoodListViewsEventContract_v2021_02_11,
+} from '#spruce/events/heartwood/listViews.v2021_02_11.contract'
 import heartwoodRegisterSkillViewsEventContract_v2021_02_11, {
 	RegisterSkillViewsEventContract as HeartwoodRegisterSkillViewsEventContract_v2021_02_11,
 } from '#spruce/events/heartwood/registerSkillViews.v2021_02_11.contract'
@@ -16,6 +19,7 @@ export default [
 	heartwoodDidRegisterSkillViewsEventContract_v2021_02_11,
 	heartwoodGenerateUrlEventContract_v2021_02_11,
 	heartwoodGetSkillViewsEventContract_v2021_02_11,
+	heartwoodListViewsEventContract_v2021_02_11,
 	heartwoodRegisterSkillViewsEventContract_v2021_02_11,
 	...coreEventContracts,
 ]
@@ -27,6 +31,8 @@ declare module '@sprucelabs/mercury-types/build/types/mercury.types' {
 		'heartwood.generate-url::v2021_02_11': HeartwoodGenerateUrlEventContract_v2021_02_11['eventSignatures']['heartwood.generate-url::v2021_02_11']
 
 		'heartwood.get-skill-views::v2021_02_11': HeartwoodGetSkillViewsEventContract_v2021_02_11['eventSignatures']['heartwood.get-skill-views::v2021_02_11']
+
+		'heartwood.list-views::v2021_02_11': HeartwoodListViewsEventContract_v2021_02_11['eventSignatures']['heartwood.list-views::v2021_02_11']
 
 		'heartwood.register-skill-views::v2021_02_11': HeartwoodRegisterSkillViewsEventContract_v2021_02_11['eventSignatures']['heartwood.register-skill-views::v2021_02_11']
 	}

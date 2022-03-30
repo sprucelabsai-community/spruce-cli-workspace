@@ -11,16 +11,31 @@ const didRegisterSkillViewsEventContract = buildEventContract({
 			listenPermissionContract: buildPermissionContract({
 				id: 'didRegisterSkillViewsListenPermissions',
 				name: 'did register skill views',
+				description: null,
 				requireAllPermissions: false,
 				permissions: [
 					{
 						id: 'can-listen-to-did-register-skill-views',
 						name: 'Know when skill views are registered',
+						description: null,
+						requireAllStatuses: null,
 						defaults: {
+							skill: null,
+							owner: null,
+							groupManager: null,
+							manager: null,
+							teammate: null,
+							anonymous: null,
 							loggedIn: {
 								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
 							},
+							guest: null,
 						},
+						can: null,
 					},
 				],
 			}),

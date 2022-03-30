@@ -12,20 +12,37 @@ const getSkillViewsEventContract = buildEventContract({
 			emitPermissionContract: buildPermissionContract({
 				id: 'getSkillViewsEmitPermissions',
 				name: 'Get skill views',
+				description: null,
 				requireAllPermissions: false,
 				permissions: [
 					{
 						id: 'can-get-skill-views',
 						name: 'Can get skill views',
+						description: null,
+						requireAllStatuses: null,
 						defaults: {
+							skill: true,
+							owner: null,
+							groupManager: null,
+							manager: null,
+							teammate: null,
 							anonymous: {
 								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
 							},
 							loggedIn: {
 								default: true,
+								clockedIn: null,
+								clockedOut: null,
+								onPrem: null,
+								offPrem: null,
 							},
-							skill: true,
+							guest: null,
 						},
+						can: null,
 					},
 				],
 			}),
