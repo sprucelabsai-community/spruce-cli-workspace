@@ -5,7 +5,7 @@ jobs:
   setup_for_test:
     docker:
       - image: cimg/node:16.14
-    resource_class: medium
+    resource_class: sprucelabsai/cli
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -26,16 +26,6 @@ jobs:
           name: "Build"
           command: |
             yarn build.ci
-      - save_cache:
-          name: Cache node modules/build
-          key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/project/node_modules
-            - ~/project/build
-            - ~/project/packages/spruce-cli/node_modules
-            - ~/project/packages/spruce-cli/build
-            - ~/project/packages/spruce-templates/node_modules
-            - ~/project/packages/spruce-templates/build
       - run:
           name: "Clean test data"
           command: |
@@ -43,7 +33,7 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.14
-    resource_class: xlarge
+    resource_class: sprucelabsai/cli
     parallelism: 7
     steps:
       - add_ssh_keys:
@@ -52,15 +42,18 @@ jobs:
       - checkout
       - spruce/check_and_skip_if_npm_publish
       - spruce/install_rsync
-      - restore_cache:
-          name: Restoring Cached node modules/build
-          keys:
-            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: "ENV file creation"
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
-
+      - run:
+          name: "Install"
+          command: |
+            yarn install
+      - run:
+          name: "Build"
+          command: |
+            yarn build.ci
       - run:
           name: "Test 💪"
           command: |
@@ -76,25 +69,10 @@ jobs:
           name: "Max memory usage for tests"
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
-  cleanup_test:
-    docker:
-      - image: cimg/node:16.14
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
-      - checkout
-      - spruce/check_and_skip_if_npm_publish
-      - restore_cache:
-          keys:
-            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Clean test data
-          command: yarn run clean.test.data
   merge_auto_upgrade:
     docker:
       - image: cimg/node:16.14
-    resource_class: medium
+    resource_class: sprucelabsai/cli
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -105,15 +83,22 @@ jobs:
   npm_publish:
     docker:
       - image: cimg/node:16.14
+    resource_class: sprucelabsai/cli
     steps:
       - add_ssh_keys:
           fingerprints:
             - "ec:9f:2e:aa:1f:c9:ab:49:57:8f:c0:cd:2e:5b:f3:b0"
       - checkout
       - spruce/check_and_skip_if_npm_publish
-      - restore_cache:
-          keys:
-            - cli-build-{{ .Environment.CIRCLE_SHA1 }}
+      - spruce/install_rsync
+      - run:
+          name: "Install"
+          command: |
+            yarn install
+      - run:
+          name: "Build"
+          command: |
+            yarn build.ci
       - run: git config --global user.email "$GIT_AUTHOR_EMAIL"
       - run: git config --global user.name "$GIT_AUTHOR_NAME"
       - run:
