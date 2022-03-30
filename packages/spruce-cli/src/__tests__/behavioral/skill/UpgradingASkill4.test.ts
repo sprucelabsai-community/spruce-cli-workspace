@@ -1,128 +1,127 @@
+import fsUtil from 'fs'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class UpgradingASkill4Test extends AbstractCliTest {
-	@test()
-	protected static async upgradeResetsEventCache() {
-		await this.installSetListenerCacheAndBlockExecute()
-
-		await assert.doesThrowAsync(() =>
-			this.Action('node', 'upgrade').execute({})
-		)
-
-		const value = this.Settings().getListenerCache()
-		assert.isFalsy(value)
-	}
-
-	@test()
-	protected static async doesNotResetEventCacheWithOtherAction() {
-		await this.installSetListenerCacheAndBlockExecute()
-
-		await assert.doesThrowAsync(() => this.Action('schema', 'sync').execute({}))
-
-		const value = this.Settings().getListenerCache()
-		assert.isEqualDeep(value, { shouldBeDeleted: true })
-	}
-
-	@test('syncs schemas when schemas installed and schemas folder exists', true)
-	@test(
-		'does not syncs schemas when schemas installed but schemas folder does not exist',
-		false
-	)
-	protected static async shouldSyncSchemasIfSchemasIsInstalledAndSchemaFolderExists(
-		shouldCreateSchema: boolean
-	) {
-		await this.FeatureFixture().installCachedFeatures('schemas')
-
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+	protected static async beforeEach() {
+		await super.beforeEach()
+		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
+	}
 
-		if (shouldCreateSchema) {
-			await this.Action('schema', 'create').execute({
-				nameReadable: 'Test schema!',
-				namePascal: 'AnotherTest',
-				nameCamel: 'anotherTest',
-				description: 'this is so great!',
+	@test()
+	protected static async restoresMissingPackagesAndPlugins() {
+		await this.FeatureFixture().installCachedFeatures('views')
+
+		const features = this.Service('pkg', process.cwd()).get(
+			'testSkillCache.everything'
+		)
+
+		const pkg = this.Service('pkg')
+		const checks: { nodeModule?: string; plugin?: string }[] = []
+
+		for (const feat of features) {
+			const { code } = feat
+			const nodeModule = `@sprucelabs/spruce-${code}-plugin`
+			const path = this.resolveHashSprucePath('features', `${code}.plugin.ts`)
+			const plugin = diskUtil.doesFileExist(path) ? path : undefined
+
+			checks.push({
+				nodeModule: pkg.get(['dependencies', nodeModule])
+					? nodeModule
+					: undefined,
+				plugin,
 			})
 		}
 
-		const emitter = this.getEmitter()
-
-		let wasHit = false
-
-		await emitter.on('feature.will-execute', (payload) => {
-			if (payload.featureCode === 'schema' && payload.actionCode === 'sync') {
-				wasHit = true
+		for (const check of checks) {
+			if (check.nodeModule) {
+				pkg.unset(['dependencies', check.nodeModule])
 			}
+			if (check.plugin) {
+				diskUtil.deleteFile(check.plugin)
+			}
+		}
 
-			return {}
-		})
+		CommandService.setMockResponse(/yarn clean/, { code: 0 })
+		CommandService.setMockResponse(/yarn build.dev/, { code: 0 })
 
 		await this.Action('node', 'upgrade').execute({})
 
-		assert.isTrue(wasHit === shouldCreateSchema)
+		for (const check of checks) {
+			if (check.nodeModule) {
+				assert.isTruthy(
+					pkg.get(['dependencies', check.nodeModule]),
+					`${check.nodeModule} was not added back as a dependencies.`
+				)
+			}
+			if (check.plugin) {
+				assert.isTrue(
+					diskUtil.doesFileExist(check.plugin),
+					`${check.plugin} was not rewritten.`
+				)
+			}
+		}
 	}
 
 	@test()
-	protected static async modulesMovedFromDevToProdDependenciesStayThere() {
-		await this.FeatureFixture().installCachedFeatures('skills')
+	protected static async doesNotAskIfNewScriptsAreAddedToSkillFeature() {
+		const cli = await this.FeatureFixture().installCachedFeatures('skills')
 
-		await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
-		await this.moveDependencyToDev('@sprucelabs/error')
+		const pkg = this.Service('pkg')
 
-		let wasMovedBackToDev = false
-		let wasMovedBackToProd = false
-
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
-			code: 0,
-			callback: (_, args) => {
-				if (
-					args.indexOf('-D') > -1 &&
-					args.indexOf('@sprucelabs/resolve-path-aliases') > -1
-				) {
-					wasMovedBackToDev = true
-				} else if (
-					args.indexOf('-D') === -1 &&
-					args.indexOf('@sprucelabs/error') > -1
-				) {
-					wasMovedBackToProd = true
-				}
-			},
-		})
+		const skillFeature = cli.getFeature('skill')
+		//@ts-ignore
+		skillFeature.scripts['taco'] = 'bravo'
 
 		await this.Action('node', 'upgrade').execute({})
 
-		assert.isFalse(wasMovedBackToDev, 'dependency moved back to dev')
-		assert.isFalse(wasMovedBackToProd, 'dependency moved back to prod')
+		assert.isEqual(pkg.get(['scripts', 'taco']), 'bravo')
+
+		this.assertSandboxListenerNotWritten()
 	}
 
-	private static async moveDependencyToDev(name: string) {
+	@test()
+	protected static async canOverwriteMultipleChangedScript() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
 		const pkg = this.Service('pkg')
-		await pkg.uninstall(name)
-		await pkg.install(name, { isDev: true })
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('overwrite')
+
+		last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('overwrite')
+
+		await promise
+
+		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isNotEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
 	}
-	private static async moveDependencyToProd(name: string) {
-		const pkg = this.Service('pkg')
 
-		await pkg.uninstall(name)
-		await pkg.install(name)
-	}
-
-	private static async installSetListenerCacheAndBlockExecute() {
-		await this.FeatureFixture().installCachedFeatures('events')
-
-		const settings = this.Settings()
-		settings.setListenerCache({ shouldBeDeleted: true })
-
-		const emitter = this.getEmitter()
-		void emitter.on('feature.will-execute', () => {
-			throw new Error('Stop!')
-		})
-	}
-
-	private static Settings() {
-		return this.Service('eventSettings')
+	protected static assertSandboxListenerNotWritten() {
+		const listeners = this.resolvePath('src', 'listeners')
+		if (!diskUtil.doesDirExist(listeners)) {
+			return
+		}
+		const matches = fsUtil.readdirSync(listeners)
+		assert.isLength(
+			matches,
+			0,
+			'A sandbox listeners was written and it should not have been.'
+		)
 	}
 }

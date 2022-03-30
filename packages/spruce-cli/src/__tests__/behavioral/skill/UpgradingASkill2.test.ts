@@ -1,233 +1,196 @@
-import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
+import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import SyncAction from '../../../features/error/actions/SyncAction'
-import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill2Test extends AbstractCliTest {
-	private static originalErrorSyncExecute: any
 	protected static async beforeEach() {
-		if (!this.originalErrorSyncExecute) {
-			this.originalErrorSyncExecute = SyncAction.prototype.execute
-		} else {
-			SyncAction.prototype.execute = this.originalErrorSyncExecute
-		}
-
 		await super.beforeEach()
 		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
 	}
 
-	@test()
-	protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
-		CommandService.clearMockResponses()
-		await this.FeatureFixture().installCachedFeatures('views')
+	@test(
+		'Upgrades error.plugin (even if skill is broken)',
+		'error.plugin.ts',
+		'errors'
+	)
+	@test(
+		'Upgrades schema.plugin (even if skill is broken)',
+		'schema.plugin.ts',
+		'schemas'
+	)
+	@test(
+		'Upgrades conversation.plugin (even if skill is broken)',
+		'conversation.plugin.ts',
+		'conversation',
+		false
+	)
+	@test(
+		'Upgrades view.plugin (even if skill is broken)',
+		'view.plugin.ts',
+		'views',
+		false
+	)
+	protected static async upgradesPlugins(
+		pluginName: string,
+		cacheKey: string,
+		shouldMockYarn = true
+	) {
+		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
-		await this.Action('node', 'upgrade').execute({})
+		shouldMockYarn && CommandService.setMockResponse(/yarn/, { code: 0 })
 
-		const dependencies = this.Service('pkg').get('dependencies')
+		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
+		const originalContents = diskUtil.readFile(pluginPath)
 
-		assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
-	}
-
-	@test()
-	protected static async featuresNotEnabledDontInstall() {
-		CommandService.clearMockResponses()
-		await this.FeatureFixture().installCachedFeatures('schemas')
-
-		const results = await this.Action('node', 'upgrade').execute({})
-
-		const dependencies = this.Service('pkg').get('dependencies')
-
-		assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
-
-		assert.doesThrow(() =>
-			testUtil.assertFileByNameInGeneratedFiles(
-				'events.contract.ts',
-				results.files
-			)
-		)
-
-		this.assertViewPluginNotWritten()
-	}
-
-	@test()
-	protected static async upgradingSkillSyncsEvents() {
-		await this.FeatureFixture().installCachedFeatures('events')
-
-		const results = await this.Action('node', 'upgrade').execute({})
-		const events = eventDiskUtil.resolveCombinedEventsContractFile(this.cwd)
-
-		assert.isTrue(diskUtil.doesFileExist(events))
-
-		testUtil.assertFileByNameInGeneratedFiles(
-			'events.contract.ts',
-			results.files
-		)
-	}
-
-	@test()
-	protected static async upgradeCallsUpdateDependencies() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
-		UpdateDependenciesAction.prototype.execute = () => {
-			throw new Error('baaaaad')
-		}
-
-		const results = await this.Action('node', 'upgrade').execute({})
-
-		assert.isTruthy(results.errors)
-		assert.doesInclude(results.errors[0].message, 'baaaaad')
-	}
-
-	@test()
-	protected static async callsCleanFixAndBuildDev() {
-		await this.FeatureFixture().installCachedFeatures('skills')
-
-		let wasCleanBuildCalled = false
-		UpdateDependenciesAction.prototype.execute = async () => {
-			return {}
-		}
-
-		CommandService.setMockResponse('yarn clean.build', {
-			code: 0,
-			callback: () => {
-				wasCleanBuildCalled = true
-			},
-		})
-
-		let wasBuildDevCalled = false
-
-		CommandService.setMockResponse('yarn build.dev', {
-			code: 0,
-			callback: () => {
-				wasBuildDevCalled = true
-			},
-		})
+		diskUtil.writeFile(pluginPath, 'aoeuaoeuaoeuaoeu')
 
 		const results = await this.Action('node', 'upgrade').execute({})
 
 		assert.isFalsy(results.errors)
-		assert.isTrue(wasCleanBuildCalled)
-		assert.isTrue(wasBuildDevCalled)
+
+		testUtil.assertFileByNameInGeneratedFiles(pluginName, results.files)
+
+		const updatedContents = diskUtil.readFile(pluginPath)
+
+		assert.isEqual(updatedContents, originalContents)
+
+		assert.doesInclude(results.summaryLines ?? [], 'successfully')
 	}
 
 	@test()
-	protected static async writesViewPlugin() {
-		await this.FeatureFixture().installCachedFeatures('views')
-
-		const plugin = this.getViewsPluginPath()
-		assert.isTrue(diskUtil.doesFileExist(plugin))
-
-		diskUtil.deleteFile(plugin)
-
-		assert.isFalse(diskUtil.doesFileExist(plugin))
-
-		await this.Action('node', 'upgrade').execute({})
-
-		assert.isTrue(diskUtil.doesFileExist(plugin))
-	}
-
-	@test('sync with errors installed')
-	@test('sync with errors not installed', false)
-	protected static async upgradeSyncsErrors(isInstalled = true) {
-		await this.FeatureFixture().installCachedFeatures(
-			isInstalled ? 'errors' : 'schemas'
-		)
-
-		let wasHit = false
-
-		SyncAction.prototype.execute = async () => {
-			wasHit = true
-			return {}
-		}
-
-		this.disableCleanBuildAndYarnAdd()
-
-		await this.Action('node', 'upgrade').execute({})
-
-		assert.isEqual(wasHit, isInstalled)
-	}
-
-	@test()
-	protected static async resetsErrorPluginInSkill() {
+	protected static async canSkipPackageScriptChanges() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		const { plugin, expectedContents } = this.destroyErrorPlugin()
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
 
-		await this.disableCleanBuildAndYarnAdd()
-
-		const promise = this.Action('node', 'upgrade').execute({
-			upgradeMode: 'askForChanged',
-		})
+		const promise = this.Action('node', 'upgrade').execute({})
 
 		await this.waitForInput()
+
+		const last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		assert.doesInclude(last.options.options.choices, { value: 'skip' })
+		assert.doesInclude(last.options.options.choices, { value: 'skipAll' })
+		assert.doesInclude(last.options.options.choices, { value: 'overwrite' })
+
+		await this.ui.sendInput('skip')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async asksForEachScriptChange() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skip')
+
+		await this.waitForInput()
+
+		last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skip')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async canSkipAllScriptChanges() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+		pkg.set({ path: ['scripts', 'watch.build.dev'], value: 'taco' })
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
+		await this.ui.sendInput('skipAll')
+
+		await promise
+
+		assert.isEqual(pkg.get(['scripts', 'build.dev']), 'taco')
+		assert.isEqual(pkg.get(['scripts', 'watch.build.dev']), 'taco')
+	}
+
+	@test()
+	protected static async canOverwriteChangedScript() {
+		await this.FeatureFixture().installCachedFeatures('skills')
+
+		const pkg = this.Service('pkg')
+		pkg.set({ path: ['scripts', 'build.dev'], value: 'taco' })
+
+		const promise = this.Action('node', 'upgrade').execute({})
+
+		await this.waitForInput()
+
+		let last = this.ui.getLastInvocation()
+
+		assert.isEqual(last.command, 'prompt')
 		await this.ui.sendInput('overwrite')
 
 		await promise
 
-		const actualContents = diskUtil.readFile(plugin)
-
-		assert.isEqual(actualContents, expectedContents)
+		assert.isNotEqual(pkg.get(['scripts', 'build.dev']), 'taco')
 	}
 
 	@test()
-	protected static async resetsErrorPluginWhenErrorInstalled() {
-		await this.FeatureFixture().installCachedFeatures('errors')
+	protected static async upgradingSkillWithSandboxUpgradesTheListener() {
+		await this.FeatureFixture().installCachedFeatures('sandbox')
+		const results = await this.Action('sandbox', 'setup').execute({})
 
-		await this.Action('error', 'create').execute({
-			nameReadable: 'Test pass',
-			nameCamel: 'testPass',
-		})
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			/will-boot/,
+			results.files
+		)
 
-		const { plugin, expectedContents } = this.destroyErrorPlugin()
+		const originalContents = diskUtil.readFile(match)
+		diskUtil.writeFile(match, 'broken')
 
-		this.disableCleanAndBuild()
+		CommandService.setMockResponse(/yarn/, { code: 0 })
 
-		const results = await this.Action('node', 'upgrade').execute({
-			upgradeMode: 'askForChanged',
-		})
+		await this.Action('node', 'upgrade').execute({})
 
-		assert.isFalsy(results.errors)
-		const actualContents = diskUtil.readFile(plugin)
-
-		assert.isEqual(actualContents, expectedContents)
+		const newContents = diskUtil.readFile(match)
+		assert.isEqual(originalContents, newContents)
 	}
 
-	private static destroyErrorPlugin() {
-		const plugin = this.resolveHashSprucePath('errors', 'options.types.ts')
-		const expectedContents = diskUtil.readFile(plugin)
-
-		diskUtil.writeFile(plugin, 'waka')
-		return { plugin, expectedContents }
-	}
-
-	private static getViewsPluginPath() {
-		return this.resolveHashSprucePath('features', 'view.plugin.ts')
-	}
-
-	protected static assertViewPluginNotWritten() {
-		assert.isFalse(diskUtil.doesFileExist(this.getViewsPluginPath()))
-	}
-
-	private static disableCleanBuildAndYarnAdd() {
-		this.disableCleanAndBuild()
-
-		CommandService.setMockResponse(/yarn.*?add/gis, {
-			code: 0,
-		})
-	}
-
-	private static disableCleanAndBuild() {
-		CommandService.setMockResponse('yarn clean.build', {
-			code: 0,
-		})
-
-		CommandService.setMockResponse('yarn build.dev', {
-			code: 0,
-		})
+	protected static assertSandboxListenerNotWritten() {
+		const listeners = this.resolvePath('src', 'listeners')
+		if (!diskUtil.doesDirExist(listeners)) {
+			return
+		}
+		const matches = fsUtil.readdirSync(listeners)
+		assert.isLength(
+			matches,
+			0,
+			'A sandbox listeners was written and it should not have been.'
+		)
 	}
 }

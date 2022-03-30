@@ -44,7 +44,7 @@ jobs:
     docker:
       - image: cimg/node:16.14
     resource_class: xlarge
-    parallelism: 7
+    parallelism: 8
     steps:
       - add_ssh_keys:
           fingerprints:
