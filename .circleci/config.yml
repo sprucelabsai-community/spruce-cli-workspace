@@ -139,7 +139,7 @@ jobs:
             git reset --hard master
             git config --global user.email "$GIT_AUTHOR_EMAIL"
             git config --global user.name "$GIT_AUTHOR_NAME"
-            yarn run upgrade.packages.all
+            ./upgrade.sh
             yarn fix.lint
             if [[ $(git status) != *"modified"* ]]; then 
               echo "No modifications detected.  No push/PR necessary 👊"
