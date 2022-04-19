@@ -83,7 +83,7 @@ export default class EventStoreTest extends AbstractEventTest {
 						}),
 						emitPermissionContract: buildPermissionContract({
 							id: 'my-fantastic-event-contract',
-							name: 'Fanstastic emit perms',
+							name: 'Fantastic emit perms',
 							permissions: [
 								{
 									id: 'can-emit-perms',
