@@ -184,10 +184,7 @@ export default class CommandService {
 		return { mockResponse: match?.response, mockKey }
 	}
 
-	public static setMockResponse(
-		command: string | RegExp,
-		response: MockResponse
-	) {
+	public static fakeCommand(command: string | RegExp, response: MockResponse) {
 		this.mockResponses.unshift({
 			command,
 			response,

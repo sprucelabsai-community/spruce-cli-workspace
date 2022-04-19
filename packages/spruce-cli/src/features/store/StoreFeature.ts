@@ -38,7 +38,7 @@ export default class StoreFeature extends AbstractFeature {
 		)
 		void this.emitter.on(
 			'feature.will-execute',
-			this.handleWillExecute.bind(this)
+			this.handleDidExecute.bind(this)
 		)
 	}
 
@@ -55,20 +55,23 @@ export default class StoreFeature extends AbstractFeature {
 		}
 	}
 
-	private async handleWillExecute(payload: {
+	private async handleDidExecute(payload: {
 		featureCode: string
 		actionCode: string
 	}) {
 		const isInstalled = await this.featureInstaller.isInstalled('store')
 
-		if (
-			isInstalled &&
+		const isUpgrade = isInstalled &&
 			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade'
+
+
+		if (
+			isUpgrade
 		) {
 			uiUtil.renderMasthead({
 				ui: this.ui,
-				headline: 'Resyncing data stores...',
+				headline: 'Re-syncing data stores...',
 			})
 
 			const results = await this.Action('store', 'sync').execute({})

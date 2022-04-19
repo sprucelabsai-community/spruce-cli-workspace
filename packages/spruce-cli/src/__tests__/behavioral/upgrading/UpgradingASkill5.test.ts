@@ -35,7 +35,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 	) {
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn/gis), {
 			code: 0,
 		})
 
@@ -75,7 +75,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 		let wasMovedBackToDev = false
 		let wasMovedBackToProd = false
 
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn/gis), {
 			code: 0,
 			callback: (_, args) => {
 				if (

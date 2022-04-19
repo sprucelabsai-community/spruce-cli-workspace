@@ -27,7 +27,7 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 	) {
 		await this.FeatureFixture().installCachedFeatures(featureCode)
 
-		CommandService.setMockResponse(new RegExp(/yarn/), {
+		CommandService.fakeCommand(new RegExp(/yarn/), {
 			code: 0,
 		})
 

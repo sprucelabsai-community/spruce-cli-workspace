@@ -7,7 +7,7 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class UpgradingASkill4Test extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
 	}
@@ -46,8 +46,8 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
 			}
 		}
 
-		CommandService.setMockResponse(/yarn clean/, { code: 0 })
-		CommandService.setMockResponse(/yarn build.dev/, { code: 0 })
+		CommandService.fakeCommand(/yarn clean/, { code: 0 })
+		CommandService.fakeCommand(/yarn build.dev/, { code: 0 })
 
 		await this.Action('node', 'upgrade').execute({})
 

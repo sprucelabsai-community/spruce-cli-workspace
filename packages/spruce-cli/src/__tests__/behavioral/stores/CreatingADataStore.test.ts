@@ -153,11 +153,11 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
 	@test()
 	protected static async upgradeRestoresDataStoreTypes() {
-		CommandService.setMockResponse('yarn rebuild', {
+		CommandService.fakeCommand('yarn rebuild', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse(/yarn add/gis, {
+		CommandService.fakeCommand(/yarn add/gis, {
 			code: 0,
 		})
 

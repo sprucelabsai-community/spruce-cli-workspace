@@ -102,25 +102,24 @@ export default class EventFeature extends AbstractFeature {
 		}
 
 		const isInstalled = await this.featureInstaller.isInstalled('event')
-
-		if (
+		const isRemoteRelevant =
 			isInstalled &&
 			(featureCode === 'event' ||
 				featureCode === 'eventContract' ||
 				actionCode === 'login') &&
 			actionCode !== 'setRemote'
-		) {
+
+		if (isRemoteRelevant) {
 			const remoteResults = await this.appendRemoteToResultsOrPrompt()
 			results = actionUtil.mergeActionResults(results, remoteResults)
 		}
 
-		if (featureCode === 'node' && actionCode === 'upgrade' && isInstalled) {
-			const syncResults = await this.Action('event', 'sync.listeners').execute(
-				{}
-			)
-			results = actionUtil.mergeActionResults(results, syncResults)
-		}
+		return results
+	}
 
+	private async syncListenersAndMixinResults(results: FeatureActionResponse) {
+		const syncResults = await this.Action('event', 'sync.listeners').execute({})
+		results = actionUtil.mergeActionResults(results, syncResults)
 		return results
 	}
 
@@ -133,8 +132,12 @@ export default class EventFeature extends AbstractFeature {
 
 		let results = {}
 
-		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			results = this.Action('event', 'sync').execute({})
+		const isUpgrade =
+			isInstalled && featureCode === 'node' && actionCode === 'upgrade'
+
+		if (isUpgrade) {
+			results = await this.Action('event', 'sync').execute({})
+			results = await this.syncListenersAndMixinResults(results)
 		}
 
 		if (this.initiatingAction === this.combineCodes(featureCode, actionCode)) {

@@ -12,7 +12,7 @@ export default class CreatingANodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async canCreateAtDestination() {
-		CommandService.setMockResponse(new RegExp(/yarn add/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn add/gis), {
 			code: 0,
 		})
 		const promise = this.Action('node', 'create', {

@@ -16,7 +16,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 		}
 
 		await super.beforeEach()
-		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn rebuild/gis), {
 			code: 0,
 		})
 	}
@@ -92,7 +92,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 			return {}
 		}
 
-		CommandService.setMockResponse('yarn clean.build', {
+		CommandService.fakeCommand('yarn clean.build', {
 			code: 0,
 			callback: () => {
 				wasCleanBuildCalled = true
@@ -101,7 +101,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
 		let wasBuildDevCalled = false
 
-		CommandService.setMockResponse('yarn build.dev', {
+		CommandService.fakeCommand('yarn build.dev', {
 			code: 0,
 			callback: () => {
 				wasBuildDevCalled = true
@@ -216,17 +216,17 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 	private static disableCleanBuildAndYarnAdd() {
 		this.disableCleanAndBuild()
 
-		CommandService.setMockResponse(/yarn.*?add/gis, {
+		CommandService.fakeCommand(/yarn.*?add/gis, {
 			code: 0,
 		})
 	}
 
 	private static disableCleanAndBuild() {
-		CommandService.setMockResponse('yarn clean.build', {
+		CommandService.fakeCommand('yarn clean.build', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse('yarn build.dev', {
+		CommandService.fakeCommand('yarn build.dev', {
 			code: 0,
 		})
 	}

@@ -1,7 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import UpdateDependenciesAction from '../../features/node/actions/UpdateDependenciesAction'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class UpdatingDependenciesTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'node'

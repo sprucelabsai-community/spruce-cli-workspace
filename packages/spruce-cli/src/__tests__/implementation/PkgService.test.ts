@@ -26,7 +26,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async handlesAtLatestInName() {
-		CommandService.setMockResponse(new RegExp(/yarn/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn/gis), {
 			code: 0,
 		})
 
@@ -37,12 +37,9 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
 	@test()
 	protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
-		CommandService.setMockResponse(
-			new RegExp(/npm.*?install.*?--no-progress/gis),
-			{
-				code: 1,
-			}
-		)
+		CommandService.fakeCommand(new RegExp(/npm.*?install.*?--no-progress/gis), {
+			code: 1,
+		})
 
 		const { totalInstalled } = await this.pkg.install(
 			'@sprucelabs/jest-json-reporter'

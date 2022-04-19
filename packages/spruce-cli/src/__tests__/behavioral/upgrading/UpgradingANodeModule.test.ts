@@ -1,8 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import CommandService from '../../services/CommandService'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import uiAssert from '../../tests/utilities/uiAssert.utility'
+import CommandService from '../../../services/CommandService'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import uiAssert from '../../../tests/utilities/uiAssert.utility'
 
 export default class UpgradingANodeModuleTest extends AbstractCliTest {
 	protected static async beforeEach() {
@@ -16,9 +16,9 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async buildErrorsGetPassedThroughToResults() {
-		CommandService.setMockResponse(/yarn (add|install)/gis, { code: 0 })
-		CommandService.setMockResponse(/yarn clean.build/gis, { code: 1 })
-		CommandService.setMockResponse(/yarn build.dev/gis, { code: 0 })
+		CommandService.fakeCommand(/yarn (add|install)/gis, { code: 0 })
+		CommandService.fakeCommand(/yarn clean.build/gis, { code: 1 })
+		CommandService.fakeCommand(/yarn build.dev/gis, { code: 0 })
 
 		await this.getEmitter().on('feature.did-execute', () => {
 			return {
@@ -52,7 +52,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 			diskUtil.writeFile(tsConfig, 'beenChanged')
 		}
 
-		CommandService.setMockResponse(/yarn/gi, {
+		CommandService.fakeCommand(/yarn/gi, {
 			code: 0,
 		})
 

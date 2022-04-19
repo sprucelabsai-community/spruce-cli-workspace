@@ -6,29 +6,21 @@ import {
 	FILE_ACTION_OVERWRITE,
 	FILE_ACTION_SKIP,
 } from '../../../constants'
-import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { GeneratedFile } from '../../../types/cli.types'
 const BROKEN_SKILL_INDEX_CONTENTS = "throw new Error('cheese!')\n"
 export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
-			code: 0,
-		})
+		this.commandFaker.fakeRebuild()
 	}
 
 	@test()
 	protected static async forceEverythingUpgradeOverwritesWhatHasChanged() {
 		const cli = await this.installAndBreakSkill('skills')
 
-		CommandService.setMockResponse('yarn clean.build', {
-			code: 0,
-		})
-
-		CommandService.setMockResponse('yarn build.dev', {
-			code: 0,
-		})
+		this.commandFaker.fakeCleanBuild()
+		this.commandFaker.fakeBuild()
 
 		const files: {
 			name: string

@@ -1,15 +1,12 @@
 import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill2Test extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.setMockResponse(new RegExp(/yarn rebuild/gis), {
-			code: 0,
-		})
+		this.commandFaker.fakeRebuild()
 	}
 
 	@test(
@@ -41,12 +38,12 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 	) {
 		await this.FeatureFixture().installCachedFeatures(cacheKey)
 
-		shouldMockYarn && CommandService.setMockResponse(/yarn/, { code: 0 })
+		shouldMockYarn && this.commandFaker.fakeCommand(/yarn/, 0)
 
 		const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
 		const originalContents = diskUtil.readFile(pluginPath)
 
-		diskUtil.writeFile(pluginPath, 'aoeuaoeuaoeuaoeu')
+		diskUtil.writeFile(pluginPath, 'aoeuaoeuao-euaoeu')
 
 		const results = await this.Action('node', 'upgrade').execute({})
 
@@ -173,7 +170,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 		const originalContents = diskUtil.readFile(match)
 		diskUtil.writeFile(match, 'broken')
 
-		CommandService.setMockResponse(/yarn/, { code: 0 })
+		this.commandFaker.fakeCommand(/yarn/, 0)
 
 		await this.Action('node', 'upgrade').execute({})
 

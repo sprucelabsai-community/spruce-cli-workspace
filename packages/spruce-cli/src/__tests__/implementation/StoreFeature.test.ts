@@ -7,7 +7,7 @@ export default class StoreFeatureTest extends AbstractCliTest {
 	protected static async syncsOnWillExecute() {
 		await this.FeatureFixture().installCachedFeatures('stores')
 
-		CommandService.setMockResponse(/yarn/, {
+		CommandService.fakeCommand(/yarn/, {
 			code: 0,
 		})
 

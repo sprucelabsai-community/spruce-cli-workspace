@@ -14,41 +14,41 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.setMockResponse('which heroku', {
+		CommandService.fakeCommand('which heroku', {
 			code: 0,
 		})
-		CommandService.setMockResponse('grep api.heroku.com ~/.netrc', {
+		CommandService.fakeCommand('grep api.heroku.com ~/.netrc', {
 			code: 0,
 		})
-		CommandService.setMockResponse('git status', {
+		CommandService.fakeCommand('git status', {
 			code: 0,
 		})
-		CommandService.setMockResponse('git init', {
+		CommandService.fakeCommand('git init', {
 			code: 0,
 			stdout: 'Initialized empty Git repository in',
 		})
 
-		CommandService.setMockResponse('git ls-remote heroku', {
+		CommandService.fakeCommand('git ls-remote heroku', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse('which git', {
+		CommandService.fakeCommand('which git', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse('heroku create good-heroku-name', {
+		CommandService.fakeCommand('heroku create good-heroku-name', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse('heroku create bad-heroku-name', {
+		CommandService.fakeCommand('heroku create bad-heroku-name', {
 			code: 1,
 		})
 
-		CommandService.setMockResponse('heroku buildpacks:set heroku/nodejs', {
+		CommandService.fakeCommand('heroku buildpacks:set heroku/nodejs', {
 			code: 0,
 		})
 
-		CommandService.setMockResponse('git push --set-upstream heroku master', {
+		CommandService.fakeCommand('git push --set-upstream heroku master', {
 			code: 0,
 		})
 
@@ -139,7 +139,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async errorsIfHerokuClientNotInstalled() {
-		CommandService.setMockResponse('which heroku', {
+		CommandService.fakeCommand('which heroku', {
 			code: 1,
 		})
 
@@ -162,7 +162,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async errorsIfGitNotInstalled() {
-		CommandService.setMockResponse('which git', {
+		CommandService.fakeCommand('which git', {
 			code: 1,
 		})
 
@@ -185,7 +185,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async errorsIfNotInGitRepo() {
-		CommandService.setMockResponse('git status', {
+		CommandService.fakeCommand('git status', {
 			code: 128,
 			stderr:
 				'fatal: not a git repository (or any of the parent directories): .git',
@@ -215,7 +215,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async canCreateGitRepoIfNeeded() {
-		CommandService.setMockResponse('git status', {
+		CommandService.fakeCommand('git status', {
 			code: 128,
 		})
 
@@ -231,7 +231,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 		await this.waitForInput()
 
-		CommandService.setMockResponse('git status', {
+		CommandService.fakeCommand('git status', {
 			code: 0,
 		})
 
@@ -244,7 +244,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async errorsWhenNotLoggedIntoHerkou() {
-		CommandService.setMockResponse('grep api.heroku.com ~/.netrc', {
+		CommandService.fakeCommand('grep api.heroku.com ~/.netrc', {
 			code: 1,
 		})
 
@@ -327,7 +327,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async failsWhenDeclineToCreateRemoteBranch() {
-		CommandService.setMockResponse('git ls-remote heroku', {
+		CommandService.fakeCommand('git ls-remote heroku', {
 			code: 128,
 		})
 
@@ -359,7 +359,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async asksForHerokuAppName() {
-		CommandService.setMockResponse('git ls-remote heroku', {
+		CommandService.fakeCommand('git ls-remote heroku', {
 			code: 128,
 		})
 
@@ -395,7 +395,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async keepsAskingForAppNameUntilAGoodOneIsSelected() {
-		CommandService.setMockResponse('git ls-remote heroku', {
+		CommandService.fakeCommand('git ls-remote heroku', {
 			code: 128,
 		})
 		await this.FeatureFixture().installCachedFeatures('deploy')
@@ -437,7 +437,7 @@ export default class DeployingASkillTest extends AbstractCliTest {
 
 	@test()
 	protected static async failsWithPendingChangesToCommit() {
-		CommandService.setMockResponse('git status', {
+		CommandService.fakeCommand('git status', {
 			code: 0,
 			stdout: 'Changes not staged for commit',
 		})

@@ -1,9 +1,9 @@
 import { test, assert } from '@sprucelabs/test'
 import { random, uniq } from 'lodash'
-import UpdateDependenciesAction from '../../features/node/actions/UpdateDependenciesAction'
-import CommandService from '../../services/CommandService'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import { NpmPackage } from '../../types/cli.types'
+import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
+import CommandService from '../../../services/CommandService'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import { NpmPackage } from '../../../types/cli.types'
 
 export default class UpdateDependencies2Test extends AbstractCliTest {
 	private static action: UpdateDependenciesAction
@@ -27,7 +27,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
 		const passedArgs: string[] = []
 
-		CommandService.setMockResponse(/(npm|yarn).*?(install|add)/, {
+		CommandService.fakeCommand(/(npm|yarn).*?(install|add)/, {
 			code: 0,
 			callback: (_, args) => {
 				passedArgs.push(...args)
@@ -51,7 +51,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
 		let passedArgs: any[] = []
 
-		CommandService.setMockResponse(/(npm|yarn).*?(install|add)/, {
+		CommandService.fakeCommand(/(npm|yarn).*?(install|add)/, {
 			code: 0,
 			callback: (_, args) => {
 				passedArgs.push(args)

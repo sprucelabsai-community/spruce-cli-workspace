@@ -13,7 +13,7 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
 	@test()
 	protected static async runsExpectedCommand() {
-		CommandService.setMockResponse('yarn rebuild', { code: 0 })
+		CommandService.fakeCommand('yarn rebuild', { code: 0 })
 
 		const results = await this.Action('skill', 'rebuild').execute({
 			shouldPlayGames: false,
@@ -24,7 +24,7 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
 	@test()
 	protected static async handlesError() {
-		CommandService.setMockResponse('yarn rebuild', { code: 1 })
+		CommandService.fakeCommand('yarn rebuild', { code: 1 })
 
 		const results = await this.Action('skill', 'rebuild').execute({
 			shouldPlayGames: false,

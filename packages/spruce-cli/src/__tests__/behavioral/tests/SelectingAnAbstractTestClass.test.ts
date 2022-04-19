@@ -113,7 +113,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 	@test()
 	protected static async installingAFeatureRemovesLabelFromName() {
-		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
+		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 
@@ -142,8 +142,8 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	}
 
 	@test()
-	protected static async selectingUninistalledTestInstallsTheFeature() {
-		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
+	protected static async selectingUninstalledTestInstallsTheFeature() {
+		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 

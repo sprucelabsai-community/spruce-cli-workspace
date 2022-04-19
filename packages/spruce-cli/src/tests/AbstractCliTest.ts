@@ -35,6 +35,7 @@ import StoreFactory, {
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
 import { OptionOverrides } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
+import CommandFaker from './CommandFaker'
 import FeatureFixture, {
 	FeatureFixtureOptions,
 } from './fixtures/FeatureFixture'
@@ -52,6 +53,7 @@ type ExecuterOptions = Partial<ActionExecuterOptions> & {
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
 	protected static homeDir: string
+	protected static commandFaker: CommandFaker
 
 	private static _ui: SpyInterface
 	private static emitter?: GlobalEmitter
@@ -72,7 +74,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 		ImportService.enableCaching()
 
-		process.env.ENABLE_INSTALL_INTERTAINMENT = 'false'
+		process.env.ENABLE_INSTALL_ENTERTAINMENT = 'false'
 
 		this.originalEnv = { ...process.env }
 	}
@@ -106,6 +108,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		EventStore.clearCache()
 		CommandService.clearMockResponses()
 		MercuryClientFactory.reset()
+
+		this.commandFaker = new CommandFaker()
 	}
 
 	protected static async afterEach() {

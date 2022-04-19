@@ -31,7 +31,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	protected static async shouldCallBoot() {
 		let wasHit = false
 
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 			callback: () => {
 				wasHit = true
@@ -49,7 +49,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	@test()
 	protected static async shouldCallBootAgainOnFileChange() {
 		let hitCount = 0
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 			callback: () => {
 				hitCount++
@@ -72,7 +72,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async changesDuringBootOfSkillKillSkill() {
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 		})
 
@@ -96,7 +96,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async holdsOnAction() {
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 		})
 
@@ -121,7 +121,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async canKillAction() {
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 		})
 
@@ -151,7 +151,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 	@test()
 	protected static async makeSureWatcherIsStartedAndStopped() {
-		CommandService.setMockResponse(/yarn boot/gis, {
+		CommandService.fakeCommand(/yarn boot/gis, {
 			code: 0,
 		})
 

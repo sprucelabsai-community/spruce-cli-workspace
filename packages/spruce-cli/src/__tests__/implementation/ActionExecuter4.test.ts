@@ -8,10 +8,10 @@ export default class ActionExecuter4Test extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 
-		CommandService.setMockResponse(/which docker/gis, {
+		CommandService.fakeCommand(/which docker/gis, {
 			code: 0,
 		})
-		CommandService.setMockResponse(ENABLE_NPM_CACHE_COMMAND, {
+		CommandService.fakeCommand(ENABLE_NPM_CACHE_COMMAND, {
 			code: 0,
 		})
 	}

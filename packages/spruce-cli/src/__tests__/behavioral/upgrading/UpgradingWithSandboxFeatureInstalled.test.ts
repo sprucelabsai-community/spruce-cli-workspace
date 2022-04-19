@@ -1,14 +1,14 @@
 import pathUtil from 'path'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import testUtil from '../../tests/utilities/test.utility'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class UpgradingWithSandboxFeatureInstalledTest extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
 		await this.FeatureFixture().installCachedFeatures('sandbox')
-		await this.listenToDidInstallInthePast()
+		await this.listenToDidInstallInThePast()
 	}
 
 	@test()
@@ -17,7 +17,7 @@ export default class UpgradingWithSandboxFeatureInstalledTest extends AbstractCl
 	}
 
 	@test()
-	protected static async usesTodaysVersionEvenWithCoreListene() {
+	protected static async usesTodaysVersionEvenWithCoreListener() {
 		const match = await this.setupAndGetListenerPath()
 
 		const fileName = pathUtil.basename(match)
@@ -63,7 +63,7 @@ export default class UpgradingWithSandboxFeatureInstalledTest extends AbstractCl
 		return results
 	}
 
-	private static async listenToDidInstallInthePast() {
+	private static async listenToDidInstallInThePast() {
 		const results = await this.Action('event', 'listen').execute({
 			namespace: 'mercury',
 			eventName: 'did-install::v2020_12_25',

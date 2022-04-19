@@ -265,7 +265,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 	}
 
 	private static setupMockCommands() {
-		CommandService.setMockResponse(new RegExp(/npm.*?install .*?/gis), {
+		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
 			code: 0,
 		})
 	}
