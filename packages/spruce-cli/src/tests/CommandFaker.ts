@@ -8,7 +8,7 @@ export default class CommandFaker {
 		this.fakeCommand(command, code)
 	}
 
-	public fakeCommand(command: Command, code: number) {
+	public fakeCommand(command: Command, code = 0) {
 		CommandService.fakeCommand(command, {
 			code,
 		})

@@ -2,7 +2,6 @@ import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test'
 import SpruceError from '../../../errors/SpruceError'
 import { FeatureCode } from '../../../features/features.types'
-import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class UpgradingWithListeners extends AbstractCliTest {
@@ -27,9 +26,7 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 	) {
 		await this.FeatureFixture().installCachedFeatures(featureCode)
 
-		CommandService.fakeCommand(new RegExp(/yarn/), {
-			code: 0,
-		})
+		this.commandFaker.fakeCommand(new RegExp(/yarn/))
 
 		let wasHit = false
 
@@ -42,9 +39,10 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 			}
 		)
 
-		const results = await this.getEmitter().emit('feature.will-execute', {
+		const results = await this.getEmitter().emit('feature.did-execute', {
 			featureCode: 'node',
 			actionCode,
+			results: {},
 		})
 
 		const { errors } = eventResponseUtil.getAllResponsePayloadsAndErrors(
