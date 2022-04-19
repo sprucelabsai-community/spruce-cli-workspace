@@ -61,14 +61,12 @@ export default class StoreFeature extends AbstractFeature {
 	}) {
 		const isInstalled = await this.featureInstaller.isInstalled('store')
 
-		const isUpgrade = isInstalled &&
+		const isUpgrade =
+			isInstalled &&
 			payload.featureCode === 'node' &&
 			payload.actionCode === 'upgrade'
 
-
-		if (
-			isUpgrade
-		) {
+		if (isUpgrade) {
 			uiUtil.renderMasthead({
 				ui: this.ui,
 				headline: 'Re-syncing data stores...',
