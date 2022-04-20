@@ -159,8 +159,6 @@ export default class EventContractBuilder {
 			? ['core']
 			: this.dependencyService.get().map((d) => d.namespace)
 
-		debugger
-
 		const contractResults = await this.eventStore.fetchEventContracts({
 			localNamespace: namespace,
 			namespaces,
@@ -168,8 +166,6 @@ export default class EventContractBuilder {
 				this.ui.startLoading(msg)
 			},
 		})
-
-		debugger
 
 		if (contractResults.errors.length > 0) {
 			return {
