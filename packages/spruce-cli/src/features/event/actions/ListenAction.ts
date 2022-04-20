@@ -21,6 +21,7 @@ import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplat
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
+import { FetchContractsOptions } from '../stores/EventStore'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
 const CORE_EVENT_NAMESPACE = 'mercury'
@@ -163,20 +164,29 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			namespace !== SKILL_EVENT_NAMESPACE &&
 			namespace !== CORE_EVENT_NAMESPACE
 				? [namespace]
-				: undefined
+				: this.getDependencyNamespaces()
 
-		const { contracts } = skill.slug
-			? await eventStore.fetchEventContracts({
-					localNamespace: skill.slug,
-					namespaces: namespacesForFetch,
-					didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
-			  })
-			: await eventStore.fetchEventContracts({
-					namespaces: namespacesForFetch,
-					didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
-			  })
+		const options: FetchContractsOptions = {
+			didUpdateHandler: (msg: string) => this.ui.startLoading(msg),
+		}
+
+		if (skill.slug) {
+			options.localNamespace = skill.slug
+		}
+
+		if (namespacesForFetch.length > 0) {
+			options.namespaces = namespacesForFetch
+		}
+
+		const { contracts } = await eventStore.fetchEventContracts(options)
 
 		return contracts
+	}
+
+	private getDependencyNamespaces() {
+		return this.Service('dependency')
+			.get()
+			.map((d) => d.namespace)
 	}
 
 	private async syncEvents(

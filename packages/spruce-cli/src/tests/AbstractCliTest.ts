@@ -108,6 +108,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		EventStore.clearCache()
 		CommandService.clearMockResponses()
 		MercuryClientFactory.reset()
+		MercuryClientFactory.setIsTestMode(false)
 
 		this.commandFaker = new CommandFaker()
 	}

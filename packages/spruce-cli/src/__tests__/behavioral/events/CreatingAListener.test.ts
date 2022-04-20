@@ -1,3 +1,5 @@
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import { EventSignature } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
 import {
@@ -11,19 +13,28 @@ import {
 	MERCURY_API_NAMESPACE,
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
+import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
+import ListenAction from '../../../features/event/actions/ListenAction'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingAListenerTest extends AbstractEventTest {
 	private static readonly expectedVersion =
 		versionUtil.generateVersion().constValue
+	private static listen: ListenAction
+
+	protected static async beforeEach() {
+		await super.beforeEach()
+		this.listen = this.Action('event', 'listen')
+	}
 
 	@test()
 	protected static async throwsWithBadNamespace() {
 		await this.installEventFeature('events')
-		const results = await this.Action('event', 'listen').execute({
+
+		const results = await this.listen.execute({
 			namespace: 'taco-bell',
 		})
 
@@ -38,7 +49,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	@test()
 	protected static async throwsWithBadEventName() {
 		await this.installEventFeature('events')
-		const results = await this.Action('event', 'listen').execute({
+		const results = await this.listen.execute({
 			namespace: 'heartwood',
 			eventName: 'bad-time',
 		})
@@ -96,9 +107,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	protected static async creatingANewListenerAsksWhichEventToListenTo() {
 		await this.installEventFeature('events')
 
-		void this.Action('event', 'listen').execute({})
-
-		await this.waitForInput()
+		await this.executeAndWaitForInput()
 
 		let lastInvocation = this.ui.getLastInvocation()
 
@@ -114,6 +123,44 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		assert.doesInclude(lastInvocation.options.label, 'event')
 
 		this.ui.reset()
+	}
+
+	private static async executeAndWaitForInput() {
+		void this.listen.execute({})
+		await this.waitForInput()
+	}
+
+	@test()
+	protected static async loadsContractsFilteringByDependencies() {
+		await this.installEventFeature('events')
+		MercuryClientFactory.setIsTestMode(true)
+
+		let passedTarget: any
+		await eventFaker.on('get-event-contracts::v2020_12_25', ({ target }) => {
+			passedTarget = target
+			return {
+				contracts: [...(coreEventContracts as any)],
+			}
+		})
+
+		const namespace = 'waka'
+		this.addDependency(namespace)
+
+		await this.executeAndWaitForInput()
+
+		assert.isEqualDeep(passedTarget, {
+			namespaces: [namespace],
+		})
+
+		this.ui.reset()
+	}
+
+	private static addDependency(namespace: string) {
+		const dependencies = this.Service('dependency')
+		dependencies.add({
+			id: namespace,
+			namespace: 'waka',
+		})
 	}
 
 	@test()
@@ -290,7 +337,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 		const version = 'v2020_01_01'
 
-		const results = await this.Action('event', 'listen').execute({
+		const results = await this.listen.execute({
 			namespace: 'skill',
 			eventName: 'will-boot',
 			version,
@@ -321,7 +368,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			namespace: skill2.slug,
 		})
 
-		const results = await this.Action('event', 'listen').execute({
+		const results = await this.listen.execute({
 			namespace: skill2.slug,
 			eventName: `my-new-event`,
 			version: expectedVersion,

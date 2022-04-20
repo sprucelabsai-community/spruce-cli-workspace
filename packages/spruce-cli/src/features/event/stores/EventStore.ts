@@ -53,6 +53,12 @@ const eventFileNamesImportKeyMap = {
 	'listenPermissions.builder.ts': { key: 'listenPermissions', isSchema: false },
 }
 
+export interface FetchContractsOptions {
+	localNamespace?: string
+	namespaces?: string[]
+	didUpdateHandler?: InternalUpdateHandler
+}
+
 export default class EventStore extends AbstractStore {
 	public name = 'event'
 	protected static contractCache: Record<string, any> = {}
@@ -63,11 +69,9 @@ export default class EventStore extends AbstractStore {
 		EventStore.contractCache = {}
 	}
 
-	public async fetchEventContracts(options?: {
-		localNamespace?: string
-		namespaces?: string[]
-		didUpdateHandler?: InternalUpdateHandler
-	}): Promise<EventStoreFetchEventContractsResponse> {
+	public async fetchEventContracts(
+		options?: FetchContractsOptions
+	): Promise<EventStoreFetchEventContractsResponse> {
 		const { localNamespace, didUpdateHandler, namespaces } = options ?? {}
 
 		didUpdateHandler?.('Pulling remote contracts...')
