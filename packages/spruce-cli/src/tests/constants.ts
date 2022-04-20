@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export const DEMO_NUMBER = process.env.DEMO_NUMBER ?? '***missing***'
 export const DEMO_NUMBER_LOGIN_AS_SKILL =
 	process.env.DEMO_NUMBER_LOGIN_AS_SKILL ?? '***missing***'

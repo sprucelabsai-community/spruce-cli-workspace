@@ -3,30 +3,13 @@ import CliGlobalEmitter from '../GlobalEmitter'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
+import * as demoNumbersByName from '../tests/constants'
 import MercuryFixture from './fixtures/MercuryFixture'
 import OrganizationFixture from './fixtures/OrganizationFixture'
 import PersonFixture from './fixtures/PersonFixture'
 import SkillFixture from './fixtures/SkillFixture'
 
-require('dotenv').config()
-
-const DEMO_NUMBER = process.env.DEMO_NUMBER
-const DEMO_NUMBER_LOGIN_AS_SKILL = process.env.DEMO_NUMBER_LOGIN_AS_SKILL
-const DEMO_NUMBER_INSTALL_SKILL = process.env.DEMO_NUMBER_INSTALL_SKILL
-const SANDBOX_DEMO_NUMBER = process.env.SANDBOX_DEMO_NUMBER
-const DEMO_NUMBER_GLOBAL_EVENTS = process.env.DEMO_NUMBER_GLOBAL_EVENTS
-const DEMO_NUMBER_EVENTS_ON_BOOT = process.env.DEMO_NUMBER_EVENTS_ON_BOOT
-const DEMO_NUMBER_VIEWS_ON_BOOT = process.env.DEMO_NUMBER_VIEWS_ON_BOOT
-
-const demoNumbers = [
-	DEMO_NUMBER,
-	DEMO_NUMBER_LOGIN_AS_SKILL,
-	DEMO_NUMBER_INSTALL_SKILL,
-	DEMO_NUMBER_GLOBAL_EVENTS,
-	SANDBOX_DEMO_NUMBER,
-	DEMO_NUMBER_EVENTS_ON_BOOT,
-	DEMO_NUMBER_VIEWS_ON_BOOT,
-]
+const demoNumbers = Object.values(demoNumbersByName)
 
 const cwd = process.cwd()
 const term = new TerminalInterface(cwd, true)
