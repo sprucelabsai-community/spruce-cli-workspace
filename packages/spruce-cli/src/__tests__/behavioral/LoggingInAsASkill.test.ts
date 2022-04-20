@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_LOGIN_AS_SKILL } from '../../tests/constants'
 import { RegisteredSkill } from '../../types/cli.types'
 
 export default class LoggingInAsASkillTest extends AbstractSkillTest {
@@ -12,7 +13,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static async beforeAll() {
 		await super.beforeAll()
 
-		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_LOGIN_AS_SKILL)
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_LOGIN_AS_SKILL)
 
 		const skillFixture = this.getSkillFixture()
 		await skillFixture.clearAllSkills()
@@ -49,7 +50,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
 
 	private static async login() {
 		const person = await this.people.loginAsDemoPerson(
-			process.env.DEMO_NUMBER_LOGIN_AS_SKILL
+			DEMO_NUMBER_LOGIN_AS_SKILL
 		)
 
 		this.Service('auth').setLoggedInPerson(person)

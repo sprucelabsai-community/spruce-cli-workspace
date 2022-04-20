@@ -1,6 +1,7 @@
 import { test, assert } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_GLOBAL_EVENTS } from '../../tests/constants'
 import uiAssert from '../../tests/utilities/uiAssert.utility'
 
 export default class ConfiguringDependenciesTest extends AbstractSkillTest {
@@ -122,7 +123,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 			name: 'global dependency skill',
 		})
 
-		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_GLOBAL_EVENTS)
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_GLOBAL_EVENTS)
 
 		const results = await this.Action('dependency', 'add').execute({
 			namespace: skill.slug,

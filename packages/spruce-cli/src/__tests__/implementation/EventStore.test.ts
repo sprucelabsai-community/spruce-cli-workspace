@@ -14,6 +14,7 @@ import { errorAssert } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
 import EventStore from '../../features/event/stores/EventStore'
 import AbstractEventTest from '../../tests/AbstractEventTest'
+import { DEMO_NUMBER_EVENT_STORE } from '../../tests/constants'
 import testUtil from '../../tests/utilities/test.utility'
 
 const EVENT_NAME_READABLE = 'my event store amazing event'
@@ -30,6 +31,7 @@ export default class EventStoreTest extends AbstractEventTest {
 		await super.beforeEach()
 		this.createAction = this.Action<CreateAction>('event', 'create')
 		diskUtil.writeFile(this.resolvePath('package.json'), '{}')
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_EVENT_STORE)
 	}
 
 	@test()

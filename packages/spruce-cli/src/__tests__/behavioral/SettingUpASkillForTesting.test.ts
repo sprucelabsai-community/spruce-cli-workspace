@@ -1,5 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import { DEMO_NUMBER } from '../../tests/constants'
 
 export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'tests'
@@ -13,7 +14,7 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 	@test()
 	protected static async logsInAsDemoPerson() {
 		const results = await this.Action('test', 'setup').execute({
-			demoNumber: process.env.DEMO_NUMBER,
+			demoNumber: DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})
 
@@ -36,7 +37,7 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 	@test()
 	protected static async canRunAgainWithoutError() {
 		const results = await this.Action('test', 'setup').execute({
-			demoNumber: process.env.DEMO_NUMBER,
+			demoNumber: DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})
 
@@ -55,7 +56,7 @@ export default class SettingUpASkillForTestingTest extends AbstractSkillTest {
 		auth.updateCurrentSkill({ fail: true })
 
 		const results = await this.Action('test', 'setup').execute({
-			demoNumber: process.env.DEMO_NUMBER,
+			demoNumber: DEMO_NUMBER,
 			skillSlug: this.skillSlug,
 		})
 

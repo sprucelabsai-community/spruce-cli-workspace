@@ -5,6 +5,7 @@ import {
 import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import AbstractEventTest from '../../tests/AbstractEventTest'
+import { DEMO_NUMBER_EVENTS_ON_BOOT } from '../../tests/constants'
 
 const EVENT_NAME_READABLE = 'did book appointment'
 const EVENT_NAME = 'did-book-appointment'
@@ -13,8 +14,7 @@ const EVENT_CAMEL = 'didBookAppointment'
 export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-
-		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_EVENTS_ON_BOOT)
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_EVENTS_ON_BOOT)
 	}
 
 	@test()
@@ -39,11 +39,9 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			apiKey: skill2.apiKey,
 		})
 
-		const contractResults = await this.Store('event', {
+		const { contracts } = await this.Store('event', {
 			apiClientFactory: async () => client,
 		}).fetchEventContracts()
-
-		const contracts = contractResults.contracts
 
 		boot.meta?.kill()
 

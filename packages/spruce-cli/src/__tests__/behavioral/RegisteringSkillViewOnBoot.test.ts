@@ -1,5 +1,6 @@
 import { test, assert } from '@sprucelabs/test'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_VIEWS_ON_BOOT } from '../../tests/constants'
 
 export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'views'
@@ -50,7 +51,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 	}
 
 	protected static async registerCurrentSkillAndInstallToOrg() {
-		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_VIEWS_ON_BOOT)
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_VIEWS_ON_BOOT)
 		const skillFixture = this.getSkillFixture()
 		const orgFixture = this.getOrganizationFixture()
 

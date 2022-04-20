@@ -107,13 +107,14 @@ export default class EventStore extends AbstractStore {
 		if (!EventStore.contractCache[key]) {
 			const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
-			const results = await client.emit('get-event-contracts::v2020_12_25', {
-				target: {
-					namespaces,
-				},
-			})
-
-			const { contracts } = eventResponseUtil.getFirstResponseOrThrow(results)
+			const [{ contracts }] = await client.emitAndFlattenResponses(
+				'get-event-contracts::v2020_12_25',
+				{
+					target: {
+						namespaces,
+					},
+				}
+			)
 
 			EventStore.contractCache[key] = contracts
 		}

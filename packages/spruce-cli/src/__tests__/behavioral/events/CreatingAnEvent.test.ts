@@ -9,6 +9,7 @@ import { errorAssert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
+import { DEMO_NUMBER_CREATING_AN_EVENT } from '../../../tests/constants'
 import testUtil from '../../../tests/utilities/test.utility'
 import uiAssert from '../../../tests/utilities/uiAssert.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
@@ -186,7 +187,7 @@ export default createFormEmitPayloadBuilder
 				name: 'my new skill',
 			},
 			{
-				phone: process.env.DEMO_NUMBER_CREATING_AN_EVENT,
+				phone: DEMO_NUMBER_CREATING_AN_EVENT,
 			}
 		)
 	}

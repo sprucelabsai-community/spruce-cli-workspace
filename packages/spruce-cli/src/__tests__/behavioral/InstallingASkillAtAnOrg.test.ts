@@ -2,6 +2,7 @@ import { eventAssertUtil } from '@sprucelabs/spruce-event-utils'
 import { test, assert, assertUtil } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
+import { DEMO_NUMBER_INSTALL_SKILL } from '../../tests/constants'
 
 export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	protected static async beforeEach() {
@@ -145,6 +146,6 @@ export default class InstallingASkillAtAnOrgTest extends AbstractCliTest {
 	}
 
 	private static async login() {
-		await this.people.loginAsDemoPerson(process.env.DEMO_NUMBER_INSTALL_SKILL)
+		await this.people.loginAsDemoPerson(DEMO_NUMBER_INSTALL_SKILL)
 	}
 }
