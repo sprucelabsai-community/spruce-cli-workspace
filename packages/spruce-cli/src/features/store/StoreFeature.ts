@@ -37,7 +37,7 @@ export default class StoreFeature extends AbstractFeature {
 			this.registerAbstractTestClassHandler.bind(this)
 		)
 		void this.emitter.on(
-			'feature.will-execute',
+			'feature.did-execute',
 			this.handleDidExecute.bind(this)
 		)
 	}
