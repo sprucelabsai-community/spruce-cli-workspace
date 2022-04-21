@@ -27,7 +27,7 @@ export default class StoreFeatureTest extends AbstractCliTest {
 			actionCode: 'upgrade',
 		})
 
-		assert.isEqual(hitCount, 1)
+		assert.isEqual(hitCount, 0)
 
 		await emitter.emit('feature.did-execute', {
 			featureCode: 'node',
