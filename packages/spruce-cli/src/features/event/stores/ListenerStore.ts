@@ -12,9 +12,7 @@ export default class ListenerStore extends AbstractStore {
 	public name = 'listener'
 
 	public async loadListeners() {
-		const matches = await globby(
-			diskUtil.resolvePath(this.cwd, 'src', 'listeners', '**/*.listener.ts')
-		)
+		const matches = await globby(this.generateGlobbyPattern())
 
 		const listeners: Listener[] = []
 
@@ -28,5 +26,9 @@ export default class ListenerStore extends AbstractStore {
 		}
 
 		return listeners
+	}
+
+	private generateGlobbyPattern(): string {
+		return diskUtil.resolvePath(this.cwd, 'src', '**/*.listener.ts')
 	}
 }
