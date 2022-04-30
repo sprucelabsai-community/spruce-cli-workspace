@@ -281,6 +281,20 @@ export default class EventStoreTest extends AbstractEventTest {
 		assert.doesThrow(() => eventContractUtil.getSignatureByName(unified, fqen))
 	}
 
+	@test()
+	protected static async globbyPatternLooksEverywhere() {
+		const store = this.Store('event')
+		const expected = this.resolvePath(
+			'src',
+			'**',
+			'events',
+			'**/*.(builder|options).ts'
+		)
+
+		//@ts-ignore
+		assert.isEqual(store.generateGlobbyForLocalEvents(), expected)
+	}
+
 	private static async installAndRegisterOneGlobalEvent() {
 		await this.FeatureFixture().installCachedFeatures('events')
 

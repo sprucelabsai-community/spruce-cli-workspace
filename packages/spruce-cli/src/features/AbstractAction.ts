@@ -29,7 +29,7 @@ import {
 	ActionOptions,
 	FeatureCode,
 } from './features.types'
-import validateAndNormalizeUtil from './validateAndNormalize.utility'
+import validateAndNormalizer from './validateAndNormalize.utility'
 
 export default abstract class AbstractAction<S extends Schema = Schema>
 	implements FeatureAction<S>, ServiceProvider
@@ -105,7 +105,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 
 	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {
 		const schema = this.optionsSchema
-		return validateAndNormalizeUtil.validateAndNormalize(schema, options)
+		return validateAndNormalizer.validateAndNormalize(schema, options)
 	}
 
 	protected async resolveVersion(

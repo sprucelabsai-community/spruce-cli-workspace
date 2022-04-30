@@ -12,7 +12,7 @@ import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplat
 import { GraphicsInterface } from '../../../types/cli.types'
 import { FeatureActionResponse } from '../../features.types'
 import SkillStore from '../../skill/stores/SkillStore'
-import validateAndNormalizeUtil from '../../validateAndNormalize.utility'
+import validateAndNormalizer from '../../validateAndNormalize.utility'
 import EventStore from '../stores/EventStore'
 import EventWriter from '../writers/EventWriter'
 
@@ -49,7 +49,7 @@ export default class EventContractBuilder {
 	public async fetchAndWriteContracts(
 		options: Options
 	): Promise<FeatureActionResponse> {
-		const normalizedOptions = validateAndNormalizeUtil.validateAndNormalize(
+		const normalizedOptions = validateAndNormalizer.validateAndNormalize(
 			this.optionsSchema,
 			options
 		)

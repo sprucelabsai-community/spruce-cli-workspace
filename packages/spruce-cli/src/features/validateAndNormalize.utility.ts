@@ -11,7 +11,7 @@ type StripNulls<T extends Record<string, any>> = {
 	[K in keyof T]: Exclude<T[K], null>
 }
 
-const validateAndNormalizeUtil = {
+const validateAndNormalizer = {
 	validateAndNormalize<S extends Schema = Schema>(
 		schema: S,
 		options: SchemaPartialValues<S, false>
@@ -44,4 +44,4 @@ const validateAndNormalizeUtil = {
 	},
 }
 
-export default validateAndNormalizeUtil
+export default validateAndNormalizer

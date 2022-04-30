@@ -150,14 +150,7 @@ export default class EventStore extends AbstractStore {
 			return EventStore.localEventCache
 		}
 
-		const localMatches = await globby(
-			diskUtil.resolvePath(
-				this.cwd,
-				'src',
-				'events',
-				'**/*.(builder|options).ts'
-			)
-		)
+		const localMatches = await globby(this.generateGlobbyForLocalEvents())
 
 		const ns = namesUtil.toKebab(localNamespace)
 		const eventSignatures: Record<string, EventSignature> = {}
@@ -277,6 +270,16 @@ export default class EventStore extends AbstractStore {
 		}
 
 		return null
+	}
+
+	private generateGlobbyForLocalEvents(): string | readonly string[] {
+		return diskUtil.resolvePath(
+			this.cwd,
+			'src',
+			'**',
+			'events',
+			'**/*.(builder|options).ts'
+		)
 	}
 
 	public async registerEventContract(options: {
