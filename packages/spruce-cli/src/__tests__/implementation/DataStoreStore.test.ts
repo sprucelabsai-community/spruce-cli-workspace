@@ -109,4 +109,12 @@ export default class DataStoreStoreTest extends AbstractSkillTest {
 			file: 'Bad.store.ts',
 		})
 	}
+
+	@test()
+	protected static async globbyPatternLooksEverywhere() {
+		const expected = this.resolvePath('src', '**', '*.store.ts')
+
+		//@ts-ignore
+		assert.isEqual(this.store.generateGlobbyPattern(), expected)
+	}
 }

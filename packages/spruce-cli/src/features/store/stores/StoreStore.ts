@@ -13,7 +13,7 @@ export default class StoreStore extends AbstractStore {
 	public name = 'store'
 
 	public async fetchStores() {
-		const search = diskUtil.resolvePath(this.cwd, 'src', 'stores', '*.store.ts')
+		const search = this.generateGlobbyPattern()
 		const matches = await globby(search)
 
 		const results = introspectionUtil.introspect(matches)
@@ -31,5 +31,9 @@ export default class StoreStore extends AbstractStore {
 		}
 
 		return stores
+	}
+
+	private generateGlobbyPattern() {
+		return diskUtil.resolvePath(this.cwd, 'src', '**', '*.store.ts')
 	}
 }
