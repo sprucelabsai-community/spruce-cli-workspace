@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v15.2.24...v15.3.0) (2022-04-30)
+
+
+### Features
+
+* events can now be put anywhere inside an events dir ([a0b6724](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a0b6724))
+* listeners can now be anywhere, just need .listener ([7e8a05b](https://github.com/sprucelabsai/spruce-cli-workspace/commit/7e8a05b))
+
+
+
+
+
 ## [15.2.24](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v15.2.23...v15.2.24) (2022-04-20)
 
 **Note:** Version bump only for package spruce-cli-workspace
