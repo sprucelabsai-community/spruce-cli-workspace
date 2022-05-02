@@ -132,6 +132,7 @@ jobs:
       - spruce/setup_ct_npm_cache
       - checkout
       - spruce/set_target_branch_env
+      - spruce/install_rsync
       - run:
           name: "Try to upgrade"
           command: |
