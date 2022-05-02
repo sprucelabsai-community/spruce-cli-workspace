@@ -170,7 +170,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 		}
 	}
 
-	@test.only()
+	@test()
 	protected static relativePathsAddDotSlash() {
 		const action = this.Action('test', 'create') as CreateAction
 
