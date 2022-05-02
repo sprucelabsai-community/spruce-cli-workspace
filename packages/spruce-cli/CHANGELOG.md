@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.4.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v15.3.0...v15.4.0) (2022-05-02)
+
+
+### Features
+
+* data stores can be anyowhere in a skill now! ([eda09e7](https://github.com/sprucelabsai/spruce-cli-workspace/commit/eda09e7))
+
+
+
+
+
 # [15.3.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v15.2.24...v15.3.0) (2022-04-30)
 
 
