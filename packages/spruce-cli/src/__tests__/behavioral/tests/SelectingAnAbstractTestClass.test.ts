@@ -2,7 +2,7 @@ import { SelectChoice } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test'
 import { FeatureCode } from '../../../features/features.types'
-import CommandService from '../../../services/CommandService'
+import CreateAction from '../../../features/test/actions/CreateAction'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -113,9 +113,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 	@test()
 	protected static async installingAFeatureRemovesLabelFromName() {
-		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
-			code: 0,
-		})
+		this.commandFaker.fakeInstall()
 
 		await this.installTests()
 
@@ -143,9 +141,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 	@test()
 	protected static async selectingUninstalledTestInstallsTheFeature() {
-		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
-			code: 0,
-		})
+		this.commandFaker.fakeInstall()
 
 		for (const feat of featuresWithRegisteredTests) {
 			this.cwd = diskUtil.createRandomTempDir()
@@ -172,6 +168,24 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 			)
 			assert.isTrue(isInstalled)
 		}
+	}
+
+	@test.only()
+	protected static relativePathsAddDotSlash() {
+		const action = this.Action('test', 'create') as CreateAction
+
+		//@ts-ignore
+		const actual = action.buildParentClassFromCandidate(
+			{
+				label: 'test',
+				name: 'AbstractTest',
+				path: this.resolvePath('test/AbstractTest'),
+				isDefaultExport: false,
+			},
+			this.resolvePath('test')
+		)
+
+		assert.isEqual(actual.importPath, './AbstractTest')
 	}
 
 	private static async buildAndAssertTestFailsAsExpected() {

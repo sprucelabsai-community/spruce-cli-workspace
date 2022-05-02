@@ -301,7 +301,7 @@ export default class EventWriter extends AbstractWriter {
 			DEFAULT_SCHEMA_TYPES_FILENAME
 		)
 
-		let relativeTypesFile = pathUtil.relative(
+		let relativeTypesFile = diskUtil.resolveRelativePath(
 			pathUtil.dirname(resolvedDestination),
 			schemaTypesFile
 		)

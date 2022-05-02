@@ -3,8 +3,6 @@ import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ t
 {{#if (isDefined parentTestClass)}}import {{#if parentTestClass.isDefaultExport}}{{parentTestClass.name}}{{else}}{ {{parentTestClass.name}} }{{/if}} from '{{parentTestClass.importPath}}'
 {{/if}}
 
-class {{namePascal}} {}
-
 @fake.login()
 export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass)}}{{parentTestClass.name}}{{else}}AbstractSpruceTest{{/if}} {
 	@test()
@@ -18,3 +16,5 @@ export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass
 		assert.isTrue(false)
 	}
 }
+
+class {{namePascal}} {}

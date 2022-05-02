@@ -219,7 +219,7 @@ export default class SchemaWriter extends AbstractWriter {
 		})
 
 		let typesFile = options.typesFile
-			? pathUtil.relative(
+			? diskUtil.resolveRelativePath(
 					pathUtil.dirname(resolvedDestination),
 					options.typesFile
 			  )

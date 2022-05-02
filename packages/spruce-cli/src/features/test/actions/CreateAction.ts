@@ -171,7 +171,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			isDefaultExport: match.isDefaultExport,
 			importPath:
 				match.import ??
-				pathUtil.relative(
+				diskUtil.resolveRelativePath(
 					resolvedDestination,
 					//@ts-ignore
 					match.path.replace(pathUtil.extname(match.path), '')

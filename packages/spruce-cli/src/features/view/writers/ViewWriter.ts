@@ -1,4 +1,3 @@
-import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	VcTemplateItem,
@@ -61,7 +60,9 @@ export default class ViewWriter extends AbstractWriter {
 	): VcTemplateItem[] {
 		return vcTemplateItems.map((i) => ({
 			...i,
-			path: pathUtil.relative(destinationDir, i.path).replace('.ts', ''),
+			path: diskUtil
+				.resolveRelativePath(destinationDir, i.path)
+				.replace('.ts', ''),
 		}))
 	}
 
