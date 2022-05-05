@@ -24,7 +24,7 @@ import { FeatureActionResponse } from '../../features.types'
 import { FetchContractsOptions } from '../stores/EventStore'
 
 const SKILL_EVENT_NAMESPACE = 'skill'
-const CORE_EVENT_NAMESPACE = 'mercury'
+export const CORE_EVENT_NAMESPACE = MERCURY_API_NAMESPACE
 
 type OptionsSchema =
 	SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema
@@ -164,7 +164,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			namespace !== SKILL_EVENT_NAMESPACE &&
 			namespace !== CORE_EVENT_NAMESPACE
 				? [namespace]
-				: this.getDependencyNamespaces()
+				: [...this.getDependencyNamespaces(), 'mercury']
 
 		const options: FetchContractsOptions = {
 			didUpdateHandler: (msg: string) => this.ui.startLoading(msg),

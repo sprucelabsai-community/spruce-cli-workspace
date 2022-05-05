@@ -1,6 +1,6 @@
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { coreEventContracts } from '@sprucelabs/mercury-core-events'
-import { EventSignature } from '@sprucelabs/mercury-types'
+import { EventSignature, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
 import {
 	buildEmitTargetAndPayloadSchema,
@@ -16,7 +16,9 @@ import {
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { test, assert } from '@sprucelabs/test'
 import { errorAssert } from '@sprucelabs/test-utils'
-import ListenAction from '../../../features/event/actions/ListenAction'
+import ListenAction, {
+	CORE_EVENT_NAMESPACE,
+} from '../../../features/event/actions/ListenAction'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -106,7 +108,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	@test()
 	protected static async creatingANewListenerAsksWhichEventToListenTo() {
 		await this.installEventFeature('events')
-
 		await this.executeAndWaitForInput()
 
 		let lastInvocation = this.ui.getLastInvocation()
@@ -125,41 +126,34 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	private static async executeAndWaitForInput() {
-		void this.listen.execute({})
-		await this.waitForInput()
-	}
-
 	@test()
 	protected static async loadsContractsFilteringByDependencies() {
-		await this.installEventFeature('events')
-		MercuryClientFactory.setIsTestMode(true)
-
 		let passedTarget: any
-		await eventFaker.on('get-event-contracts::v2020_12_25', ({ target }) => {
+		await this.fakeGetEventContracts((target) => {
 			passedTarget = target
-			return {
-				contracts: [...(coreEventContracts as any)],
-			}
 		})
 
 		const namespace = 'waka'
-		this.addDependency(namespace)
-
-		await this.executeAndWaitForInput()
+		await this.installAddDependencyExecuteAndWaitForInput(namespace)
 
 		assert.isEqualDeep(passedTarget, {
-			namespaces: [namespace],
+			namespaces: [namespace, CORE_EVENT_NAMESPACE],
 		})
 
 		this.ui.reset()
 	}
 
-	private static addDependency(namespace: string) {
-		const dependencies = this.Service('dependency')
-		dependencies.add({
-			id: namespace,
-			namespace: 'waka',
+	private static async fakeGetEventContracts(
+		cb?: (
+			target?: SpruceSchemas.Mercury.v2020_12_25.GetEventContractsTarget | null
+		) => void,
+		results?: SpruceSchemas.Mercury.v2020_12_25.GetEventContractsResponsePayload['contracts']
+	) {
+		await eventFaker.on('get-event-contracts::v2020_12_25', ({ target }) => {
+			cb?.(target)
+			return {
+				contracts: results ?? [...(coreEventContracts as any)],
+			}
 		})
 	}
 
@@ -330,6 +324,29 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			)
 
 		await this.Service('typeChecker').check(listenerPath)
+	}
+
+	private static async installAddDependencyExecuteAndWaitForInput(
+		namespace: string
+	) {
+		await this.installEventFeature('events')
+		MercuryClientFactory.setIsTestMode(true)
+		this.addDependency(namespace)
+		await this.executeAndWaitForInput()
+		return this.ui.getLastInvocation()
+	}
+
+	private static async executeAndWaitForInput() {
+		void this.listen.execute({})
+		await this.waitForInput()
+	}
+
+	private static addDependency(namespace: string) {
+		const dependencies = this.Service('dependency')
+		dependencies.add({
+			id: namespace,
+			namespace: 'waka',
+		})
 	}
 
 	private static async installEventsAndCreateListener() {
