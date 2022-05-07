@@ -121,7 +121,7 @@
   "devDependencies": {
     "@sprucelabs/data-stores": "^11.0.0",
     "@sprucelabs/jest-sheets-reporter": "^1.3.43",
-    "@sprucelabs/mercury-core-events": "^4.0.1",
+    "@sprucelabs/mercury-core-events": "^4.0.2",
     "@sprucelabs/resolve-path-aliases": "^1.1.40",
     "@sprucelabs/spruce-conversation-plugin": "^31.0.4",
     "@sprucelabs/spruce-deploy-plugin": "^31.0.4",
