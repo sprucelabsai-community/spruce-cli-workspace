@@ -470,7 +470,7 @@ export default class TerminalInterface implements GraphicsInterface {
 					})
 				}
 				const dirPath = path.join(
-					fieldDefinition.defaultValue?.path ?? this.cwd,
+					fieldDefinition.defaultValue?.uri ?? this.cwd,
 					'/'
 				)
 
