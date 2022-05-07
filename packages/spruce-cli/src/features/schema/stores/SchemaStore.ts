@@ -8,7 +8,6 @@ import {
 } from '@sprucelabs/schema'
 import {
 	personSchema,
-	profileImageSchema,
 	skillSchema,
 	skillCreatorSchema,
 	locationSchema,
@@ -34,7 +33,6 @@ import { InternalUpdateHandler } from '../../../types/cli.types'
 
 export const coreSchemas = {
 	personSchema,
-	profileImageSchema,
 	skillSchema,
 	skillCreatorSchema,
 	locationSchema,
