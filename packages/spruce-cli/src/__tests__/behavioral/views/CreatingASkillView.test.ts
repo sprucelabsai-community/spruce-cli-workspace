@@ -23,6 +23,26 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 	}
 
 	@test()
+	protected static async viewFieatureHasExpectedDependencies() {
+		const features = await this.getFeatureInstaller()
+		const view = features.getFeature('view')
+		assert.isEqualDeep(view.dependencies, [
+			{
+				code: 'node',
+				isRequired: true,
+			},
+			{
+				code: 'schema',
+				isRequired: true,
+			},
+			{
+				code: 'event',
+				isRequired: true,
+			},
+		])
+	}
+
+	@test()
 	protected static async asksIfRootSkillViewIfNotYetCreated() {
 		void this.action.execute({
 			viewType: 'skillView',

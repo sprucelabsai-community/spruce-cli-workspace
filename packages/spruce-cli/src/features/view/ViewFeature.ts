@@ -30,7 +30,7 @@ export default class ViewFeature extends AbstractFeature {
 
 	public dependencies: FeatureDependency[] = [
 		{
-			code: 'skill',
+			code: 'node',
 			isRequired: true,
 		},
 		{
