@@ -247,12 +247,12 @@ import ` +
 import {
 	ViewControllerFactory,
 	AuthenticatorImpl,
-	MockStorage,
+	StubStorage,
 	${idInterfaceName},
 } from '@sprucelabs/heartwood-view-controllers'
 import { vcDiskUtil } from '@sprucelabs/spruce-test-fixtures'
 
-AuthenticatorImpl.setStorage(new MockStorage())
+AuthenticatorImpl.setStorage(new StubStorage())
 
 const vcFactory = ViewControllerFactory.Factory({
 	controllerMap: vcDiskUtil.loadViewControllersAndBuildMap('testing-views', __dirname),
