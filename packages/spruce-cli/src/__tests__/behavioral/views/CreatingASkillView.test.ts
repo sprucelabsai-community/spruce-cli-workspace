@@ -256,6 +256,7 @@ AuthenticatorImpl.setStorage(new StubStorage())
 
 const vcFactory = ViewControllerFactory.Factory({
 	controllerMap: vcDiskUtil.loadViewControllersAndBuildMap('testing-views', __dirname),
+	device: {} as any,
 	connectToApi: async () => {
 		return 'yes' as any
 	},
