@@ -19,7 +19,7 @@ import {
 	messageSourceSchema,
 	messageTargetSchema,
 	sendMessageSchema,
-	choicesSchema,
+	choiceSchema,
 	linkSchema,
 } from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
@@ -45,7 +45,7 @@ export const coreSchemas = {
 	messageSourceSchema,
 	messageTargetSchema,
 	sendMessageSchema,
-	choicesSchema,
+	choiceSchema,
 	linkSchema,
 }
 
