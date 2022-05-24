@@ -42,7 +42,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "lerna": "4.0.0",
-    "yarn-upgrade-all": "0.7.0"
+    "lerna": "^4.0.0",
+    "yarn-upgrade-all": "^0.7.1"
   }
 }
