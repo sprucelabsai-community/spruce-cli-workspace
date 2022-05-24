@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v16.0.0...v17.0.0) (2022-05-24)
+
+
+### Breaking Changes
+
+* upgrade ([43df2f5](https://github.com/sprucelabsai/spruce-cli-workspace/commit/43df2f5))
+* upgrade ([02ccd4a](https://github.com/sprucelabsai/spruce-cli-workspace/commit/02ccd4a))
+
+
+
+
+
 # [16.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v15.4.12...v16.0.0) (2022-05-24)
 
 
