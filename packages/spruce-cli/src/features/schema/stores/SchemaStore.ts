@@ -19,7 +19,8 @@ import {
 	messageSourceSchema,
 	messageTargetSchema,
 	sendMessageSchema,
-	fullMessageChoicesSchema,
+	choicesSchema,
+	linkSchema,
 } from '@sprucelabs/spruce-core-schemas'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
@@ -44,7 +45,8 @@ export const coreSchemas = {
 	messageSourceSchema,
 	messageTargetSchema,
 	sendMessageSchema,
-	fullMessageChoicesSchema,
+	choicesSchema,
+	linkSchema,
 }
 
 interface AddonItem {
