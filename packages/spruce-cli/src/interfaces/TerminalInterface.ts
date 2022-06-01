@@ -290,12 +290,18 @@ export default class TerminalInterface implements GraphicsInterface {
 	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
 		const shouldStripVowels = process.stdout.columns < 80
 
-		const stripped = shouldStripVowels
+		let stripped = shouldStripVowels
 			? message.replace(/[aeiou]/gi, '')
 			: message
 
+		if (
+			shouldStripVowels &&
+			['a', 'e', 'i', 'o', 'u'].indexOf(message[0].toLowerCase()) > -1
+		) {
+			stripped = `${message[0]}${stripped}`
+		}
+
 		fonts.say(stripped, {
-			// Font: 'tiny',
 			align: 'left',
 			gradient: [GraphicsTextEffect.Red, GraphicsTextEffect.Blue],
 			colors: effects ? filterEffectsForCFonts(effects) : undefined,
