@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.0.11](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.10...v17.0.11) (2022-06-08)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [17.0.10](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.9...v17.0.10) (2022-06-07)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [17.0.9](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.8...v17.0.9) (2022-06-06)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [17.0.8](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.7...v17.0.8) (2022-06-05)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [17.0.7](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.6...v17.0.7) (2022-06-03)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
+## [17.0.6](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.5...v17.0.6) (2022-06-01)
+
+**Note:** Version bump only for package @sprucelabs/spruce-cli
+
+
+
+
+
 ## [17.0.5](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.4...v17.0.5) (2022-06-01)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
