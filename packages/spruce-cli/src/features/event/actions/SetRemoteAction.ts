@@ -18,6 +18,10 @@ const optionsSchema = buildSchema({
 						label: 'Local',
 					},
 					{
+						value: 'demo',
+						label: 'Demo',
+					},
+					{
 						value: 'developer',
 						label: 'Development',
 					},
