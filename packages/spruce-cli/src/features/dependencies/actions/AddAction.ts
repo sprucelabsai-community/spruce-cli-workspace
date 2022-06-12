@@ -63,8 +63,16 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 			namespace: skill.slug,
 		})
 
+		const summaryLines = [`Added "${skill.name}" as a dependency!`]
+		const isEventInstalled = await this.featureInstaller.isInstalled('event')
+		if (isEventInstalled) {
+			summaryLines.push(
+				'You will need to run `spruce sync.events` before accessing any new events.'
+			)
+		}
+
 		return {
-			summaryLines: [`Added "${skill.name}" as a dependency!`],
+			summaryLines,
 		}
 	}
 }
