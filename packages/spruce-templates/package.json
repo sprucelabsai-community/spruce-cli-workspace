@@ -58,7 +58,7 @@
 	"dependencies": {
 		"@sprucelabs/mercury-types": "^34.0.30",
 		"@sprucelabs/schema": "^28.2.38",
-		"@sprucelabs/spruce-event-utils": "^26.0.31",
+		"@sprucelabs/spruce-event-utils": "^26.0.36",
 		"@sprucelabs/spruce-skill-utils": "^26.0.70",
 		"globby": "11.0.4",
 		"handlebars": "^4.7.7",
