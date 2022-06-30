@@ -39,17 +39,26 @@ export default class SettingUpPolishTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async dropsInExpectedScript() {
+	protected static async createsExpectedScript() {
 		await this.setupPolish()
 		const pkg = this.Service('pkg')
 		const scripts = pkg.get('scripts')
 		assert.isEqual(scripts.polish, 'heartwood-polish')
 	}
 
+	@test()
+	protected static async makeSureScriptHasSomethingAndIsValid() {
+		const results = await this.setupPolish()
+		const { destination } = await this.generateExpectedFile()
+		const contents = diskUtil.readFile(destination)
+		assert.isNotEqual(contents, '')
+		await this.assertValidActionResponseFiles(results)
+	}
+
 	private static async generateExpectedFile() {
 		const store = this.Store('skill')
 		const namespace = await store.loadCurrentSkillsNamespace()
-		const filename = `${namespace}.polish.ts`
+		const filename = `${namespace.toLowerCase()}.polish.ts`
 		const destination = this.resolvePath('src', filename)
 		return { filename, destination }
 	}

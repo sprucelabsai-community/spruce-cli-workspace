@@ -8,7 +8,7 @@ export default class PolishWriter extends AbstractWriter {
 	) {
 		const filename = `${skillNamespace}.polish.ts`
 		const resolvedDestination = pathUtil.join(destinationDir, filename)
-		const content = ''
+		const content = this.templates.polish()
 
 		const results = await this.writeFileIfChangedMixinResults(
 			resolvedDestination,

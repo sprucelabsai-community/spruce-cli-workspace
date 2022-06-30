@@ -20,7 +20,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 		const writer = this.Writer('polish')
 		const files = await writer.writePolishScript(
 			diskUtil.resolvePath(this.cwd, 'src'),
-			namespace
+			namespace.toLowerCase()
 		)
 
 		const scriptUpdater = ScriptUpdater.FromFeature(this.parent, {
