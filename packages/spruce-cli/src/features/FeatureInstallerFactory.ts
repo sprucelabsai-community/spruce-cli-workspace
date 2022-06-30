@@ -20,6 +20,7 @@ import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
 import OrganizationFeature from './organization/OrganizationFeature'
 import PersonFeature from './person/PersonFeature'
+import PolishFeature from './polish/PolishFeature'
 import SandboxFeature from './sandbox/SandboxFeature'
 import SchemaFeature from './schema/SchemaFeature'
 import SkillFeature from './skill/SkillFeature'
@@ -50,6 +51,7 @@ export default class FeatureInstallerFactory {
 		CacheFeature,
 		LogFeature,
 		DependencyFeature,
+		PolishFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -73,6 +75,7 @@ export default class FeatureInstallerFactory {
 		'cache',
 		'log',
 		'dependency',
+		'polish',
 	]
 
 	public static WithAllFeatures(options: {

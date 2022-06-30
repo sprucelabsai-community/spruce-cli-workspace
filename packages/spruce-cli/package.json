@@ -194,6 +194,9 @@
       },
       {
         "code": "conversation"
+      },
+      {
+        "code": "polish"
       }
     ],
     "everythingInNode": [
@@ -275,6 +278,18 @@
       },
       {
         "code": "event"
+      }
+    ],
+    "polish": [
+      {
+        "code": "skill",
+        "options": {
+          "name": "testing polish",
+          "description": "this too, is a great test!"
+        }
+      },
+      {
+        "code": "polish"
       }
     ],
     "sandbox": [

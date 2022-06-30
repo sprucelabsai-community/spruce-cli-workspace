@@ -1,0 +1,65 @@
+import { PolishStep } from '@sprucelabs/spruce-heartwood-polish'
+
+const script: PolishStep[] = [
+	/**{
+		redirect: {
+			id: 'heartwood.root',
+		},
+	},
+	{
+		typeText: {
+			target: [['Field', 'phone']],
+			text: '5555555555',
+		},
+	},
+	{
+		assert: {
+			target: [['Field', 'phone']],
+			inputValue: {
+				equals: '+1 555-555-5555',
+			},
+		},
+	},
+	{
+		click: {
+			target: [['Button', 'primary']],
+		},
+	},
+	{
+		typeText: {
+			target: [['Field', 'code']],
+			text: '5555',
+		},
+	},
+	{
+		click: {
+			target: [['NavMenu', 'settings']],
+		},
+	},
+	{
+		click: {
+			target: [['NavLink', 'logout']],
+		},
+	},
+	{
+		click: {
+			target: [['Dialog', 'primary']],
+		},
+	},
+	{
+		typeText: {
+			target: [['Field', 'phone']],
+			text: '555-555-2323',
+		},
+	},
+	{
+		assert: {
+			target: [['Field', 'phone']],
+			inputValue: {
+				equals: '+1 555-555-2323',
+			},
+		},
+	},**/
+]
+
+export default script

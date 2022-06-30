@@ -6,6 +6,7 @@ import ErrorWriter from '../features/error/writers/ErrorWriter'
 import EventWriter from '../features/event/writers/EventWriter'
 import LogWriter from '../features/log/writers/LogWriter'
 import NodeWriter from '../features/node/writers/NodeWriter'
+import PolishWriter from '../features/polish/writers/PolishWriter'
 import SandboxWriter from '../features/sandbox/writers/SandboxWriter'
 import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
@@ -32,6 +33,7 @@ const classMap = {
 	store: StoreWriter,
 	view: ViewWriter,
 	log: LogWriter,
+	polish: PolishWriter,
 }
 
 export interface WriterMap {
@@ -48,6 +50,7 @@ export interface WriterMap {
 	store: StoreWriter
 	view: ViewWriter
 	log: LogWriter
+	polish: PolishWriter
 }
 
 export type WriterCode = keyof WriterMap

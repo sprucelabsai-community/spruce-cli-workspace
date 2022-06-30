@@ -314,6 +314,11 @@ export const templates = {
 		return template({})
 	},
 
+	polish() {
+		const template = templateImportUtil.getTemplate('polish/polish.ts.hbs')
+		return template({})
+	},
+
 	async directoryTemplate<K extends DirectoryTemplateCode>(options: {
 		kind: K
 		context: DirectoryTemplateContextMap[K]

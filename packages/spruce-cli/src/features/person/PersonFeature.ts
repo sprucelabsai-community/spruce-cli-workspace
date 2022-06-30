@@ -2,12 +2,6 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-	interface FeatureMap {
-		person: PersonFeature
-	}
-}
-
 export default class PersonFeature extends AbstractFeature {
 	public code: FeatureCode = 'person'
 	public nameReadable = 'Person'
@@ -24,5 +18,11 @@ export default class PersonFeature extends AbstractFeature {
 
 	public isInstalled = () => {
 		return this.featureInstaller.isInstalled('skill')
+	}
+}
+
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		person: PersonFeature
 	}
 }
