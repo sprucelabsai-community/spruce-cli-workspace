@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.1.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.17...v17.1.0) (2022-06-30)
+
+
+### Features
+
+* polish support ([a21645f](https://github.com/sprucelabsai/spruce-cli-workspace/commit/a21645f))
+
+
+
+
+
 ## [17.0.17](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.0.16...v17.0.17) (2022-06-18)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
