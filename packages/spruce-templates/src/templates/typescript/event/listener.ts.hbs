@@ -3,12 +3,6 @@ import { SpruceEvent, SpruceEventResponse } from '@sprucelabs/spruce-event-utils
 {{#if emitPayloadSchemaTemplateItem}}import { SkillEventContract } from '@sprucelabs/mercury-types'{{/if}}
 {{#if shouldImportGlobalSchema}}import { {{globalSchemaNamespace}} } from '{{schemaTypesFile}}'{{/if}}
 
-{{#if emitPayloadSchemaTemplateItem}}
-type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaTemplateItem }}}
-{{/if}}{{#if responsePayloadSchemaTemplateItem}}
-type ResponsePayload = {{{ schemaNamespacePath schemaTemplateItem=responsePayloadSchemaTemplateItem }}}
-{{/if}}
-
 export default async (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<SkillEventContract, EmitPayload>{{/if}}): SpruceEventResponse{{#if responsePayloadSchemaTemplateItem}}<ResponsePayload>{{/if}} => {
 	console.log(event)
 
@@ -21,3 +15,9 @@ export default async (event: SpruceEvent{{#if emitPayloadSchemaTemplateItem}}<Sk
 
 	//return {}
 }
+
+{{#if emitPayloadSchemaTemplateItem}}
+type EmitPayload = {{{ schemaNamespacePath schemaTemplateItem=emitPayloadSchemaTemplateItem }}}
+{{/if}}{{#if responsePayloadSchemaTemplateItem}}
+type ResponsePayload = {{{ schemaNamespacePath schemaTemplateItem=responsePayloadSchemaTemplateItem }}}
+{{/if}}
