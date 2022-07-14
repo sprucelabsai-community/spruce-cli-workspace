@@ -33,7 +33,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			{{> schemaBody namespace=namespace schema=schema renderAs="type" }}
 		}
 
-		type {{namePascal}}Entity = SchemaEntity<{{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema>
+		interface {{namePascal}}Entity extends SchemaEntity<{{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}}.{{namePascal}}Schema> {}
 
 	}
 
