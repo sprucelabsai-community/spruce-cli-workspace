@@ -394,6 +394,21 @@
         "code": "event"
       }
     ],
+    "permissions": [
+      {
+        "code": "skill",
+        "options": {
+          "name": "testing permissions",
+          "description": "This is for permissions"
+        }
+      },
+      {
+        "code": "event"
+      },
+      {
+        "code": "permission"
+      }
+    ],
     "organizations": [
       {
         "code": "skill",

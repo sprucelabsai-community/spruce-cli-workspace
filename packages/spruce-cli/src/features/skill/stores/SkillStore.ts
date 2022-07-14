@@ -4,16 +4,6 @@ import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 import { CurrentSkill, RegisteredSkill } from '../../../types/cli.types'
 
-export interface CreateSkill {
-	name: string
-	slug: string
-	description?: string
-}
-
-export interface RegisterSkillOptions {
-	isRegisteringCurrentSkill?: boolean
-}
-
 export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
 	private static currentSkill?: CurrentSkill
@@ -31,7 +21,7 @@ export default class SkillStore extends AbstractStore {
 
 		isRegisteringCurrentSkill && this.assertInSkill()
 
-		const { name, slug, description } = values
+		const { name, slug, description, isPublished } = values
 		const client = await this.connectToApi()
 
 		const results = await client.emit('register-skill::v2020_12_25', {
@@ -39,6 +29,7 @@ export default class SkillStore extends AbstractStore {
 				name,
 				slug,
 				description,
+				isPublished,
 			},
 		})
 
@@ -188,4 +179,15 @@ export default class SkillStore extends AbstractStore {
 
 		return skills
 	}
+}
+
+export interface CreateSkill {
+	name: string
+	slug?: string
+	description?: string
+	isPublished?: boolean
+}
+
+export interface RegisterSkillOptions {
+	isRegisteringCurrentSkill?: boolean
 }

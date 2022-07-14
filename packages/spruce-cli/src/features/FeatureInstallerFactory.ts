@@ -19,6 +19,7 @@ import LogFeature from './log/LogFeature'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
 import OrganizationFeature from './organization/OrganizationFeature'
+import PermissionFeature from './permission/PermissionFeature'
 import PersonFeature from './person/PersonFeature'
 import PolishFeature from './polish/PolishFeature'
 import SandboxFeature from './sandbox/SandboxFeature'
@@ -52,6 +53,7 @@ export default class FeatureInstallerFactory {
 		LogFeature,
 		DependencyFeature,
 		PolishFeature,
+		PermissionFeature,
 	]
 
 	public static readonly featureCodes: FeatureCode[] = [
@@ -76,6 +78,7 @@ export default class FeatureInstallerFactory {
 		'log',
 		'dependency',
 		'polish',
+		'permission',
 	]
 
 	public static WithAllFeatures(options: {

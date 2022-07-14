@@ -2,10 +2,10 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-export default class OrganizationFeature extends AbstractFeature {
-	public code: FeatureCode = 'organization'
-	public nameReadable = 'Organization'
-	public description = 'Manage the organizations you are part of'
+export default class PermissionFeature extends AbstractFeature {
+	public code: FeatureCode = 'permission'
+	public nameReadable = 'permission'
+	public description = 'Manage permissions for your skill'
 	public dependencies: FeatureDependency[] = [
 		{
 			code: 'skill',
@@ -23,6 +23,6 @@ export default class OrganizationFeature extends AbstractFeature {
 
 declare module '../../features/features.types' {
 	interface FeatureMap {
-		organization: OrganizationFeature
+		permission: PermissionFeature
 	}
 }

@@ -1,6 +1,9 @@
 import { EventContract, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { RegisterSkillOptions } from '../../features/skill/stores/SkillStore'
+import {
+	CreateSkill,
+	RegisterSkillOptions,
+} from '../../features/skill/stores/SkillStore'
 import StoreFactory from '../../stores/StoreFactory'
 import {
 	ApiClientFactory,
@@ -27,7 +30,7 @@ export default class SkillFixture {
 	}
 
 	public async seedDemoSkill(
-		values: { name: string },
+		values: CreateSkill,
 		options?: { phone?: string }
 	) {
 		return this.registerCurrentSkill(values, {
@@ -37,7 +40,7 @@ export default class SkillFixture {
 	}
 
 	public async registerCurrentSkill(
-		values: { name: string; slug?: string },
+		values: CreateSkill,
 		options?: RegisterSkillOptions & { phone?: string }
 	) {
 		await this.personFixture.loginAsDemoPerson(options?.phone)

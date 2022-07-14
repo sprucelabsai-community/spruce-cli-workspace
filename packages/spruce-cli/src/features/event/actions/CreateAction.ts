@@ -5,10 +5,9 @@ import {
 } from '@sprucelabs/schema'
 import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import namedTemplateItemSchema from '#spruce/schemas/spruceCli/v2020_07_22/namedTemplateItem.schema'
 import syncEventActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/syncEventOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
-import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
-import syncEventActionBuilder from '../../../schemas/v2020_07_22/syncEventOptions.builder'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -19,17 +18,17 @@ const optionsSchema = buildSchema({
 		"Create a new event and I'll register it with Mercury when you boot the skill!",
 	fields: {
 		nameReadable: {
-			...namedTemplateItemBuilder.fields.nameReadable,
+			...namedTemplateItemSchema.fields.nameReadable,
 			isRequired: true,
 		},
 		nameKebab: {
-			...namedTemplateItemBuilder.fields.nameKebab,
+			...namedTemplateItemSchema.fields.nameKebab,
 			label: 'Event name',
 			hint: `kebab-case`,
 			isRequired: true,
 		},
 		nameCamel: {
-			...namedTemplateItemBuilder.fields.nameCamel,
+			...namedTemplateItemSchema.fields.nameCamel,
 			isRequired: true,
 		},
 		isGlobal: {
@@ -42,7 +41,7 @@ const optionsSchema = buildSchema({
 			label: 'Version',
 			isPrivate: true,
 		},
-		...syncEventActionBuilder.fields,
+		...syncEventActionSchema.fields,
 	},
 })
 

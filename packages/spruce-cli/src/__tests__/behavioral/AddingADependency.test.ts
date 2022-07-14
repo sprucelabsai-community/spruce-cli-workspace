@@ -121,6 +121,7 @@ export default class ConfiguringDependenciesTest extends AbstractSkillTest {
 	protected static async canAddSkillThatWasCreatedBySomeoneElse() {
 		const skill = await this.getSkillFixture().seedDemoSkill({
 			name: 'global dependency skill',
+			isPublished: true,
 		})
 
 		await this.people.loginAsDemoPerson(DEMO_NUMBER_GLOBAL_EVENTS)
