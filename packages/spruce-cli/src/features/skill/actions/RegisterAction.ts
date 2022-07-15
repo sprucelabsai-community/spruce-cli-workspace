@@ -13,11 +13,13 @@ const optionsSchema = buildSchema({
 			type: 'text',
 			label: `What is your skill's name?`,
 			isRequired: true,
+			hint: 'The name people will see with their special eyes!',
 		},
 		nameKebab: {
 			type: 'text',
 			label: 'Namespace',
 			isRequired: true,
+			hint: 'The namespace of your skill in-kebab-case',
 		},
 		description: {
 			type: 'text',
