@@ -14,7 +14,9 @@ const vcs = {
     {{/each}}
 }
 
+{{#if svcTemplateItems}}
 type LoadOptions<Args extends Record<string,any>[]> = Args[0]['args'] extends Record<string, any> ? Args[0]['args'] : Record<never, any>
+{{/if}}
 
 declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
 	interface SkillViewControllerMap {
