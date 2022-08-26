@@ -30,6 +30,10 @@ const optionsSchema = buildSchema({
 						label: 'Sandbox',
 					},
 					{
+						value: 'polish',
+						label: 'Polish',
+					},
+					{
 						value: 'production',
 						label: 'Production',
 					},
