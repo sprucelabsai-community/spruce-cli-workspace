@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import findProcess from 'find-process'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 

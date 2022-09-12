@@ -9,7 +9,7 @@ import {
 	diskUtil,
 	namesUtil,
 } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import fieldClassMap from '#spruce/schemas/fields/fieldClassMap'
 import { coreSchemas } from '../../features/schema/stores/SchemaStore'

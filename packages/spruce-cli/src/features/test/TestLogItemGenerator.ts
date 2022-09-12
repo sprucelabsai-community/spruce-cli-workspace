@@ -1,4 +1,4 @@
-import { StackCleaner } from '@sprucelabs/test'
+import { StackCleaner } from '@sprucelabs/test-utils'
 import chalk from 'chalk'
 import durationUtil from '../../utilities/duration.utility'
 import {

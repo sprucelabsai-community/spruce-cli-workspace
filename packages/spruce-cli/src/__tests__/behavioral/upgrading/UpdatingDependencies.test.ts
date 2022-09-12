@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 

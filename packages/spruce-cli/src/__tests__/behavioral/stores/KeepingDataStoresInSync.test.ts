@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'

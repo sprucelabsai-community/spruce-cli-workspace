@@ -9,7 +9,7 @@ import {
 	eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
 import EventStore from '../../features/event/stores/EventStore'

@@ -4,7 +4,7 @@ import {
 	CORE_SCHEMA_VERSION,
 } from '@sprucelabs/spruce-skill-utils'
 import { templates, ValueTypes } from '@sprucelabs/spruce-templates'
-import { assert, test } from '@sprucelabs/test'
+import { assert, test } from '@sprucelabs/test-utils'
 import SchemaWriter from '../../features/schema/writers/SchemaWriter'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'

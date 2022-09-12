@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { ENABLE_NPM_CACHE_COMMAND } from '../../features/cache/constants'
 import CommandService from '../../services/CommandService'

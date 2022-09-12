@@ -1,4 +1,4 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
 import { argParserUtil } from '../../utilities/argParser.utility'
 
 export default class ArgParserTest extends AbstractSpruceTest {

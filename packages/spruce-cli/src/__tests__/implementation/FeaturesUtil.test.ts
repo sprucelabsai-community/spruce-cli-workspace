@@ -1,4 +1,4 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
 import featuresUtil from '../../features/feature.utilities'
 
 export default class FeaturesUtilTest extends AbstractSpruceTest {

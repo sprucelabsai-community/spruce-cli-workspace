@@ -1,4 +1,4 @@
-import { assert } from '@sprucelabs/test'
+import { assert } from '@sprucelabs/test-utils'
 import SpyInterface from '../../interfaces/SpyInterface'
 
 const uiAssert = {

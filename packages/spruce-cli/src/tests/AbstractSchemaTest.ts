@@ -5,7 +5,7 @@ import {
 	HealthCheckResults,
 	SchemaHealthCheckItem,
 } from '@sprucelabs/spruce-skill-utils'
-import { assert } from '@sprucelabs/test'
+import { assert } from '@sprucelabs/test-utils'
 import { CliBootOptions } from '../cli'
 import { FeatureCode } from '../features/features.types'
 import AbstractCliTest from './AbstractCliTest'

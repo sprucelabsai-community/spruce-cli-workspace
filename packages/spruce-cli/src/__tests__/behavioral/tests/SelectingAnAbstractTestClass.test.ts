@@ -1,6 +1,6 @@
 import { SelectChoice } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { FeatureCode } from '../../../features/features.types'
 import CreateAction from '../../../features/test/actions/CreateAction'
 import AbstractTestTest from '../../../tests/AbstractTestTest'

@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import testUtil from '../../../tests/utilities/test.utility'
 

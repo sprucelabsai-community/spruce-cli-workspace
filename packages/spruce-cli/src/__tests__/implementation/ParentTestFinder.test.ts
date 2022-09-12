@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import ParentTestFinder from '../../features/error/ParentTestFinder'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

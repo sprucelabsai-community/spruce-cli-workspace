@@ -1,5 +1,5 @@
 import { CORE_SCHEMA_VERSION, diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import WatchFeature from '../../../features/watch/WatchFeature'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { GeneratedFileOrDir } from '../../../types/cli.types'

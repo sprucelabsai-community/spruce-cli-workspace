@@ -1,5 +1,5 @@
 import { Schema } from '@sprucelabs/schema'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import featuresUtil from '../../features/feature.utilities'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

@@ -1,6 +1,6 @@
 import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import { buildEmitTargetAndPayloadSchema } from '@sprucelabs/spruce-event-utils'
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
 import { eventContractCleanerUtil } from '../../utilities/eventContractCleaner.utility'
 
 const didMessageContract = {

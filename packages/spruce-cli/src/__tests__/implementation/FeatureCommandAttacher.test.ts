@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'

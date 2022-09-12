@@ -1,6 +1,6 @@
 import { buildSchema, Schema, SchemaTemplateItem } from '@sprucelabs/schema'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import SchemaTemplateItemBuilder from '../../templateItemBuilders/SchemaTemplateItemBuilder'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

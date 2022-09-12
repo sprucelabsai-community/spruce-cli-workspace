@@ -1,7 +1,7 @@
 import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { assert } from '@sprucelabs/test'
+import { assert } from '@sprucelabs/test-utils'
 import { GeneratedFile } from '../../types/cli.types'
 import durationUtil from '../../utilities/duration.utility'
 require('dotenv').config()

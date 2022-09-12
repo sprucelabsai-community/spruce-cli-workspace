@@ -1,5 +1,5 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../cli'
 import { SpruceTestResults } from '../../features/test/test.types'

@@ -1,6 +1,6 @@
 import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import SyncAction from '../../../features/error/actions/SyncAction'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'

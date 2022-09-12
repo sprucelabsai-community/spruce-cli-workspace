@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { FILE_ACTION_ALWAYS_SKIP } from '../../constants'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import ScriptUpdater from '../../updaters/ScriptUpdater'

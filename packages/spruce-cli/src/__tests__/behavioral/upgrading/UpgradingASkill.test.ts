@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
 import {
 	FILE_ACTION_ALWAYS_SKIP,

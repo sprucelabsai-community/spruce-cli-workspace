@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import schemaGeneratorUtil from '../../features/schema/utilities/schemaGenerator.utility'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 

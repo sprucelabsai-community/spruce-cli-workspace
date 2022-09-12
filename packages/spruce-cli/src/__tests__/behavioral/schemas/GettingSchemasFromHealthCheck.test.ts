@@ -1,6 +1,6 @@
 import { Schema } from '@sprucelabs/schema'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
 import { coreSchemas } from '../../../features/schema/stores/SchemaStore'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'

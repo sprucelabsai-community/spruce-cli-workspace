@@ -6,7 +6,7 @@ import {
 	CORE_NAMESPACE,
 	DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
 } from '@sprucelabs/spruce-skill-utils'
-import { assert, test } from '@sprucelabs/test'
+import { assert, test } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { coreSchemas } from '../../../features/schema/stores/SchemaStore'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'

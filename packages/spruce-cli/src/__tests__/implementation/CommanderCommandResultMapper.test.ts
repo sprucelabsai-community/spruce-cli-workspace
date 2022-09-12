@@ -1,5 +1,5 @@
 import { buildSchema } from '@sprucelabs/schema'
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
 import { Command } from 'commander'
 import commanderUtil from '../../utilities/commander.utility'
 

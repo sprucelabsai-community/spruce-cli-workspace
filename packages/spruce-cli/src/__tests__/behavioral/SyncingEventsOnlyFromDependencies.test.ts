@@ -1,5 +1,5 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import fsUtil from 'fs-extra'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import { RegisteredSkill } from '../../types/cli.types'

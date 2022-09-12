@@ -1,5 +1,5 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import dotenv from 'dotenv'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 import { DEMO_NUMBER_GLOBAL_EVENTS } from '../../tests/constants'

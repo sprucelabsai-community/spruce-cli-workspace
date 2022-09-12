@@ -1,6 +1,6 @@
 import { FieldDefinitionValueType } from '@sprucelabs/schema'
 import { namesUtil, testLog } from '@sprucelabs/spruce-skill-utils'
-import { assert } from '@sprucelabs/test'
+import { assert } from '@sprucelabs/test-utils'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
 import testUtil from '../tests/utilities/test.utility'
 import { ExecutionResults } from '../types/cli.types'

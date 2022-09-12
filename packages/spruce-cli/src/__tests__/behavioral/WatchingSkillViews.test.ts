@@ -1,5 +1,5 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import ps from 'ps-node'
 import BootAction from '../../features/skill/actions/BootAction'
 import WatchAction from '../../features/view/actions/WatchAction'

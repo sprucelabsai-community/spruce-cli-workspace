@@ -1,5 +1,5 @@
 import { eventAssertUtil } from '@sprucelabs/spruce-event-utils'
-import { test, assert, assertUtil } from '@sprucelabs/test'
+import { test, assert, assertUtil } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import { DEMO_NUMBER_INSTALL_SKILL } from '../../tests/constants'

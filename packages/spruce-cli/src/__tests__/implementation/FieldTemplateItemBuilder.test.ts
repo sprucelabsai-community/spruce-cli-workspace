@@ -1,5 +1,5 @@
 import { FieldTemplateItem } from '@sprucelabs/schema'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import FieldTemplateItemBuilder from '../../templateItemBuilders/FieldTemplateItemBuilder'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

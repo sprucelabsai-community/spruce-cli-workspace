@@ -3,7 +3,7 @@ import {
 	eventNameUtil,
 } from '@sprucelabs/spruce-event-utils'
 import { namesUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../tests/AbstractEventTest'
 import { DEMO_NUMBER_EVENTS_ON_BOOT } from '../../tests/constants'
 

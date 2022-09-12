@@ -1,6 +1,6 @@
 import pathUil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test'
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import ImportService from '../../services/ImportService'
 import ServiceFactory from '../../services/ServiceFactory'

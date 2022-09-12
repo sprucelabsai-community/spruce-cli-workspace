@@ -1,5 +1,5 @@
 import { fake } from '@sprucelabs/spruce-test-fixtures'
-import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test'
+import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test-utils'
 {{#if (isDefined parentTestClass)}}import {{#if parentTestClass.isDefaultExport}}{{parentTestClass.name}}{{else}}{ {{parentTestClass.name}} }{{/if}} from '{{parentTestClass.importPath}}'
 {{/if}}
 

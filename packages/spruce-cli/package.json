@@ -116,6 +116,7 @@
     "terminal-kit": "sprucelabsai/terminal-kit",
     "tree-kill": "^1.2.2",
     "tsutils": "^3.21.0",
+    "typescript": "4.7.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -165,8 +166,7 @@
     "ts-jest": "^29.0.0",
     "ts-node": "^10.9.1",
     "tsc-watch": "^5.0.3",
-    "tsconfig-paths": "^4.1.0",
-    "typescript": "4.7.4"
+    "tsconfig-paths": "^4.1.0"
   },
   "testSkillCache": {
     "everything": [

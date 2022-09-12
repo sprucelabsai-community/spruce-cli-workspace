@@ -1,6 +1,6 @@
 import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill2Test extends AbstractCliTest {

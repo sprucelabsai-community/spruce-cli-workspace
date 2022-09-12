@@ -14,7 +14,7 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import ListenAction, {
 	CORE_EVENT_NAMESPACE,

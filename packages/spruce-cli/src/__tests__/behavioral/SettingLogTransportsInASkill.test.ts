@@ -1,5 +1,5 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import LintService from '../../services/LintService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'

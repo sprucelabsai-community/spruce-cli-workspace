@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import FeatureInstaller from '../../features/FeatureInstaller'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 

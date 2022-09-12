@@ -1,4 +1,4 @@
-import { test, assert } from '@sprucelabs/test'
+import { test, assert } from '@sprucelabs/test-utils'
 import { random, uniq } from 'lodash'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
 import CommandService from '../../../services/CommandService'
