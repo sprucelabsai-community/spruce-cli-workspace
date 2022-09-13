@@ -60,12 +60,14 @@
 		"@sprucelabs/schema": "^28.5.6",
 		"@sprucelabs/spruce-event-utils": "^27.0.171",
 		"@sprucelabs/spruce-skill-utils": "^26.4.75",
+		"fs-extra": "^10.1.0",
 		"globby": "11.0.4",
 		"handlebars": "^4.7.7",
 		"lodash": "^4.17.21",
 		"sha1": "^1.1.1"
 	},
 	"devDependencies": {
+		"@types/fs-extra": "^9.0.13",
 		"@types/lodash": "^4.14.185",
 		"@types/node": "^18.7.16",
 		"chokidar-cli": "^3.0.0",
