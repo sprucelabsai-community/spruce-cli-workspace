@@ -94,7 +94,7 @@ export default class OnboardFeature extends AbstractFeature {
 			const source = diskUtil.resolvePath(
 				__dirname,
 				'templates',
-				'ManagingTodos.test.ts.hbs'
+				'RootViewController.test.ts.hbs'
 			)
 
 			const contents = diskUtil.readFile(source)
@@ -103,7 +103,7 @@ export default class OnboardFeature extends AbstractFeature {
 				this.cwd,
 				createTestOptionsSchema.fields.testDestinationDir.defaultValue,
 				'behavioral',
-				'ManagingTodos.test.ts'
+				'RootViewController.test.ts'
 			)
 
 			diskUtil.writeFile(destination, contents)
