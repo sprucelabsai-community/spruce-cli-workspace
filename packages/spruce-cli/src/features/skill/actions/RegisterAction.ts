@@ -81,7 +81,7 @@ export default class RegisterAction extends AbstractAction<OptionsSchema> {
 export function generateSkillSummaryLines(skill: RegisteredSkill) {
 	return [
 		`Name: ${skill.name}`,
-		`Slug: ${skill.slug}`,
+		`Namespace: ${skill.slug}`,
 		`ID: ${skill.id}`,
 		`API Key: ${skill.apiKey}`,
 	]
