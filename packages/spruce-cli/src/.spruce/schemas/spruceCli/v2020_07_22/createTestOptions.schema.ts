@@ -17,12 +17,12 @@ const createTestOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOpt
 	                isRequired: true,
 	                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
 	            },
-	            /** What are you testing?. E.g. Booking an appointment or turning on a light */
+	            /** What are you testing?. E.g. Todo Card or Systems List */
 	            'nameReadable': {
 	                label: 'What are you testing?',
 	                type: 'text',
 	                isRequired: true,
-	                hint: 'E.g. Booking an appointment or turning on a light',
+	                hint: 'E.g. Todo Card or Systems List',
 	                options: undefined
 	            },
 	            /** Test destination directory. Where I'll save your new test. */

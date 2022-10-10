@@ -21,7 +21,7 @@ export default buildSchema({
 			type: 'text',
 			label: 'What are you testing?',
 			isRequired: true,
-			hint: 'E.g. Booking an appointment or turning on a light',
+			hint: 'E.g. Todo Card or Systems List',
 		},
 		testDestinationDir: {
 			type: 'text',

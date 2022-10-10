@@ -40,7 +40,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DidRegisterSkillViewsEmitTargetEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitTargetSchema>
+		interface DidRegisterSkillViewsEmitTargetEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitTargetSchema> {}
 
 	}
 
@@ -70,7 +70,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DidRegisterSkillViewsEmitPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitPayloadSchema>
+		interface DidRegisterSkillViewsEmitPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitPayloadSchema> {}
 
 	}
 
@@ -115,7 +115,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type DidRegisterSkillViewsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitTargetAndPayloadSchema>
+		interface DidRegisterSkillViewsEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.DidRegisterSkillViewsEmitTargetAndPayloadSchema> {}
 
 	}
 
@@ -145,7 +145,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GenerateUrlEmitTargetEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitTargetSchema>
+		interface GenerateUrlEmitTargetEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitTargetSchema> {}
 
 	}
 
@@ -174,7 +174,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GenerateUrlEmitPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitPayloadSchema>
+		interface GenerateUrlEmitPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitPayloadSchema> {}
 
 	}
 
@@ -217,7 +217,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GenerateUrlEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitTargetAndPayloadSchema>
+		interface GenerateUrlEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlEmitTargetAndPayloadSchema> {}
 
 	}
 
@@ -247,7 +247,64 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GenerateUrlResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlResponsePayloadSchema>
+		interface GenerateUrlResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GenerateUrlResponsePayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetActiveThemeEmitTarget {
+			
+				
+				'organizationId': string
+		}
+
+		interface GetActiveThemeEmitTargetSchema extends SpruceSchema.Schema {
+			id: 'getActiveThemeEmitTarget',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'organizationId': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		interface GetActiveThemeEmitTargetEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetActiveThemeEmitTargetSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetActiveThemeResponsePayload {
+			
+				
+				'theme'?: SpruceSchemas.Heartwood.v2021_02_11.Theme| undefined | null
+		}
+
+		interface GetActiveThemeResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'getActiveThemeResponsePayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'theme': {
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			            },
+			    }
+		}
+
+		interface GetActiveThemeResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetActiveThemeResponsePayloadSchema> {}
 
 	}
 
@@ -276,7 +333,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetViewControllersEmitTargetEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetViewControllersEmitTargetSchema>
+		interface GetViewControllersEmitTargetEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetViewControllersEmitTargetSchema> {}
 
 	}
 
@@ -313,7 +370,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetSkillViewsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsEmitTargetAndPayloadSchema>
+		interface GetSkillViewsEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsEmitTargetAndPayloadSchema> {}
 
 	}
 
@@ -366,7 +423,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GetSkillViewsResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsResponsePayloadSchema>
+		interface GetSkillViewsResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetSkillViewsResponsePayloadSchema> {}
 
 	}
 
@@ -419,7 +476,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListViewsResultEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ListViewsResultSchema>
+		interface ListViewsResultEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ListViewsResultSchema> {}
 
 	}
 
@@ -450,7 +507,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListViewsResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ListViewsResponsePayloadSchema>
+		interface ListViewsResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ListViewsResponsePayloadSchema> {}
 
 	}
 
@@ -458,36 +515,30 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 	namespace SpruceSchemas.Heartwood.v2021_02_11 {
 
 		
-		interface RegisterSkillViewsEmitTargetAndPayload {
+		interface RegisterDashboardCardsResponsePayload {
 			
-				/** Source. */
-				'source'?: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSource| undefined | null
 				
-				'payload': SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayload
+				'vcIds': string[]
 		}
 
-		interface RegisterSkillViewsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
-			id: 'registerSkillViewsEmitTargetAndPayload',
+		interface RegisterDashboardCardsResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'registerDashboardCardsResponsePayload',
 			version: 'v2021_02_11',
 			namespace: 'Heartwood',
 			name: '',
 			    fields: {
-			            /** Source. */
-			            'source': {
-			                label: 'Source',
-			                type: 'schema',
-			                options: {schema: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSourceSchema,}
-			            },
 			            /** . */
-			            'payload': {
-			                type: 'schema',
+			            'vcIds': {
+			                type: 'id',
 			                isRequired: true,
-			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema,}
+			                isArray: true,
+			                minArrayLength: 0,
+			                options: undefined
 			            },
 			    }
 		}
 
-		type RegisterSkillViewsEmitTargetAndPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitTargetAndPayloadSchema>
+		interface RegisterDashboardCardsResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterDashboardCardsResponsePayloadSchema> {}
 
 	}
 
@@ -532,7 +583,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterSkillViewsEmitPayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema>
+		interface RegisterSkillViewsEmitPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema> {}
 
 	}
 
@@ -562,7 +613,258 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterSkillViewsResponsePayloadEntity = SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsResponsePayloadSchema>
+		interface RegisterSkillViewsResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsResponsePayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface GetActiveThemeEmitTargetAndPayload {
+			
+				/** Source. */
+				'source'?: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSource| undefined | null
+				
+				'target': SpruceSchemas.Heartwood.v2021_02_11.GetActiveThemeEmitTarget
+		}
+
+		interface GetActiveThemeEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'getActiveThemeEmitTargetAndPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** Source. */
+			            'source': {
+			                label: 'Source',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSourceSchema,}
+			            },
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.GetActiveThemeEmitTargetSchema,}
+			            },
+			    }
+		}
+
+		interface GetActiveThemeEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.GetActiveThemeEmitTargetAndPayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface RegisterSkillViewsEmitTargetAndPayload {
+			
+				/** Source. */
+				'source'?: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSource| undefined | null
+				
+				'payload': SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayload
+		}
+
+		interface RegisterSkillViewsEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'registerSkillViewsEmitTargetAndPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** Source. */
+			            'source': {
+			                label: 'Source',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSourceSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		interface RegisterSkillViewsEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.RegisterSkillViewsEmitTargetAndPayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface UpsertThemeEmitTarget {
+			
+				
+				'organizationId': string
+		}
+
+		interface UpsertThemeEmitTargetSchema extends SpruceSchema.Schema {
+			id: 'upsertThemeEmitTarget',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'organizationId': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			    }
+		}
+
+		interface UpsertThemeEmitTargetEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitTargetSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface UpsertThemeEmitTargetAndPayload {
+			
+				/** Source. */
+				'source'?: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSource| undefined | null
+				
+				'target': SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitTarget
+				
+				'payload': SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitPayload
+		}
+
+		interface UpsertThemeEmitTargetAndPayloadSchema extends SpruceSchema.Schema {
+			id: 'upsertThemeEmitTargetAndPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** Source. */
+			            'source': {
+			                label: 'Source',
+			                type: 'schema',
+			                options: {schema: SpruceSchemas.SpruceEventUtils.v2021_09_13.EventSourceSchema,}
+			            },
+			            /** . */
+			            'target': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitTargetSchema,}
+			            },
+			            /** . */
+			            'payload': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitPayloadSchema,}
+			            },
+			    }
+		}
+
+		interface UpsertThemeEmitTargetAndPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitTargetAndPayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface Theme {
+			
+				
+				'slug': string
+				
+				'name': string
+				
+				'props': SpruceSchemas.HeartwoodViewControllers.v2021_02_11.ThemeProps
+		}
+
+		interface ThemeSchema extends SpruceSchema.Schema {
+			id: 'theme',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: 'Theme',
+			    fields: {
+			            /** . */
+			            'slug': {
+			                type: 'id',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'name': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'props': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.HeartwoodViewControllers.v2021_02_11.ThemePropsSchema,}
+			            },
+			    }
+		}
+
+		interface ThemeEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface UpsertThemeEmitPayload {
+			
+				
+				'theme': SpruceSchemas.Heartwood.v2021_02_11.Theme
+		}
+
+		interface UpsertThemeEmitPayloadSchema extends SpruceSchema.Schema {
+			id: 'upsertThemeEmitPayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'theme': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			            },
+			    }
+		}
+
+		interface UpsertThemeEmitPayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeEmitPayloadSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.Heartwood.v2021_02_11 {
+
+		
+		interface UpsertThemeResponsePayload {
+			
+				
+				'theme': SpruceSchemas.Heartwood.v2021_02_11.Theme
+		}
+
+		interface UpsertThemeResponsePayloadSchema extends SpruceSchema.Schema {
+			id: 'upsertThemeResponsePayload',
+			version: 'v2021_02_11',
+			namespace: 'Heartwood',
+			name: '',
+			    fields: {
+			            /** . */
+			            'theme': {
+			                type: 'schema',
+			                isRequired: true,
+			                options: {schema: SpruceSchemas.Heartwood.v2021_02_11.ThemeSchema,}
+			            },
+			    }
+		}
+
+		interface UpsertThemeResponsePayloadEntity extends SchemaEntity<SpruceSchemas.Heartwood.v2021_02_11.UpsertThemeResponsePayloadSchema> {}
 
 	}
 
@@ -614,7 +916,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GeneratedDirEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDirSchema>
+		interface GeneratedDirEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDirSchema> {}
 
 	}
 
@@ -666,7 +968,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type GeneratedFileEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSchema>
+		interface GeneratedFileEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSchema> {}
 
 	}
 
@@ -696,7 +998,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type WatcherDidDetectChangesEmitPayloadEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema>
+		interface WatcherDidDetectChangesEmitPayloadEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.WatcherDidDetectChangesEmitPayloadSchema> {}
 
 	}
 
@@ -727,7 +1029,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type UpgradeSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema>
+		interface UpgradeSkillOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema> {}
 
 	}
 
@@ -805,7 +1107,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type TestOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema>
+		interface TestOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.TestOptionsSchema> {}
 
 	}
 
@@ -1014,7 +1316,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncSchemasOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema>
+		interface SyncSchemasOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema> {}
 
 	}
 
@@ -1068,7 +1370,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncSchemaFieldsOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema>
+		interface SyncSchemaFieldsOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemaFieldsOptionsSchema> {}
 
 	}
 
@@ -1137,7 +1439,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema>
+		interface SyncEventOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema> {}
 
 	}
 
@@ -1355,7 +1657,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SyncErrorOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema>
+		interface SyncErrorOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SyncErrorOptionsSchema> {}
 
 	}
 
@@ -1402,7 +1704,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SkillFeatureEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema>
+		interface SkillFeatureEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema> {}
 
 	}
 
@@ -1432,7 +1734,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SetupVscodeOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema>
+		interface SetupVscodeOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupVscodeOptionsSchema> {}
 
 	}
 
@@ -1472,7 +1774,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type SetupTestsOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema>
+		interface SetupTestsOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema> {}
 
 	}
 
@@ -1500,7 +1802,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type RegisterDashboardWidgetsEmitPayloadSchemaEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema>
+		interface RegisterDashboardWidgetsEmitPayloadSchemaEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.RegisterDashboardWidgetsEmitPayloadSchemaSchema> {}
 
 	}
 
@@ -1557,7 +1859,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type PersonWithTokenEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.PersonWithTokenSchema>
+		interface PersonWithTokenEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.PersonWithTokenSchema> {}
 
 	}
 
@@ -1596,7 +1898,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type OnboardingEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema>
+		interface OnboardingEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema> {}
 
 	}
 
@@ -1618,7 +1920,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type OnboardOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema>
+		interface OnboardOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSchema> {}
 
 	}
 
@@ -1666,7 +1968,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type NodeFeatureOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema>
+		interface NodeFeatureOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema> {}
 
 	}
 
@@ -1790,7 +2092,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type NamedTemplateItemEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItemSchema>
+		interface NamedTemplateItemEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItemSchema> {}
 
 	}
 
@@ -1895,7 +2197,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type ListenEventOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema>
+		interface ListenEventOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ListenEventOptionsSchema> {}
 
 	}
 
@@ -1925,7 +2227,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type InstallSkillAtOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema>
+		interface InstallSkillAtOrganizationOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.InstallSkillAtOrganizationOptionsSchema> {}
 
 	}
 
@@ -1937,7 +2239,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			
 				/** Type of test. */
 				'type': ("behavioral" | "implementation")
-				/** What are you testing?. E.g. Booking an appointment or turning on a light */
+				/** What are you testing?. E.g. Todo Card or Systems List */
 				'nameReadable': string
 				/** Test destination directory. Where I'll save your new test. */
 				'testDestinationDir'?: string| undefined | null
@@ -1961,12 +2263,12 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			                isRequired: true,
 			                options: {choices: [{"value":"behavioral","label":"Behavioral"},{"value":"implementation","label":"Implementation"}],}
 			            },
-			            /** What are you testing?. E.g. Booking an appointment or turning on a light */
+			            /** What are you testing?. E.g. Todo Card or Systems List */
 			            'nameReadable': {
 			                label: 'What are you testing?',
 			                type: 'text',
 			                isRequired: true,
-			                hint: 'E.g. Booking an appointment or turning on a light',
+			                hint: 'E.g. Todo Card or Systems List',
 			                options: undefined
 			            },
 			            /** Test destination directory. Where I'll save your new test. */
@@ -1995,7 +2297,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateTestOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema>
+		interface CreateTestOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema> {}
 
 	}
 
@@ -2284,7 +2586,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateSchemaOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema>
+		interface CreateSchemaOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateSchemaOptionsSchema> {}
 
 	}
 
@@ -2325,7 +2627,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateOrganizationOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema>
+		interface CreateOrganizationOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateOrganizationOptionsSchema> {}
 
 	}
 
@@ -2593,7 +2895,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateErrorOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptionsSchema>
+		interface CreateErrorOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateErrorOptionsSchema> {}
 
 	}
 
@@ -2635,7 +2937,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type CreateConversationTopicOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema>
+		interface CreateConversationTopicOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.CreateConversationTopicOptionsSchema> {}
 
 	}
 
@@ -2691,7 +2993,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			    }
 		}
 
-		type BootSkillOptionsEntity = SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema>
+		interface BootSkillOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema> {}
 
 	}
 
