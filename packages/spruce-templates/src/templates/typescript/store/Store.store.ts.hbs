@@ -45,11 +45,11 @@ type CreateSchema = typeof createSchema
 type UpdateSchema = typeof updateSchema
 type DatabaseSchema = typeof databaseSchema
 
-export type {{namePascal}} = SchemaValues<FullSchema>
-export type Create{{namePascal}} = SchemaValues<CreateSchema>
-export type Update{{namePascal}} = SchemaValues<UpdateSchema>
-export type Database{{namePascal}} = SchemaValues<DatabaseSchema>
-export type Query{{namePascal}} = Partial<{{namePascal}}>
+type {{namePascal}} = SchemaValues<FullSchema>
+type Create{{namePascal}} = SchemaValues<CreateSchema>
+type Update{{namePascal}} = SchemaValues<UpdateSchema>
+type Database{{namePascal}} = SchemaValues<DatabaseSchema>
+type Query{{namePascal}} = Partial<{{namePascal}}>
 
 type {{namePascal}}StoreOptions = UniversalStoreOptions
 
