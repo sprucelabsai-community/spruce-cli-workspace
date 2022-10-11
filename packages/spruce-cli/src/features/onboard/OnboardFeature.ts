@@ -57,7 +57,7 @@ export default class OnboardFeature extends AbstractFeature {
 			onboardingStore: store,
 			commandExecuter: async (_command: string) => {
 				throw new Error(
-					"I can't run commands for you yet, but will be able to soon. For now run `" +
+					"I can't run commands for you yet, but will be able to soon. For now run `spruce " +
 						_command +
 						'` manually.'
 				)
