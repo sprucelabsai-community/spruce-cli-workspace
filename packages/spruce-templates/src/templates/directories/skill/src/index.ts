@@ -31,5 +31,5 @@ run()
 		} else {
 			console.error(err.stack ?? err.message)
 		}
-		process.exitCode = 1
+		process.exit(1)
 	})
