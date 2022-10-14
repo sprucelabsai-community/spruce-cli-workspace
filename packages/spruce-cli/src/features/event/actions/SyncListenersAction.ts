@@ -18,7 +18,6 @@ export default class SyncListenerAction extends AbstractAction<OptionsSchema> {
 	public async execute() {
 		const listeners = await this.Store('listener').loadListeners()
 		const builder = new ListenerTemplateItemBuilder()
-
 		const templateItems = builder.buildTemplateItems({
 			listeners,
 			cwd: this.cwd,

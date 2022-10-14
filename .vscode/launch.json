@@ -60,7 +60,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "test.file",
-			"runtimeExecutable": "${env:NVM_BIN}/node",
+			"runtimeExecutable": "node",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
@@ -68,7 +68,6 @@
 				"${fileBasenameNoExtension}",
 				"--detectOpenHandles"
 			],
-			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen"
@@ -77,13 +76,12 @@
 			"type": "node",
 			"request": "launch",
 			"name": "test.all",
-			"runtimeExecutable": "${env:NVM_BIN}/node",
+			"runtimeExecutable": "node",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest"
 			],
-			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen"
@@ -92,14 +90,13 @@
 			"type": "node",
 			"request": "launch",
 			"name": "test.all.detectOpenHandles",
-			"runtimeExecutable": "${env:NVM_BIN}/node",
+			"runtimeExecutable": "node",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"--trace-warnings",
 				"${workspaceFolder}/node_modules/.bin/jest",
 				"--detectOpenHandles"
 			],
-			"port": 9229,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen"

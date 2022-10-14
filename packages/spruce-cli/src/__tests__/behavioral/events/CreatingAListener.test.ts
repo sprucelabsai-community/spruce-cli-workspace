@@ -66,13 +66,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	@test()
 	protected static async generatesMapFile() {
-		const { results } = await this.installEventsAndCreateListener()
-
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			`listeners.ts`,
-			results.files
-		)
-
+		const match = await this.installEventsCreateListenerAndGetListenerMap()
 		await this.Service('typeChecker').check(match)
 	}
 
@@ -326,6 +320,17 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		await this.Service('typeChecker').check(listenerPath)
 	}
 
+	@test()
+	protected static async hasIsGlobalCheck() {
+		const match = await this.installEventsCreateListenerAndGetListenerMap()
+		const contents = diskUtil.readFile(match)
+
+		assert.doesInclude(
+			contents,
+			"isGlobal: require('../../listeners/skill/will-boot.v2020_01_01.listener').isGlobal,"
+		)
+	}
+
 	private static async installAddDependencyExecuteAndWaitForInput(
 		namespace: string
 	) {
@@ -411,5 +416,15 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			org,
 			currentSkill,
 		}
+	}
+
+	private static async installEventsCreateListenerAndGetListenerMap() {
+		const { results } = await this.installEventsAndCreateListener()
+
+		const match = testUtil.assertFileByNameInGeneratedFiles(
+			`listeners.ts`,
+			results.files
+		)
+		return match
 	}
 }
