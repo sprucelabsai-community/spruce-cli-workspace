@@ -109,11 +109,8 @@ export default class OverrideActionDecorator implements FeatureAction {
 	public execute = async (optionsArg: any) => {
 		this.assertCommandIsNotBlocked()
 
-		let { ...options } = optionsArg
-
-		options = this.mixinOptionOverrides(options)
-
-		let response = await this.childAction.execute(options)
+		const options = this.mixinOptionOverrides(optionsArg)
+		const response = await this.childAction.execute(options)
 
 		return response
 	}
