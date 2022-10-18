@@ -29,7 +29,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 
 		await this.wait(100)
 
-		const installer = this.getFeatureInstaller()
+		const installer = this.featureInstaller
 		let isInstalled = await installer.isInstalled('schema')
 
 		assert.isFalse(isInstalled)
@@ -98,7 +98,7 @@ export default class FeatureCommandExecuterTest extends AbstractSchemaTest {
 			},
 		})
 
-		const installer = this.getFeatureInstaller()
+		const installer = this.featureInstaller
 		const isInstalled = await installer.isInstalled('schema')
 
 		assert.isTrue(isInstalled)

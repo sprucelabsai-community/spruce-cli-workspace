@@ -128,7 +128,9 @@ export default class NodeFeature<
 		pkg.unset('main')
 		pkg.unset('license')
 
-		await this.Store('skill', { cwd }).setCurrentSkillsNamespace(options.name)
+		await this.Store('skill', {
+			cwd,
+		}).setCurrentSkillsNamespace(options.name)
 
 		return {}
 	}

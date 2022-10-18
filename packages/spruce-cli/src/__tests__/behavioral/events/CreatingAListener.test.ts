@@ -1,4 +1,7 @@
-import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import {
+	MercuryClientFactory,
+	MercuryTestClient,
+} from '@sprucelabs/mercury-client'
 import { coreEventContracts } from '@sprucelabs/mercury-core-events'
 import { EventSignature, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { buildSchema } from '@sprucelabs/schema'
@@ -14,18 +17,11 @@ import {
 	versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
-import { test, assert } from '@sprucelabs/test-utils'
+import { test, assert, generateId } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import { FeatureDependency } from '../../../features/AbstractFeature'
 import ListenAction, {
 	CORE_EVENT_NAMESPACE,
 } from '../../../features/event/actions/ListenAction'
-import FeatureInstaller from '../../../features/FeatureInstaller'
-import {
-	FeatureCode,
-	FeatureInstallResponse,
-	FeatureMap,
-} from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -36,9 +32,6 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.featureInstaller = this.FeatureInstaller({
-			featureInstaller: new EverythingInstalledInstaller(),
-		})
 		this.listen = this.Action('event', 'listen')
 	}
 
@@ -129,18 +122,17 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		this.ui.reset()
 	}
 
-	@test.only()
+	@test()
 	protected static async loadsContractsFilteringByDependencies() {
-		debugger
+		MercuryClientFactory.setIsTestMode(true)
+		MercuryTestClient.setShouldRequireLocalListeners(true)
+
 		let passedTarget: any
 		await this.fakeGetEventContracts((target) => {
-			debugger
 			passedTarget = target
 		})
 
-		debugger
-		const namespace = 'heartwood'
-		debugger
+		const namespace = generateId()
 		await this.installAddDependencyExecuteAndWaitForInput(namespace)
 
 		assert.isEqualDeep(passedTarget, {
@@ -158,6 +150,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	) {
 		await eventFaker.on('get-event-contracts::v2020_12_25', ({ target }) => {
 			cb?.(target)
+
 			return {
 				contracts: results ?? [...(coreEventContracts as any)],
 			}
@@ -347,18 +340,21 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 	private static async installAddDependencyExecuteAndWaitForInput(
 		namespace: string
 	) {
-		// await this.installEventFeature('events')
-		MercuryClientFactory.setIsTestMode(true)
-		debugger
+		await this.installEventFeature('events')
+
 		this.addDependency(namespace)
-		debugger
+
 		await this.executeAndWaitForInput()
 		return this.ui.getLastInvocation()
 	}
 
 	private static async executeAndWaitForInput() {
-		debugger
-		void this.listen.execute({})
+		void this.listen.execute({}).then((results) => {
+			if (results.errors) {
+				this.ui.setError(results.errors[0])
+			}
+		})
+
 		await this.waitForInput()
 	}
 
@@ -366,7 +362,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		const dependencies = this.Service('dependency')
 		dependencies.add({
 			id: namespace,
-			namespace: 'waka',
+			namespace,
 		})
 	}
 
@@ -442,44 +438,5 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 			results.files
 		)
 		return match
-	}
-}
-
-class EverythingInstalledInstaller implements FeatureInstaller {
-	private featureMap: Partial<FeatureMap> = {}
-
-	public mapFeature<C extends keyof FeatureMap>(
-		code: C,
-		feature: FeatureMap[C]
-	): void {
-		this.featureMap[code] = feature
-	}
-
-	public async install(): Promise<FeatureInstallResponse> {
-		return {}
-	}
-	public async getInstalledFeatures() {
-		return Object.values(this.featureMap)
-	}
-	public getFeatureDependencies(): FeatureDependency[] {
-		return []
-	}
-	public getAllCodes(): FeatureCode[] {
-		return Object.keys(this.featureMap) as FeatureCode[]
-	}
-
-	public async isInstalled(_code: keyof FeatureMap): Promise<boolean> {
-		return true
-	}
-	public markAsSkippedThisRun(_code: keyof FeatureMap): void {}
-	public markAsPermanentlySkipped(_code: keyof FeatureMap): void {}
-	public isMarkedAsSkipped(_code: keyof FeatureMap): boolean {
-		return false
-	}
-	public getFeature<C extends keyof FeatureMap>(code: C): FeatureMap[C] {
-		return this.featureMap[code]!
-	}
-	public async areInstalled(_codes: FeatureCode[]): Promise<boolean> {
-		return true
 	}
 }

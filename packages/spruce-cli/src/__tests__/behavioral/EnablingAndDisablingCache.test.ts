@@ -10,7 +10,7 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 	@test()
 	protected static async cacheFeatureIsAlwaysOn() {
-		const isInstalled = await this.getFeatureInstaller().isInstalled('cache')
+		const isInstalled = await this.featureInstaller.isInstalled('cache')
 		assert.isTrue(isInstalled)
 	}
 

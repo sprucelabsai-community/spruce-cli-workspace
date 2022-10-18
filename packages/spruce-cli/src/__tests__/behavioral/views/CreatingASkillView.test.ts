@@ -24,7 +24,7 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
 
 	@test()
 	protected static async viewFieatureHasExpectedDependencies() {
-		const features = await this.getFeatureInstaller()
+		const features = await this.featureInstaller
 		const view = features.getFeature('view')
 		assert.isEqualDeep(view.dependencies, [
 			{

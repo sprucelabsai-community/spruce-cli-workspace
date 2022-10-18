@@ -28,6 +28,7 @@ export default class SpyInterface implements GraphicsInterface {
 	private term?: TerminalInterface
 	private startTime: number
 	private promptTimeout?: any
+	private error?: Error
 
 	public constructor() {
 		this.startTime = new Date().getTime()
@@ -78,6 +79,10 @@ export default class SpyInterface implements GraphicsInterface {
 		this.confirmResolver = undefined
 		this.waitForEnterResolver = undefined
 		clearTimeout(this.promptTimeout)
+	}
+
+	public setError(err: Error) {
+		this.error = err
 	}
 
 	public getLastInvocation() {
@@ -298,6 +303,11 @@ export default class SpyInterface implements GraphicsInterface {
 					testUtil.log('waitForInput timeout reset because of new output.')
 				}
 			}
+
+			if (this.error) {
+				throw this.error
+			}
+
 			await new Promise((resolve) => setTimeout(resolve, checkInterval))
 		}
 	}

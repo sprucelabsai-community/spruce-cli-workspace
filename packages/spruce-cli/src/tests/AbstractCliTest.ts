@@ -28,7 +28,7 @@ import LintService from '../services/LintService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
-	StoreFactoryMethodOptions,
+	CreateStoreOptions,
 	StoreFactoryOptions,
 	StoreMap,
 } from '../stores/StoreFactory'
@@ -217,15 +217,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
-		const emitter = options?.emitter ?? this.getEmitter()
+		this.featureInstaller = this.FeatureInstaller()
 
 		return new FeatureFixture({
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
-			emitter,
 			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
-			featureInstaller: this.getFeatureInstaller({ emitter }),
+			featureInstaller: this.featureInstaller,
 			...options,
 		})
 	}
@@ -332,7 +331,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static FeatureInstaller(options?: Partial<FeatureOptions>) {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory(options)
-		const emitter = this.getEmitter()
+		const emitter = options?.emitter ?? this.getEmitter()
 		const apiClientFactory = this.getMercuryFixture().getApiClientFactory()
 
 		const actionExecuter = this.ActionExecuter()
@@ -365,11 +364,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static Store<C extends StoreCode>(
 		code: C,
-		options?: StoreFactoryMethodOptions
+		options?: CreateStoreOptions<C>
 	): StoreMap[C] {
 		return this.StoreFactory().Store(code, {
 			cwd: this.cwd,
-			...options,
+			...(options as any),
 		})
 	}
 
@@ -378,9 +377,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async assertIsFeatureInstalled(code: FeatureCode) {
-		const featureInstaller = this.getFeatureInstaller()
-		const isInstalled = await featureInstaller.isInstalled(code)
-
+		const isInstalled = await this.featureInstaller.isInstalled(code)
 		assert.isTrue(isInstalled)
 	}
 
@@ -472,7 +469,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			emitter,
 			actionFactory,
 			featureInstallerFactory: () => {
-				return this.getFeatureInstaller()
+				return this.featureInstaller
 			},
 			shouldAutoHandleDependencies: false,
 			...options,

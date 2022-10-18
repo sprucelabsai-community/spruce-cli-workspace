@@ -10,7 +10,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 		await this.FeatureFixture().installCachedFeatures('everythingInNode')
 
-		const featureInstaller = this.getFeatureInstaller()
+		const featureInstaller = this.featureInstaller
 		featureInstaller.markAsPermanentlySkipped('skill')
 	}
 

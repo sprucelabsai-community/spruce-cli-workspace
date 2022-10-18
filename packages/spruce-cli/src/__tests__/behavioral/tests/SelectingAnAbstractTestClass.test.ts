@@ -117,10 +117,10 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 		await this.installTests()
 
-		const testFeature = this.getFeatureInstaller().getFeature('test')
+		const testFeature = this.featureInstaller.getFeature('test')
 
 		for (const feat of featuresWithRegisteredTests) {
-			await this.getFeatureInstaller().install({
+			await this.featureInstaller.install({
 				features: [
 					{
 						//@ts-ignore
@@ -154,7 +154,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 			assert.isTruthy(match)
 
-			let isInstalled = await this.getFeatureInstaller().isInstalled(
+			let isInstalled = await this.featureInstaller.isInstalled(
 				feat.featureCode as any
 			)
 			assert.isFalse(isInstalled)
@@ -163,7 +163,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
 			await promise
 
-			isInstalled = await this.getFeatureInstaller().isInstalled(
+			isInstalled = await this.featureInstaller.isInstalled(
 				feat.featureCode as any
 			)
 			assert.isTrue(isInstalled)

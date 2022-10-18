@@ -21,7 +21,7 @@ export default class SettingUpErrorTest extends AbstractErrorTest {
 	protected static async installsSchemasIfNotInstalled() {
 		await this.installErrorFeature('errors')
 
-		const installer = this.getFeatureInstaller()
+		const installer = this.featureInstaller
 
 		const isSchemaInstalled = await installer.isInstalled('schema')
 		assert.isTrue(isSchemaInstalled)

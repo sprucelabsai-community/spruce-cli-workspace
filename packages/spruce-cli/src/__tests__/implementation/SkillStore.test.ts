@@ -1,22 +1,34 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
+import SkillStore from '../../features/skill/stores/SkillStore'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class SkillStoreTest extends AbstractCliTest {
+	private static store: SkillStore
+
+	protected static async beforeEach() {
+		await super.beforeEach()
+		this.store = this.SkillStore()
+	}
+
 	@test()
-	protected static async canInstantiateSkillStore() {
-		assert.isTruthy(this.Store('skill'))
+	protected static async throwsWhenMissingRequired() {
+		//@ts-ignore
+		const err = assert.doesThrow(() => this.Store('skill', {}))
+		errorAssert.assertError(err, 'MISSING_PARAMETERS', {
+			parameters: ['featureInstaller'],
+		})
 	}
 
 	@test()
 	protected static async hasRegisterMethod() {
-		assert.isFunction(this.Store('skill').register)
+		assert.isFunction(this.store.register)
 	}
 
 	@test()
 	protected static async cantRegisterIfNotInSkill() {
 		const err = await assert.doesThrowAsync(() =>
-			this.Store('skill').register({
+			this.store.register({
 				name: 'awesome skill',
 				slug: 'awesome-skill',
 			})
@@ -26,16 +38,14 @@ export default class SkillStoreTest extends AbstractCliTest {
 
 	@test()
 	protected static async cantLoadcurrentSkillIfNotInSkill() {
-		const err = await assert.doesThrowAsync(() =>
-			this.Store('skill').loadCurrentSkill()
-		)
+		const err = await assert.doesThrowAsync(() => this.store.loadCurrentSkill())
 		errorAssert.assertError(err, 'DIRECTORY_NOT_SKILL')
 	}
 
 	@test()
 	protected static async cantCheckIfSkillIsRegisteredNotInSkill() {
 		const err = await assert.doesThrowAsync(() =>
-			this.Store('skill').isCurrentSkillRegistered()
+			this.store.isCurrentSkillRegistered()
 		)
 		errorAssert.assertError(err, 'DIRECTORY_NOT_SKILL')
 	}
@@ -43,8 +53,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 	@test()
 	protected static async canGetNamespace() {
 		await this.FeatureFixture().installCachedFeatures('skills')
-
-		const namespace = await this.Store('skill').loadCurrentSkillsNamespace()
+		const namespace = await this.store.loadCurrentSkillsNamespace()
 		assert.isEqual(namespace, 'TestSkill')
 	}
 
@@ -52,12 +61,9 @@ export default class SkillStoreTest extends AbstractCliTest {
 	protected static async canSetNamespace() {
 		await this.FeatureFixture().installCachedFeatures('skills')
 
-		const store = this.Store('skill')
-		let namespace = await store.loadCurrentSkillsNamespace()
-
-		await this.Store('skill').setCurrentSkillsNamespace('new-namespace')
-
-		namespace = await store.loadCurrentSkillsNamespace()
+		let namespace = await this.store.loadCurrentSkillsNamespace()
+		await this.store.setCurrentSkillsNamespace('new-namespace')
+		namespace = await this.store.loadCurrentSkillsNamespace()
 		assert.isEqual(namespace, 'NewNamespace')
 	}
 
@@ -68,12 +74,10 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const slug = `awesome-skill-${new Date().getTime()}`
 		await this.people.loginAsDemoPerson()
 
-		const skillStore = this.Store('skill')
-
-		let isRegistered = await skillStore.isCurrentSkillRegistered()
+		let isRegistered = await this.store.isCurrentSkillRegistered()
 		assert.isFalse(isRegistered)
 
-		const skill = await skillStore.register({
+		const skill = await this.store.register({
 			name: 'awesome skill',
 			slug,
 		})
@@ -92,10 +96,10 @@ export default class SkillStoreTest extends AbstractCliTest {
 
 		assert.isEqual(results.skill?.id, skill.id)
 
-		isRegistered = await skillStore.isCurrentSkillRegistered()
+		isRegistered = await this.store.isCurrentSkillRegistered()
 		assert.isTrue(isRegistered)
 
-		const currentSkill = await skillStore.loadCurrentSkill()
+		const currentSkill = await this.store.loadCurrentSkill()
 
 		assert.isEqual(currentSkill.id, skill.id)
 		assert.isTrue(currentSkill.isRegistered)
@@ -109,7 +113,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 		assert.isEqual(env.get('SKILL_API_KEY'), skill.apiKey)
 
 		const err = await assert.doesThrowAsync(() =>
-			skillStore.setCurrentSkillsNamespace('test')
+			this.store.setCurrentSkillsNamespace('test')
 		)
 
 		errorAssert.assertError(err, 'GENERIC')
@@ -117,5 +121,9 @@ export default class SkillStoreTest extends AbstractCliTest {
 		const pkg = this.Service('pkg')
 		const namespace = pkg.get('skill.namespace')
 		assert.isEqual(namespace, slug)
+	}
+
+	private static SkillStore(): SkillStore {
+		return this.Store('skill', {})
 	}
 }

@@ -17,7 +17,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.getFeatureInstaller().isInstalled = async () => true
+		this.featureInstaller.isInstalled = async () => true
 		SettingsService.prototype.isMarkedAsInstalled = () => true
 		BootAction.prototype.execute = this.oldBootExecute
 	}
@@ -155,7 +155,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 			code: 0,
 		})
 
-		const watchFeature = this.getFeatureInstaller().getFeature('watch')
+		const watchFeature = this.featureInstaller.getFeature('watch')
 		let wasStarted = false
 		let wasStopped = false
 

@@ -10,14 +10,6 @@ import {
 	ApiClientFactoryOptions,
 } from '../types/apiClient.types'
 
-export interface StoreOptions {
-	serviceFactory: ServiceFactory
-	cwd: string
-	homeDir: string
-	apiClientFactory: ApiClientFactory
-	emitter: GlobalEmitter
-}
-
 export default abstract class AbstractStore implements ServiceProvider {
 	protected cwd: string
 	protected homeDir: string
@@ -46,3 +38,17 @@ export default abstract class AbstractStore implements ServiceProvider {
 		return this.apiClientFactory(options)
 	}
 }
+
+interface AbstractStoreOptions {
+	serviceFactory: ServiceFactory
+	cwd: string
+	homeDir: string
+	apiClientFactory: ApiClientFactory
+	emitter: GlobalEmitter
+}
+
+export type StoreOptions<
+	Options extends Record<string, any> | undefined = undefined
+> = Options extends Record<string, any>
+	? AbstractStoreOptions & Options
+	: AbstractStoreOptions

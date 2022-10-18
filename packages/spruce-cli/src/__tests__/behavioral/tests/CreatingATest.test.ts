@@ -15,7 +15,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	protected static async requiresInstallIfFeatureNotInstalled() {
 		await this.installTests('testsInNodeModule')
 
-		const testFeature = this.getFeatureInstaller().getFeature('test')
+		const testFeature = this.featureInstaller.getFeature('test')
 		const candidates = await testFeature.buildParentClassCandidates()
 
 		assert.doesInclude(candidates, {

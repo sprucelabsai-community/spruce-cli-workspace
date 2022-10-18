@@ -25,7 +25,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 
 	private static getExpectedBuildCi() {
 		//@ts-ignore
-		return this.getFeatureInstaller().getFeature('skill').scripts['build.ci']
+		return this.featureInstaller.getFeature('skill').scripts['build.ci']
 	}
 
 	@test()

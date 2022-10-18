@@ -96,10 +96,8 @@ export default abstract class AbstractSchemaTest extends AbstractCliTest {
 		const packageContents = diskUtil.readFile(this.resolvePath('package.json'))
 		assert.doesInclude(packageContents, name)
 
-		const installer = this.getFeatureInstaller()
-
 		for (const code of expectedInstalledSkills) {
-			const isInstalled = await installer.isInstalled(code)
+			const isInstalled = await this.featureInstaller.isInstalled(code)
 			assert.isTrue(isInstalled)
 		}
 	}

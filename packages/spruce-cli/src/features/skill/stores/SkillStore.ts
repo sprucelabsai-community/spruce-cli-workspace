@@ -1,12 +1,16 @@
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
-import AbstractStore from '../../../stores/AbstractStore'
+import AbstractStore, { StoreOptions } from '../../../stores/AbstractStore'
 import { CurrentSkill, RegisteredSkill } from '../../../types/cli.types'
 
 export default class SkillStore extends AbstractStore {
 	public readonly name = 'skill'
 	private static currentSkill?: CurrentSkill
+
+	public constructor(options: StoreOptions<SkillStoreOptions>) {
+		super(options)
+	}
 
 	public static clearCurrentSkill() {
 		this.currentSkill = undefined
@@ -19,7 +23,7 @@ export default class SkillStore extends AbstractStore {
 		const isRegisteringCurrentSkill =
 			options?.isRegisteringCurrentSkill !== false
 
-		isRegisteringCurrentSkill && this.assertInSkill()
+		isRegisteringCurrentSkill && (await this.assertInSkill())
 
 		const { name, slug, description, isPublished } = values
 		const client = await this.connectToApi()
@@ -43,7 +47,7 @@ export default class SkillStore extends AbstractStore {
 		return skill
 	}
 
-	private assertInSkill() {
+	private async assertInSkill() {
 		const isInstalled = this.Service('settings').isMarkedAsInstalled('skill')
 
 		if (!isInstalled) {
@@ -56,7 +60,7 @@ export default class SkillStore extends AbstractStore {
 			return SkillStore.currentSkill
 		}
 
-		this.assertInSkill()
+		await this.assertInSkill()
 
 		const currentSkill = this.Service('auth').getCurrentSkill()
 
@@ -169,13 +173,14 @@ export default class SkillStore extends AbstractStore {
 	}) {
 		const client = await this.connectToApi()
 
-		const response = await client.emit('list-skills::v2020_12_25', {
-			payload: {
-				...query,
-			},
-		})
-
-		const { skills } = eventResponseUtil.getFirstResponseOrThrow(response)
+		const [{ skills }] = await client.emitAndFlattenResponses(
+			'list-skills::v2020_12_25',
+			{
+				payload: {
+					...query,
+				},
+			}
+		)
 
 		return skills
 	}
@@ -191,3 +196,5 @@ export interface CreateSkill {
 export interface RegisterSkillOptions {
 	isRegisteringCurrentSkill?: boolean
 }
+
+export interface SkillStoreOptions {}

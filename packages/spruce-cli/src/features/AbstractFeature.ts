@@ -10,7 +10,7 @@ import ServiceFactory, {
 } from '../services/ServiceFactory'
 import StoreFactory, {
 	StoreCode,
-	StoreFactoryMethodOptions,
+	CreateStoreOptions,
 	StoreMap,
 } from '../stores/StoreFactory'
 import {
@@ -139,9 +139,9 @@ export default abstract class AbstractFeature<
 
 	public Store<C extends StoreCode>(
 		code: C,
-		options?: StoreFactoryMethodOptions
+		options?: CreateStoreOptions<C>
 	): StoreMap[C] {
-		return this.storeFactory.Store(code, { cwd: this.cwd, ...options })
+		return this.storeFactory.Store(code, { cwd: this.cwd, ...(options as any) })
 	}
 
 	protected async connectToApi(

@@ -19,7 +19,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
 		this.Service('pkg').set({ path: 'dependencies.axios', value: '0.0.1' })
 
-		const skill = this.getFeatureInstaller().getFeature('skill')
+		const skill = this.featureInstaller.getFeature('skill')
 		skill.packageDependencies.push({
 			name: 'axios',
 			version: '0.21.3',
@@ -61,7 +61,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 		await this.action.execute({})
 
 		const pkg = this.Service('pkg')
-		const features = await this.getFeatureInstaller().getInstalledFeatures()
+		const features = await this.featureInstaller.getInstalledFeatures()
 
 		for (const feature of features) {
 			const featureDependencies = feature.packageDependencies as NpmPackage[]

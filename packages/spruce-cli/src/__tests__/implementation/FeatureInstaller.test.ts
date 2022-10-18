@@ -7,7 +7,7 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
-		this.installer = this.getFeatureInstaller()
+		this.installer = this.featureInstaller
 	}
 
 	@test()

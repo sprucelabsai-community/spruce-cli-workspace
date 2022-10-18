@@ -23,7 +23,7 @@ export default class SettingUpANodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async canTellIfNotInstalled() {
-		const installer = this.getFeatureInstaller()
+		const installer = this.featureInstaller
 		const isInstalled = await installer.isInstalled('node')
 		assert.isFalse(isInstalled)
 	}
