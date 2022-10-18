@@ -14,15 +14,6 @@ import {
 	FeatureActionResponse,
 } from './features.types'
 
-export interface ActionExecuterOptions {
-	ui: GraphicsInterface
-	emitter: GlobalEmitter
-	actionFactory: ActionFactory
-	featureInstallerFactory: () => FeatureInstaller
-	shouldAutoHandleDependencies?: boolean
-	shouldThrowOnListenerError?: boolean
-}
-
 export default class ActionExecuter {
 	private emitter: GlobalEmitter
 	private ui: GraphicsInterface
@@ -200,4 +191,13 @@ export default class ActionExecuter {
 
 		return action as any
 	}
+}
+
+export interface ActionExecuterOptions {
+	ui: GraphicsInterface
+	emitter: GlobalEmitter
+	actionFactory: ActionFactory
+	featureInstallerFactory: () => FeatureInstaller
+	shouldAutoHandleDependencies?: boolean
+	shouldThrowOnListenerError?: boolean
 }

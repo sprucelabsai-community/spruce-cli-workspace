@@ -13,7 +13,7 @@ import DeployFeature from './deploy/DeployFeature'
 import ErrorFeature from './error/ErrorFeature'
 import EventFeature from './event/EventFeature'
 import EventContractFeature from './eventContract/EventContractFeature'
-import FeatureInstaller from './FeatureInstaller'
+import FeatureInstaller, { FeatureInstallerImpl } from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 import LogFeature from './log/LogFeature'
 import NodeFeature from './node/NodeFeature'
@@ -30,6 +30,7 @@ import TestFeature from './test/TestFeature'
 import ViewFeature from './view/ViewFeature'
 import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
+
 export default class FeatureInstallerFactory {
 	private static readonly features: any[] = [
 		ErrorFeature,
@@ -81,21 +82,14 @@ export default class FeatureInstallerFactory {
 		'permission',
 	]
 
-	public static WithAllFeatures(options: {
-		cwd: string
-		serviceFactory: ServiceFactory
-		storeFactory: StoreFactory
-		featureInstaller?: FeatureInstaller
-		ui: GraphicsInterface
-		emitter: GlobalEmitter
-		apiClientFactory: ApiClientFactory
-		actionExecuter: ActionExecuter
-	}): FeatureInstaller {
+	public static WithAllFeatures(
+		options: InstallerWithAllFeaturesOptions
+	): FeatureInstaller {
 		const { cwd, serviceFactory, storeFactory, ui, emitter, actionExecuter } =
 			options
 
 		const featureInstaller =
-			options.featureInstaller ?? new FeatureInstaller(cwd, serviceFactory)
+			options.featureInstaller ?? new FeatureInstallerImpl(cwd, serviceFactory)
 
 		const featureOptions: FeatureOptions = {
 			cwd,
@@ -111,10 +105,20 @@ export default class FeatureInstallerFactory {
 
 		this.features.forEach((Feature) => {
 			const feature = new Feature(featureOptions)
-
 			featureInstaller.mapFeature(feature.code, feature)
 		})
 
 		return featureInstaller
 	}
+}
+
+interface InstallerWithAllFeaturesOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	storeFactory: StoreFactory
+	featureInstaller?: FeatureInstaller
+	ui: GraphicsInterface
+	emitter: GlobalEmitter
+	apiClientFactory: ApiClientFactory
+	actionExecuter: ActionExecuter
 }

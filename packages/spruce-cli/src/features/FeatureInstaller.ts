@@ -17,7 +17,7 @@ import {
 	FeatureMap,
 } from './features.types'
 
-export default class FeatureInstaller implements ServiceProvider {
+export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 	public cwd: string
 
 	private featureMap: Partial<FeatureMap> = {}
@@ -97,12 +97,12 @@ export default class FeatureInstaller implements ServiceProvider {
 	}
 
 	public getFeatureDependencies<C extends FeatureCode>(
-		featureCode: C,
-		trackedFeatures: FeatureDependency[] = []
+		featureCode: C
+		// trackedFeatures: FeatureDependency[] = []
 	): FeatureDependency[] {
 		let deps = this.getFeatureDependenciesIncludingSelf(
 			{ code: featureCode, isRequired: true },
-			trackedFeatures
+			[] // trackedFeatures
 		).filter((f) => f.code !== featureCode)
 
 		deps = this.sortFeatures(deps)
@@ -170,10 +170,10 @@ export default class FeatureInstaller implements ServiceProvider {
 		const shouldAllowEntertainment = !!features.find((f) => f.code === 'skill')
 
 		if (
-			FeatureInstaller.startInFlightIntertainmentHandler &&
+			FeatureInstallerImpl.startInFlightIntertainmentHandler &&
 			shouldAllowEntertainment
 		) {
-			FeatureInstaller.startInFlightIntertainmentHandler(
+			FeatureInstallerImpl.startInFlightIntertainmentHandler(
 				(handler: InternalUpdateHandler) => {
 					didUpdateHandler = handler
 				}
@@ -235,10 +235,10 @@ export default class FeatureInstaller implements ServiceProvider {
 		results = merge(results, pendingResults)
 
 		if (
-			FeatureInstaller.stopInFlightIntertainmentHandler &&
+			FeatureInstallerImpl.stopInFlightIntertainmentHandler &&
 			shouldAllowEntertainment
 		) {
-			FeatureInstaller.stopInFlightIntertainmentHandler()
+			FeatureInstallerImpl.stopInFlightIntertainmentHandler()
 		}
 
 		return results
@@ -308,8 +308,8 @@ export default class FeatureInstaller implements ServiceProvider {
 		features: AbstractFeature[],
 		didUpdateHandler?: InternalUpdateHandler
 	) {
-		if (FeatureInstaller.startInFlightIntertainmentHandler) {
-			FeatureInstaller.startInFlightIntertainmentHandler(
+		if (FeatureInstallerImpl.startInFlightIntertainmentHandler) {
+			FeatureInstallerImpl.startInFlightIntertainmentHandler(
 				(handler: InternalUpdateHandler) => {
 					didUpdateHandler = handler
 				}
@@ -325,8 +325,8 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		await this.installAllPending(didUpdateHandler)
 
-		if (FeatureInstaller.stopInFlightIntertainmentHandler) {
-			FeatureInstaller.stopInFlightIntertainmentHandler()
+		if (FeatureInstallerImpl.stopInFlightIntertainmentHandler) {
+			FeatureInstallerImpl.stopInFlightIntertainmentHandler()
 		}
 	}
 
@@ -490,4 +490,20 @@ export default class FeatureInstaller implements ServiceProvider {
 
 		return installed.filter((f) => !!f) as FeatureMap[keyof FeatureMap][]
 	}
+}
+
+export default interface FeatureInstaller {
+	isInstalled(code: FeatureCode): Promise<boolean>
+	markAsSkippedThisRun(code: FeatureCode): void
+	markAsPermanentlySkipped(code: FeatureCode): void
+	isMarkedAsSkipped(code: FeatureCode): boolean
+	getFeature<C extends FeatureCode>(code: C): FeatureMap[C]
+	areInstalled(codes: FeatureCode[]): Promise<boolean>
+	install(options: InstallFeatureOptions): Promise<FeatureInstallResponse>
+	getInstalledFeatures(): Promise<FeatureMap[keyof FeatureMap][]>
+	getFeatureDependencies<C extends FeatureCode>(
+		featureCode: C
+	): FeatureDependency[]
+	getAllCodes(): FeatureCode[]
+	mapFeature<C extends FeatureCode>(code: C, feature: FeatureMap[C]): void
 }

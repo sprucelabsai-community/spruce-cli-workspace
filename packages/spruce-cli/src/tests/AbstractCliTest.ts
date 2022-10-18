@@ -61,7 +61,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static personFixture?: PersonFixture
 	private static organizationFixture?: OrganizationFixture
 	private static skillFixture?: SkillFixture
-	private static featureInstaller?: FeatureInstaller
+	private static _featureInstaller?: FeatureInstaller
 	private static viewFixture?: ViewFixture
 	private static originalEnv: { [x: string]: string | undefined }
 
@@ -93,7 +93,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.homeDir = this.freshTmpDir()
 
 		this.emitter = undefined
-		this.featureInstaller = undefined
+		this._featureInstaller = undefined
 
 		OnboardingStore.overrideCwd(diskUtil.createRandomTempDir())
 
@@ -316,28 +316,38 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return diskUtil.resolveHashSprucePath(this.cwd, ...filePath)
 	}
 
-	protected static getFeatureInstaller(options?: Partial<FeatureOptions>) {
-		if (!this.featureInstaller) {
-			const serviceFactory = this.ServiceFactory()
-			const storeFactory = this.StoreFactory(options)
-			const emitter = this.getEmitter()
-			const apiClientFactory = this.getMercuryFixture().getApiClientFactory()
-
-			const actionExecuter = this.ActionExecuter()
-
-			this.featureInstaller = FeatureInstallerFactory.WithAllFeatures({
-				cwd: this.cwd,
-				serviceFactory,
-				storeFactory,
-				ui: this.ui,
-				emitter,
-				apiClientFactory,
-				actionExecuter,
-				...options,
-			})
+	protected static get featureInstaller() {
+		if (!this._featureInstaller) {
+			const installer = AbstractCliTest.FeatureInstaller()
+			this._featureInstaller = installer
 		}
 
-		return this.featureInstaller
+		return this._featureInstaller
+	}
+
+	protected static set featureInstaller(installer: FeatureInstaller) {
+		this._featureInstaller = installer
+	}
+
+	protected static FeatureInstaller(options?: Partial<FeatureOptions>) {
+		const serviceFactory = this.ServiceFactory()
+		const storeFactory = this.StoreFactory(options)
+		const emitter = this.getEmitter()
+		const apiClientFactory = this.getMercuryFixture().getApiClientFactory()
+
+		const actionExecuter = this.ActionExecuter()
+
+		const installer = FeatureInstallerFactory.WithAllFeatures({
+			cwd: this.cwd,
+			serviceFactory,
+			storeFactory,
+			ui: this.ui,
+			emitter,
+			apiClientFactory,
+			actionExecuter,
+			...options,
+		})
+		return installer
 	}
 
 	protected static StoreFactory(options?: Partial<StoreFactoryOptions>) {

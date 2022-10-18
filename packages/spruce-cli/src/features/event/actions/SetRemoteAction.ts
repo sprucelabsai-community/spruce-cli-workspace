@@ -8,7 +8,8 @@ const optionsSchema = buildSchema({
 	description: 'Point your skill to different Mercury environments.',
 	fields: {
 		remote: {
-			label: 'Where should remote point?',
+			label: 'Set remote',
+			hint: 'Start with developer and read more here: https://developer.spruce.bot/#/skills/index',
 			type: 'select',
 			isRequired: true,
 			options: {

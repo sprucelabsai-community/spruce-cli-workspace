@@ -20,7 +20,9 @@ import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
 } from './features/FeatureCommandAttacher'
-import FeatureInstaller from './features/FeatureInstaller'
+import FeatureInstaller, {
+	FeatureInstallerImpl,
+} from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
 import CliGlobalEmitter, {
@@ -471,14 +473,16 @@ async function setupInFlightEntertainment(ui: TerminalInterface) {
 		const command = new CommandService(diskUtil.resolvePath(__dirname, '../'))
 		InFlightEntertainment.setup({ command, ui })
 
-		FeatureInstaller.startInFlightIntertainmentHandler = (didUpdateHandler) => {
+		FeatureInstallerImpl.startInFlightIntertainmentHandler = (
+			didUpdateHandler
+		) => {
 			InFlightEntertainment.start()
 			didUpdateHandler((message) => {
 				InFlightEntertainment.writeStatus(message)
 			})
 		}
 
-		FeatureInstaller.stopInFlightIntertainmentHandler = () => {
+		FeatureInstallerImpl.stopInFlightIntertainmentHandler = () => {
 			InFlightEntertainment.stop()
 		}
 	}

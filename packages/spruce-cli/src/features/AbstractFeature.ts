@@ -28,29 +28,6 @@ import featuresUtil from './feature.utilities'
 import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 
-export interface InstallResults {
-	files?: GeneratedFile[]
-	cwd?: string
-}
-
-export interface FeatureDependency {
-	isRequired: boolean
-	code: FeatureCode
-}
-
-export interface FeatureOptions {
-	cwd: string
-	serviceFactory: ServiceFactory
-	templates: Templates
-	storeFactory: StoreFactory
-	actionFactory?: ActionFactory
-	featureInstaller: FeatureInstaller
-	ui: GraphicsInterface
-	emitter: GlobalEmitter
-	apiClientFactory: ApiClientFactory
-	actionExecuter: ActionExecuter
-}
-
 export default abstract class AbstractFeature<
 	S extends Schema | undefined = Schema | undefined
 > implements ServiceProvider
@@ -172,4 +149,27 @@ export default abstract class AbstractFeature<
 	): Promise<ApiClient> {
 		return this.apiClientFactory(options)
 	}
+}
+
+export interface InstallResults {
+	files?: GeneratedFile[]
+	cwd?: string
+}
+
+export interface FeatureDependency {
+	isRequired: boolean
+	code: FeatureCode
+}
+
+export interface FeatureOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	templates: Templates
+	storeFactory: StoreFactory
+	actionFactory?: ActionFactory
+	featureInstaller: FeatureInstaller
+	ui: GraphicsInterface
+	emitter: GlobalEmitter
+	apiClientFactory: ApiClientFactory
+	actionExecuter: ActionExecuter
 }

@@ -38,6 +38,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 	): Promise<FeatureActionResponse> {
 		const normalizedOptions = this.validateAndNormalizeOptions(options)
 
+		debugger
 		try {
 			let response: FeatureActionResponse = {}
 
@@ -48,10 +49,13 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				namespace,
 				schemaTypesLookupDir,
 			} = normalizedOptions
+			debugger
 
 			this.ui.startLoading('Loading event contracts...')
+			debugger
 
 			const contracts = await this.fetchEventContracts(namespace)
+			debugger
 
 			this.ui.stopLoading()
 
@@ -59,6 +63,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				namespace = await this.collectNamespace(contracts)
 			}
 
+			debugger
 			const { eventChoicesByNamespace } =
 				this.mapContractsToSelectChoices(contracts)
 
@@ -76,10 +81,14 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 				eventName = await this.collectEvent(contracts, namespace)
 			}
 
+			debugger
+
 			const isCoreEvent = namespace === CORE_EVENT_NAMESPACE
 			if (isCoreEvent) {
 				namespace = undefined
 			}
+
+			debugger
 
 			const fqen = eventNameUtil.join({
 				eventName,
