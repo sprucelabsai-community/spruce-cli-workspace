@@ -3,10 +3,8 @@ import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class GlobalEmitterTest extends AbstractCliTest {
 	@test()
-	protected static async globalEmitterEmitsSEquentally() {
-		const emitter = this.getEmitter()
-
+	protected static async globalEmitterEmitsEquentally() {
 		//@ts-ignore
-		assert.isTrue(emitter.shouldEmitSequentally)
+		assert.isTrue(this.emitter.shouldEmitSequentally)
 	}
 }

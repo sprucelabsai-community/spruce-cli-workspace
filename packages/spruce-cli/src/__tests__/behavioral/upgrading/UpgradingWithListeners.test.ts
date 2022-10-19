@@ -30,7 +30,7 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 
 		let wasHit = false
 
-		await this.getEmitter().on(
+		await this.emitter.on(
 			'feature.will-execute',
 			async ({ featureCode, actionCode }) => {
 				if (featureCode === 'event' && actionCode === 'sync.listeners') {
@@ -39,7 +39,7 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 			}
 		)
 
-		const results = await this.getEmitter().emit('feature.did-execute', {
+		const results = await this.emitter.emit('feature.did-execute', {
 			featureCode: 'node',
 			actionCode,
 			results: {},

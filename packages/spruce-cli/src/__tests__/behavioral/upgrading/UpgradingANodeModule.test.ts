@@ -20,7 +20,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 		CommandService.fakeCommand(/yarn clean.build/gis, { code: 1 })
 		CommandService.fakeCommand(/yarn build.dev/gis, { code: 0 })
 
-		await this.getEmitter().on('feature.did-execute', () => {
+		await this.emitter.on('feature.did-execute', () => {
 			return {
 				errors: undefined,
 			}

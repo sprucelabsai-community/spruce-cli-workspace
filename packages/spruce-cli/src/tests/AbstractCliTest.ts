@@ -56,7 +56,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static commandFaker: CommandFaker
 
 	private static _ui: SpyInterface
-	private static emitter?: GlobalEmitter
+	private static _emitter?: GlobalEmitter
 	private static mercuryFixture?: MercuryFixture
 	private static personFixture?: PersonFixture
 	private static organizationFixture?: OrganizationFixture
@@ -92,7 +92,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
 
-		this.emitter = undefined
+		this._emitter = undefined
 		this._featureInstaller = undefined
 
 		OnboardingStore.overrideCwd(diskUtil.createRandomTempDir())
@@ -153,7 +153,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	private static clearFixtures() {
-		this.emitter = undefined
+		this._emitter = undefined
 		this.mercuryFixture = undefined
 		this.organizationFixture = undefined
 		this.personFixture = undefined
@@ -175,11 +175,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		return this._ui
 	}
 
-	protected static getEmitter() {
-		if (!this.emitter) {
-			this.emitter = CliGlobalEmitter.Emitter()
+	protected static get emitter() {
+		if (!this._emitter) {
+			this._emitter = CliGlobalEmitter.Emitter()
 		}
-		return this.emitter
+		return this._emitter
 	}
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {
@@ -317,7 +317,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static get featureInstaller() {
 		if (!this._featureInstaller) {
-			const installer = AbstractCliTest.FeatureInstaller()
+			const installer = this.FeatureInstaller()
 			this._featureInstaller = installer
 		}
 
@@ -331,7 +331,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static FeatureInstaller(options?: Partial<FeatureOptions>) {
 		const serviceFactory = this.ServiceFactory()
 		const storeFactory = this.StoreFactory(options)
-		const emitter = options?.emitter ?? this.getEmitter()
+		const emitter = options?.emitter ?? this.emitter
 		const apiClientFactory = this.getMercuryFixture().getApiClientFactory()
 
 		const actionExecuter = this.ActionExecuter()
@@ -357,7 +357,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			serviceFactory,
 			homeDir: this.homeDir,
 			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
-			emitter: this.getEmitter(),
+			emitter: this.emitter,
 			...options,
 		})
 	}
@@ -445,12 +445,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		const serviceFactory = this.ServiceFactory()
 		const writerFactory = this.WriterFactory()
 
-		const emitter = this.getEmitter()
-
 		const actionFactory = new ActionFactory({
 			writerFactory,
 			ui: this.ui,
-			emitter,
+			emitter: this.emitter,
 			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
 			cwd: this.cwd,
 			serviceFactory,
@@ -466,7 +464,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		const executer = new ActionExecuter({
 			ui: this.ui,
-			emitter,
+			emitter: this.emitter,
 			actionFactory,
 			featureInstallerFactory: () => {
 				return this.featureInstaller

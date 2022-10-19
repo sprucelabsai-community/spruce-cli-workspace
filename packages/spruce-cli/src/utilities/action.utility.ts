@@ -31,7 +31,9 @@ const actionUtil = {
 	},
 
 	assertNoErrorsInResponse(response: MercuryAggregateResponse<any>) {
-		eventResponseUtil.getFirstResponseOrThrow(response)
+		if (response.totalContracts > 0) {
+			eventResponseUtil.getFirstResponseOrThrow(response)
+		}
 	},
 }
 

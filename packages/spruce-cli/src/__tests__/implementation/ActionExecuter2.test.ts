@@ -44,7 +44,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		let willExecuteHitCount = 0
 		let didExecuteHitCount = 0
 
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 
 		void emitter.on('feature.will-execute', (payload) => {
 			emittedWillEvent = true

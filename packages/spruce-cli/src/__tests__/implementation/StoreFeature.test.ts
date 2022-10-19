@@ -12,7 +12,7 @@ export default class StoreFeatureTest extends AbstractCliTest {
 		})
 
 		let hitCount = 0
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 		await emitter.on(
 			'feature.will-execute',
 			async ({ featureCode, actionCode }) => {

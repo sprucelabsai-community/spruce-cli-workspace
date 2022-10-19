@@ -175,7 +175,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 
 		const schemas = schemaNames.map((name) => this[name])
 
-		await this.getEmitter().on('schema.did-fetch-schemas', async () => {
+		await this.emitter.on('schema.did-fetch-schemas', async () => {
 			return {
 				schemas,
 			}
@@ -228,7 +228,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			schemas.push(this[name])
 		}
 
-		await this.getEmitter().on('schema.did-fetch-schemas', async () => {
+		await this.emitter.on('schema.did-fetch-schemas', async () => {
 			return {
 				schemas,
 			}
@@ -278,7 +278,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			},
 		}
 
-		await this.getEmitter().on('schema.did-fetch-schemas', async () => {
+		await this.emitter.on('schema.did-fetch-schemas', async () => {
 			return {
 				schemas: [mySchema],
 			}
@@ -443,7 +443,7 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			},
 		}
 
-		await this.getEmitter().on('schema.did-fetch-schemas', async () => {
+		await this.emitter.on('schema.did-fetch-schemas', async () => {
 			return {
 				schemas: [schema1, schema2],
 			}

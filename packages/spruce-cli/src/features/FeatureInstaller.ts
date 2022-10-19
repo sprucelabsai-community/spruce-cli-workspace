@@ -193,6 +193,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 			didUpdateHandler?.(`Checking if ${code} is installed...`)
 
 			const isInstalled = await this.isInstalled(code)
+
 			if (!isInstalled && installFeatureDependencies) {
 				didUpdateHandler?.(`It is not, checking dependencies...`)
 				dependenciesToInstall = dependenciesToInstall.concat(
@@ -227,6 +228,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 					installFeature,
 					didUpdateHandler
 				)
+
 				results = merge(results, installResults)
 			}
 		}
@@ -341,6 +343,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 					this.packagesToInstall.length === 1 ? '' : 's'
 				}. Please be patient.`
 			)
+
 			await pkgService.install(this.packagesToInstall, {})
 		}
 
@@ -350,6 +353,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 					this.devPackagesToInstall.length === 1 ? '' : 's'
 				}. Please be patient.`
 			)
+
 			await pkgService.install(this.devPackagesToInstall, {
 				isDev: true,
 			})

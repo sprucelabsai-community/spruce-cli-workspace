@@ -51,7 +51,7 @@ export default class CreatingAThemeTest extends AbstractSkillTest {
 
 	@test()
 	protected static async doesNotSyncEventsIfAlreadySynced() {
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 		let hitCount = 0
 
 		diskUtil.deleteFile(this.getThemePath())

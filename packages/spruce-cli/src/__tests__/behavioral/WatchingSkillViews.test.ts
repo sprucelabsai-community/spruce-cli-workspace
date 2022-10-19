@@ -234,7 +234,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	}
 
 	private static async emitFileChangeEvent() {
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 
 		await emitter.emit('watcher.did-detect-change', {
 			changes: [

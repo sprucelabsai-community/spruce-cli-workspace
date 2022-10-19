@@ -48,7 +48,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 			})
 		}
 
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 
 		let wasHit = false
 
@@ -116,7 +116,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 		const settings = this.Settings()
 		settings.setListenerCache({ shouldBeDeleted: true })
 
-		const emitter = this.getEmitter()
+		const emitter = this.emitter
 		void emitter.on('feature.will-execute', () => {
 			throw new Error('Stop!')
 		})
