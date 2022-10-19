@@ -1,5 +1,4 @@
 import pathUtil from 'path'
-import { emit } from 'process'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
