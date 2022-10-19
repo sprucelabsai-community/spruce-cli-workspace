@@ -89,7 +89,7 @@ export default class WatchFeature extends AbstractFeature {
 		const changes = this.changesSinceLastChange
 		this.changesSinceLastChange = []
 
-		await this.emitter.emit('watcher.did-detect-change', {
+		await this.emitter.emitAndFlattenResponses('watcher.did-detect-change', {
 			changes,
 		})
 	}

@@ -217,14 +217,13 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static FeatureFixture(options?: Partial<FeatureFixtureOptions>) {
-		this.featureInstaller = this.FeatureInstaller()
-
 		return new FeatureFixture({
 			cwd: this.cwd,
 			serviceFactory: this.ServiceFactory(),
 			ui: this.ui,
 			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
 			featureInstaller: this.featureInstaller,
+			emitter: this.emitter,
 			...options,
 		})
 	}

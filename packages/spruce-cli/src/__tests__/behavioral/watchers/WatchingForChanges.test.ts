@@ -41,15 +41,16 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 		shouldFire: boolean
 	) {
 		const cli = await this.installWatch()
-		const feature = cli.getFeature('watch')
 
-		await this.startWatching(feature)
+		const feature = cli.getFeature('watch')
 
 		let fireCount = 0
 
 		void cli.on('watcher.did-detect-change', () => {
 			fireCount++
 		})
+
+		await this.startWatching(feature)
 
 		diskUtil.writeFile(
 			this.resolvePath(path, 'test.ts'),
@@ -107,39 +108,6 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
 		for (const expected of expectedChanges) {
 			assert.doesInclude(payloadChanges, expected)
-		}
-	}
-
-	private static async stopWatching(feature: WatchFeature) {
-		await this.wait(3000)
-		await feature.stopWatching()
-		await this.wait(500)
-	}
-
-	private static async startWatching(feature: WatchFeature) {
-		void feature.startWatching({ delay: 2000, sourceDir: '.' })
-		await this.wait(500)
-	}
-
-	protected static async watchRunStop(
-		runner: () => Promise<GeneratedFileOrDir[]>
-	) {
-		const cli = await this.installWatch()
-		const feature = cli.getFeature('watch')
-
-		let payloadChanges: any = {}
-		void cli.on('watcher.did-detect-change', (payload) => {
-			payloadChanges = payload.changes
-		})
-
-		await this.startWatching(feature)
-
-		const expected: GeneratedFileOrDir[] = await runner()
-
-		await this.stopWatching(feature)
-
-		for (const e of expected) {
-			assert.doesInclude(payloadChanges, e)
 		}
 	}
 
@@ -236,6 +204,38 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
 			return expected
 		})
+	}
+
+	private static async stopWatching(feature: WatchFeature) {
+		await this.wait(3000)
+		await feature.stopWatching()
+	}
+
+	private static async startWatching(feature: WatchFeature) {
+		void feature.startWatching({ delay: 200, sourceDir: '.' })
+		await this.wait(1000)
+	}
+
+	protected static async watchRunStop(
+		runner: () => Promise<GeneratedFileOrDir[]>
+	) {
+		const cli = await this.installWatch()
+		const feature = cli.getFeature('watch')
+
+		let payloadChanges: any = {}
+		void cli.on('watcher.did-detect-change', (payload) => {
+			payloadChanges = payload.changes
+		})
+
+		await this.startWatching(feature)
+
+		const expected: GeneratedFileOrDir[] = await runner()
+
+		await this.stopWatching(feature)
+
+		for (const e of expected) {
+			assert.doesInclude(payloadChanges, e)
+		}
 	}
 
 	private static async installWatch() {
