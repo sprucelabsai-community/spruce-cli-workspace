@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import { emit } from 'process'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -180,6 +181,10 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 			this._emitter = CliGlobalEmitter.Emitter()
 		}
 		return this._emitter
+	}
+
+	protected static set emitter(emitter: GlobalEmitter) {
+		this._emitter = emitter
 	}
 
 	protected static resolveTestPath(...pathAfterTestDirsAndFiles: string[]) {

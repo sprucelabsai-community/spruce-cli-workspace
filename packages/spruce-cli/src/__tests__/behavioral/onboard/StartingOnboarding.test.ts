@@ -1,10 +1,11 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import CliGlobalEmitter, { globalContract } from '../../../GlobalEmitter'
+import CommandService from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
-class TheTestEmitter extends CliGlobalEmitter {
+class SpyEmitter extends CliGlobalEmitter {
 	public static TestEmitter() {
-		return new TheTestEmitter(globalContract)
+		return new SpyEmitter(globalContract)
 	}
 
 	public hasListeners(eventName: string) {
@@ -20,15 +21,19 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
 	@test()
 	protected static async addsCommandListeners() {
-		const testEmitter = TheTestEmitter.TestEmitter()
+		this.emitter = SpyEmitter.TestEmitter()
 
-		await this.Cli({ emitter: testEmitter })
+		await this.Cli()
 
-		assert.isTrue(testEmitter.hasListeners('feature.will-execute'))
+		assert.isTrue(
+			(this.emitter as SpyEmitter).hasListeners('feature.will-execute')
+		)
 	}
 
 	@test()
 	protected static async onboardingThroughSkillCreateThenShutsOff() {
+		CommandService.fakeCommand(/yarn/, { code: 0 })
+
 		const onboardAction = this.Action('onboard', 'onboard')
 		const onboardPromise = onboardAction.execute({})
 
