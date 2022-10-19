@@ -12,15 +12,6 @@ export default class SkillStoreTest extends AbstractCliTest {
 	}
 
 	@test()
-	protected static async throwsWhenMissingRequired() {
-		//@ts-ignore
-		const err = assert.doesThrow(() => this.Store('skill', {}))
-		errorAssert.assertError(err, 'MISSING_PARAMETERS', {
-			parameters: ['featureInstaller'],
-		})
-	}
-
-	@test()
 	protected static async hasRegisterMethod() {
 		assert.isFunction(this.store.register)
 	}
