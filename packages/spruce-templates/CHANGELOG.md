@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [18.1.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v18.0.0...v18.1.0) (2022-10-19)
+
+### Features
+
+- listeners can now export isGlobal from their listener ([628165c](https://github.com/sprucelabsai/spruce-cli-workspace/commit/628165c))
+
 # [18.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v17.1.55...v18.0.0) (2022-10-13)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
