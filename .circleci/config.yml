@@ -4,7 +4,7 @@ orbs:
 jobs:
   setup_for_test:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: medium
     steps:
       - add_ssh_keys:
@@ -42,7 +42,7 @@ jobs:
             yarn clean.test.data
   test:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: xlarge
     parallelism: 8
     steps:
@@ -78,7 +78,7 @@ jobs:
           when: always
   cleanup_test:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -93,7 +93,7 @@ jobs:
           command: yarn run clean.test.data
   merge_auto_upgrade:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: medium
     steps:
       - add_ssh_keys:
@@ -104,7 +104,7 @@ jobs:
       - spruce/merge_auto_upgrade
   npm_publish:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -122,7 +122,7 @@ jobs:
       - run: 'npm run publish -- --yes --force-publish --dist-tag latest --message "chore(release): %v [npm-publish]"'
   upgrade:
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     steps:
       - spruce/check_for_autoupgrade_dns
       - add_ssh_keys:
