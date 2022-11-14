@@ -27,14 +27,8 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 			'SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
 			{
 				onData: (data) => {
-					const line = data
-						.trim()
-						.split('\n')
-						.filter((s) => !!s)
-						.pop()
-					this.ui.startLoading(
-						line && line.length > 0 ? line.trim() : 'Waiting for changes'
-					)
+					const line = this.popLastLine(data)
+					this.ui.startLoading(line)
 				},
 			}
 		)
@@ -42,6 +36,16 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 		return {
 			summaryLines: [`Done watching...`],
 		}
+	}
+
+	private popLastLine(data: string) {
+		const line = data
+			.trim()
+			.split('\n')
+			.filter((s) => !!s)
+			.pop()
+
+		return line && line.length > 0 ? line.trim() : 'Waiting for changes'
 	}
 
 	private getPreviewUrl() {
