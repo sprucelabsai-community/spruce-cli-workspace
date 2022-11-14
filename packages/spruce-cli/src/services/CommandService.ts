@@ -9,13 +9,6 @@ import SpruceError from '../errors/SpruceError'
 
 process.setMaxListeners(100)
 
-interface MockResponse {
-	code: number
-	stdout?: string
-	stderr?: string
-	callback?: (executable: string, args: any[]) => void
-}
-
 export default class CommandService {
 	public cwd: string
 	private activeChildProcess: ChildProcess | undefined
@@ -194,4 +187,11 @@ export default class CommandService {
 	public static clearMockResponses() {
 		this.mockResponses = []
 	}
+}
+
+interface MockResponse {
+	code: number
+	stdout?: string
+	stderr?: string
+	callback?: (executable: string, args: any[]) => void
 }

@@ -64,7 +64,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 		})
 
 		const summaryLines = [`Added "${skill.name}" as a dependency!`]
-		const isEventInstalled = await this.featureInstaller.isInstalled('event')
+		const isEventInstalled = await this.features.isInstalled('event')
 		if (isEventInstalled) {
 			summaryLines.push(
 				'You will need to run `spruce sync.events` before accessing any new events.'

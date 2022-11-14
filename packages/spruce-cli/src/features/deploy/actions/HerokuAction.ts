@@ -295,7 +295,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 	private async runTests() {
 		let results: FeatureActionResponse = {}
 
-		const isTestInstalled = await this.featureInstaller.isInstalled('test')
+		const isTestInstalled = await this.features.isInstalled('test')
 
 		if (isTestInstalled) {
 			try {
@@ -321,7 +321,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 	private async buildAndLint() {
 		let results: FeatureActionResponse = {}
 
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 
 		if (isSkillInstalled) {
 			try {

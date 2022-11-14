@@ -142,13 +142,11 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 		match: ParentClassCandidate
 	) {
 		if (match.featureCode) {
-			const isInstalled = await this.featureInstaller.isInstalled(
-				match.featureCode
-			)
+			const isInstalled = await this.features.isInstalled(match.featureCode)
 
 			if (!isInstalled) {
 				this.ui.startLoading(`Installing ${match.name}...`)
-				await this.featureInstaller.install({
+				await this.features.install({
 					features: [{ code: match.featureCode as any }],
 				})
 				this.ui.stopLoading()

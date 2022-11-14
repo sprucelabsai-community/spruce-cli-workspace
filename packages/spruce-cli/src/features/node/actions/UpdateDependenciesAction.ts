@@ -52,7 +52,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 	}
 
 	private async installDependencies() {
-		const features = await this.featureInstaller.getInstalledFeatures()
+		const features = await this.features.getInstalledFeatures()
 
 		const pkg = this.Service('pkg')
 		const pkgContents = pkg.readPackage()

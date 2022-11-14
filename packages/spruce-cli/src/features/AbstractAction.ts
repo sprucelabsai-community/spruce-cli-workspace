@@ -39,7 +39,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 	public abstract invocationMessage: string
 
 	protected parent: AbstractFeature
-	protected featureInstaller: FeatureInstaller
+	protected features: FeatureInstaller
 	protected cwd: string
 	protected templates: Templates
 	protected ui: GraphicsInterface
@@ -57,7 +57,7 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 		this.parent = options.parent
 		this.storeFactory = options.storeFactory
 		this.serviceFactory = options.serviceFactory
-		this.featureInstaller = options.featureInstaller
+		this.features = options.featureInstaller
 		this.ui = options.ui
 		this.writerFactory = options.writerFactory
 		this.apiClientFactory = options.apiClientFactory
@@ -96,11 +96,11 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 	}
 
 	protected getFeature<C extends FeatureCode>(code: C) {
-		return this.featureInstaller.getFeature(code)
+		return this.features.getFeature(code)
 	}
 
 	protected getFeatureCodes(): FeatureCode[] {
-		return this.featureInstaller.getAllCodes()
+		return this.features.getAllCodes()
 	}
 
 	protected validateAndNormalizeOptions(options: SchemaPartialValues<S>) {

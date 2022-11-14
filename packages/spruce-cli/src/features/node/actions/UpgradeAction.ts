@@ -55,7 +55,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	}
 
 	private async updateScripts(options: { shouldConfirm: boolean }) {
-		const features = await this.featureInstaller.getInstalledFeatures()
+		const features = await this.features.getInstalledFeatures()
 
 		let scripts: Record<string, any> = {}
 
