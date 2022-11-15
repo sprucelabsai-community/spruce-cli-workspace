@@ -22,7 +22,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	protected static async shouldCallBoot() {
 		let wasHit = false
 		CommandService.fakeCommand(
-			'SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
+			'ENABLED_SKILL_FEATURES=view SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
 			{
 				code: 200,
 				callback: () => {

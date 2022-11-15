@@ -24,7 +24,7 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 		this.resetUi()
 		const commands = this.Service('command')
 		await commands.execute(
-			'SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
+			'ENABLED_SKILL_FEATURES=view,event SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
 			{
 				onData: (data) => {
 					const line = this.popLastLine(data)
