@@ -12,7 +12,7 @@ import * as {{importAs}} from '{{package}}'
 const schemaTemplateItems = {{{json schemaTemplateItems}}}
 // @ts-ignore
 const generateTypeLiteral = (definition: FieldDefinitions, renderAs: TemplateRenderAs, importAs: string) => {
-	const options:SpruceSchema.FieldTemplateDetailOptions<FieldDefinitions> = {
+	const options: FieldTemplateDetailOptions<FieldDefinitions> = {
 		language: 'ts',
 		// @ts-ignore
 		templateItems: schemaTemplateItems,
@@ -24,7 +24,7 @@ const generateTypeLiteral = (definition: FieldDefinitions, renderAs: TemplateRen
 
 	const FieldClass = fieldClassMap[definition.type]
 	const details = FieldClass.generateTemplateDetails(
-		options as FieldTemplateDetailOptions<any>
+		options as any
 	)
 	
 	return details.valueType
