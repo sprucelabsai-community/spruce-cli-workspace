@@ -47,8 +47,6 @@ export default class ErrorWriter extends AbstractWriter {
 			}
 		}
 
-		await this.lint(resolvedDestination)
-
 		return results
 	}
 

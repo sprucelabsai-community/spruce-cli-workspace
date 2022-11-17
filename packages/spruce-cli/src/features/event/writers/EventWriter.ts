@@ -233,6 +233,8 @@ export default class EventWriter extends AbstractWriter {
 				description: 'Permissions someone else will need to emit your event.',
 				context: {
 					nameCamel: nameCamel + 'Emit',
+					nameKebab,
+					description: '',
 				},
 			},
 			{
@@ -243,6 +245,8 @@ export default class EventWriter extends AbstractWriter {
 					'Permissions someone else will need to listen to your event.',
 				context: {
 					nameCamel: nameCamel + 'Listen',
+					nameKebab,
+					description: '',
 				},
 			},
 			{

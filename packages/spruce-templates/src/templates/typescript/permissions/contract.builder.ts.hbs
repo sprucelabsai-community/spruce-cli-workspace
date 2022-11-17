@@ -3,9 +3,9 @@ import {
 } from '@sprucelabs/mercury-types'
 
 const {{ nameCamel }}Permissions = buildPermissionContract({
-    id: '{{nameCamel}}Permissions',
+    id: '{{nameKebab}}',
     name: '{{{escape nameReadable}}}',
-    description: undefined,
+    description: '{{{escape description}}}',
     requireAllPermissions: false,
     permissions: [
         {
@@ -24,6 +24,7 @@ const {{ nameCamel }}Permissions = buildPermissionContract({
                 manager: { onPrem: true },
                 teammate: { onPrem: true },
                 anonymous: { default: false },
+
                 **/
                skill: false,
             },

@@ -263,7 +263,9 @@ export const templates = {
 
 	permissionContractBuilder(options: {
 		nameCamel: string
+		nameKebab: string
 		nameReadable: string
+		description?: string
 	}) {
 		const template = templateImportUtil.getTemplate(
 			'permissions/contract.builder.ts.hbs'
