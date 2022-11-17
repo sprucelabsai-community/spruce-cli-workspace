@@ -1,23 +1,9 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import CreateAction from '../../../features/permission/actions/CreateAction'
-import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import testUtil from '../../../tests/utilities/test.utility'
+import AbstractPermissionsTest from './AbstractPermissionsTest'
 
-export default class CreatingPermissionsTest extends AbstractSkillTest {
-	protected static skillCacheKey = 'permissions'
-	private static create: CreateAction
-
-	protected static async beforeEach() {
-		await super.beforeEach()
-		this.create = this.Action('permission', 'create')
-	}
-
-	@test()
-	protected static async canCreateCreatingPermissions() {
-		assert.isFunction(this.create.execute)
-	}
-
+export default class CreatingPermissionsTest extends AbstractPermissionsTest {
 	@test('can create permission contract named booking', 'booking')
 	@test('can create permission contract named awesome', 'awesome')
 	@test(
@@ -40,7 +26,7 @@ export default class CreatingPermissionsTest extends AbstractSkillTest {
 	}
 
 	private static async executeAndGetContract(nameReadable = 'Booking') {
-		const results = await this.execute(nameReadable)
+		const results = await this.createPermissionContract(nameReadable)
 
 		const expected = this.resolvePath(
 			`src/permissions/${namesUtil.toKebab(nameReadable)}.permissions.ts`
@@ -51,12 +37,5 @@ export default class CreatingPermissionsTest extends AbstractSkillTest {
 			results.files
 		)
 		return { contractPath, results }
-	}
-
-	private static async execute(nameReadable: string) {
-		return await this.create.execute({
-			nameReadable,
-			nameCamel: namesUtil.toCamel(nameReadable),
-		})
 	}
 }

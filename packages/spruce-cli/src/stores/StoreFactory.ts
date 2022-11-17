@@ -3,6 +3,7 @@ import EventStore from '../features/event/stores/EventStore'
 import ListenerStore from '../features/event/stores/ListenerStore'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
+import PermissionStore from '../features/permission/stores/PermissionStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
 import SkillStore, {
 	SkillStoreOptions,
@@ -74,9 +75,8 @@ export interface StoreMap {
 	store: StoreStore
 	view: ViewStore
 	listener: ListenerStore
+	permission: PermissionStore
 }
-
-export type StoreCode = keyof StoreMap
 
 const storeMap = {
 	onboarding: OnboardingStore,
@@ -88,7 +88,10 @@ const storeMap = {
 	store: StoreStore,
 	view: ViewStore,
 	listener: ListenerStore,
+	permission: PermissionStore,
 }
+
+export type StoreCode = keyof StoreMap
 
 export interface StoreFactoryOptions {
 	cwd: string

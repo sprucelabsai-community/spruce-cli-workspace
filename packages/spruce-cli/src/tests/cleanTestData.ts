@@ -50,9 +50,13 @@ async function run() {
 		const totalOrgs = await orgFixture.clearAllOrgs()
 		term.renderLine(`${totalOrgs} orgs deleted`)
 
-		term.renderLine('Deleting skills')
-		const totalSkills = await skillFixture.clearAllSkills()
-		term.renderLine(`${totalSkills} deleted`)
+		try {
+			term.renderLine('Deleting skills')
+			const totalSkills = await skillFixture.clearAllSkills()
+			term.renderLine(`${totalSkills} deleted`)
+		} catch (err: any) {
+			console.error(err.stack ?? err.message)
+		}
 	}
 
 	await mercuryFixture.disconnectAll()

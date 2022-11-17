@@ -219,7 +219,6 @@ export default class EventFeature extends AbstractFeature {
 	public hasBeenSynced() {
 		if (diskUtil.doesHashSprucePathExist(this.cwd)) {
 			const writer = this.Writer('event')
-
 			return writer.hasCombinedContractBeenWritten(this.cwd)
 		}
 
