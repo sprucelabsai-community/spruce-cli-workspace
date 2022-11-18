@@ -1,3 +1,4 @@
+import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore from '../../../features/permission/stores/PermissionStore'

@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
