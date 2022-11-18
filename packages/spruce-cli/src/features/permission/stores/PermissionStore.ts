@@ -1,4 +1,9 @@
 import path from 'path'
+import {
+	PermissionContract,
+	PermissionContractMap,
+} from '@sprucelabs/mercury-types'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
 import AbstractStore from '../../../stores/AbstractStore'
 
@@ -10,18 +15,16 @@ export default class PermissionStore extends AbstractStore {
 			cwd: this.cwd,
 		})
 
-		const contract = matches[0]
-		if (contract) {
-			const name = path.basename(contract).split('.').shift()!
-			return {
-				[name]: ['can-high-five'],
-			}
+		const map: PermissionContractMap = {}
+
+		for (const file of matches) {
+			const contract = (await this.Service('import').importDefault(
+				diskUtil.resolvePath(this.cwd, file)
+			)) as PermissionContract
+
+			map[contract.id] = contract.permissions.map((p) => p.id)
 		}
 
-		return {}
+		return map
 	}
-}
-
-export interface PermissionContractMap {
-	[contractName: string]: string[]
 }
