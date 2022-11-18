@@ -1,8 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
-import PermissionStore, {
-	PermissionContractMap,
-} from '../../../features/permission/stores/PermissionStore'
+import PermissionStore from '../../../features/permission/stores/PermissionStore'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
