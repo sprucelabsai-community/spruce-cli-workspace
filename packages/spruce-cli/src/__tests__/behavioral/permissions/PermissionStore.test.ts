@@ -1,9 +1,11 @@
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { PermissionContractMap, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore from '../../../features/permission/stores/PermissionStore'
+import EventFaker, {
+	ListPermContractsTargetAndPayload,
+} from '../../support/EventFaker'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
@@ -190,27 +192,6 @@ function generateShortAlphaId() {
 	return generateId().replace(/[0-9]/g, '').substring(0, 5)
 }
 
-type ListPermContractsTargetAndPayload =
-	SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsEmitTargetAndPayload
-
-class EventFaker {
-	public async fakeListPermissionContracts(
-		cb?: (
-			targetAndPayload: ListPermContractsTargetAndPayload
-		) =>
-			| void
-			| SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsResponsePayload['permissionContracts']
-	) {
-		eventFaker.on(
-			'list-permission-contracts::v2020_12_25',
-			(targetAndPayload) => {
-				return {
-					permissionContracts: cb?.(targetAndPayload) ?? [],
-				}
-			}
-		)
-	}
-}
 function generateContractBuilder(
 	contractId = 'oeu-aoeuao',
 	perm1Id = 'what-the',
