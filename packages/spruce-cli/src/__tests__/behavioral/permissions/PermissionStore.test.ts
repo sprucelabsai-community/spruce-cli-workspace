@@ -1,5 +1,7 @@
-import { PermissionContractMap } from '@sprucelabs/mercury-types'
+import { MercuryClientFactory } from '@sprucelabs/mercury-client'
+import { PermissionContractMap, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore from '../../../features/permission/stores/PermissionStore'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
@@ -9,6 +11,7 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	private static permissions: PermissionStore
 	private static contractName1: string
 	private static contractName2: string
+	private static eventFaker: EventFaker
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -18,7 +21,9 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
+		MercuryClientFactory.setIsTestMode(true)
 		this.permissions = this.Store('permission')
+		this.eventFaker = new EventFaker()
 	}
 
 	@test()
@@ -46,17 +51,127 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 
 	@test()
 	protected static async mixesInAllPermissions() {
+		const contractId = 'oeu-aoeuao'
+		const perm1Id = 'what-the'
+		const perm2Id = 'go-dogs'
+
+		this.updateFirstContractBuilder(contractId, perm1Id, perm2Id)
+
+		await this.assertLocalPermissionsEqual({
+			[contractId]: [perm1Id, perm2Id],
+			[this.contractName2]: ['can-high-five'],
+		})
+	}
+
+	@test()
+	protected static async remotePermsEmitsListContracts() {
+		let wasHit = false
+
+		await this.eventFaker.fakeListPermissionContracts(() => {
+			wasHit = true
+		})
+
+		await PermissionStoreTest.fetchContracts()
+		assert.isTrue(wasHit)
+	}
+
+	@test()
+	protected static async passesThroughDependentSkills() {
+		const namespace = this.addRandomDependency()
+
+		let passedTarget: ListPermContractsTargetAndPayload['target']
+
+		await this.eventFaker.fakeListPermissionContracts(({ target }) => {
+			passedTarget = target
+		})
+
+		await this.fetchContracts()
+
+		assert.isEqualDeep(passedTarget, {
+			namespaces: [namespace],
+		})
+	}
+
+	@test()
+	protected static async returnsDependencyMapFromRemoteContracts() {
+		const perm = this.generatePermValues()
+		const perm2 = this.generatePermValues()
+		const perm3 = this.generatePermValues()
+
+		const { contract, contractId } = this.generateContractRowValues([
+			perm,
+			perm2,
+		])
+
+		const { contract: contract2, contractId: contractId2 } =
+			this.generateContractRowValues([perm3])
+
+		await this.eventFaker.fakeListPermissionContracts(() => {
+			return [contract, contract2]
+		})
+
+		const map = await this.fetchContracts()
+		assert.isEqualDeep(map, {
+			[contractId]: [perm.id, perm2.id],
+			[contractId2]: [perm3.id],
+			[this.contractName2]: ['can-high-five'],
+			'oeu-aoeuao': ['what-the', 'go-dogs'],
+		})
+	}
+
+	private static updateFirstContractBuilder(
+		contractId: string,
+		perm1Id: string,
+		perm2Id: string
+	) {
 		const file = this.resolvePath(
 			'src',
 			'permissions',
 			`${this.contractName1}.permissions.ts`
 		)
-		diskUtil.writeFile(file, contract1)
+		diskUtil.writeFile(
+			file,
+			generateContractBuilder(contractId, perm1Id, perm2Id)
+		)
+	}
 
-		await this.assertLocalPermissionsEqual({
-			['oeu-aoeuao']: ['what-the', 'go-dogs'],
-			[this.contractName2]: ['can-high-five'],
+	private static generateContractRowValues(
+		permissions: SpruceSchemas.Mercury.v2020_12_25.Permission[]
+	) {
+		const contractId = generateId()
+		const contract = {
+			id: generateId(),
+			contract: {
+				id: contractId,
+				name: generateId(),
+				permissions,
+			},
+		}
+		return { contract, contractId }
+	}
+
+	private static generatePermValues() {
+		const permissionId = generateId()
+		const perm = {
+			id: permissionId,
+			name: generateId(),
+			defaults: {},
+		}
+		return perm
+	}
+
+	private static addRandomDependency() {
+		const dep = this.Service('dependency')
+		const namespace = generateId()
+		dep.add({
+			id: generateId(),
+			namespace,
 		})
+		return namespace
+	}
+
+	private static async fetchContracts() {
+		return this.permissions.fetchContracts()
 	}
 
 	private static async assertLocalPermissionsEqual(
@@ -67,6 +182,7 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	}
 
 	private static async loadLocalPermissions() {
+		//@ts-ignore
 		return await this.permissions.loadLocalPermissions()
 	}
 }
@@ -74,18 +190,44 @@ function generateShortAlphaId() {
 	return generateId().replace(/[0-9]/g, '').substring(0, 5)
 }
 
-const contract1 = `import {
+type ListPermContractsTargetAndPayload =
+	SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsEmitTargetAndPayload
+
+class EventFaker {
+	public async fakeListPermissionContracts(
+		cb?: (
+			targetAndPayload: ListPermContractsTargetAndPayload
+		) =>
+			| void
+			| SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsResponsePayload['permissionContracts']
+	) {
+		eventFaker.on(
+			'list-permission-contracts::v2020_12_25',
+			(targetAndPayload) => {
+				return {
+					permissionContracts: cb?.(targetAndPayload) ?? [],
+				}
+			}
+		)
+	}
+}
+function generateContractBuilder(
+	contractId = 'oeu-aoeuao',
+	perm1Id = 'what-the',
+	perm2Id = 'go-dogs'
+) {
+	return `import {
     buildPermissionContract
 } from '@sprucelabs/mercury-types'
 
 const debeePermissions = buildPermissionContract({
-    id: 'oeu-aoeuao',
+    id: '${contractId}',
     name: 'debee',
     description: '',
     requireAllPermissions: false,
     permissions: [
         {
-            id: 'what-the',
+            id: '${perm1Id}',
             name: 'Can give high five',
             description: 'Will this person be allowed to high five?',
             defaults: {
@@ -94,7 +236,7 @@ const debeePermissions = buildPermissionContract({
             requireAllStatuses: false,
         },
         {
-            id: 'go-dogs',
+            id: '${perm2Id}',
             name: 'Can give high five',
             description: 'Will this person be allowed to high five?',
             defaults: {
@@ -107,3 +249,4 @@ const debeePermissions = buildPermissionContract({
 
 export default debeePermissions
 `
+}
