@@ -4,7 +4,7 @@ export default function renderPermissionTestFile(
 	perm2?: string
 ) {
 	const parts = [
-		`import '#spruce/permissions/permissions.types'
+		`import '${'#' + 'spruce/permissions/permissions.types'}'
 import { PermissionContractId${
 			perm1 ? ', PermissionId' : ''
 		} } from '@sprucelabs/mercury-types'
