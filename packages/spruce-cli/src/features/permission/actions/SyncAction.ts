@@ -5,9 +5,11 @@ import { FeatureActionResponse } from '../../features.types'
 export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Syncing permissions... 🛡'
 	public optionsSchema = schema
+	public readonly commandAliases: string[] = ['sync.permissions']
 
 	public async execute(): Promise<FeatureActionResponse> {
-		const files = await this.Writer('permission').writeTypesFile(this.cwd)
+		const map = await this.Store('permission').fetchContracts()
+		const files = await this.Writer('permission').writeTypesFile(this.cwd, map)
 
 		return {
 			files,

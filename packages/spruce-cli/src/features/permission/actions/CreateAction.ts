@@ -26,6 +26,8 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			description,
 		})
 
+		await this.Action('permission', 'sync').execute({})
+
 		return {
 			files,
 		}

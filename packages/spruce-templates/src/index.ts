@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import {
 	Schema,
 	SchemaTemplateItem,
@@ -269,6 +270,14 @@ export const templates = {
 	}) {
 		const template = templateImportUtil.getTemplate(
 			'permissions/contract.builder.ts.hbs'
+		)
+
+		return template(options)
+	},
+
+	permissionTypes(options: { contracts: PermissionContractMap }) {
+		const template = templateImportUtil.getTemplate(
+			'permissions/permissions.types.ts.hbs'
 		)
 
 		return template(options)

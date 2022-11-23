@@ -3,10 +3,12 @@ import { PermissionContractMap, SpruceSchemas } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore from '../../../features/permission/stores/PermissionStore'
+import { ApiClientFactoryOptions } from '../../../types/apiClient.types'
 import EventFaker, {
 	ListPermContractsTargetAndPayload,
 } from '../../support/EventFaker'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
+import generateShortAlphaId from './generateShortAlphaId'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
 	protected static skillCacheKey = 'permissions'
@@ -26,6 +28,7 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		MercuryClientFactory.setIsTestMode(true)
 		this.permissions = this.Store('permission')
 		this.eventFaker = new EventFaker()
+		await this.eventFaker.fakeListPermissionContracts(() => {})
 	}
 
 	@test()
@@ -63,18 +66,6 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 			[contractId]: [perm1Id, perm2Id],
 			[this.contractName2]: ['can-high-five'],
 		})
-	}
-
-	@test()
-	protected static async remotePermsEmitsListContracts() {
-		let wasHit = false
-
-		await this.eventFaker.fakeListPermissionContracts(() => {
-			wasHit = true
-		})
-
-		await PermissionStoreTest.fetchContracts()
-		assert.isTrue(wasHit)
 	}
 
 	@test()
@@ -119,6 +110,22 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 			[this.contractName2]: ['can-high-five'],
 			'oeu-aoeuao': ['what-the', 'go-dogs'],
 		})
+	}
+
+	@test()
+	protected static async connectsAsSkill() {
+		let passedOptions: ApiClientFactoryOptions | undefined
+
+		//@ts-ignore
+		const old = this.permissions.connectToApi.bind(this.permissions)
+		//@ts-ignore
+		this.permissions.connectToApi = (options) => {
+			passedOptions = options
+			return old(passedOptions)
+		}
+
+		await this.fetchContracts()
+		assert.isEqualDeep(passedOptions, { shouldAuthAsCurrentSkill: true })
 	}
 
 	private static updateFirstContractBuilder(
@@ -187,9 +194,6 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		//@ts-ignore
 		return await this.permissions.loadLocalPermissions()
 	}
-}
-function generateShortAlphaId() {
-	return generateId().replace(/[0-9]/g, '').substring(0, 5)
 }
 
 function generateContractBuilder(

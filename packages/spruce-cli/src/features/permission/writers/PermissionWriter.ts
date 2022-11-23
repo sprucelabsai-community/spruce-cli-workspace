@@ -1,17 +1,23 @@
+import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class PermissionWriter extends AbstractWriter {
-	public async writeTypesFile(destinationDir: string) {
+	public async writeTypesFile(
+		destinationDir: string,
+		map: PermissionContractMap
+	) {
 		const destination = diskUtil.resolveHashSprucePath(
 			destinationDir,
 			'permissions',
 			'permissions.types.ts'
 		)
 
+		const contents = this.templates.permissionTypes({ contracts: map })
+
 		const files = await this.writeFileIfChangedMixinResults(
 			destination,
-			'',
+			contents,
 			'Types file for any permission contracts you created or depend on.'
 		)
 

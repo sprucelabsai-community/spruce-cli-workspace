@@ -46,10 +46,6 @@ import SkillFixture from './fixtures/SkillFixture'
 import ViewFixture from './fixtures/ViewFixture'
 import testUtil from './utilities/test.utility'
 
-type ExecuterOptions = Partial<ActionExecuterOptions> & {
-	optionOverrides?: OptionOverrides
-}
-
 export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	protected static cliRoot = pathUtil.join(__dirname, '..')
 	protected static homeDir: string
@@ -64,6 +60,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static _featureInstaller?: FeatureInstaller
 	private static viewFixture?: ViewFixture
 	private static originalEnv: { [x: string]: string | undefined }
+	private static _writers?: WriterFactory
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -81,6 +78,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static async beforeEach() {
 		await super.beforeEach()
+
+		delete this._writers
 
 		//@ts-ignore
 		process.env = { ...this.originalEnv }
@@ -252,9 +251,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static getViewFixture() {
 		if (!this.viewFixture) {
-			const writerFactory = this.WriterFactory()
-
-			const viewWriter = writerFactory.Writer('view', { fileDescriptions: [] })
+			const viewWriter = this.writers.Writer('view', { fileDescriptions: [] })
 			this.viewFixture = new ViewFixture(
 				this.cwd,
 				viewWriter,
@@ -263,6 +260,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		}
 
 		return this.viewFixture
+	}
+
+	protected static get writers() {
+		if (!this._writers) {
+			this._writers = this.WriterFactory()
+		}
+
+		return this._writers
 	}
 
 	private static WriterFactory() {
@@ -388,8 +393,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		results: FeatureActionResponse
 	) {
 		for (const file of results.files ?? []) {
-			const checker = this.Service('typeChecker')
-			await checker.check(file.path)
+			await this.assertFilePassesTypeChecks(file.path)
 		}
 
 		// await Promise.all(
@@ -398,6 +402,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		// 		return checker.check(file.path)
 		// 	})
 		// )
+	}
+
+	protected static async assertFilePassesTypeChecks(file: string) {
+		const checker = this.Service('typeChecker')
+		await checker.check(file)
 	}
 
 	protected static async connectToApi(options?: ApiClientFactoryOptions) {
@@ -446,10 +455,9 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static ActionExecuter(options?: ExecuterOptions) {
 		const serviceFactory = this.ServiceFactory()
-		const writerFactory = this.WriterFactory()
 
 		const actionFactory = new ActionFactory({
-			writerFactory,
+			writerFactory: this.writers,
 			ui: this.ui,
 			emitter: this.emitter,
 			apiClientFactory: this.getMercuryFixture().getApiClientFactory(),
@@ -491,4 +499,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		void this.ui.sendInput(`${match.value}`)
 	}
+}
+
+type ExecuterOptions = Partial<ActionExecuterOptions> & {
+	optionOverrides?: OptionOverrides
 }

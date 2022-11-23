@@ -15,21 +15,6 @@ import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter, { WriteResults } from '../../../writers/AbstractWriter'
 import schemaDiskUtil from '../utilities/schemaDisk.utility'
 
-interface WriteFieldTypesOptions {
-	fieldTemplateItems: FieldTemplateItem[]
-}
-
-// eslint-disable-next-line no-redeclare
-export interface GenerateSchemaTypesOptions {
-	fieldTemplateItems: FieldTemplateItem[]
-	schemaTemplateItems: SchemaTemplateItem[]
-	valueTypes: ValueTypes
-	globalSchemaNamespace?: string
-	typesTemplate?: string
-	registerBuiltSchemas?: boolean
-	shouldImportCoreSchemas: boolean
-}
-
 export default class SchemaWriter extends AbstractWriter {
 	private readonly fieldTemplates: {
 		filename: string
@@ -288,4 +273,18 @@ export default class SchemaWriter extends AbstractWriter {
 
 		return results
 	}
+}
+
+interface WriteFieldTypesOptions {
+	fieldTemplateItems: FieldTemplateItem[]
+}
+
+export interface GenerateSchemaTypesOptions {
+	fieldTemplateItems: FieldTemplateItem[]
+	schemaTemplateItems: SchemaTemplateItem[]
+	valueTypes: ValueTypes
+	globalSchemaNamespace?: string
+	typesTemplate?: string
+	registerBuiltSchemas?: boolean
+	shouldImportCoreSchemas: boolean
 }

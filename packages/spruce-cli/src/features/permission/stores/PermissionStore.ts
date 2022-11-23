@@ -28,22 +28,24 @@ export default class PermissionStore extends AbstractStore {
 	}
 
 	public async fetchContracts() {
-		const client = await this.connectToApi()
+		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 		const deps = this.Service('dependency').get()
-
-		const [{ permissionContracts }] = await client.emitAndFlattenResponses(
-			'list-permission-contracts::v2020_12_25',
-			{
-				target: {
-					namespaces: deps.map((d) => d.namespace),
-				},
-			}
-		)
 
 		const map: PermissionContractMap = await this.loadLocalPermissions()
 
-		for (const result of permissionContracts) {
-			map[result.contract.id] = result.contract.permissions.map((p) => p.id)
+		if (deps.length > 0) {
+			const [{ permissionContracts }] = await client.emitAndFlattenResponses(
+				'list-permission-contracts::v2020_12_25',
+				{
+					target: {
+						namespaces: deps.map((d) => d.namespace),
+					},
+				}
+			)
+
+			for (const result of permissionContracts) {
+				map[result.contract.id] = result.contract.permissions.map((p) => p.id)
+			}
 		}
 
 		return map

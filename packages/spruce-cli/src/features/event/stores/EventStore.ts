@@ -22,43 +22,6 @@ import AbstractStore from '../../../stores/AbstractStore'
 import { InternalUpdateHandler } from '../../../types/cli.types'
 import { eventContractCleanerUtil } from '../../../utilities/eventContractCleaner.utility'
 
-export interface EventStoreFetchEventContractsResponse {
-	errors: SpruceError[]
-	contracts: EventContract[]
-}
-
-type Options = Omit<
-	EventSignature,
-	| 'responsePayloadSchema'
-	| 'emitPayloadSchema'
-	| 'listenPermissionContract'
-	| 'emitPermissionContract'
->
-
-interface EventImport {
-	options?: Options
-	emitPayload?: Schema
-	emitTarget?: Schema
-	responsePayload?: Schema
-	emitPermissions?: PermissionContract
-	listenPermissions?: PermissionContract
-}
-
-const eventFileNamesImportKeyMap = {
-	'event.options.ts': { key: 'options', isSchema: false },
-	'emitPayload.builder.ts': { key: 'emitPayload', isSchema: true },
-	'emitTarget.builder.ts': { key: 'emitTarget', isSchema: true },
-	'responsePayload.builder.ts': { key: 'responsePayload', isSchema: true },
-	'emitPermissions.builder.ts': { key: 'emitPermissions', isSchema: false },
-	'listenPermissions.builder.ts': { key: 'listenPermissions', isSchema: false },
-}
-
-export interface FetchContractsOptions {
-	localNamespace?: string
-	namespaces?: string[]
-	didUpdateHandler?: InternalUpdateHandler
-}
-
 export default class EventStore extends AbstractStore {
 	public name = 'event'
 	protected static contractCache: Record<string, any> = {}
@@ -313,4 +276,41 @@ export default class EventStore extends AbstractStore {
 
 		EventStore.contractCache = {}
 	}
+}
+
+export interface EventStoreFetchEventContractsResponse {
+	errors: SpruceError[]
+	contracts: EventContract[]
+}
+
+type Options = Omit<
+	EventSignature,
+	| 'responsePayloadSchema'
+	| 'emitPayloadSchema'
+	| 'listenPermissionContract'
+	| 'emitPermissionContract'
+>
+
+interface EventImport {
+	options?: Options
+	emitPayload?: Schema
+	emitTarget?: Schema
+	responsePayload?: Schema
+	emitPermissions?: PermissionContract
+	listenPermissions?: PermissionContract
+}
+
+const eventFileNamesImportKeyMap = {
+	'event.options.ts': { key: 'options', isSchema: false },
+	'emitPayload.builder.ts': { key: 'emitPayload', isSchema: true },
+	'emitTarget.builder.ts': { key: 'emitTarget', isSchema: true },
+	'responsePayload.builder.ts': { key: 'responsePayload', isSchema: true },
+	'emitPermissions.builder.ts': { key: 'emitPermissions', isSchema: false },
+	'listenPermissions.builder.ts': { key: 'listenPermissions', isSchema: false },
+}
+
+export interface FetchContractsOptions {
+	localNamespace?: string
+	namespaces?: string[]
+	didUpdateHandler?: InternalUpdateHandler
 }
