@@ -111,7 +111,9 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	@test()
 	protected static async contractHasTypes() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('node')
-		const promise = this.Action('eventContract', 'pull').execute({})
+		const promise = this.Action('eventContract', 'pull', {
+			shouldAutoHandleDependencies: true,
+		}).execute({})
 
 		await this.waitForInput()
 
