@@ -42,7 +42,7 @@ export default class ConversationFeature extends AbstractFeature {
 		actionCode: string
 		featureCode: string
 	}) {
-		const isInstalled = await this.featureInstaller.isInstalled('conversation')
+		const isInstalled = await this.features.isInstalled('conversation')
 
 		if (
 			payload.featureCode === 'node' &&

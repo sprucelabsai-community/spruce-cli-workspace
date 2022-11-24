@@ -27,7 +27,6 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		await super.beforeEach()
 		MercuryClientFactory.setIsTestMode(true)
 		this.permissions = this.Store('permission')
-		this.eventFaker = new EventFaker()
 		await this.eventFaker.fakeListPermissionContracts(() => {})
 	}
 

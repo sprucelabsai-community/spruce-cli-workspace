@@ -14,20 +14,11 @@ import ActionExecuter from './ActionExecuter'
 import FeatureInstaller from './FeatureInstaller'
 import OverrideActionDecorator from './OverrideActionDecorator'
 
-export interface FeatureActionFactoryOptions
-	extends Omit<
-		ActionOptions,
-		'parent' | 'actionExecuter' | 'featureInstaller'
-	> {
-	emitter: GlobalEmitter
-	blockedCommands?: BlockedCommands
-	optionOverrides?: OptionOverrides
-}
-
 export default class ActionFactory {
 	private actionOptions: FeatureActionFactoryOptions
 	private blockedCommands?: BlockedCommands
 	private optionOverrides?: OptionOverrides
+	private static overrides: Record<string, ActionConstructor>
 
 	public constructor(options: FeatureActionFactoryOptions) {
 		const { blockedCommands, optionOverrides, ...actionOptions } = options
@@ -53,19 +44,23 @@ export default class ActionFactory {
 			)
 		}
 
-		const classPath = diskUtil.resolvePath(
-			feature.actionsDir,
-			`${namesUtil.toPascal(actionCode)}Action`
-		)
-
 		let Class: new (options: ActionOptions) => AbstractAction | undefined
 		let originalError: Error | undefined
 
-		try {
-			Class = require(classPath).default
-			// eslint-disable-next-line no-empty
-		} catch (err: any) {
-			originalError = err
+		const key = ActionFactory.overrideKey(featureCode, actionCode)
+		if (ActionFactory.overrides[key]) {
+			Class = ActionFactory.overrides[key]
+		} else {
+			const classPath = diskUtil.resolvePath(
+				feature.actionsDir,
+				`${namesUtil.toPascal(actionCode)}Action`
+			)
+			try {
+				Class = require(classPath).default
+				// eslint-disable-next-line no-empty
+			} catch (err: any) {
+				originalError = err
+			}
 		}
 
 		//@ts-ignore
@@ -109,4 +104,33 @@ export default class ActionFactory {
 
 		return actionDecorator as FeatureAction<S>
 	}
+
+	public static setActionClass(
+		featureCode: FeatureCode,
+		action: string,
+		ExecuteTrackingAction: ActionConstructor
+	) {
+		this.overrides[ActionFactory.overrideKey(featureCode, action)] =
+			ExecuteTrackingAction
+	}
+
+	private static overrideKey(featureCode: string, action: string) {
+		return `${featureCode}${action}`
+	}
+
+	public static clearActionOverrides() {
+		this.overrides = {}
+	}
 }
+
+export interface FeatureActionFactoryOptions
+	extends Omit<
+		ActionOptions,
+		'parent' | 'actionExecuter' | 'featureInstaller'
+	> {
+	emitter: GlobalEmitter
+	blockedCommands?: BlockedCommands
+	optionOverrides?: OptionOverrides
+}
+
+type ActionConstructor = new (options: ActionOptions) => AbstractAction

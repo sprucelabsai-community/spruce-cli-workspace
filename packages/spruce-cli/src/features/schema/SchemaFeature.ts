@@ -59,8 +59,8 @@ export default class SchemaFeature extends AbstractFeature {
 		actionCode: string
 		featureCode: string
 	}) {
-		const isInstalled = await this.featureInstaller.isInstalled('schema')
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isInstalled = await this.features.isInstalled('schema')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 
 		if (
 			payload.featureCode === 'node' &&
@@ -79,7 +79,7 @@ export default class SchemaFeature extends AbstractFeature {
 		actionCode: string
 		featureCode: string
 	}) {
-		const isInstalled = await this.featureInstaller.isInstalled('schema')
+		const isInstalled = await this.features.isInstalled('schema')
 
 		if (
 			payload.featureCode === 'node' &&
@@ -98,7 +98,7 @@ export default class SchemaFeature extends AbstractFeature {
 	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 
 		if (!isSkillInstalled) {
 			return {}

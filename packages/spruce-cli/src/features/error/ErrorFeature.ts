@@ -43,7 +43,7 @@ export default class ErrorFeature extends AbstractFeature {
 		)
 
 		void this.emitter.on('skill.will-write-directory-template', async () => {
-			const isInstalled = await this.featureInstaller.isInstalled('error')
+			const isInstalled = await this.features.isInstalled('error')
 			if (isInstalled) {
 				return {
 					filesToSkip: ['options.types.ts'],
@@ -55,7 +55,7 @@ export default class ErrorFeature extends AbstractFeature {
 	}
 
 	public async afterPackageInstall(): Promise<InstallResults> {
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 
 		if (!isSkillInstalled) {
 			return {}
@@ -74,9 +74,9 @@ export default class ErrorFeature extends AbstractFeature {
 	}) {
 		const { featureCode, actionCode } = payload
 
-		const isInstalled = await this.featureInstaller.isInstalled('error')
+		const isInstalled = await this.features.isInstalled('error')
 
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			const results = await this.Action('error', 'sync').execute({})

@@ -81,6 +81,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		delete this._writers
 
+		ActionFactory.clearActionOverrides()
+
 		//@ts-ignore
 		process.env = { ...this.originalEnv }
 

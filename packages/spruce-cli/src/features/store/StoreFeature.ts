@@ -59,7 +59,7 @@ export default class StoreFeature extends AbstractFeature {
 		featureCode: string
 		actionCode: string
 	}) {
-		const isInstalled = await this.featureInstaller.isInstalled('store')
+		const isInstalled = await this.features.isInstalled('store')
 
 		const isUpgrade =
 			isInstalled &&

@@ -47,15 +47,15 @@ export default abstract class AbstractFeature<
 	public cwd: string
 	public scripts: Record<string, any> = {}
 	public actionsDir: string | undefined
-	protected actionFactory?: ActionFactory
+	protected actions?: ActionFactory
 	protected templates: Templates
 	protected emitter: GlobalEmitter
-	protected featureInstaller: FeatureInstaller
+	protected features: FeatureInstaller
 	protected ui: GraphicsInterface
 
 	private serviceFactory: ServiceFactory
 	private storeFactory: StoreFactory
-	private writerFactory: WriterFactory
+	private writers: WriterFactory
 	private apiClientFactory: ApiClientFactory
 	private actionExecuter: ActionExecuter
 	private actionCodes?: string[]
@@ -64,16 +64,16 @@ export default abstract class AbstractFeature<
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
 		this.templates = options.templates
-		this.actionFactory = options.actionFactory
+		this.actions = options.actionFactory
 		this.storeFactory = options.storeFactory
-		this.writerFactory = new WriterFactory({
+		this.writers = new WriterFactory({
 			templates: this.templates,
 			ui: options.ui,
 			settings: this.Service('settings'),
 			linter: this.Service('lint'),
 		})
 		this.emitter = options.emitter
-		this.featureInstaller = options.featureInstaller
+		this.features = options.featureInstaller
 		this.ui = options.ui
 		this.apiClientFactory = options.apiClientFactory
 		this.actionExecuter = options.actionExecuter
@@ -103,7 +103,7 @@ export default abstract class AbstractFeature<
 		code: C,
 		options?: Partial<WriterOptions>
 	): WriterMap[C] {
-		return this.writerFactory.Writer(code, {
+		return this.writers.Writer(code, {
 			fileDescriptions: this.fileDescriptions,
 			linter: this.Service('lint'),
 			...options,
@@ -111,7 +111,7 @@ export default abstract class AbstractFeature<
 	}
 
 	public getFeature<Code extends FeatureCode>(code: Code) {
-		return this.featureInstaller.getFeature(code)
+		return this.features.getFeature(code)
 	}
 
 	public async getAvailableActionCodes(): Promise<string[]> {

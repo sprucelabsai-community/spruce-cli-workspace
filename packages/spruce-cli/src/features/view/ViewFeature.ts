@@ -48,7 +48,7 @@ export default class ViewFeature extends AbstractFeature {
 
 		void this.emitter.on('feature.did-execute', async (payload) => {
 			const { featureCode, actionCode } = payload
-			const isInstalled = await this.featureInstaller.isInstalled('view')
+			const isInstalled = await this.features.isInstalled('view')
 
 			if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 				const files = await this.Writer('view').writePlugin(this.cwd)

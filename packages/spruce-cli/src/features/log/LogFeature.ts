@@ -23,6 +23,6 @@ export default class LogFeature extends AbstractFeature {
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
 	public isInstalled() {
-		return this.featureInstaller.isInstalled('skill')
+		return this.features.isInstalled('skill')
 	}
 }

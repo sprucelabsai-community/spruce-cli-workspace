@@ -123,7 +123,7 @@ export default class TestFeature extends AbstractFeature {
 				const a = { ...ac, isDefaultExport: false }
 
 				if (ac.featureCode) {
-					const isInstalled = await this.featureInstaller.isInstalled(
+					const isInstalled = await this.features.isInstalled(
 						ac.featureCode as any
 					)
 

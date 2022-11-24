@@ -74,7 +74,7 @@ export default class EventFeature extends AbstractFeature {
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
-		const isSkillInstalled = await this.featureInstaller.isInstalled('skill')
+		const isSkillInstalled = await this.features.isInstalled('skill')
 		if (isSkillInstalled) {
 			return await this.Action('event', 'sync.listeners').execute({})
 		}
@@ -101,7 +101,7 @@ export default class EventFeature extends AbstractFeature {
 			settings.clearListenerCache()
 		}
 
-		const isInstalled = await this.featureInstaller.isInstalled('event')
+		const isInstalled = await this.features.isInstalled('event')
 		const isRemoteRelevant =
 			isInstalled &&
 			(featureCode === 'event' ||
@@ -128,7 +128,7 @@ export default class EventFeature extends AbstractFeature {
 		actionCode: string
 	}) {
 		const { featureCode, actionCode } = payload
-		const isInstalled = await this.featureInstaller.isInstalled('event')
+		const isInstalled = await this.features.isInstalled('event')
 
 		let results = {}
 
@@ -178,7 +178,7 @@ export default class EventFeature extends AbstractFeature {
 	}
 
 	private async handleDidFetchSchemas(payload: { schemas?: Schema[] | null }) {
-		const isInstalled = await this.featureInstaller.isInstalled(this.code)
+		const isInstalled = await this.features.isInstalled(this.code)
 
 		const lastSync = this.Service('eventSettings').getLastSyncOptions()
 

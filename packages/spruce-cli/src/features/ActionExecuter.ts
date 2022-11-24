@@ -17,7 +17,7 @@ import {
 export default class ActionExecuter {
 	private emitter: GlobalEmitter
 	private ui: GraphicsInterface
-	private actionFactory: ActionFactory
+	private actions: ActionFactory
 	private featureInstallerFactory: () => FeatureInstaller
 	private shouldAutoHandleDependencies: boolean
 	private shouldThrowOnListenerError: boolean
@@ -26,7 +26,7 @@ export default class ActionExecuter {
 		this.featureInstallerFactory = options.featureInstallerFactory
 		this.emitter = options.emitter
 		this.ui = options.ui
-		this.actionFactory = options.actionFactory
+		this.actions = options.actionFactory
 		this.shouldAutoHandleDependencies =
 			options.shouldAutoHandleDependencies ?? true
 
@@ -169,8 +169,7 @@ export default class ActionExecuter {
 	): FeatureAction {
 		const featureInstaller = this.getFeatureInstaller()
 
-		const actionFactory = this.actionFactory
-		const action = actionFactory.Action({
+		const action = this.actions.Action({
 			featureCode,
 			actionCode,
 			actionExecuter: this,

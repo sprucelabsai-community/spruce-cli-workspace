@@ -191,7 +191,7 @@ export default class SkillFeature<
 		options?: UpgradeOptions
 	}) {
 		const { featureCode, actionCode, options: upgradeOptions } = options
-		const isInstalled = await this.featureInstaller.isInstalled('skill')
+		const isInstalled = await this.features.isInstalled('skill')
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			const updater = new Updater(this, this.emitter)
