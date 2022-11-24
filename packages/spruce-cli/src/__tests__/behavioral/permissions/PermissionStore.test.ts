@@ -4,18 +4,14 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore from '../../../features/permission/stores/PermissionStore'
 import { ApiClientFactoryOptions } from '../../../types/apiClient.types'
-import EventFaker, {
-	ListPermContractsTargetAndPayload,
-} from '../../support/EventFaker'
+import { ListPermContractsTargetAndPayload } from '../../support/EventFaker'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
 import generateShortAlphaId from './generateShortAlphaId'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
-	protected static skillCacheKey = 'permissions'
 	private static permissions: PermissionStore
 	private static contractName1: string
 	private static contractName2: string
-	private static eventFaker: EventFaker
 
 	protected static async beforeAll() {
 		await super.beforeAll()
