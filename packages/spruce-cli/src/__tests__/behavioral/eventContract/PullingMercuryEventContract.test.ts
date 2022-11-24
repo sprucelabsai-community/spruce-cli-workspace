@@ -27,6 +27,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async generatesContractAtCwd() {
+		await this.FeatureFixture().installCachedFeatures('events')
 		const results = await this.Action('eventContract', 'pull').execute({})
 		assert.isFalsy(results.errors)
 
@@ -52,6 +53,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async generatesAtDestination() {
+		await this.FeatureFixture().installCachedFeatures('events')
 		const results = await this.Action('eventContract', 'pull').execute({
 			destination: './src/tests',
 		})
@@ -109,8 +111,14 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	@test()
 	protected static async contractHasTypes() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('node')
+		const promise = this.Action('eventContract', 'pull').execute({})
 
-		const results = await this.Action('eventContract', 'pull').execute({})
+		await this.waitForInput()
+
+		await this.ui.sendInput('Y')
+		await this.ui.sendInput('\n')
+
+		const results = await promise
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
 			'events.contract.ts',
@@ -129,6 +137,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	@test()
 	protected static async generatingASecondTimeReportsAnUpdate() {
+		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 		await this.Action('eventContract', 'pull').execute({})
 
 		const results = await this.Action('eventContract', 'pull').execute({})

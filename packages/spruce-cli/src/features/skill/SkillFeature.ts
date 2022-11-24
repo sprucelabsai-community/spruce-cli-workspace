@@ -120,7 +120,7 @@ export default class SkillFeature<
 					name: 'AbstractSpruceFixtureTest',
 					label: 'AbstractSpruceFixtureTest',
 					import: '@sprucelabs/spruce-test-fixtures',
-					featureCode: 'skill',
+					featureCode: 'node',
 				},
 			],
 		}

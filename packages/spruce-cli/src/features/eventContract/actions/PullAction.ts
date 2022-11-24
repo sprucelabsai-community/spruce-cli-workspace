@@ -31,7 +31,8 @@ export default class PullAction extends AbstractAction<PullOptionsSchema> {
 		destination = diskUtil.resolvePath(this.cwd, destination, filename)
 
 		const { contracts } = await this.Store('event').fetchEventContracts()
-		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'`
+		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'
+import '#spruce/permissions/permissions.types'`
 
 		const contents = `${buildEventContractImport}
 const eventContracts = [${contracts
