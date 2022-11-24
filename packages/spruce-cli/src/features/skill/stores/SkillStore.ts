@@ -99,8 +99,7 @@ export default class SkillStore extends AbstractStore {
 	}
 
 	private getNamespaceFromPkg() {
-		const pkg = this.Service('pkg')
-		const nameFromPackage = pkg.get('skill.namespace')
+		const nameFromPackage = this.Service('pkg').getSkillNamespace()
 		if (!nameFromPackage) {
 			throw new Error(
 				'You need need to set skill.namespace in the package.json'

@@ -12,11 +12,21 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	private static permissions: PermissionStore
 	private static contractName1: string
 	private static contractName2: string
+	private static fqid1: string
+	private static fqid2: string
+	private static namespace: string
 
 	protected static async beforeAll() {
 		await super.beforeAll()
+		const namespace = await this.Service('pkg').getSkillNamespace()
+		this.namespace = namespace
+
 		this.contractName1 = generateShortAlphaId()
+		this.fqid1 = `${namespace}.${this.contractName1}`
+
 		this.contractName2 = generateShortAlphaId()
+		const contractId = this.contractName2
+		this.fqid2 = buildPermissionContractId(contractId, namespace)
 	}
 
 	protected static async beforeEach() {
@@ -36,7 +46,7 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	protected static async loadsOneContract() {
 		await this.createPermissionContract(this.contractName1)
 		await this.assertLocalPermissionsEqual({
-			[this.contractName1]: ['can-high-five'],
+			[this.fqid1]: ['can-high-five'],
 		})
 	}
 
@@ -44,8 +54,8 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	protected static async loadsSecondContract() {
 		await this.createPermissionContract(this.contractName2)
 		await this.assertLocalPermissionsEqual({
-			[this.contractName1]: ['can-high-five'],
-			[this.contractName2]: ['can-high-five'],
+			[this.fqid1]: ['can-high-five'],
+			[this.fqid2]: ['can-high-five'],
 		})
 	}
 
@@ -58,8 +68,11 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		this.updateFirstContractBuilder(contractId, perm1Id, perm2Id)
 
 		await this.assertLocalPermissionsEqual({
-			[contractId]: [perm1Id, perm2Id],
-			[this.contractName2]: ['can-high-five'],
+			[buildPermissionContractId(contractId, this.namespace)]: [
+				perm1Id,
+				perm2Id,
+			],
+			[this.fqid2]: ['can-high-five'],
 		})
 	}
 
@@ -102,8 +115,11 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		assert.isEqualDeep(map, {
 			[contractId]: [perm.id, perm2.id],
 			[contractId2]: [perm3.id],
-			[this.contractName2]: ['can-high-five'],
-			'oeu-aoeuao': ['what-the', 'go-dogs'],
+			[this.fqid2]: ['can-high-five'],
+			[buildPermissionContractId('oeu-aoeuao', this.namespace)]: [
+				'what-the',
+				'go-dogs',
+			],
 		})
 	}
 
@@ -189,6 +205,13 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		//@ts-ignore
 		return await this.permissions.loadLocalPermissions()
 	}
+}
+
+function buildPermissionContractId(
+	contractId: string,
+	namespace?: string
+): string {
+	return `${namespace}.${contractId}`
 }
 
 function generateContractBuilder(

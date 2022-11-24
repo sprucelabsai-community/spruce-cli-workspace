@@ -93,6 +93,10 @@ export default class PkgService extends BasePkgService {
 		return { executable, args }
 	}
 
+	public getSkillNamespace() {
+		return this.get('skill.namespace')
+	}
+
 	public async uninstall(pkg: string[] | string) {
 		const packages = Array.isArray(pkg) ? pkg : [pkg]
 		const args: string[] = ['uninstall', ...packages]

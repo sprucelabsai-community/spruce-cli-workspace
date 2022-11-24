@@ -109,8 +109,7 @@ export default class SkillStoreTest extends AbstractCliTest {
 
 		errorAssert.assertError(err, 'GENERIC')
 
-		const pkg = this.Service('pkg')
-		const namespace = pkg.get('skill.namespace')
+		const namespace = this.Service('pkg').getSkillNamespace()
 		assert.isEqual(namespace, slug)
 	}
 

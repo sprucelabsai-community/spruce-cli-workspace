@@ -14,6 +14,8 @@ export default class PermissionStore extends AbstractStore {
 			cwd: this.cwd,
 		})
 
+		const namespace = this.Service('pkg').getSkillNamespace()
+
 		const map: PermissionContractMap = {}
 
 		for (const file of matches) {
@@ -21,7 +23,7 @@ export default class PermissionStore extends AbstractStore {
 				diskUtil.resolvePath(this.cwd, file)
 			)) as PermissionContract
 
-			map[contract.id] = contract.permissions.map((p) => p.id)
+			map[`${namespace}.${contract.id}`] = contract.permissions.map((p) => p.id)
 		}
 
 		return map
