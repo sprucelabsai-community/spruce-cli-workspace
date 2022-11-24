@@ -8,6 +8,7 @@ import testUtil from '../../../tests/utilities/test.utility'
 
 export default class GeneratingMercuryEventContractTest extends AbstractCliTest {
 	private static cli: CliInterface
+
 	protected static async beforeEach() {
 		await super.beforeEach()
 		this.cli = await this.Cli()
@@ -145,7 +146,6 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 
 	private static async installSkillAndPullContracts() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
-
 		return await this.pullContracts()
 	}
 

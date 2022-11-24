@@ -8,6 +8,7 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill3Test extends AbstractCliTest {
 	private static originalErrorSyncExecute: any
+
 	protected static async beforeEach() {
 		if (!this.originalErrorSyncExecute) {
 			this.originalErrorSyncExecute = SyncAction.prototype.execute

@@ -28,6 +28,7 @@ export default class EventFeature extends AbstractFeature {
 	public description = 'Connect to the Mercury Event Engine.'
 	public dependencies: FeatureDependency[] = [
 		{ code: 'schema', isRequired: true },
+		{ code: 'permission', isRequired: true },
 	]
 	public packageDependencies = [
 		{

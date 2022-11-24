@@ -13,6 +13,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
 		return {
 			files,
+			summaryLines: ['Permissions synced'],
 		}
 	}
 }

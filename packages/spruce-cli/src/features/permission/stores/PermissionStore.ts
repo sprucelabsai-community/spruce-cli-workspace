@@ -33,19 +33,17 @@ export default class PermissionStore extends AbstractStore {
 
 		const map: PermissionContractMap = await this.loadLocalPermissions()
 
-		if (deps.length > 0) {
-			const [{ permissionContracts }] = await client.emitAndFlattenResponses(
-				'list-permission-contracts::v2020_12_25',
-				{
-					target: {
-						namespaces: deps.map((d) => d.namespace),
-					},
-				}
-			)
-
-			for (const result of permissionContracts) {
-				map[result.contract.id] = result.contract.permissions.map((p) => p.id)
+		const [{ permissionContracts }] = await client.emitAndFlattenResponses(
+			'list-permission-contracts::v2020_12_25',
+			{
+				target: {
+					namespaces: deps.map((d) => d.namespace),
+				},
 			}
+		)
+
+		for (const result of permissionContracts) {
+			map[result.contract.id] = result.contract.permissions.map((p) => p.id)
 		}
 
 		return map

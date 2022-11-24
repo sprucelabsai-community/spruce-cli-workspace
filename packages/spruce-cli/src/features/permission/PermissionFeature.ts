@@ -9,16 +9,7 @@ export default class PermissionFeature extends AbstractFeature {
 	public code: FeatureCode = 'permission'
 	public nameReadable = 'permission'
 	public description = 'Manage permissions for your skill'
-	public dependencies: FeatureDependency[] = [
-		{
-			code: 'skill',
-			isRequired: true,
-		},
-		{
-			code: 'event',
-			isRequired: true,
-		},
-	]
+	public dependencies: FeatureDependency[] = []
 	public packageDependencies = []
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 

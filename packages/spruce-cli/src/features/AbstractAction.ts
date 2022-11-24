@@ -69,8 +69,8 @@ export default abstract class AbstractAction<S extends Schema = Schema>
 		options: SchemaValues<S>
 	): Promise<FeatureActionResponse>
 
-	protected Action(featureCode: string, actionCode: string) {
-		return this.actionExecuter.Action(featureCode as any, actionCode)
+	protected Action(featureCode: FeatureCode, actionCode: string) {
+		return this.actionExecuter.Action(featureCode, actionCode)
 	}
 
 	public Service<S extends Service>(type: S, cwd?: string): ServiceMap[S] {

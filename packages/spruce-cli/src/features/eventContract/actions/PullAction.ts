@@ -1,5 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -48,7 +49,9 @@ export type CoreEventContract = ${contracts
 
 		diskUtil.writeFile(destination, contents)
 
-		return {
+		const results = await this.Action('permission', 'sync').execute({})
+
+		return actionUtil.mergeActionResults(results, {
 			files: [
 				{
 					name: filename,
@@ -57,6 +60,6 @@ export type CoreEventContract = ${contracts
 					description: 'All your Mercury core events ready for testing!',
 				},
 			],
-		}
+		})
 	}
 }
