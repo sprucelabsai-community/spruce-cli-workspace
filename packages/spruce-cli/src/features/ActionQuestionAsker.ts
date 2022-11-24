@@ -193,6 +193,8 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	): Promise<FeatureInstallResponse> {
 		const { feature, isRequired } = toInstall
 
+		debugger
+
 		if (isRequired) {
 			const confirm = await this.ui.confirm(
 				`Install the ${feature.nameReadable} feature?`

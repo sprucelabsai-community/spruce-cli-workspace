@@ -19,8 +19,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		const candidates = await testFeature.buildParentClassCandidates()
 
 		assert.doesInclude(candidates, {
-			label: 'AbstractSpruceFixtureTest (requires install)',
-			name: 'AbstractSpruceFixtureTest',
+			label: 'AbstractStoreTest (requires install)',
+			name: 'AbstractStoreTest',
 		})
 	}
 
