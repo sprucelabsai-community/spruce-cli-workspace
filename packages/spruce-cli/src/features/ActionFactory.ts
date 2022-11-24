@@ -18,7 +18,7 @@ export default class ActionFactory {
 	private actionOptions: FeatureActionFactoryOptions
 	private blockedCommands?: BlockedCommands
 	private optionOverrides?: OptionOverrides
-	private static overrides: Record<string, ActionConstructor>
+	private static overrides: Record<string, ActionConstructor> = {}
 
 	public constructor(options: FeatureActionFactoryOptions) {
 		const { blockedCommands, optionOverrides, ...actionOptions } = options
