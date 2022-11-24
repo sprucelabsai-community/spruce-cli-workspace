@@ -259,7 +259,6 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 		const feature = this.getFeature(installFeature.code) as AbstractFeature
 
 		if (feature.optionsSchema) {
-			debugger
 			//@ts-ignore
 			validateSchemaValues(feature.optionsSchema, installFeature.options ?? {})
 		}
