@@ -24,7 +24,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
 	@test()
 	protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
-		CommandService.clearMockResponses()
+		CommandService.clearFakedResponses()
 		await this.FeatureFixture().installCachedFeatures('views')
 
 		await this.Action('node', 'upgrade').execute({})
@@ -36,7 +36,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
 	@test()
 	protected static async featuresNotEnabledDontInstall() {
-		CommandService.clearMockResponses()
+		CommandService.clearFakedResponses()
 		await this.FeatureFixture().installCachedFeatures('schemas')
 
 		const results = await this.Action('node', 'upgrade').execute({})

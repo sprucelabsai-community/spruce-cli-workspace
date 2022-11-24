@@ -107,7 +107,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		ImportService.clearCache()
 		SkillStore.clearCurrentSkill()
 		EventStore.clearCache()
-		CommandService.clearMockResponses()
+		CommandService.clearFakedResponses()
 		MercuryClientFactory.reset()
 		MercuryClientFactory.setIsTestMode(false)
 
@@ -135,11 +135,15 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 		if (diskUtil.doesDirExist(this.homeDir) && testUtil.shouldClearCache()) {
 			diskUtil.deleteDir(this.homeDir)
 		}
+
+		if (testUtil.shouldCleanupAfterEach()) {
+			FeatureFixture.deleteOldSkillDirs()
+		}
 	}
 
 	protected static async afterAll() {
 		await super.afterAll()
-		if (testUtil.shouldCleanupTestSkillDirs()) {
+		if (testUtil.shouldCleanupAfterAll()) {
 			FeatureFixture.deleteOldSkillDirs()
 		}
 	}

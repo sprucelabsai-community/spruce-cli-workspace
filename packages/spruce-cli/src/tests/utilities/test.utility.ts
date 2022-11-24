@@ -26,6 +26,19 @@ const testUtil = {
 		return process.env.CLEANUP_TEST_SKILL_DIRS !== 'false'
 	},
 
+	shouldCleanupAfterEach() {
+		return (
+			this.shouldCleanupTestSkillDirs() &&
+			process.env.CLEANUP_TEST_SKILL_DIRS_ON === 'afterEach'
+		)
+	},
+	shouldCleanupAfterAll() {
+		return (
+			this.shouldCleanupTestSkillDirs() &&
+			process.env.CLEANUP_TEST_SKILL_DIRS_ON !== 'afterEach'
+		)
+	},
+
 	getTestRootDir() {
 		return process.env.TEST_CACHE_ROOT_DIR ?? pathUtil.join(os.tmpdir())
 	},

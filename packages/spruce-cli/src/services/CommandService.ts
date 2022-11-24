@@ -13,7 +13,7 @@ export default class CommandService {
 	public cwd: string
 	private activeChildProcess: ChildProcess | undefined
 	private ignoreCloseErrors = false
-	private static mockResponses: {
+	private static fakeResponses: {
 		command: string | RegExp
 		response: MockResponse
 	}[] = []
@@ -167,7 +167,7 @@ export default class CommandService {
 
 	private getMockResponse(executable: string, args: string[]) {
 		const mockKey = `${executable} ${args.join(' ')}`.trim()
-		const commands = CommandService.mockResponses
+		const commands = CommandService.fakeResponses
 		const match = commands.find((r) =>
 			r.command instanceof RegExp
 				? mockKey.search(r.command) > -1
@@ -178,14 +178,14 @@ export default class CommandService {
 	}
 
 	public static fakeCommand(command: string | RegExp, response: MockResponse) {
-		this.mockResponses.unshift({
+		this.fakeResponses.unshift({
 			command,
 			response,
 		})
 	}
 
-	public static clearMockResponses() {
-		this.mockResponses = []
+	public static clearFakedResponses() {
+		this.fakeResponses = []
 	}
 }
 

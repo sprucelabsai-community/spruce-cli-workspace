@@ -58,6 +58,8 @@ export default class FeatureFixture implements ServiceProvider {
 		for (const dir of this.dirsToDelete) {
 			diskUtil.deleteDir(dir)
 		}
+
+		this.dirsToDelete = []
 	}
 
 	public Service<S extends Service>(

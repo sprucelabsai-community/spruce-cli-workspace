@@ -45,6 +45,9 @@ async function run() {
 
 	if (process.env.WILL_BUILD_CACHE_SCRIPT) {
 		term.renderLine('Running pre build cache script')
+		if (process.env.CLEAN_CACHE_SCRIPT) {
+			execSync(process.env.CLEAN_CACHE_SCRIPT)
+		}
 		execSync(process.env.WILL_BUILD_CACHE_SCRIPT)
 	}
 
