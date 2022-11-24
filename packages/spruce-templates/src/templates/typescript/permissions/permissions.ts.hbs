@@ -1,0 +1,12 @@
+{{#each contracts}}
+import {{nameCamel}}PermissionContract from '{{path}}'
+{{/each}}
+
+const contracts = [
+    {{#each contracts}}
+    {{nameCamel}}PermissionContract,
+    {{/each}}
+]
+
+
+export default contracts

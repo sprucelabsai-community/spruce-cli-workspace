@@ -9,31 +9,42 @@ import AbstractStore from '../../../stores/AbstractStore'
 export default class PermissionStore extends AbstractStore {
 	public name = 'permission'
 
-	private async loadLocalPermissions() {
+	public async loadLocalPermissions() {
 		const matches = await globby('**/*.permissions.ts', {
 			cwd: this.cwd,
 		})
 
 		const namespace = this.Service('pkg').getSkillNamespace()
-
-		const map: PermissionContractMap = {}
+		const imported: ImportedPermission[] = []
 
 		for (const file of matches) {
+			const path = diskUtil.resolvePath(this.cwd, file)
 			const contract = (await this.Service('import').importDefault(
-				diskUtil.resolvePath(this.cwd, file)
+				path
 			)) as PermissionContract
 
-			map[`${namespace}.${contract.id}`] = contract.permissions.map((p) => p.id)
+			imported.push({
+				id: `${namespace}.${contract.id}`,
+				permissions: contract.permissions.map((p) => p.id),
+				path,
+			})
 		}
 
-		return map
+		return imported
 	}
 
 	public async fetchContracts() {
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 		const deps = this.Service('dependency').get()
 
-		const map: PermissionContractMap = await this.loadLocalPermissions()
+		const local = await this.loadLocalPermissions()
+		const map: PermissionContractMap = local.reduce<PermissionContractMap>(
+			(map, local) => {
+				map[local.id] = local.permissions
+				return map
+			},
+			{}
+		)
 
 		const [{ permissionContracts }] = await client.emitAndFlattenResponses(
 			'list-permission-contracts::v2020_12_25',
@@ -50,4 +61,10 @@ export default class PermissionStore extends AbstractStore {
 
 		return map
 	}
+}
+
+export interface ImportedPermission {
+	id: string
+	permissions: string[]
+	path: string
 }

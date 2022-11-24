@@ -1,12 +1,15 @@
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
-import { PermissionContractMap, SpruceSchemas } from '@sprucelabs/mercury-types'
+import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
-import PermissionStore from '../../../features/permission/stores/PermissionStore'
+import PermissionStore, {
+	ImportedPermission,
+} from '../../../features/permission/stores/PermissionStore'
 import { ApiClientFactoryOptions } from '../../../types/apiClient.types'
 import { ListPermContractsTargetAndPayload } from '../../support/EventFaker'
 import AbstractPermissionsTest from './AbstractPermissionsTest'
 import generateShortAlphaId from './generateShortAlphaId'
+import { sortPermissionContracts } from './sortPermissionContracts'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
 	private static permissions: PermissionStore
@@ -39,24 +42,43 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	@test()
 	protected static async loadsNoLocalByDefault() {
 		const permissions = await this.loadLocalPermissions()
-		assert.isEqualDeep(permissions, {})
+		assert.isEqualDeep(permissions, [])
 	}
 
 	@test()
 	protected static async loadsOneContract() {
 		await this.createPermissionContract(this.contractName1)
-		await this.assertLocalPermissionsEqual({
-			[this.fqid1]: ['can-high-five'],
-		})
+		await this.assertLocalPermissionsEqual([
+			{
+				id: this.fqid1,
+				permissions: ['can-high-five'],
+				path: this.resolvePath(
+					`src/permissions/${this.contractName1}.permissions.ts`
+				),
+			},
+		])
 	}
 
 	@test()
 	protected static async loadsSecondContract() {
 		await this.createPermissionContract(this.contractName2)
-		await this.assertLocalPermissionsEqual({
-			[this.fqid1]: ['can-high-five'],
-			[this.fqid2]: ['can-high-five'],
-		})
+
+		await this.assertLocalPermissionsEqual([
+			{
+				id: this.fqid2,
+				permissions: ['can-high-five'],
+				path: this.resolvePath(
+					`src/permissions/${this.contractName2}.permissions.ts`
+				),
+			},
+			{
+				id: this.fqid1,
+				permissions: ['can-high-five'],
+				path: this.resolvePath(
+					`src/permissions/${this.contractName1}.permissions.ts`
+				),
+			},
+		])
 	}
 
 	@test()
@@ -67,13 +89,22 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 
 		this.updateFirstContractBuilder(contractId, perm1Id, perm2Id)
 
-		await this.assertLocalPermissionsEqual({
-			[buildPermissionContractId(contractId, this.namespace)]: [
-				perm1Id,
-				perm2Id,
-			],
-			[this.fqid2]: ['can-high-five'],
-		})
+		await this.assertLocalPermissionsEqual([
+			{
+				id: this.fqid2,
+				permissions: ['can-high-five'],
+				path: this.resolvePath(
+					`src/permissions/${this.contractName2}.permissions.ts`
+				),
+			},
+			{
+				id: buildPermissionContractId(contractId, this.namespace),
+				permissions: [perm1Id, perm2Id],
+				path: this.resolvePath(
+					`src/permissions/${this.contractName1}.permissions.ts`
+				),
+			},
+		])
 	}
 
 	@test()
@@ -195,9 +226,13 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 	}
 
 	private static async assertLocalPermissionsEqual(
-		expected: PermissionContractMap
+		expected: ImportedPermission[]
 	) {
 		const perms = await this.loadLocalPermissions()
+
+		perms.sort(sortPermissionContracts)
+		expected.sort(sortPermissionContracts)
+
 		assert.isEqualDeep(perms, expected)
 	}
 

@@ -1,6 +1,7 @@
 import { PermissionContractMap } from '@sprucelabs/mercury-types'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractWriter from '../../../writers/AbstractWriter'
+import { ImportedPermission } from '../stores/PermissionStore'
 
 export default class PermissionWriter extends AbstractWriter {
 	public async writeTypesFile(
@@ -19,6 +20,42 @@ export default class PermissionWriter extends AbstractWriter {
 			destination,
 			contents,
 			'Types file for any permission contracts you created or depend on.'
+		)
+
+		return files
+	}
+
+	public async writeCombineFile(
+		destinationDir: string,
+		options: {
+			contracts: ImportedPermission[]
+		}
+	) {
+		const { contracts } = options
+
+		const destinationPath = diskUtil.resolveHashSprucePath(
+			destinationDir,
+			'permissions'
+		)
+		const destinationFile = diskUtil.resolvePath(
+			destinationPath,
+			'permissions.ts'
+		)
+
+		const local = contracts.map((c) => ({
+			nameCamel: namesUtil.toCamel(c.id),
+			path: diskUtil.resolveRelativePath(
+				destinationPath,
+				c.path.replace('.ts', '')
+			),
+		}))
+
+		const content = this.templates.permissions({ contracts: local })
+
+		const files = await this.writeFileIfChangedMixinResults(
+			destinationFile,
+			content,
+			'Import of all permission contracts for loading on boot!'
 		)
 
 		return files
