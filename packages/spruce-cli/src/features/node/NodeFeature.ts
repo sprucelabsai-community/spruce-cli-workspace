@@ -78,7 +78,7 @@ export default class NodeFeature<
 					'Code rebuilt successfully.',
 				],
 			}
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}

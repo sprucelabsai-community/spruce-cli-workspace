@@ -43,7 +43,7 @@ export default class RebuildAction extends AbstractAction<OptionsSchema> {
 					InFlightEntertainment?.writeStatus(data)
 				},
 			})
-		} catch (err) {
+		} catch (err: any) {
 			this.resetUi()
 
 			return {

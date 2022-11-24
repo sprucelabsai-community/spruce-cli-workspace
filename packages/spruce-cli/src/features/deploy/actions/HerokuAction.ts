@@ -41,7 +41,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 		let results: FeatureActionResponse = {}
 
 		try {
-			await this.assertRegisteredSkill()
+			this.assertRegisteredSkill()
 			await this.assertDependencies()
 			await this.assertLoggedInToHeroku()
 			await this.setupGitRepo()
@@ -51,7 +51,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
 			results = actionUtil.mergeActionResults(results, procResults)
 
 			await this.assertNoPendingGitChanges()
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}

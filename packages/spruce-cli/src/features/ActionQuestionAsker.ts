@@ -15,23 +15,6 @@ import {
 	FeatureMap,
 } from './features.types'
 
-type FeatureCommandExecuteOptions<
-	F extends FeatureCode,
-	S extends Schema | undefined = FeatureMap[F]['optionsSchema']
-> = S extends Schema ? SchemaPartialValues<S> : undefined
-
-type FeatureDependencyWithFeature = FeatureDependency & {
-	feature: AbstractFeature
-}
-
-function s(array: any[]) {
-	return array.length === 1 ? '' : ''
-}
-
-function areIs(array: any[]) {
-	return array.length === 1 ? 'is' : 'are'
-}
-
 export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 	private ui: GraphicsInterface
 	private featureInstaller: FeatureInstaller
@@ -387,4 +370,21 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
 		return `Before you can run \`${this.getCommandName()}\`, ${message} Don't worry, I'll walk you through it!`
 	}
+}
+
+type FeatureCommandExecuteOptions<
+	F extends FeatureCode,
+	S extends Schema | undefined = FeatureMap[F]['optionsSchema']
+> = S extends Schema ? SchemaPartialValues<S> : undefined
+
+type FeatureDependencyWithFeature = FeatureDependency & {
+	feature: AbstractFeature
+}
+
+function s(array: any[]) {
+	return array.length === 1 ? '' : ''
+}
+
+function areIs(array: any[]) {
+	return array.length === 1 ? 'is' : 'are'
 }

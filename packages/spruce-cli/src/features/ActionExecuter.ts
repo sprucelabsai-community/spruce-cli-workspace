@@ -122,7 +122,7 @@ export default class ActionExecuter {
 			executeResults = await originalExecute({
 				...answers,
 			})
-		} catch (err) {
+		} catch (err: any) {
 			executeResults.errors = [err]
 		}
 

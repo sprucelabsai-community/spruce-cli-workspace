@@ -68,7 +68,7 @@ export default class InstallAction extends AbstractAction<OptionsSchema> {
 			return {
 				summaryLines: ['Skill installed!'],
 			}
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}

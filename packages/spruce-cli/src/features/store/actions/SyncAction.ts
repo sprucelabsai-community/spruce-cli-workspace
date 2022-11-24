@@ -40,7 +40,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			return {
 				files,
 			}
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}

@@ -102,7 +102,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 				{ files, meta: { fqen } },
 				syncResponse
 			)
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}

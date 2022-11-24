@@ -1,6 +1,6 @@
-import { buildSchema, Schema, SchemaValues } from '@sprucelabs/schema'
+import { SpruceSchemas } from '@sprucelabs/mercury-types'
+import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
-import generatedFileSchema from '#spruce/schemas/spruceCli/v2020_07_22/generatedFile.schema'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory from '../services/ServiceFactory'
 import StoreFactory from '../stores/StoreFactory'
@@ -58,50 +58,13 @@ export interface InstallFeatureOptions {
 	didUpdateHandler?: InternalUpdateHandler
 }
 
-export const actionResponseSchema = buildSchema({
-	id: 'actionResponse',
-	fields: {
-		files: {
-			type: 'schema',
-			isArray: true,
-			options: {
-				schema: generatedFileSchema,
-			},
-		},
-		headline: {
-			type: 'text',
-		},
-		hints: {
-			type: 'text',
-			isArray: true,
-		},
-		summaryLines: {
-			type: 'text',
-			isArray: true,
-		},
-		errors: {
-			type: 'raw',
-			isArray: true,
-			options: {
-				valueType: 'SpruceError<any>',
-			},
-		},
-		meta: {
-			type: 'raw',
-			options: {
-				valueType: 'Record<string, any>',
-			},
-		},
-	},
-})
-
 export interface FeatureInstallResponse {
 	files?: GeneratedFile[]
 	packagesInstalled?: NpmPackage[]
 }
 
-export type FeatureActionResponse = SchemaValues<typeof actionResponseSchema> &
-	FeatureInstallResponse
+export type FeatureActionResponse =
+	SpruceSchemas.SpruceCli.v2020_07_22.ActionResponse & FeatureInstallResponse
 
 export interface FeatureAction<S extends Schema = Schema> {
 	optionsSchema?: S

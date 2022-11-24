@@ -12,6 +12,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 import '@sprucelabs/spruce-event-utils'
 import { SkillViewControllerId } from '@sprucelabs/heartwood-view-controllers'
 import { BaseWidget } from '#spruce/../widgets/types/widgets.types'
+import AbstractSpruceError from '@sprucelabs/error'
 
 declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schemas.types' {
 
@@ -917,58 +918,6 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		interface GeneratedDirEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDirSchema> {}
-
-	}
-
-
-	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
-
-		
-		interface GeneratedFile {
-			
-				
-				'name': string
-				
-				'path': string
-				
-				'description'?: string| undefined | null
-				
-				'action': ("skipped" | "generated" | "updated" | "deleted")
-		}
-
-		interface GeneratedFileSchema extends SpruceSchema.Schema {
-			id: 'generatedFile',
-			version: 'v2020_07_22',
-			namespace: 'SpruceCli',
-			name: '',
-			    fields: {
-			            /** . */
-			            'name': {
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** . */
-			            'path': {
-			                type: 'text',
-			                isRequired: true,
-			                options: undefined
-			            },
-			            /** . */
-			            'description': {
-			                type: 'text',
-			                options: undefined
-			            },
-			            /** . */
-			            'action': {
-			                type: 'select',
-			                isRequired: true,
-			                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
-			            },
-			    }
-		}
-
-		interface GeneratedFileEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSchema> {}
 
 	}
 
@@ -2994,6 +2943,176 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		}
 
 		interface BootSkillOptionsEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.BootSkillOptionsSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface NpmPackage {
+			
+				
+				'name': string
+				
+				'version'?: string| undefined | null
+				
+				'isDev'?: boolean| undefined | null
+		}
+
+		interface NpmPackageSchema extends SpruceSchema.Schema {
+			id: 'npmPackage',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: '',
+			    fields: {
+			            /** . */
+			            'name': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'version': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'isDev': {
+			                type: 'boolean',
+			                options: undefined
+			            },
+			    }
+		}
+
+		interface NpmPackageEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.NpmPackageSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface GeneratedFile {
+			
+				
+				'name': string
+				
+				'path': string
+				
+				'description'?: string| undefined | null
+				
+				'action': ("skipped" | "generated" | "updated" | "deleted")
+		}
+
+		interface GeneratedFileSchema extends SpruceSchema.Schema {
+			id: 'generatedFile',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: '',
+			    fields: {
+			            /** . */
+			            'name': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'path': {
+			                type: 'text',
+			                isRequired: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'description': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'action': {
+			                type: 'select',
+			                isRequired: true,
+			                options: {choices: [{"label":"Skipped","value":"skipped"},{"label":"Generated","value":"generated"},{"label":"Updated","value":"updated"},{"label":"Deleted","value":"deleted"}],}
+			            },
+			    }
+		}
+
+		interface GeneratedFileEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSchema> {}
+
+	}
+
+
+	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
+
+		
+		interface ActionResponse {
+			
+				
+				'files'?: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile[]| undefined | null
+				
+				'headline'?: string| undefined | null
+				
+				'hints'?: string[]| undefined | null
+				
+				'summaryLines'?: string[]| undefined | null
+				
+				'errors'?: (AbstractSpruceError<any>)[]| undefined | null
+				
+				'meta'?: (Record<string, any>)| undefined | null
+				
+				'packagesInstalled'?: SpruceSchemas.SpruceCli.v2020_07_22.NpmPackage[]| undefined | null
+		}
+
+		interface ActionResponseSchema extends SpruceSchema.Schema {
+			id: 'actionResponse',
+			version: 'v2020_07_22',
+			namespace: 'SpruceCli',
+			name: 'Action response',
+			    fields: {
+			            /** . */
+			            'files': {
+			                type: 'schema',
+			                isArray: true,
+			                options: {schema: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFileSchema,}
+			            },
+			            /** . */
+			            'headline': {
+			                type: 'text',
+			                options: undefined
+			            },
+			            /** . */
+			            'hints': {
+			                type: 'text',
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'summaryLines': {
+			                type: 'text',
+			                isArray: true,
+			                options: undefined
+			            },
+			            /** . */
+			            'errors': {
+			                type: 'raw',
+			                isArray: true,
+			                options: {valueType: `AbstractSpruceError<any>`,}
+			            },
+			            /** . */
+			            'meta': {
+			                type: 'raw',
+			                options: {valueType: `Record<string, any>`,}
+			            },
+			            /** . */
+			            'packagesInstalled': {
+			                type: 'schema',
+			                isArray: true,
+			                options: {schema: SpruceSchemas.SpruceCli.v2020_07_22.NpmPackageSchema,}
+			            },
+			    }
+		}
+
+		interface ActionResponseEntity extends SchemaEntity<SpruceSchemas.SpruceCli.v2020_07_22.ActionResponseSchema> {}
 
 	}
 

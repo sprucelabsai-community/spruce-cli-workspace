@@ -148,7 +148,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
 			}
 
 			return response
-		} catch (err) {
+		} catch (err: any) {
 			return {
 				errors: [err],
 			}
