@@ -13,6 +13,7 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 		await super.beforeEach()
 		this.syncAction = this.Action('permission', 'sync')
 		MercuryClientFactory.setIsTestMode(true)
+		ExecuteTrackingAction.wasExecuteInvoked = false
 		await this.eventFaker.fakeListPermissionContracts()
 	}
 
