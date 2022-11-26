@@ -1,7 +1,7 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import testUtil from '../../../tests/utilities/test.utility'
-import AbstractPermissionsTest from './AbstractPermissionsTest'
+import AbstractPermissionsTest from './support/AbstractPermissionsTest'
 
 export default class CreatingPermissionsTest extends AbstractPermissionsTest {
 	@test('can create permission contract named booking', 'booking')

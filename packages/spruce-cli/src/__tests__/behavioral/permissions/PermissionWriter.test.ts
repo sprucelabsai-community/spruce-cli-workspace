@@ -1,6 +1,6 @@
 import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import { test, generateId } from '@sprucelabs/test-utils'
-import AbstractPermissionsTest from './AbstractPermissionsTest'
+import AbstractPermissionsTest from './support/AbstractPermissionsTest'
 
 export default class PermissionWriterTest extends AbstractPermissionsTest {
 	@test()

@@ -262,6 +262,13 @@ export const templates = {
 		})
 	},
 
+	permissionPlugin() {
+		const template = templateImportUtil.getTemplate(
+			'permission/permission.plugin.ts.hbs'
+		)
+		return template({})
+	},
+
 	permissions(options: { contracts: { path: string; nameCamel: string }[] }) {
 		const template = templateImportUtil.getTemplate(
 			'permissions/permissions.ts.hbs'

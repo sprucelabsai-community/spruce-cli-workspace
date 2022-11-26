@@ -7,9 +7,9 @@ import PermissionStore, {
 } from '../../../features/permission/stores/PermissionStore'
 import { ApiClientFactoryOptions } from '../../../types/apiClient.types'
 import { ListPermContractsTargetAndPayload } from '../../support/EventFaker'
-import AbstractPermissionsTest from './AbstractPermissionsTest'
-import generateShortAlphaId from './generateShortAlphaId'
-import { sortPermissionContracts } from './sortPermissionContracts'
+import AbstractPermissionsTest from './support/AbstractPermissionsTest'
+import generateShortAlphaId from './support/generateShortAlphaId'
+import { sortPermissionContracts } from './support/sortPermissionContracts'
 
 export default class PermissionStoreTest extends AbstractPermissionsTest {
 	private static permissions: PermissionStore

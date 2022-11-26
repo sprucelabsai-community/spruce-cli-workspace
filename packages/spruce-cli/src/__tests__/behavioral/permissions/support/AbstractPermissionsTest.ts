@@ -1,7 +1,7 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import CreateAction from '../../../features/permission/actions/CreateAction'
-import AbstractSkillTest from '../../../tests/AbstractSkillTest'
-import EventFaker from '../../support/EventFaker'
+import CreateAction from '../../../../features/permission/actions/CreateAction'
+import AbstractSkillTest from '../../../../tests/AbstractSkillTest'
+import EventFaker from '../../../support/EventFaker'
 import renderPermissionTestFile from './renderPermissionTestFile'
 
 export default abstract class AbstractPermissionsTest extends AbstractSkillTest {

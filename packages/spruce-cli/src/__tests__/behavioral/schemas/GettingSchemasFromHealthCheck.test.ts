@@ -17,18 +17,6 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 		await this.assertExpectedSchemas(cli, cleanedExpected)
 	}
 
-	private static async assertExpectedSchemas(
-		cli: CliInterface,
-		expected: Schema[]
-	) {
-		const health = await cli.checkHealth()
-		assert.isFalsy(health.skill.errors)
-		assert.isTruthy(health.schema)
-		assert.isEqual(health.schema.status, 'passed')
-
-		assert.isEqualDeep(this.sortSchemas(health.schema.schemas), expected)
-	}
-
 	@test()
 	protected static async getsCoreAndLocalSchemasFromHealthCheck() {
 		const cli = await this.installAndSyncSchemas()
@@ -59,5 +47,17 @@ export default class GettingSchemasFromHealthCheckTest extends AbstractSchemaTes
 		const cli = await this.installSchemaFeature('schemas')
 		await this.Action('schema', 'sync').execute({})
 		return cli
+	}
+
+	private static async assertExpectedSchemas(
+		cli: CliInterface,
+		expected: Schema[]
+	) {
+		const health = await cli.checkHealth()
+		assert.isFalsy(health.skill.errors)
+		assert.isTruthy(health.schema)
+		assert.isEqual(health.schema.status, 'passed')
+
+		assert.isEqualDeep(this.sortSchemas(health.schema.schemas), expected)
 	}
 }

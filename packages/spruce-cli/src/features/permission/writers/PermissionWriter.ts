@@ -94,4 +94,22 @@ export default class PermissionWriter extends AbstractWriter {
 
 		return files
 	}
+
+	public writePlugin(cwd: string) {
+		const destination = diskUtil.resolveHashSprucePath(
+			cwd,
+			'features',
+			'permission.plugin.ts'
+		)
+
+		const pluginContents = this.templates.permissionPlugin()
+
+		const results = this.writeFileIfChangedMixinResults(
+			destination,
+			pluginContents,
+			'Enable permission support in your skill.'
+		)
+
+		return results
+	}
 }

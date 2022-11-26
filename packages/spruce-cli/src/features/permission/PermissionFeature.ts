@@ -1,7 +1,8 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, NpmPackage } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, {
 	FeatureDependency,
 	FeatureOptions,
+	InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -10,8 +11,12 @@ export default class PermissionFeature extends AbstractFeature {
 	public nameReadable = 'permission'
 	public description = 'Manage permissions for your skill'
 	public dependencies: FeatureDependency[] = []
-	public packageDependencies = []
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+	public packageDependencies: NpmPackage[] = [
+		{
+			name: '@sprucelabs/spruce-permission-plugin@latest',
+		},
+	]
 
 	public constructor(options: FeatureOptions) {
 		super(options)
@@ -36,6 +41,18 @@ export default class PermissionFeature extends AbstractFeature {
 		}
 
 		return {}
+	}
+
+	public async afterPackageInstall(): Promise<InstallResults> {
+		const files = await this.writePlugin()
+
+		return {
+			files,
+		}
+	}
+
+	private async writePlugin() {
+		return this.Writer('permission').writePlugin(this.cwd)
 	}
 }
 

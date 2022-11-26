@@ -11,22 +11,6 @@ import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 import Updater from './updaters/Updater'
 
-type SkillFeatureOptionsSchema =
-	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
-type SkillFeatureOptions = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
-
-declare module '../../features/features.types' {
-	interface FeatureMap {
-		skill: SkillFeature
-	}
-
-	interface FeatureOptionsMap {
-		skill: SchemaValues<SkillFeatureOptionsSchema>
-	}
-}
-
-type UpgradeOptions = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions
-
 export default class SkillFeature<
 	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema
 > extends AbstractFeature<S> {
@@ -204,3 +188,19 @@ export default class SkillFeature<
 		return {}
 	}
 }
+
+type SkillFeatureOptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
+type SkillFeatureOptions = SpruceSchemas.SpruceCli.v2020_07_22.SkillFeature
+
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		skill: SkillFeature
+	}
+
+	interface FeatureOptionsMap {
+		skill: SchemaValues<SkillFeatureOptionsSchema>
+	}
+}
+
+type UpgradeOptions = SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptions

@@ -12,16 +12,6 @@ import { FeatureActionResponse, FeatureCode } from '../features.types'
 import EventContractBuilder from './builders/EventContractBuilder'
 import EventStore from './stores/EventStore'
 
-declare module '../../features/features.types' {
-	interface FeatureMap {
-		event: EventFeature
-	}
-
-	interface FeatureOptionsMap {
-		event: undefined
-	}
-}
-
 export default class EventFeature extends AbstractFeature {
 	public code: FeatureCode = 'event'
 	public nameReadable = 'Events'
@@ -224,5 +214,15 @@ export default class EventFeature extends AbstractFeature {
 		}
 
 		return false
+	}
+}
+
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		event: EventFeature
+	}
+
+	interface FeatureOptionsMap {
+		event: undefined
 	}
 }

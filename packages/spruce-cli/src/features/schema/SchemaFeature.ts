@@ -7,16 +7,6 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-	interface FeatureMap {
-		schema: SchemaFeature
-	}
-
-	interface FeatureOptionsMap {
-		schema: undefined
-	}
-}
-
 export default class SchemaFeature extends AbstractFeature {
 	public nameReadable = 'Schema'
 	public description = 'Define, validate, and normalize everything.'
@@ -113,5 +103,15 @@ export default class SchemaFeature extends AbstractFeature {
 
 	private async writePlugin() {
 		return this.Writer('schema').writePlugin(this.cwd)
+	}
+}
+
+declare module '../../features/features.types' {
+	interface FeatureMap {
+		schema: SchemaFeature
+	}
+
+	interface FeatureOptionsMap {
+		schema: undefined
 	}
 }

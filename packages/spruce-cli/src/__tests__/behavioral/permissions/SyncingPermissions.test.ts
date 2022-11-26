@@ -4,9 +4,9 @@ import { assert, test } from '@sprucelabs/test-utils'
 import ActionFactory from '../../../features/ActionFactory'
 import SyncAction from '../../../features/permission/actions/SyncAction'
 import testUtil from '../../../tests/utilities/test.utility'
-import AbstractPermissionsTest from './AbstractPermissionsTest'
-import generateShortAlphaId from './generateShortAlphaId'
-import { sortPermissionContracts } from './sortPermissionContracts'
+import AbstractPermissionsTest from './support/AbstractPermissionsTest'
+import generateShortAlphaId from './support/generateShortAlphaId'
+import { sortPermissionContracts } from './support/sortPermissionContracts'
 
 export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 	private static syncAction: SyncAction
