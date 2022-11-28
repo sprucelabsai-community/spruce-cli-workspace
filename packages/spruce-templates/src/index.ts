@@ -264,7 +264,7 @@ export const templates = {
 
 	permissionPlugin() {
 		const template = templateImportUtil.getTemplate(
-			'permission/permission.plugin.ts.hbs'
+			'permissions/permission.plugin.ts.hbs'
 		)
 		return template({})
 	},
