@@ -39,7 +39,7 @@ node_modules/
 # Rejected "git apply" patch files
 *.rej
 
-build/
+/build/
 esm/
 
 tmp/
