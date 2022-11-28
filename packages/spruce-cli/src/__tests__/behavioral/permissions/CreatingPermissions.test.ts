@@ -16,7 +16,7 @@ export default class CreatingPermissionsTest extends AbstractPermissionsTest {
 	}
 
 	@test()
-	protected static async rendersExpectedTemplate() {
+	protected static async generatesExpectedPermissionContract() {
 		const { contractPath } = await this.executeAndGetContract()
 		const contents = diskUtil.readFile(contractPath)
 		assert.doesInclude(

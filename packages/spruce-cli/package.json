@@ -541,7 +541,9 @@
           "sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
           "worksheetId": 889384139,
           "testMap": {
-            "rendersExpectedTemplate": "P11"
+            "generatesExpectedPermissionContract": "P11",
+            "syncsNewPermissionsWhenMade": "P13",
+            "combinedFileImportsAllPermissions": "P14"
           }
         }
       ],
