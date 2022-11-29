@@ -1,4 +1,5 @@
 import { EventSignature } from '@sprucelabs/mercury-types'
+import '#spruce/permissions/permissions.types'
 
 type Options = Omit<EventSignature,  'responsePayloadSchema'| 'emitPayloadSchema'| 'listenPermissionContract'| 'emitPermissionContract' >
 
