@@ -176,6 +176,9 @@
         "code": "test"
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       },
       {
@@ -207,6 +210,9 @@
       },
       {
         "code": "test"
+      },
+      {
+        "code": "permission"
       },
       {
         "code": "event"
@@ -269,6 +275,9 @@
         "code": "schema"
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       }
     ],
@@ -296,6 +305,9 @@
         "code": "schema"
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       },
       {
@@ -314,6 +326,9 @@
         "code": "schema"
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       },
       {
@@ -330,6 +345,9 @@
       },
       {
         "code": "schema"
+      },
+      {
+        "code": "permission"
       },
       {
         "code": "event"
@@ -395,6 +413,9 @@
         }
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       },
       {
@@ -411,6 +432,9 @@
       },
       {
         "code": "schema"
+      },
+      {
+        "code": "permission"
       },
       {
         "code": "event"
@@ -485,6 +509,9 @@
         "code": "schema"
       },
       {
+        "code": "permission"
+      },
+      {
         "code": "event"
       },
       {
@@ -501,6 +528,9 @@
       },
       {
         "code": "schema"
+      },
+      {
+        "code": "permission"
       },
       {
         "code": "event"
