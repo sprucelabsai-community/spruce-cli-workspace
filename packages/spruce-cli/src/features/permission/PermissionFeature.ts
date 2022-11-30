@@ -39,7 +39,7 @@ export default class PermissionFeature extends AbstractFeature {
 	}) {
 		const isInstalled = await this.features.isInstalled('permission')
 
-		if (isInstalled && featureCode === 'skill' && actionCode === 'upgrade') {
+		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
 			return await this.Action('permission', 'sync').execute({})
 		}
 

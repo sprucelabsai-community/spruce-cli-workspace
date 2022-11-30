@@ -1,8 +1,9 @@
+import { PermissionContract } from "@sprucelabs/mercury-types"
 {{#each contracts}}
 import {{nameCamel}}PermissionContract from '{{path}}'
 {{/each}}
 
-const contracts = [
+const contracts: PermissionContract[] = [
     {{#each contracts}}
     {{nameCamel}}PermissionContract,
     {{/each}}
