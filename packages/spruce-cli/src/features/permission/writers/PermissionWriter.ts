@@ -25,7 +25,7 @@ export default class PermissionWriter extends AbstractWriter {
 		return files
 	}
 
-	public async writeCombineFile(
+	public async writeCombinedFile(
 		destinationDir: string,
 		options: {
 			contracts: ImportedPermission[]

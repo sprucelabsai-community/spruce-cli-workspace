@@ -23,7 +23,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		const typesFiles = await this.writer.writeTypesFile(this.cwd, map)
 
 		const local = await this.permissions.loadLocalPermissions()
-		const combinedFiles = await this.writer.writeCombineFile(this.cwd, {
+		const combinedFiles = await this.writer.writeCombinedFile(this.cwd, {
 			contracts: local,
 		})
 

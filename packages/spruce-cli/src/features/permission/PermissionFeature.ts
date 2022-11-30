@@ -5,6 +5,7 @@ import AbstractFeature, {
 	InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
+import PermissionWriter from './writers/PermissionWriter'
 
 export default class PermissionFeature extends AbstractFeature {
 	public code: FeatureCode = 'permission'
@@ -17,9 +18,11 @@ export default class PermissionFeature extends AbstractFeature {
 			name: '@sprucelabs/spruce-permission-plugin@latest',
 		},
 	]
+	private writer: PermissionWriter
 
 	public constructor(options: FeatureOptions) {
 		super(options)
+		this.writer = this.Writer('permission')
 
 		void this.emitter.on(
 			'feature.did-execute',
@@ -45,14 +48,21 @@ export default class PermissionFeature extends AbstractFeature {
 
 	public async afterPackageInstall(): Promise<InstallResults> {
 		const files = await this.writePlugin()
+		const combinedFile = await this.writeTypesFile()
 
 		return {
-			files,
+			files: [...files, ...combinedFile],
 		}
 	}
 
+	private async writeTypesFile() {
+		return await this.writer.writeTypesFile(this.cwd, {
+			contracts: [],
+		})
+	}
+
 	private async writePlugin() {
-		return this.Writer('permission').writePlugin(this.cwd)
+		return this.writer.writePlugin(this.cwd)
 	}
 }
 
