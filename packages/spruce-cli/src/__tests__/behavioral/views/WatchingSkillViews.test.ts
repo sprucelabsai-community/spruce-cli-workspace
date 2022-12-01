@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import WatchAction from '../../features/view/actions/WatchAction'
-import CommandService from '../../services/CommandService'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import WatchAction from '../../../features/view/actions/WatchAction'
+import CommandService from '../../../services/CommandService'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class WatchingSkillViewsTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'views'

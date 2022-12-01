@@ -1,8 +1,8 @@
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import fsUtil from 'fs-extra'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import { RegisteredSkill } from '../../types/cli.types'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import { RegisteredSkill } from '../../../types/cli.types'
 
 export default class SyncingEventsOnlyFromDependenciesTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'events'

@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import { DEMO_NUMBER_VIEWS_ON_BOOT } from '../../tests/constants'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_VIEWS_ON_BOOT } from '../../../tests/constants'
 
 export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'views'

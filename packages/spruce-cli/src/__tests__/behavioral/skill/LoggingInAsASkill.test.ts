@@ -1,8 +1,8 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import { DEMO_NUMBER_LOGIN_AS_SKILL } from '../../tests/constants'
-import { RegisteredSkill } from '../../types/cli.types'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_LOGIN_AS_SKILL } from '../../../tests/constants'
+import { RegisteredSkill } from '../../../types/cli.types'
 
 export default class LoggingInAsASkillTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'skills'

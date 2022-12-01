@@ -1,10 +1,10 @@
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import dotenv from 'dotenv'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import { DEMO_NUMBER_GLOBAL_EVENTS } from '../../tests/constants'
-import testUtil from '../../tests/utilities/test.utility'
-import { RegisteredSkill } from '../../types/cli.types'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
+import { DEMO_NUMBER_GLOBAL_EVENTS } from '../../../tests/constants'
+import testUtil from '../../../tests/utilities/test.utility'
+import { RegisteredSkill } from '../../../types/cli.types'
 dotenv.config()
 
 const stamp = new Date().getTime()

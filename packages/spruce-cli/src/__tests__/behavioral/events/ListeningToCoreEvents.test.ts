@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class ListeningToCoreEventsTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'events'
