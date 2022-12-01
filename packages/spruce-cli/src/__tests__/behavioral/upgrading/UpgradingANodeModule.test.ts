@@ -33,7 +33,10 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async upgradingWritesExpectedFiles() {
+		CommandService.fakeCommand(/build/gis, { code: 0 })
+
 		const shouldNotBeFound = ['src/.spruce/skill.ts', 'src/.spruce/features']
+		diskUtil.deleteDir(this.resolveHashSprucePath('features'))
 
 		const results = await this.Action('node', 'upgrade').execute({})
 
