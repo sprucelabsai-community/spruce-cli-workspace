@@ -37,8 +37,6 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
 		const results = await this.Action('node', 'upgrade').execute({})
 
-		await this.openInVsCode()
-
 		assert.isFalsy(results.errors)
 
 		for (const search of shouldNotBeFound) {
