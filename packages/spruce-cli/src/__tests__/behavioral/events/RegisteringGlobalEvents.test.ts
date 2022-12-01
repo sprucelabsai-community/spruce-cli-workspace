@@ -21,8 +21,6 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 		await this.people.loginAsDemoPerson(DEMO_NUMBER_GLOBAL_EVENTS)
 
-		await this.resetAccount()
-
 		const orgFixture = this.getOrganizationFixture()
 		const skillFixture = this.getSkillFixture()
 
@@ -37,12 +35,6 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 
 	protected static async afterAll() {
 		await super.afterAll()
-		await this.resetAccount()
-	}
-
-	private static async resetAccount() {
-		// await this.getOrganizationFixture().clearAllOrgs()
-		// await this.getSkillFixture().clearAllSkills()
 	}
 
 	@test()

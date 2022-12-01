@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import TestAction from '../../features/test/actions/TestAction'
-import AbstractTestTest from '../../tests/AbstractTestTest'
+import TestAction from '../../../features/test/actions/TestAction'
+import AbstractTestTest from '../../../tests/AbstractTestTest'
 
 export default class TestReporterSettingsRememberedTest extends AbstractTestTest {
 	@test()

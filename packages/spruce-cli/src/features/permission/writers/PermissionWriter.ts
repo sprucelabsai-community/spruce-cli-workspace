@@ -4,12 +4,9 @@ import AbstractWriter from '../../../writers/AbstractWriter'
 import { ImportedPermission } from '../stores/PermissionStore'
 
 export default class PermissionWriter extends AbstractWriter {
-	public async writeTypesFile(
-		destinationDir: string,
-		map: PermissionContractMap
-	) {
+	public async writeTypesFile(cwd: string, map: PermissionContractMap) {
 		const destination = diskUtil.resolveHashSprucePath(
-			destinationDir,
+			cwd,
 			'permissions',
 			'permissions.types.ts'
 		)

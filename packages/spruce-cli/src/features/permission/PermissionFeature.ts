@@ -66,9 +66,7 @@ export default class PermissionFeature extends AbstractFeature {
 	}
 
 	private async writeTypesFile() {
-		return await this.writer.writeTypesFile(this.cwd, {
-			contracts: [],
-		})
+		return await this.writer.writeTypesFile(this.cwd, {})
 	}
 
 	private async writePlugin() {
