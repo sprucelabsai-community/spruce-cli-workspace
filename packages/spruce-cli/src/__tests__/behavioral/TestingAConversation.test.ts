@@ -15,6 +15,8 @@ export default class TestingAConversationTest extends AbstractCliTest {
 	protected static async shouldRunWithoutConversationShouldShutdownOnItsOwn() {
 		await this.FeatureFixture().installCachedFeatures('conversation')
 
+		this.disablePermissionSyncing()
+
 		const test = await this.Action('conversation', 'test').execute({
 			shouldReturnImmediately: true,
 			shouldRunSilently: true,
@@ -58,43 +60,6 @@ export default class TestingAConversationTest extends AbstractCliTest {
 		} while (psResults.length > 0)
 	}
 
-	// @test.skip('No longer dies on stderr')
-	// protected static async diesWithStandardError() {
-	// 	const { conversation } = await this.installAndCreateConversation()
-
-	// 	const topicFile = this.resolvePath(
-	// 		'src',
-	// 		'conversations',
-	// 		'knockKnockJoke.topic.ts'
-	// 	)
-
-	// 	const contents =
-	// 		`process.stderr.write('oh no!')\n\n` + diskUtil.readFile(topicFile)
-
-	// 	diskUtil.writeFile(topicFile, contents)
-
-	// 	const test = await conversation
-	// 		.Action('test')
-	// 		.execute({ shouldRunSilently: true })
-
-	// 	assert.isTruthy(test.errors)
-	// 	errorAssert.assertError(test.errors[0], 'EXECUTING_COMMAND_FAILED', {
-	// 		stderr: 'oh no!',
-	// 	})
-	// }
-
-	private static async installAndCreateConversation() {
-		await this.FeatureFixture().installCachedFeatures('conversation')
-
-		const results = await this.Action('conversation', 'create').execute({
-			nameReadable: 'tell a knock knock joke',
-			nameCamel: 'knockKnockJoke',
-		})
-
-		assert.isFalsy(results.errors)
-		return { createResults: results }
-	}
-
 	@test()
 	protected static async doesntReturnErrorWhenKilled() {
 		await this.installAndCreateConversation()
@@ -130,5 +95,23 @@ export default class TestingAConversationTest extends AbstractCliTest {
 		})
 
 		assert.isArray(results.errors)
+	}
+
+	private static async installAndCreateConversation() {
+		await this.FeatureFixture().installCachedFeatures('conversation')
+		this.disablePermissionSyncing()
+
+		const results = await this.Action('conversation', 'create').execute({
+			nameReadable: 'tell a knock knock joke',
+			nameCamel: 'knockKnockJoke',
+		})
+
+		assert.isFalsy(results.errors)
+		return { createResults: results }
+	}
+
+	private static disablePermissionSyncing() {
+		const env = this.Service('env')
+		env.set('SHOULD_REGISTER_PERMISSIONS', 'false')
 	}
 }
