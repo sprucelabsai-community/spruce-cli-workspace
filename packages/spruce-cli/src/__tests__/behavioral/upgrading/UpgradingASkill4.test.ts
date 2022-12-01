@@ -7,7 +7,7 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 export default class UpgradingASkill4Test extends AbstractCliTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
-		CommandService.fakeCommand(new RegExp(/yarn rebuild/gis), {
+		CommandService.fakeCommand(new RegExp(/rebuild/gis), {
 			code: 0,
 		})
 	}

@@ -40,7 +40,11 @@ export default class PermissionFeature extends AbstractFeature {
 		const isInstalled = await this.features.isInstalled('permission')
 
 		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			return await this.Action('permission', 'sync').execute({})
+			const combinedFile = await this.writePlugin()
+			const results = await this.Action('permission', 'sync').execute({})
+
+			results.files = [...(results.files ?? []), ...combinedFile]
+			return results
 		}
 
 		return {}

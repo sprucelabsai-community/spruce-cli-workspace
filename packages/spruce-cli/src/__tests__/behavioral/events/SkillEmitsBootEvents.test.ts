@@ -30,6 +30,7 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 	@test()
 	protected static async skillEmitsDidBootEventsThatErrorAfterBoot() {
 		await this.installEventFeature('events')
+		this.disablePermissionSyncing()
 		const version = 'v2020_01_01'
 
 		await this.Action('event', 'listen').execute({
@@ -43,5 +44,10 @@ export default class SkillEmitsBootEventsTest extends AbstractEventTest {
 		const response = await this.Action('skill', 'boot').execute({})
 		const err = await assert.doesThrowAsync(() => response.meta?.promise)
 		errorAssert.assertError(err, 'LISTENER_NOT_IMPLEMENTED')
+	}
+
+	private static disablePermissionSyncing() {
+		const env = this.Service('env')
+		env.set('SHOULD_REGISTER_PERMISSIONS', 'false')
 	}
 }
