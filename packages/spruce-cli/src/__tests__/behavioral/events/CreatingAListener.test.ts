@@ -203,7 +203,7 @@ export default class CreatingAListenerTest extends AbstractEventTest {
 		)
 	}
 
-	@test.only()
+	@test()
 	protected static async emittingEventTriggersListenerAndCrashesWithListenerNotImplemented() {
 		const { currentSkill, skill2, eventContract, org } =
 			await this.setupSkillsInstallAtOrgRegisterEventContractAndGenerateListener(
