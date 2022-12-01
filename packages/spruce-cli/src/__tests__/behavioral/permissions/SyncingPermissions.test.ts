@@ -126,7 +126,7 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 	private static async emitDidExecuteUpgrade() {
 		await this.emitter.emitAndFlattenResponses('feature.did-execute', {
 			actionCode: 'upgrade',
-			featureCode: 'skill',
+			featureCode: 'node',
 			results: {},
 		})
 	}

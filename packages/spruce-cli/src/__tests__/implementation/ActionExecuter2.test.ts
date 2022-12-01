@@ -181,11 +181,13 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		await this.waitForInput()
 
 		await this.ui.sendInput('Y')
+		await this.waitForInput()
 		await this.ui.sendInput('\n')
 
 		await this.waitForInput()
 
 		await this.ui.sendInput('skill')
+
 		await this.ui.sendInput('will-boot')
 
 		const results = await promise
@@ -270,7 +272,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 	}
 
 	private static fakeInstallCommands() {
-		CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
+		CommandService.fakeCommand(new RegExp(/yarn|npm/gis), {
 			code: 0,
 		})
 	}
