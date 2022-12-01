@@ -56,7 +56,8 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 	@test()
 	protected static async doesNotSyncIfNotInstalled() {
 		this.beginTrackingExecute()
-		this.featureInstaller.isInstalled = async (code) => code !== 'permission'
+		this.featureInstaller.isInstalled = async (code) => code === 'node'
+
 		await this.emitDidExecuteUpgrade()
 		assert.isFalse(ExecuteTrackingAction.wasExecuteInvoked)
 	}
