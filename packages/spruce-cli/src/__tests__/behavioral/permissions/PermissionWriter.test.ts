@@ -9,6 +9,7 @@ export default class PermissionWriterTest extends AbstractPermissionsTest {
 		const perm1 = generateId()
 		const perm2 = generateId()
 
+		//@ts-ignore
 		await this.writeTypesFile({
 			[contractId]: [perm1, perm2],
 		})

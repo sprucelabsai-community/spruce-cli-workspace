@@ -43,7 +43,7 @@ export default class PermissionStore extends AbstractStore {
 				map[local.id] = local.permissions
 				return map
 			},
-			{}
+			{} as any
 		)
 
 		const [{ permissionContracts }] = await client.emitAndFlattenResponses(

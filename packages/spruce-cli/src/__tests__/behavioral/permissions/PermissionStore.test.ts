@@ -143,6 +143,7 @@ export default class PermissionStoreTest extends AbstractPermissionsTest {
 		})
 
 		const map = await this.fetchContracts()
+		//@ts-ignore
 		assert.isEqualDeep(map, {
 			[contractId]: [perm.id, perm2.id],
 			[contractId2]: [perm3.id],

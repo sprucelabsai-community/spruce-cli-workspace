@@ -1,3 +1,4 @@
+import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import { diskUtil, NpmPackage } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, {
 	FeatureDependency,
@@ -66,7 +67,10 @@ export default class PermissionFeature extends AbstractFeature {
 	}
 
 	private async writeTypesFile() {
-		return await this.writer.writeTypesFile(this.cwd, {})
+		return await this.writer.writeTypesFile(
+			this.cwd,
+			{} as PermissionContractMap
+		)
 	}
 
 	private async writePlugin() {

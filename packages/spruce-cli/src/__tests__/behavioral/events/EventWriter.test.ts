@@ -11,20 +11,18 @@ export default class EventWriterTest extends AbstractCliTest {
 		const name = 'My event'
 		const namespace = 'appointments'
 
-		const contractId1 = generateId()
-		const contractId2 = generateId()
-		const permissionId1 = generateId()
-		const permissionId2 = generateId()
+		const contractId1 = generateId() as any
+		const contractId2 = generateId() as any
+		const permissionId1 = generateId() as any
+		const permissionId2 = generateId() as any
 
 		const sig: EventSignatureTemplateItem = {
 			isGlobal: true,
 			emitPermissions: {
-				//@ts-ignore
 				contractId: contractId1,
 				permissionIdsAny: [permissionId1],
 			},
 			listenPermissions: {
-				//@ts-ignore
 				contractId: contractId2,
 				permissionIdsAny: [permissionId2],
 			},
@@ -33,6 +31,8 @@ export default class EventWriterTest extends AbstractCliTest {
 		const permWriter = this.writers.Writer('permission', {
 			fileDescriptions: [],
 		})
+
+		//@ts-ignore
 		await permWriter.writeTypesFile(this.cwd, {
 			[contractId1]: [permissionId1],
 			[contractId2]: [permissionId2],
