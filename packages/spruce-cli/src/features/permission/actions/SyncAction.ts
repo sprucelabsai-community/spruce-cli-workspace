@@ -63,12 +63,15 @@ export type SyncPermissionsOptions = SchemaValues<OptionsSchema>
 export async function writePermissionTypesFile(options: {
 	permissions: PermissionStore
 	shouldSyncCorePermissions: boolean | undefined
+	namespaces?: string[]
 	writer: PermissionWriter
 	cwd: string
 }) {
-	const { permissions, shouldSyncCorePermissions, writer, cwd } = options
+	const { permissions, shouldSyncCorePermissions, writer, cwd, namespaces } =
+		options
 
 	const map = await permissions.fetchContracts({
+		namespaces,
 		shouldSyncCorePermissions,
 	})
 	const typesFiles = await writer.writeTypesFile(cwd, map)

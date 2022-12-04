@@ -2,7 +2,6 @@ import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
-import { writePermissionTypesFile } from '../../permission/actions/SyncAction'
 
 const pullOptionsSchema = buildSchema({
 	id: 'pullActionSchema',
@@ -50,16 +49,11 @@ export type CoreEventContract = ${contracts
 
 		diskUtil.writeFile(destination, contents)
 
-		const typeFiles = await writePermissionTypesFile({
-			cwd: this.cwd,
-			permissions: this.Store('permission'),
-			shouldSyncCorePermissions: true,
-			writer: this.Writer('permission'),
-		})
+		const typesFiles = await this.syncPermissions()
 
 		return {
 			files: [
-				...typeFiles,
+				...typesFiles,
 				{
 					name: filename,
 					path: destination,
@@ -68,5 +62,23 @@ export type CoreEventContract = ${contracts
 				},
 			],
 		}
+	}
+
+	private async syncPermissions() {
+		const permissions = this.Store('permission')
+
+		const coreMap = await permissions.fetchContracts({
+			shouldSyncCorePermissions: true,
+		})
+
+		const heartwoodMap = await permissions.fetchContracts({
+			namespaces: ['heartwood'],
+		})
+
+		const typesFiles = await this.Writer('permission').writeTypesFile(
+			this.cwd,
+			{ ...coreMap, ...heartwoodMap }
+		)
+		return typesFiles
 	}
 }

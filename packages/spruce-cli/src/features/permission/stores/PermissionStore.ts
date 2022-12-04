@@ -36,15 +36,17 @@ export default class PermissionStore extends AbstractStore {
 
 	public async fetchContracts(options?: {
 		shouldSyncCorePermissions?: boolean
+		namespaces?: string[]
 	}) {
+		const { shouldSyncCorePermissions, namespaces } = options ?? {}
+
 		let target: ListPermContractsTargetAndPayload['target']
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
 
-		if (!options?.shouldSyncCorePermissions) {
+		if (!shouldSyncCorePermissions) {
 			const deps = this.Service('dependency').get()
-
 			target = {
-				namespaces: deps.map((d) => d.namespace),
+				namespaces: namespaces ?? deps.map((d) => d.namespace),
 			}
 		}
 
