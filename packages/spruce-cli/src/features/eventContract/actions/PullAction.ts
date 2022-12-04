@@ -1,8 +1,8 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
+import { writePermissionTypesFile } from '../../permission/actions/SyncAction'
 
 const pullOptionsSchema = buildSchema({
 	id: 'pullActionSchema',
@@ -50,11 +50,16 @@ export type CoreEventContract = ${contracts
 
 		diskUtil.writeFile(destination, contents)
 
-		// const results = await this.Action('permission', 'sync').execute({})
-		const results = {}
+		const typeFiles = await writePermissionTypesFile({
+			cwd: this.cwd,
+			permissions: this.Store('permission'),
+			shouldSyncCorePermissions: true,
+			writer: this.Writer('permission'),
+		})
 
-		return actionUtil.mergeActionResults(results, {
+		return {
 			files: [
+				...typeFiles,
 				{
 					name: filename,
 					path: destination,
@@ -62,6 +67,6 @@ export type CoreEventContract = ${contracts
 					description: 'All your Mercury core events ready for testing!',
 				},
 			],
-		})
+		}
 	}
 }

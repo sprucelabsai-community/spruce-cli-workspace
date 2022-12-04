@@ -25,10 +25,16 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			options ?? {}
 		)
 
-		const map = await this.permissions.fetchContracts({
+		const permissions = this.permissions
+		const writer = this.writer
+		const cwd = this.cwd
+
+		const typesFiles = await writePermissionTypesFile({
+			permissions,
 			shouldSyncCorePermissions,
+			writer,
+			cwd,
 		})
-		const typesFiles = await this.writer.writeTypesFile(this.cwd, map)
 
 		const local = await this.permissions.loadLocalPermissions()
 		const combinedFiles = await this.writer.writeCombinedFile(this.cwd, {
@@ -53,3 +59,18 @@ const schema = buildSchema({
 
 type OptionsSchema = typeof schema
 export type SyncPermissionsOptions = SchemaValues<OptionsSchema>
+
+export async function writePermissionTypesFile(options: {
+	permissions: PermissionStore
+	shouldSyncCorePermissions: boolean | undefined
+	writer: PermissionWriter
+	cwd: string
+}) {
+	const { permissions, shouldSyncCorePermissions, writer, cwd } = options
+
+	const map = await permissions.fetchContracts({
+		shouldSyncCorePermissions,
+	})
+	const typesFiles = await writer.writeTypesFile(cwd, map)
+	return typesFiles
+}
