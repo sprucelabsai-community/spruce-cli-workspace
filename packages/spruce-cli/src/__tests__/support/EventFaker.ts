@@ -1,8 +1,7 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
+import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
-export type ListPermContractsTargetAndPayload =
-	SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsEmitTargetAndPayload
 export default class EventFaker {
 	public async fakeListPermissionContracts(
 		cb?: (

@@ -50,7 +50,8 @@ export type CoreEventContract = ${contracts
 
 		diskUtil.writeFile(destination, contents)
 
-		const results = await this.Action('permission', 'sync').execute({})
+		// const results = await this.Action('permission', 'sync').execute({})
+		const results = {}
 
 		return actionUtil.mergeActionResults(results, {
 			files: [

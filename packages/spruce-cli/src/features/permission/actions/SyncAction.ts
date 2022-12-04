@@ -1,4 +1,4 @@
-import { buildSchema } from '@sprucelabs/schema'
+import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import AbstractAction from '../../AbstractAction'
 import { ActionOptions, FeatureActionResponse } from '../../features.types'
 import PermissionStore from '../stores/PermissionStore'
@@ -18,8 +18,16 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 		this.writer = this.Writer('permission')
 	}
 
-	public async execute(): Promise<FeatureActionResponse> {
-		const map = await this.permissions.fetchContracts()
+	public async execute(
+		options?: SyncPermissionsOptions
+	): Promise<FeatureActionResponse> {
+		const { shouldSyncCorePermissions } = this.validateAndNormalizeOptions(
+			options ?? {}
+		)
+
+		const map = await this.permissions.fetchContracts({
+			shouldSyncCorePermissions,
+		})
 		const typesFiles = await this.writer.writeTypesFile(this.cwd, map)
 
 		const local = await this.permissions.loadLocalPermissions()
@@ -36,7 +44,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
 const schema = buildSchema({
 	id: 'syncPermissions',
-	fields: {},
+	fields: {
+		shouldSyncCorePermissions: {
+			type: 'boolean',
+		},
+	},
 })
 
 type OptionsSchema = typeof schema
+export type SyncPermissionsOptions = SchemaValues<OptionsSchema>

@@ -1,6 +1,7 @@
 import {
 	PermissionContract,
 	PermissionContractMap,
+	SpruceSchemas,
 } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import globby from 'globby'
@@ -33,9 +34,26 @@ export default class PermissionStore extends AbstractStore {
 		return imported
 	}
 
-	public async fetchContracts() {
+	public async fetchContracts(options?: {
+		shouldSyncCorePermissions?: boolean
+	}) {
+		let target: ListPermContractsTargetAndPayload['target']
 		const client = await this.connectToApi({ shouldAuthAsCurrentSkill: true })
-		const deps = this.Service('dependency').get()
+
+		if (!options?.shouldSyncCorePermissions) {
+			const deps = this.Service('dependency').get()
+
+			target = {
+				namespaces: deps.map((d) => d.namespace),
+			}
+		}
+
+		const [{ permissionContracts }] = await client.emitAndFlattenResponses(
+			'list-permission-contracts::v2020_12_25',
+			{
+				target,
+			}
+		)
 
 		const local = await this.loadLocalPermissions()
 		const map: PermissionContractMap = local.reduce<PermissionContractMap>(
@@ -44,15 +62,6 @@ export default class PermissionStore extends AbstractStore {
 				return map
 			},
 			{} as any
-		)
-
-		const [{ permissionContracts }] = await client.emitAndFlattenResponses(
-			'list-permission-contracts::v2020_12_25',
-			{
-				target: {
-					namespaces: deps.map((d) => d.namespace),
-				},
-			}
 		)
 
 		for (const result of permissionContracts) {
@@ -68,3 +77,6 @@ export interface ImportedPermission {
 	permissions: string[]
 	path: string
 }
+
+export type ListPermContractsTargetAndPayload =
+	SpruceSchemas.Mercury.v2020_12_25.ListPermissionContractsEmitTargetAndPayload

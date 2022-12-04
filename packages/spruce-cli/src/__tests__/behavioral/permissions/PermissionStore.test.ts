@@ -4,9 +4,9 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
 import PermissionStore, {
 	ImportedPermission,
+	ListPermContractsTargetAndPayload,
 } from '../../../features/permission/stores/PermissionStore'
 import { ApiClientFactoryOptions } from '../../../types/apiClient.types'
-import { ListPermContractsTargetAndPayload } from '../../support/EventFaker'
 import AbstractPermissionsTest from './support/AbstractPermissionsTest'
 import generateShortAlphaId from './support/generateShortAlphaId'
 import { sortPermissionContracts } from './support/sortPermissionContracts'

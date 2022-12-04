@@ -2,7 +2,10 @@ import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert, test } from '@sprucelabs/test-utils'
 import ActionFactory from '../../../features/ActionFactory'
-import SyncAction from '../../../features/permission/actions/SyncAction'
+import SyncAction, {
+	SyncPermissionsOptions,
+} from '../../../features/permission/actions/SyncAction'
+import { ListPermContractsTargetAndPayload } from '../../../features/permission/stores/PermissionStore'
 import testUtil from '../../../tests/utilities/test.utility'
 import AbstractPermissionsTest from './support/AbstractPermissionsTest'
 import generateShortAlphaId from './support/generateShortAlphaId'
@@ -112,6 +115,21 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 		)
 	}
 
+	@test()
+	protected static async canSyncCorePermissions() {
+		let wasHit = false
+		let passedTarget: ListPermContractsTargetAndPayload['target']
+
+		await this.eventFaker.fakeListPermissionContracts((targetAndPayload) => {
+			passedTarget = targetAndPayload.target
+			wasHit = true
+		})
+
+		await this.sync({ shouldSyncCorePermissions: true })
+		assert.isTrue(wasHit)
+		assert.isUndefined(passedTarget)
+	}
+
 	private static getCombinedPath() {
 		return this.resolveHashSprucePath('permissions', 'permissions.ts')
 	}
@@ -120,8 +138,8 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 		ActionFactory.setActionClass('permission', 'sync', ExecuteTrackingAction)
 	}
 
-	private static async sync() {
-		return await this.syncAction.execute()
+	private static async sync(options?: SyncPermissionsOptions) {
+		return await this.syncAction.execute(options)
 	}
 
 	private static async emitDidExecuteUpgrade() {
