@@ -116,11 +116,6 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			shouldAutoHandleDependencies: true,
 		}).execute({})
 
-		await this.waitForInput()
-		await this.ui.sendInput('Y')
-		await this.waitForInput()
-		await this.ui.sendInput('\n')
-
 		const results = await promise
 
 		const match = testUtil.assertFileByNameInGeneratedFiles(
