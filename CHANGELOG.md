@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v18.4.0...v19.0.0) (2022-12-21)
+
+### Breaking Changes
+
+- pulling contract no longer brings in global ([2354b92](https://github.com/sprucelabsai/spruce-cli-workspace/commit/2354b92))
+
 # [18.4.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v18.3.1...v18.4.0) (2022-12-07)
 
 ### Features
