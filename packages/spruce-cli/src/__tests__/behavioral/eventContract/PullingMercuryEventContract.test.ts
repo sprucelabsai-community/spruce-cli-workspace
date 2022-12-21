@@ -122,7 +122,7 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 		assert.doesInclude(contents, 'as const')
 		assert.doesInclude(
 			contents,
-			'export type CoreEventContract = typeof eventContracts[0] & typeof eventContracts[1]'
+			'export type CoreEventContract = typeof eventContracts[0]'
 		)
 	}
 
