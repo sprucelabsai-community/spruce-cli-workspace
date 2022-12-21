@@ -25,7 +25,20 @@ export default class UpgradingWithListeners extends AbstractCliTest {
 		actionCode = 'upgrade'
 	) {
 		await this.FeatureFixture().installCachedFeatures(featureCode)
+		await this.assertListenersSynced(actionCode, shouldHit)
+	}
 
+	@test()
+	protected static async willNotSyncIfSkillNotInstalled() {
+		await this.FeatureFixture().installCachedFeatures('events')
+		this.featureInstaller.markAsPermanentlySkipped('skill')
+		await this.assertListenersSynced('upgrade', false)
+	}
+
+	private static async assertListenersSynced(
+		actionCode: string,
+		shouldHit: boolean
+	) {
 		this.commandFaker.fakeCommand(new RegExp(/yarn/))
 
 		let wasHit = false

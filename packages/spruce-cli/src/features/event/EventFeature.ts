@@ -65,12 +65,18 @@ export default class EventFeature extends AbstractFeature {
 
 	public async afterPackageInstall() {
 		diskUtil.createDir(diskUtil.resolvePath(this.cwd, 'src', 'events'))
-		const isSkillInstalled = await this.features.isInstalled('skill')
-		if (isSkillInstalled) {
-			return await this.Action('event', 'sync.listeners').execute({})
-		}
+		return this.optionallySyncListeners()
+	}
 
-		return {}
+	private async optionallySyncListeners() {
+		let results: FeatureActionResponse = {}
+
+		const isSkillInstalled = await this.features.isInstalled('skill')
+
+		if (isSkillInstalled) {
+			results = await this.Action('event', 'sync.listeners').execute({})
+		}
+		return results
 	}
 
 	private async handleWillExecute(payload: {
@@ -109,7 +115,7 @@ export default class EventFeature extends AbstractFeature {
 	}
 
 	private async syncListenersAndMixinResults(results: FeatureActionResponse) {
-		const syncResults = await this.Action('event', 'sync.listeners').execute({})
+		const syncResults = await this.optionallySyncListeners()
 		results = actionUtil.mergeActionResults(results, syncResults)
 		return results
 	}
