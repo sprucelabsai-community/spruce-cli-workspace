@@ -185,9 +185,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
 		await this.ui.sendInput('\n')
 
 		await this.waitForInput()
-
 		await this.ui.sendInput('skill')
-
 		await this.ui.sendInput('will-boot')
 
 		const results = await promise

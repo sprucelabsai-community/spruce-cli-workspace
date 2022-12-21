@@ -29,7 +29,9 @@ export default class PullAction extends AbstractAction<PullOptionsSchema> {
 		const filename = 'events.contract.ts'
 		destination = diskUtil.resolvePath(this.cwd, destination, filename)
 
-		const { contracts } = await this.Store('event').fetchEventContracts()
+		const { contracts } = await this.Store('event').fetchEventContracts({
+			namespaces: ['core'],
+		})
 		let buildEventContractImport = `import { buildEventContract } from '@sprucelabs/mercury-types'
 import '${'#spruce'}/permissions/permissions.types'`
 
@@ -72,7 +74,7 @@ export type CoreEventContract = ${contracts
 		})
 
 		const heartwoodMap = await permissions.fetchContracts({
-			namespaces: ['heartwood'],
+			shouldSyncCorePermissions: true,
 		})
 
 		const typesFiles = await this.Writer('permission').writeTypesFile(

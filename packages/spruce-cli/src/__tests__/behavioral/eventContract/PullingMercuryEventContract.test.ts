@@ -1,5 +1,4 @@
 import { EventContract } from '@sprucelabs/mercury-types'
-import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { CliInterface } from '../../../cli'
@@ -77,10 +76,10 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 	}
 
 	@test()
-	protected static async pullsGlobalContracts() {
+	protected static async doesNotPullGlobalContracts() {
 		this.cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.getSkillFixture().registerCurrentSkill({
+		await this.getSkillFixture().registerCurrentSkill({
 			name: 'heartwood test',
 		})
 
@@ -95,17 +94,11 @@ export default class GeneratingMercuryEventContractTest extends AbstractCliTest 
 			},
 		})
 
-		const fqen = eventNameUtil.join({
-			eventName: 'test-event',
-			eventNamespace: skill.slug,
-			version: 'v2020_01_01',
-		})
-
 		const contracts = await this.installSkillAndPullContracts()
 
-		assert.isAbove(contracts.length, 1)
-		assert.isObject(contracts[1].eventSignatures)
-		assert.isObject(contracts[1].eventSignatures[fqen])
+		assert.isEqual(contracts.length, 1)
+		assert.isObject(contracts[0].eventSignatures)
+		assert.isObject(contracts[0].eventSignatures['add-role::v2020_12_25'])
 	}
 
 	@test()
