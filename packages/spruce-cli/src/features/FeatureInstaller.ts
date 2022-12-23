@@ -207,8 +207,8 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 		dependenciesToInstall = uniq(dependenciesToInstall)
 		dependenciesToInstall = this.sortFeatures(dependenciesToInstall)
 
-		for (let i = 0; i < dependenciesToInstall.length; i += 1) {
-			const { code, isRequired } = dependenciesToInstall[i]
+		for (let x = 0; x < dependenciesToInstall.length; x += 1) {
+			const { code, isRequired } = dependenciesToInstall[x]
 
 			const isInstalled = await this.isInstalledOrPendingInstall(code)
 
@@ -218,7 +218,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 					options.features.find((f) => f.code === code)?.options
 
 				const installFeature = {
-					code: dependenciesToInstall[i].code,
+					code,
 					options: installOptions,
 				} as InstallFeature
 
