@@ -130,6 +130,17 @@ export default class SyncingPermissionsTest extends AbstractPermissionsTest {
 		assert.isUndefined(passedTarget)
 	}
 
+	@test()
+	protected static async syncingEventsSyncsPermissions() {
+		this.beginTrackingExecute()
+		await this.emitter.emitAndFlattenResponses('feature.did-execute', {
+			actionCode: 'sync',
+			featureCode: 'event',
+			results: {},
+		})
+		assert.isTrue(ExecuteTrackingAction.wasExecuteInvoked)
+	}
+
 	private static getCombinedPath() {
 		return this.resolveHashSprucePath('permissions', 'permissions.ts')
 	}
