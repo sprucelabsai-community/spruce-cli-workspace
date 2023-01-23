@@ -1,10 +1,10 @@
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import { CliInterface } from '../../cli'
 import { SpruceTestResults } from '../../features/test/test.types'
 import TestRunner from '../../features/test/TestRunner'
 import AbstractTestTest from '../../tests/AbstractTestTest'
+import { CliInterface } from '../../types/cli.types'
 
 export default class TestRunnerTest extends AbstractTestTest {
 	protected static testRunner: TestRunner

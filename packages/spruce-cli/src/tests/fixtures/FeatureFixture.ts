@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli, { CliBootOptions, CliInterface } from '../../cli'
+import Cli from '../../Cli-1'
 import FeatureInstaller from '../../features/FeatureInstaller'
 import { InstallFeature } from '../../features/features.types'
 import { GlobalEmitter } from '../../GlobalEmitter'
@@ -10,23 +10,12 @@ import ServiceFactory, {
 	ServiceMap,
 } from '../../services/ServiceFactory'
 import { ApiClientFactory } from '../../types/apiClient.types'
-import { GraphicsInterface } from '../../types/cli.types'
+import {
+	CliBootOptions,
+	CliInterface,
+	GraphicsInterface,
+} from '../../types/cli.types'
 import testUtil from '../utilities/test.utility'
-
-export interface CachedCli {
-	cli: CliInterface
-	cwd: string
-}
-
-export interface FeatureFixtureOptions {
-	cwd: string
-	serviceFactory: ServiceFactory
-	ui: GraphicsInterface
-	shouldGenerateCacheIfMissing?: boolean
-	apiClientFactory: ApiClientFactory
-	emitter?: GlobalEmitter
-	featureInstaller?: FeatureInstaller
-}
 
 export default class FeatureFixture implements ServiceProvider {
 	private cwd: string
@@ -34,7 +23,7 @@ export default class FeatureFixture implements ServiceProvider {
 	private serviceFactory: ServiceFactory
 	private static linkedUtils = false
 	private static dirsToDelete: string[] = []
-	private term: GraphicsInterface
+	private ui: GraphicsInterface
 	private generateCacheIfMissing = false
 	private apiClientFactory: ApiClientFactory
 	private emitter?: GlobalEmitter
@@ -47,7 +36,7 @@ export default class FeatureFixture implements ServiceProvider {
 
 		this.cwd = options.cwd
 		this.serviceFactory = options.serviceFactory
-		this.term = options.ui
+		this.ui = options.ui
 		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
 		this.apiClientFactory = options.apiClientFactory
 		this.emitter = options.emitter
@@ -74,7 +63,7 @@ export default class FeatureFixture implements ServiceProvider {
 
 		const cli = await Cli.Boot({
 			cwd: this.cwd,
-			graphicsInterface: this.term,
+			graphicsInterface: this.ui,
 			apiClientFactory: this.apiClientFactory,
 			emitter: this.emitter,
 			featureInstaller: this.featureInstaller,
@@ -281,4 +270,19 @@ export default class FeatureFixture implements ServiceProvider {
 			cli,
 		}
 	}
+}
+
+export interface CachedCli {
+	cli: CliInterface
+	cwd: string
+}
+
+export interface FeatureFixtureOptions {
+	cwd: string
+	serviceFactory: ServiceFactory
+	ui: GraphicsInterface
+	shouldGenerateCacheIfMissing?: boolean
+	apiClientFactory: ApiClientFactory
+	emitter?: GlobalEmitter
+	featureInstaller?: FeatureInstaller
 }

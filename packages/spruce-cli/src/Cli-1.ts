@@ -3,16 +3,13 @@ import {
 	ConnectionOptions,
 	MercuryClientFactory,
 } from '@sprucelabs/mercury-client'
-import { MercuryEventEmitter, SpruceSchemas } from '@sprucelabs/mercury-types'
+import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
-	diskUtil,
 	HealthCheckResults,
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
-import { Command, CommanderStatic } from 'commander'
-import './addons/filePrompt.addon'
-import { CLI_HERO, DEFAULT_HOST } from './constants'
+import { DEFAULT_HOST } from './constants'
 import SpruceError from './errors/SpruceError'
 import ActionExecuter from './features/ActionExecuter'
 import ActionFactory from './features/ActionFactory'
@@ -20,18 +17,11 @@ import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
 } from './features/FeatureCommandAttacher'
-import FeatureInstaller, {
-	FeatureInstallerImpl,
-} from './features/FeatureInstaller'
+import FeatureInstaller from './features/FeatureInstaller'
 import FeatureInstallerFactory from './features/FeatureInstallerFactory'
 import { FeatureCode, InstallFeatureOptions } from './features/features.types'
-import CliGlobalEmitter, {
-	GlobalEmitter,
-	GlobalEventContract,
-} from './GlobalEmitter'
-import InFlightEntertainment from './InFlightEntertainment'
+import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
 import TerminalInterface from './interfaces/TerminalInterface'
-import CommandService from './services/CommandService'
 import ImportService from './services/ImportService'
 import PkgService from './services/PkgService'
 import ServiceFactory from './services/ServiceFactory'
@@ -41,33 +31,16 @@ import {
 	ApiClientFactory,
 	ApiClientFactoryOptions,
 } from './types/apiClient.types'
-import { GraphicsInterface } from './types/cli.types'
+import {
+	CliBootOptions,
+	CliInterface,
+	GraphicsInterface,
+	HealthOptions,
+	PromiseCache,
+} from './types/cli.types'
 import apiClientUtil from './utilities/apiClient.utility'
 import { argParserUtil } from './utilities/argParser.utility'
 import WriterFactory from './writers/WriterFactory'
-
-interface HealthOptions {
-	shouldRunOnSourceFiles?: boolean
-}
-
-export interface CliInterface extends MercuryEventEmitter<GlobalEventContract> {
-	installFeatures: FeatureInstaller['install']
-	getFeature: FeatureInstaller['getFeature']
-	checkHealth(options?: HealthOptions): Promise<HealthCheckResults>
-}
-
-export interface CliBootOptions {
-	cwd?: string
-	homeDir?: string
-	program?: CommanderStatic['program']
-	graphicsInterface?: GraphicsInterface
-	emitter?: GlobalEmitter
-	apiClientFactory?: ApiClientFactory
-	featureInstaller?: FeatureInstaller
-	host?: string
-}
-
-type PromiseCache = Record<string, Promise<ApiClient>>
 
 export default class Cli implements CliInterface {
 	private cwd: string
@@ -190,43 +163,42 @@ export default class Cli implements CliInterface {
 
 		ImportService.enableCaching()
 
-		const serviceFactory = new ServiceFactory()
+		const services = new ServiceFactory()
 		const apiClientFactory =
 			options?.apiClientFactory ??
-			Cli.buildApiClientFactory(cwd, serviceFactory, options)
+			Cli.buildApiClientFactory(cwd, services, options)
 
 		const storeFactory = new StoreFactory({
 			cwd,
-			serviceFactory,
+			serviceFactory: services,
 			homeDir: options?.homeDir ?? osUtil.homedir(),
 			emitter,
 			apiClientFactory,
 		})
 
-		const ui = options?.graphicsInterface ?? new TerminalInterface(cwd)
+		const ui = (options?.graphicsInterface ??
+			new TerminalInterface(cwd)) as GraphicsInterface
 		let featureInstaller: FeatureInstaller | undefined
 
 		const writerFactory = new WriterFactory({
 			templates,
 			ui,
-			settings: serviceFactory.Service(cwd, 'settings'),
-			linter: serviceFactory.Service(cwd, 'lint'),
+			settings: services.Service(cwd, 'settings'),
+			linter: services.Service(cwd, 'lint'),
 		})
 
 		const optionOverrides = this.loadOptionOverrides(
-			serviceFactory.Service(cwd, 'pkg')
+			services.Service(cwd, 'pkg')
 		)
 
-		const blockedCommands = this.loadCommandBlocks(
-			serviceFactory.Service(cwd, 'pkg')
-		)
+		const blockedCommands = this.loadCommandBlocks(services.Service(cwd, 'pkg'))
 
 		const actionFactory = new ActionFactory({
 			ui,
 			emitter,
 			apiClientFactory,
 			cwd,
-			serviceFactory,
+			serviceFactory: services,
 			storeFactory,
 			templates,
 			writerFactory,
@@ -246,7 +218,7 @@ export default class Cli implements CliInterface {
 			options?.featureInstaller ??
 			FeatureInstallerFactory.WithAllFeatures({
 				cwd,
-				serviceFactory,
+				serviceFactory: services,
 				storeFactory,
 				ui,
 				emitter,
@@ -283,7 +255,7 @@ export default class Cli implements CliInterface {
 		const cli = new Cli(
 			cwd,
 			featureInstaller,
-			serviceFactory,
+			services,
 			emitter,
 			attacher,
 			actionExecuter
@@ -403,87 +375,5 @@ export default class Cli implements CliInterface {
 		}
 
 		return client
-	}
-}
-
-export async function run(argv: string[] = []): Promise<void> {
-	const program = new Command()
-	let cwd = process.cwd()
-
-	program.storeOptionsAsProperties(false)
-	program.option('--no-color', 'Disable color output in the console')
-	program.option(
-		'-d, --directory <path>',
-		'The working directory to execute the command'
-	)
-	program.option('-v, --version', 'The version of the cli')
-
-	const dirIdx = process.argv.findIndex(
-		(v) => v === '--directory' || v === '-d'
-	)
-
-	if (dirIdx > -1) {
-		const dir = process.argv[dirIdx + 1]
-		const newCwd = diskUtil.resolvePath(cwd, dir)
-		cwd = newCwd
-	}
-
-	const terminal = new TerminalInterface(
-		cwd,
-		process.env.CLI_RENDER_STACK_TRACES !== 'false'
-	)
-	terminal.clear()
-	terminal.renderHero(CLI_HERO)
-
-	const isAskingForVersion =
-		process.argv.findIndex((v) => v === '--version' || v === '-v') > -1
-
-	if (isAskingForVersion) {
-		const json = require('../package.json')
-		terminal.renderHeadline(`Version ${json.version}`)
-		return
-	}
-
-	await Cli.Boot({
-		program,
-		cwd,
-		host: process.env.HOST,
-		graphicsInterface: terminal,
-	})
-
-	await setupInFlightEntertainment(terminal)
-
-	const command = await program.parseAsync(argv)
-
-	//@ts-ignore
-	const results = await command._actionResults[0]
-
-	for (const client of MercuryClientFactory.getClients()) {
-		await client.disconnect()
-	}
-
-	return results
-}
-
-async function setupInFlightEntertainment(ui: TerminalInterface) {
-	if (
-		TerminalInterface.doesSupportColor() &&
-		process.env.ENABLE_INSTALL_ENTERTAINMENT !== 'false'
-	) {
-		const command = new CommandService(diskUtil.resolvePath(__dirname, '../'))
-		InFlightEntertainment.setup({ command, ui })
-
-		FeatureInstallerImpl.startInFlightIntertainmentHandler = (
-			didUpdateHandler
-		) => {
-			InFlightEntertainment.start()
-			didUpdateHandler((message) => {
-				InFlightEntertainment.writeStatus(message)
-			})
-		}
-
-		FeatureInstallerImpl.stopInFlightIntertainmentHandler = () => {
-			InFlightEntertainment.stop()
-		}
 	}
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { run } from './cli'
+import { run } from './boot'
 import TerminalInterface from './interfaces/TerminalInterface'
 
 require('dotenv').config()

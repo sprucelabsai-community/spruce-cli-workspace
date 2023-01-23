@@ -6,8 +6,8 @@ import {
 	SchemaHealthCheckItem,
 } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test-utils'
-import { CliBootOptions } from '../cli'
 import { FeatureCode } from '../features/features.types'
+import { CliBootOptions } from '../types/cli.types'
 import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractSchemaTest extends AbstractCliTest {

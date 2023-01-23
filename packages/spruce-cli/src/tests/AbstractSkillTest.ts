@@ -1,4 +1,4 @@
-import { CliInterface } from '../cli'
+import { CliInterface } from '../types/cli.types'
 import AbstractCliTest from './AbstractCliTest'
 
 export default abstract class AbstractSkillTest extends AbstractCliTest {

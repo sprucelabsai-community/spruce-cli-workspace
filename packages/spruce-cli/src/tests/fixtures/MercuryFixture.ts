@@ -1,4 +1,4 @@
-import Cli from '../../cli'
+import Cli from '../../Cli-1'
 import { DEFAULT_HOST } from '../../constants'
 import ServiceFactory from '../../services/ServiceFactory'
 import {

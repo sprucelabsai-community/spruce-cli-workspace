@@ -7,7 +7,6 @@ import AbstractSpruceTest, { assert } from '@sprucelabs/test-utils'
 import fs from 'fs-extra'
 import globby from 'globby'
 import * as uuid from 'uuid'
-import { CliBootOptions } from '../cli'
 import AbstractAction from '../features/AbstractAction'
 import { FeatureOptions } from '../features/AbstractFeature'
 import ActionExecuter, {
@@ -33,7 +32,7 @@ import StoreFactory, {
 	StoreMap,
 } from '../stores/StoreFactory'
 import { ApiClientFactoryOptions } from '../types/apiClient.types'
-import { OptionOverrides } from '../types/cli.types'
+import { CliBootOptions, OptionOverrides } from '../types/cli.types'
 import WriterFactory from '../writers/WriterFactory'
 import CommandFaker from './CommandFaker'
 import FeatureFixture, {

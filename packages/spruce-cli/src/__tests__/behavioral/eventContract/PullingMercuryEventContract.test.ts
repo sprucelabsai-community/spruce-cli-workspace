@@ -1,9 +1,9 @@
 import { EventContract } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import { CliInterface } from '../../../cli'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
+import { CliInterface } from '../../../types/cli.types'
 
 export default class GeneratingMercuryEventContractTest extends AbstractCliTest {
 	private static cli: CliInterface

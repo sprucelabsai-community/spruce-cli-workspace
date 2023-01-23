@@ -1,8 +1,14 @@
+import { MercuryEventEmitter } from '@sprucelabs/mercury-types'
+import { HealthCheckResults } from '@sprucelabs/spruce-skill-utils'
+import { CommanderStatic } from 'commander'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
+import FeatureInstaller from '../features/FeatureInstaller'
 import {
 	FeatureAction,
 	FeatureActionResponse,
 } from '../features/features.types'
+import { GlobalEmitter, GlobalEventContract } from '../GlobalEmitter'
+import { ApiClient, ApiClientFactory } from './apiClient.types'
 import { GraphicsInterface as IGraphicsInterface } from './graphicsInterface.types'
 export { NpmPackage } from '@sprucelabs/spruce-skill-utils'
 
@@ -60,3 +66,26 @@ export interface OptionOverrides {
 export interface BlockedCommands {
 	[command: string]: string
 }
+
+export interface HealthOptions {
+	shouldRunOnSourceFiles?: boolean
+}
+
+export interface CliInterface extends MercuryEventEmitter<GlobalEventContract> {
+	installFeatures: FeatureInstaller['install']
+	getFeature: FeatureInstaller['getFeature']
+	checkHealth(options?: HealthOptions): Promise<HealthCheckResults>
+}
+
+export interface CliBootOptions {
+	cwd?: string
+	homeDir?: string
+	program?: CommanderStatic['program']
+	graphicsInterface?: GraphicsInterface
+	emitter?: GlobalEmitter
+	apiClientFactory?: ApiClientFactory
+	featureInstaller?: FeatureInstaller
+	host?: string
+}
+
+export type PromiseCache = Record<string, Promise<ApiClient>>

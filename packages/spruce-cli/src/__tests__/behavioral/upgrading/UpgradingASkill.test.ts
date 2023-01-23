@@ -1,13 +1,12 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import { CliInterface } from '../../../cli'
 import {
 	FILE_ACTION_ALWAYS_SKIP,
 	FILE_ACTION_OVERWRITE,
 	FILE_ACTION_SKIP,
 } from '../../../constants'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
-import { GeneratedFile } from '../../../types/cli.types'
+import { CliInterface, GeneratedFile } from '../../../types/cli.types'
 const BROKEN_SKILL_INDEX_CONTENTS = "throw new Error('cheese!')\n"
 export default class UpgradingASkillTest extends AbstractCliTest {
 	protected static async beforeEach() {
