@@ -287,6 +287,10 @@ export default class TerminalInterface implements GraphicsInterface {
 		}
 	}
 
+	public setTitle(title: string): void {
+		process.stdout.write('\x1b]2;' + title + '\x07')
+	}
+
 	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
 		const shouldStripVowels = process.stdout.columns < 80
 

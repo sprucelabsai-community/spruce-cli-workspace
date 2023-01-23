@@ -40,6 +40,8 @@ export default class SpyInterface implements GraphicsInterface {
 			: undefined
 	}
 
+	public setTitle(_title: string): void {}
+
 	private shouldRenderTestLogs() {
 		return process.env.SHOULD_RENDER_TEST_LOGS === 'true'
 	}

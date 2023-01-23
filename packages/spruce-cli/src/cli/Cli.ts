@@ -9,38 +9,38 @@ import {
 	HEALTH_DIVIDER,
 } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
-import { DEFAULT_HOST } from './constants'
-import SpruceError from './errors/SpruceError'
-import ActionExecuter from './features/ActionExecuter'
-import ActionFactory from './features/ActionFactory'
+import { DEFAULT_HOST } from '../constants'
+import SpruceError from '../errors/SpruceError'
+import ActionExecuter from '../features/ActionExecuter'
+import ActionFactory from '../features/ActionFactory'
 import FeatureCommandAttacher, {
 	BlockedCommands,
 	OptionOverrides,
-} from './features/FeatureCommandAttacher'
-import FeatureInstaller from './features/FeatureInstaller'
-import FeatureInstallerFactory from './features/FeatureInstallerFactory'
-import { FeatureCode, InstallFeatureOptions } from './features/features.types'
-import CliGlobalEmitter, { GlobalEmitter } from './GlobalEmitter'
-import TerminalInterface from './interfaces/TerminalInterface'
-import ImportService from './services/ImportService'
-import PkgService from './services/PkgService'
-import ServiceFactory from './services/ServiceFactory'
-import StoreFactory from './stores/StoreFactory'
+} from '../features/FeatureCommandAttacher'
+import FeatureInstaller from '../features/FeatureInstaller'
+import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
+import { FeatureCode, InstallFeatureOptions } from '../features/features.types'
+import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
+import TerminalInterface from '../interfaces/TerminalInterface'
+import ImportService from '../services/ImportService'
+import PkgService from '../services/PkgService'
+import ServiceFactory from '../services/ServiceFactory'
+import StoreFactory from '../stores/StoreFactory'
 import {
 	ApiClient,
 	ApiClientFactory,
 	ApiClientFactoryOptions,
-} from './types/apiClient.types'
+} from '../types/apiClient.types'
 import {
 	CliBootOptions,
 	CliInterface,
 	GraphicsInterface,
 	HealthOptions,
 	PromiseCache,
-} from './types/cli.types'
-import apiClientUtil from './utilities/apiClient.utility'
-import { argParserUtil } from './utilities/argParser.utility'
-import WriterFactory from './writers/WriterFactory'
+} from '../types/cli.types'
+import apiClientUtil from '../utilities/apiClient.utility'
+import { argParserUtil } from '../utilities/argParser.utility'
+import WriterFactory from '../writers/WriterFactory'
 
 export default class Cli implements CliInterface {
 	private cwd: string
@@ -187,11 +187,19 @@ export default class Cli implements CliInterface {
 			linter: services.Service(cwd, 'lint'),
 		})
 
-		const optionOverrides = this.loadOptionOverrides(
-			services.Service(cwd, 'pkg')
-		)
+		const pkg = services.Service(cwd, 'pkg')
 
+		const optionOverrides = this.loadOptionOverrides(pkg)
 		const blockedCommands = this.loadCommandBlocks(services.Service(cwd, 'pkg'))
+
+		try {
+			const s = pkg.getSkillNamespace()
+			if (s) {
+				ui.setTitle(s)
+			}
+		} catch {
+			// no skill
+		}
 
 		const actionFactory = new ActionFactory({
 			ui,

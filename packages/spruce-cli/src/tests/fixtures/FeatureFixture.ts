@@ -1,6 +1,6 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import Cli from '../../Cli-1'
+import Cli from '../../cli/Cli'
 import FeatureInstaller from '../../features/FeatureInstaller'
 import { InstallFeature } from '../../features/features.types'
 import { GlobalEmitter } from '../../GlobalEmitter'

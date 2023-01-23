@@ -15,22 +15,26 @@ export default class BootingTheCliTest extends AbstractCliTest {
 		diskUtil.writeFile(dest, '{}')
 
 		const auth = this.Service('auth')
+		const namespace = generateId().replace(/\d+/g, '')
 
 		auth.updateCurrentSkill({
 			apiKey: generateId(),
 			id: generateId(),
 			name: generateId(),
-			slug: generateId(),
+			slug: namespace,
 		})
 
 		let wasHit = false
+		let passedTitle: string | undefined
 
-		this.ui.setTitle = () => {
+		this.ui.setTitle = (title: string) => {
+			passedTitle = title
 			wasHit = true
 		}
 
 		await this.Cli()
 
 		assert.isTrue(wasHit)
+		assert.isEqual(passedTitle, namespace)
 	}
 }

@@ -20,6 +20,7 @@ export interface GraphicsInterface extends IGraphicsInterface {
 	clear(): void
 	waitForEnter(message?: string): Promise<void>
 	sendInput(message: string): Promise<void>
+	setTitle(title: string): void
 }
 
 export type GeneratedFile = SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile
