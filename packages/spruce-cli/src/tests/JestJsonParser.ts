@@ -209,7 +209,7 @@ export default class JestJsonParser {
 		testResult: OnTestFileResult['testResult']
 	): SpruceTestFile['tests'] {
 		return testResult.testResults.map((test) =>
-			// @ts-ignore - remove with next upgrade
+			//@ts-ignore - remove with next upgrade
 			this.testCaseResultToTest(test)
 		)
 	}
