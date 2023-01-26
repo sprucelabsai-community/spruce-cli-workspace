@@ -18,8 +18,8 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	private skillName!: string
 
 	public async execute(): Promise<FeatureActionResponse> {
-		const skill = await this.Store('skill').loadCurrentSkill()
-		this.skillName = skill.name
+		const skill = this.Service('auth').getCurrentSkill()
+		this.skillName = skill?.name ?? 'Unknown'
 
 		this.resetUi()
 		const commands = this.Service('command')

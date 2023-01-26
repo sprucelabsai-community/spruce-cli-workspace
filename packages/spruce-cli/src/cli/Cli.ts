@@ -346,6 +346,8 @@ export default class Cli implements CliInterface {
 
 		const client = await connect()
 
+		debugger
+
 		let auth: SpruceSchemas.Mercury.v2020_12_25.AuthenticateEmitPayload = {}
 
 		const pkg = serviceFactory.Service(cwd, 'pkg')
