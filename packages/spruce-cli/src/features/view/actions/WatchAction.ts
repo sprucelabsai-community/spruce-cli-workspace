@@ -16,10 +16,12 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = optionsSchema
 	public invocationMessage = 'Watching views... 🤩'
 	private skillName!: string
+	private skillNamespace!: string
 
 	public async execute(): Promise<FeatureActionResponse> {
 		const skill = this.Service('auth').getCurrentSkill()
 		this.skillName = skill?.name ?? 'Unknown'
+		this.skillNamespace = skill?.slug ?? 'heartwood'
 
 		this.resetUi()
 		const commands = this.Service('command')
@@ -50,7 +52,10 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 
 	private getPreviewUrl() {
 		const remote = this.Service('remote').getRemote() as any
-		return heartwoodRemoteUtil.buildUrl(remote) + '/#views/heartwood.watch'
+		return (
+			heartwoodRemoteUtil.buildUrl(remote) +
+			`/#views/${this.skillNamespace}.root`
+		)
 	}
 
 	private resetUi() {
