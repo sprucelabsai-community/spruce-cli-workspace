@@ -12,31 +12,6 @@ import WidgetFactory from '../../widgets/WidgetFactory'
 import { SpruceTestResults, TestRunnerStatus } from './test.types'
 import TestLogItemGenerator from './TestLogItemGenerator'
 
-interface TestReporterOptions {
-	handleStartStop?: () => void
-	handleRestart?: () => void
-	handleQuit?: () => void
-	onRequestOpenTestFile?: () => void
-	handleRerunTestFile?: (fileName: string) => void
-	handleOpenTestFile?: (fileName: string) => void
-	handleFilterPatternChange?: (pattern?: string) => void
-	handleToggleDebug?: () => void
-	handletoggleStandardWatch?: () => void
-	handleToggleSmartWatch?: () => void
-	filterPattern?: string
-	isDebugging?: boolean
-	watchMode?: WatchMode
-	status?: TestRunnerStatus
-	cwd?: string
-}
-
-type TestReporterResults = SpruceTestResults & {
-	customErrors: string[]
-}
-
-export type TestReporterOrientation = 'landscape' | 'portrait'
-export type WatchMode = 'off' | 'standard' | 'smart'
-
 export default class TestReporter {
 	private started = false
 	private table?: any
@@ -831,3 +806,28 @@ export default class TestReporter {
 function buildPatternButtonText(pattern: string | undefined): string {
 	return pattern ? ' x ' : ' - '
 }
+
+interface TestReporterOptions {
+	handleStartStop?: () => void
+	handleRestart?: () => void
+	handleQuit?: () => void
+	onRequestOpenTestFile?: () => void
+	handleRerunTestFile?: (fileName: string) => void
+	handleOpenTestFile?: (fileName: string) => void
+	handleFilterPatternChange?: (pattern?: string) => void
+	handleToggleDebug?: () => void
+	handletoggleStandardWatch?: () => void
+	handleToggleSmartWatch?: () => void
+	filterPattern?: string
+	isDebugging?: boolean
+	watchMode?: WatchMode
+	status?: TestRunnerStatus
+	cwd?: string
+}
+
+type TestReporterResults = SpruceTestResults & {
+	customErrors: string[]
+}
+
+export type TestReporterOrientation = 'landscape' | 'portrait'
+export type WatchMode = 'off' | 'standard' | 'smart'
