@@ -1,6 +1,47 @@
 import { AbstractStore, UniversalStoreOptions, PrepareOptions, PrepareResults } from '@sprucelabs/data-stores'
 import { buildSchema, dropFields, makeFieldsOptional, SchemaValues, SchemaFieldNames } from '@sprucelabs/schema'
 
+export default class {{namePascalPlural}}Store extends AbstractStore<
+	FullSchema, 
+	CreateSchema, 
+	UpdateSchema, 
+	DatabaseSchema 
+> {
+	public name = '{{namePascalPlural}}'
+	protected collectionName = '{{nameSnakePlural}}'
+
+	protected createSchema = createSchema
+	protected updateSchema = updateSchema
+	protected fullSchema = fullSchema
+	protected databaseSchema = databaseSchema
+
+	public static Store(options: {{namePascal}}StoreOptions & UniversalStoreOptions) {
+		return new this(options.db)
+	}
+
+	protected async willCreate(
+		values: Create{{namePascal}}
+	): Promise<Omit<Database{{namePascal}}, 'id'>> {
+		return values
+	}
+
+	protected async willUpdate(values: Update{{namePascal}}) {
+		return values as Partial<Database{{namePascal}}>
+	}
+
+	
+	protected async prepareRecord<
+		IncludePrivateFields extends boolean,
+		F extends SchemaFieldNames<FullSchema> = SchemaFieldNames<FullSchema>
+	>(
+		record: Database{{namePascal}},
+		_options?: PrepareOptions<IncludePrivateFields, FullSchema, F>
+	) {
+		return record as PrepareResults<FullSchema, IncludePrivateFields>
+	}
+
+}
+
 // The structure of the data you'll be returning from finds
 const fullSchema = buildSchema({
 	id: 'full{{namePascal}}',
@@ -52,44 +93,3 @@ type Database{{namePascal}} = SchemaValues<DatabaseSchema>
 // type Query{{namePascal}} = Partial<{{namePascal}}>
 
 type {{namePascal}}StoreOptions = UniversalStoreOptions
-
-export default class {{namePascalPlural}}Store extends AbstractStore<
-	FullSchema, 
-	CreateSchema, 
-	UpdateSchema, 
-	DatabaseSchema 
-> {
-	public name = '{{namePascalPlural}}'
-	protected collectionName = '{{nameSnakePlural}}'
-
-	protected createSchema = createSchema
-	protected updateSchema = updateSchema
-	protected fullSchema = fullSchema
-	protected databaseSchema = databaseSchema
-
-	public static Store(options: {{namePascal}}StoreOptions & UniversalStoreOptions) {
-		return new this(options.db)
-	}
-
-	protected async willCreate(
-		values: Create{{namePascal}}
-	): Promise<Omit<Database{{namePascal}}, 'id'>> {
-		return values
-	}
-
-	protected async willUpdate(values: Update{{namePascal}}) {
-		return values as Partial<Database{{namePascal}}>
-	}
-
-	
-	protected async prepareRecord<
-		IncludePrivateFields extends boolean,
-		F extends SchemaFieldNames<FullSchema> = SchemaFieldNames<FullSchema>
-	>(
-		record: Database{{namePascal}},
-		_options?: PrepareOptions<IncludePrivateFields, FullSchema, F>
-	) {
-		return record as PrepareResults<FullSchema, IncludePrivateFields>
-	}
-
-}
