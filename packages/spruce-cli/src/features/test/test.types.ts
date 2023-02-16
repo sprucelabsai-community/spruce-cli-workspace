@@ -1,7 +1,14 @@
 export type TestResultStatus = 'running' | 'passed' | 'failed'
 export interface SpruceTestFileTest {
 	name: string
-	status: 'passed' | 'failed' | 'skipped' | 'pending' | 'todo' | 'disabled'
+	status:
+		| 'passed'
+		| 'failed'
+		| 'skipped'
+		| 'pending'
+		| 'todo'
+		| 'disabled'
+		| 'focused'
 	errorMessages?: string[]
 	duration: number
 }
