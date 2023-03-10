@@ -10,6 +10,7 @@
 			"chalk",
 			"commander",
 			"emphasize",
+			"globby",
 			"inquirer-file-tree-selection-prompt",
 			"ora",
 			"terminal-image",
@@ -17,7 +18,7 @@
 		]
 	},
 	"license": "MIT",
-	"version": "19.0.0",
+	"version": "19.1.0",
 	"bin": {
 		"spruce": "./build/index.js"
 	},
@@ -86,7 +87,7 @@
 		"@sprucelabs/spruce-core-schemas": "^35.1.97",
 		"@sprucelabs/spruce-event-utils": "^30.0.28",
 		"@sprucelabs/spruce-skill-utils": "^28.1.21",
-		"@sprucelabs/spruce-templates": "^19.0.0",
+		"@sprucelabs/spruce-templates": "^19.1.0",
 		"@typescript-eslint/eslint-plugin": "^5.27.1",
 		"@typescript-eslint/parser": "^5.27.1",
 		"cfonts": "^3.1.1",
@@ -96,6 +97,7 @@
 		"commander": "7.2.0",
 		"emphasize": "4.2.0",
 		"fs-extra": "^11.1.0",
+		"globby": "11.0.4",
 		"inquirer": "^8.2.4",
 		"inquirer-file-tree-selection-prompt": "1.0.18",
 		"js-tetris-cli": "^0.0.3",
@@ -587,6 +589,7 @@
 			"chalk",
 			"commander",
 			"emphasize",
+			"globby",
 			"inquirer-file-tree-selection-prompt",
 			"ora",
 			"terminal-image",

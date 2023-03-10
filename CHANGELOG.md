@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.1.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v19.0.0...v19.1.0) (2023-02-17)
+
+### Features
+
+- title of terminal window is now skill namespace ([1313ca1](https://github.com/sprucelabsai/spruce-cli-workspace/commit/1313ca1))
+
 # [19.0.0](https://github.com/sprucelabsai/spruce-cli-workspace/compare/v18.4.0...v19.0.0) (2022-12-21)
 
 ### Breaking Changes
