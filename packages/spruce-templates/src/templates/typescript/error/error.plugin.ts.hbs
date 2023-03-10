@@ -1,4 +1,4 @@
-import globby from "globby";
+import globby from "@sprucelabs/globby";
 import {
 	ErrorHealthCheckItem,
 	SkillFeature,
