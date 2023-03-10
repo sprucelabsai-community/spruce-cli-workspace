@@ -1,5 +1,6 @@
 import path from 'path'
 import AbstractSpruceError from '@sprucelabs/error'
+import globby from '@sprucelabs/globby'
 import {
 	FieldFactory,
 	FieldDefinitionValueType,
@@ -15,7 +16,6 @@ import Table from 'cli-table3'
 // @ts-ignore No definition available
 import emphasize from 'emphasize'
 import fs from 'fs-extra'
-import globby from 'globby'
 import inquirer from 'inquirer'
 import _ from 'lodash'
 import { filter } from 'lodash'

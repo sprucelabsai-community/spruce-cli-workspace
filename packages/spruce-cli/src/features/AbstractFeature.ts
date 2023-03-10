@@ -1,7 +1,7 @@
 import pathUtil from 'path'
+import globby from '@sprucelabs/globby'
 import { Schema, SchemaValues } from '@sprucelabs/schema'
 import { Templates } from '@sprucelabs/spruce-templates'
-import globby from 'globby'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
 	Service,

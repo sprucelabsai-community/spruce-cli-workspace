@@ -1,10 +1,10 @@
+import globby from '@sprucelabs/globby'
 import {
 	PermissionContract,
 	PermissionContractMap,
 	SpruceSchemas,
 } from '@sprucelabs/mercury-types'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 import AbstractStore from '../../../stores/AbstractStore'
 
 export default class PermissionStore extends AbstractStore {

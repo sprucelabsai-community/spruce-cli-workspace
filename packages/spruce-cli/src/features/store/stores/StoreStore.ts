@@ -1,5 +1,5 @@
+import globby from '@sprucelabs/globby'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
 import introspectionUtil from '../../../utilities/introspection.utility'

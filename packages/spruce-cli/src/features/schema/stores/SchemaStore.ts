@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import globby from '@sprucelabs/globby'
 import {
 	Schema,
 	FieldRegistration,
@@ -26,7 +27,6 @@ import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { CORE_NAMESPACE } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 import { isEqual, uniqBy } from 'lodash'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'

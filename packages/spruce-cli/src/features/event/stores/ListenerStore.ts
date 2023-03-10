@@ -1,7 +1,7 @@
+import globby from '@sprucelabs/globby'
 import { eventDiskUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { ListenerTemplateItem } from '@sprucelabs/spruce-templates'
-import globby from 'globby'
 import AbstractStore from '../../../stores/AbstractStore'
 
 export type Listener = ListenerTemplateItem & {

@@ -1,6 +1,6 @@
+import globby from '@sprucelabs/globby'
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 import { VcTemplateItem } from '../../../../../spruce-templates/build'
 import introspectionUtil, {
 	IntrospectionClass,

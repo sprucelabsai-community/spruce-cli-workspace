@@ -1,5 +1,5 @@
 import pathUtil from 'path'
-import globby from 'globby'
+import globby from '@sprucelabs/globby'
 import { GraphicsInterface } from '../../types/cli.types'
 import ScriptPlayer, { CommandExecuter } from './ScriptPlayer'
 import OnboardingStore from './stores/OnboardingStore'

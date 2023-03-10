@@ -1,3 +1,4 @@
+import globby from '@sprucelabs/globby'
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
 	normalizeSchemaToIdWithVersion,
@@ -5,7 +6,6 @@ import {
 	SchemaTemplateItem,
 } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 import { isEqual } from 'lodash'
 import DependencyService from '../../../services/DependencyService'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'

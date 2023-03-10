@@ -1,6 +1,6 @@
 import pathUtil from 'path'
+import globby from '@sprucelabs/globby'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
-import globby from 'globby'
 
 const schemaGeneratorUtil = {
 	async filterSchemaFilesBySchemaIds(

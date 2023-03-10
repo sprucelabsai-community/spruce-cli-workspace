@@ -1,5 +1,5 @@
+import globby from '@sprucelabs/globby'
 import { test, assert } from '@sprucelabs/test-utils'
-import globby from 'globby'
 import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
