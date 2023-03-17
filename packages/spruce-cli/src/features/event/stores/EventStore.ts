@@ -113,7 +113,9 @@ export default class EventStore extends AbstractStore {
 			return EventStore.localEventCache
 		}
 
-		const localMatches = await globby(this.generateGlobbyForLocalEvents())
+		const localMatches = await globby(
+			this.generateGlobbyForLocalEvents() as any
+		)
 
 		const ns = namesUtil.toKebab(localNamespace)
 		const eventSignatures: Record<string, EventSignature> = {}

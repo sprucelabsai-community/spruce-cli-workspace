@@ -1,82 +1,82 @@
 {
-	"name": "@sprucelabs/spruce-templates",
-	"publishConfig": {
-		"access": "public"
-	},
-	"version": "19.1.0",
-	"files": [
-		"build/**/*",
-		"tsconfig.json",
-		"package.json"
-	],
-	"main": "./build/index.js",
-	"types": "./build/index.d.ts",
-	"exports": {
-		".": {
-			"node": "./build/index.js",
-			"require": "./build/index.js",
-			"import": "./build/esm/index.js",
-			"default": "./build/esm/index.js"
-		}
-	},
-	"module": "./build/esm/index.js",
-	"license": "MIT",
-	"description": "Templates used for code generation in skills!",
-	"keywords": [
-		"node",
-		"components",
-		"sprucebot",
-		"spruce",
-		"skills",
-		"sprucelabs"
-	],
-	"homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
-	"bugs": {
-		"url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
-	},
-	"scripts": {
-		"build.ci": "yarn build.tsc && yarn build.copy-files && yarn build.resolve-paths",
-		"build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/ && rsync -avzq src/templates/ build/templates/",
-		"build.copy-files.dist": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/dist/ && rsync -avzq src/templates/ build/esm/templates/",
-		"build.dev": "yarn build.tsc --sourceMap ; yarn build.copy-files && yarn build.resolve-paths",
-		"build.dist": "yarn build.tsc && yarn build.copy-files && tsc --project tsconfig.dist.json && yarn build.copy-files.dist && yarn build.resolve-paths",
-		"build.resolve-paths": "resolve-path-aliases --target build",
-		"build.tsc": "tsc",
-		"clean": "yarn clean.build",
-		"clean.build": "rm -rf build/",
-		"clean.cache": "true",
-		"clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock",
-		"fix.lint": "eslint --fix --cache '**/*.ts'",
-		"lint": "eslint --cache '**/*.ts' && tsc -p . --noEmit",
-		"local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
-		"rebuild": "cd ../ && yarn rebuild",
-		"release": "semantic-release",
-		"update.dependencies": "cd ../ && yarn update.dependencies",
-		"watch.build.dev": "concurrently 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
-		"watch.tsc": "tsc -w"
-	},
-	"dependencies": {
-		"@sprucelabs/mercury-types": "^42.1.3",
-		"@sprucelabs/schema": "^28.5.143",
-		"@sprucelabs/spruce-event-utils": "^34.0.13",
-		"@sprucelabs/spruce-skill-utils": "^28.1.98",
-		"fs-extra": "^10.1.0",
-		"handlebars": "^4.7.7",
-		"lodash": "^4.17.21",
-		"sha1": "^1.1.1"
-	},
-	"devDependencies": {
-		"@types/fs-extra": "^9.0.13",
-		"@types/lodash": "^4.14.191",
-		"@types/node": "^18.15.0",
-		"chokidar-cli": "^3.0.0",
-		"concurrently": "^7.6.0",
-		"conventional-changelog-sprucelabs": "^1.1.2",
-		"prettier": "^2.8.4",
-		"typescript": "^4.9.5"
-	},
-	"yarn-upgrade-all": {
-		"ignore": []
-	},
-	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
+  "name": "@sprucelabs/spruce-templates",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "19.1.2",
+  "files": [
+    "build/**/*",
+    "tsconfig.json",
+    "package.json"
+  ],
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "node": "./build/index.js",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js",
+      "default": "./build/esm/index.js"
+    }
+  },
+  "module": "./build/esm/index.js",
+  "license": "MIT",
+  "description": "Templates used for code generation in skills!",
+  "keywords": [
+    "node",
+    "components",
+    "sprucebot",
+    "spruce",
+    "skills",
+    "sprucelabs"
+  ],
+  "homepage": "https://github.com/sprucelabsai/spruce-cli-workspace",
+  "bugs": {
+    "url": "https://github.com/sprucelabsai/spruce-cli-workspace/issues"
+  },
+  "scripts": {
+    "build.ci": "yarn build.tsc && yarn build.copy-files && yarn build.resolve-paths",
+    "build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/ && rsync -avzq src/templates/ build/templates/",
+    "build.copy-files.dist": "mkdir -p build && rsync -avzq --exclude='*.ts' src/ build/dist/ && rsync -avzq src/templates/ build/esm/templates/",
+    "build.dev": "yarn build.tsc --sourceMap ; yarn build.copy-files && yarn build.resolve-paths",
+    "build.dist": "yarn build.tsc && yarn build.copy-files && tsc --project tsconfig.dist.json && yarn build.copy-files.dist && yarn build.resolve-paths",
+    "build.resolve-paths": "resolve-path-aliases --target build",
+    "build.tsc": "tsc",
+    "clean": "yarn clean.build",
+    "clean.build": "rm -rf build/",
+    "clean.cache": "true",
+    "clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock",
+    "fix.lint": "eslint --fix --cache '**/*.ts'",
+    "lint": "eslint --cache '**/*.ts' && tsc -p . --noEmit",
+    "local": "echo $COMMANDS && node --inspect=5200 ./build/src/index.js $COMMANDS",
+    "rebuild": "cd ../ && yarn rebuild",
+    "release": "semantic-release",
+    "update.dependencies": "cd ../ && yarn update.dependencies",
+    "watch.build.dev": "concurrently 'yarn watch.tsc --sourceMap' \"chokidar 'src/**/*' --ignore '.*/tmp/.*' -c 'yarn build.copy-files && yarn build.resolve-paths'\"",
+    "watch.tsc": "tsc -w"
+  },
+  "dependencies": {
+    "@sprucelabs/mercury-types": "^42.1.3",
+    "@sprucelabs/schema": "^28.5.143",
+    "@sprucelabs/spruce-event-utils": "^34.0.13",
+    "@sprucelabs/spruce-skill-utils": "^28.1.98",
+    "fs-extra": "^10.1.0",
+    "handlebars": "^4.7.7",
+    "lodash": "^4.17.21",
+    "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.15.0",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^7.6.0",
+    "conventional-changelog-sprucelabs": "^1.1.2",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  },
+  "yarn-upgrade-all": {
+    "ignore": []
+  },
+  "gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
