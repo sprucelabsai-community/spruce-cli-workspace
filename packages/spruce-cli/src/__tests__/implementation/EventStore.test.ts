@@ -116,7 +116,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
 		assert.isEqual(
 			sig.emitPermissionContract?.id,
-			'my-fantastic-event-contract'
+			`${skill1.slug}.my-fantastic-event-contract`
 		)
 	}
 

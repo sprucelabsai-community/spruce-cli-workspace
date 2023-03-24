@@ -183,13 +183,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 		assert.isTruthy(sig.emitPermissionContract)
 		assert.isEqual(
 			sig.emitPermissionContract.id,
-			'myNewEventEmitPermissionContract'
+			`${skill2.slug}.myNewEventEmitPermissionContract`
 		)
 		assert.isEqual(sig.emitPermissionContract.permissions[0].id, 'can-emit')
 		assert.isTruthy(sig.listenPermissionContract)
 		assert.isEqual(
 			sig.listenPermissionContract.id,
-			'myNewEventListenPermissionContract'
+			`${skill2.slug}.myNewEventListenPermissionContract`
 		)
 		assert.isEqual(sig.listenPermissionContract.permissions[0].id, 'can-listen')
 	}

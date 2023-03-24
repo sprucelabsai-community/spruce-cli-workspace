@@ -95,7 +95,6 @@ export default class CreatingAnEventTest extends AbstractEventTest {
 		await this.assertExpectedTargetAndPayload(mixedResults, skill)
 		await this.assertExpectedPayloadSchemas(mixedResults)
 		await this.assertReturnsEventFromHealthCheck(cli, skill)
-		await this.createsExpectedPermissionContract(mixedResults)
 		await this.assertCreatesOptionsFile(mixedResults)
 	}
 
@@ -223,33 +222,6 @@ export default createFormEmitPayloadBuilder
 		assert.isEqual(schema.id, 'myFantasticallyAmazingEventEmitTargetAndPayload')
 		assert.isTruthy(schema.fields?.payload)
 		assert.isTruthy(schema.fields?.target)
-	}
-
-	protected static async createsExpectedPermissionContract(results: any) {
-		const builders = [
-			{ filename: 'emitPermissions.builder.ts' },
-			{ filename: 'listenPermissions.builder.ts' },
-		]
-
-		for (const builder of builders) {
-			const { filename } = builder
-
-			const match = testUtil.assertFileByNameInGeneratedFiles(
-				filename,
-				results.files
-			)
-
-			const path = versionUtil.resolvePath(
-				this.cwd,
-				'src/events/',
-				EVENT_NAME,
-				'{{@latest}}',
-				filename
-			)
-
-			assert.isEqual(match, path)
-			assert.isTrue(diskUtil.doesFileExist(path))
-		}
 	}
 
 	private static async assertReturnsEventFromHealthCheck(

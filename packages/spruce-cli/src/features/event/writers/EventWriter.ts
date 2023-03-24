@@ -227,29 +227,6 @@ export default class EventWriter extends AbstractWriter {
 					'The payload that every listener will need to respond with. Delete this file for events that are fire and forget.',
 			},
 			{
-				templateMethod: 'permissionContractBuilder',
-				name: 'emitPermissions.builder.ts',
-				action: 'generated',
-				description: 'Permissions someone else will need to emit your event.',
-				context: {
-					nameCamel: nameCamel + 'Emit',
-					nameKebab,
-					description: '',
-				},
-			},
-			{
-				templateMethod: 'permissionContractBuilder',
-				name: 'listenPermissions.builder.ts',
-				action: 'generated',
-				description:
-					'Permissions someone else will need to listen to your event.',
-				context: {
-					nameCamel: nameCamel + 'Listen',
-					nameKebab,
-					description: '',
-				},
-			},
-			{
 				templateMethod: 'eventOptions',
 				name: 'event.options.ts',
 				action: 'generated',
