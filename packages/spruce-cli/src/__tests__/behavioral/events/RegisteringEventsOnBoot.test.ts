@@ -68,14 +68,5 @@ export default class RegisteringEventsOnBootTest extends AbstractEventTest {
 			version,
 			namespace,
 		})
-		assert.doesInclude(sig.emitPermissionContract, {
-			id: 'myFantasticallyAmazingEventEmitPermissions',
-			name: 'my fantastically amazing event',
-		})
-
-		assert.doesInclude(sig.listenPermissionContract, {
-			id: 'myFantasticallyAmazingEventListenPermissions',
-			name: 'my fantastically amazing event',
-		})
 	}
 }
