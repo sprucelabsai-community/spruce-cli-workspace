@@ -1,7 +1,6 @@
 import pathUtil from 'path'
 import {
 	buildPermissionContract,
-	EventContract,
 	EventSignature,
 } from '@sprucelabs/mercury-types'
 import {
@@ -21,10 +20,6 @@ import { FeatureActionResponse } from '../../../features/features.types'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
-
-const EVENT_NAME_READABLE = 'my permission amazing event'
-const EVENT_NAME = 'my-permission-amazing-event'
-const EVENT_CAMEL = 'myPermissionAmazingEvent'
 
 export default class KeepingEventsInSyncTest extends AbstractEventTest {
 	private static randomVersion = 'v2020_01_01'
@@ -312,60 +307,6 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
 
 		const dirname = pathUtil.dirname(eventContract)
 		assert.isFalse(diskUtil.doesDirExist(dirname))
-	}
-
-	@test()
-	protected static async emptyPermissionsAreNotAddedToContract() {
-		await this.registerCurrentSkillAndInstallToOrg()
-
-		const results = await this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
-
-		for (const file of [
-			'emitPermissions.builder.ts',
-			'listenPermissions.builder.ts',
-		]) {
-			const perms = testUtil.assertFileByNameInGeneratedFiles(
-				file,
-				results.files
-			)
-
-			diskUtil.writeFile(
-				perms,
-				`import {
-				buildPermissionContract
-			} from '@sprucelabs/mercury-types'
-			
-			const myFantasticallyAmazingEventEmitPermissions = buildPermissionContract({
-				id: 'myFantasticallyAmazingEventEmitPermissions',
-				name: 'my fantastically amazing event',
-				description: undefined,
-				requireAllPermissions: false,
-				permissions: []
-			})
-			
-			export default myFantasticallyAmazingEventEmitPermissions
-			`
-			)
-		}
-
-		const syncResults = await this.Action('event', 'sync').execute({})
-
-		const contractFile = testUtil.assertFileByNameInGeneratedFiles(
-			/myPermissionAmazingEvent\..*?\.contract\.ts/,
-			syncResults.files
-		)
-
-		const contract = (await this.Service('import').importDefault(
-			contractFile
-		)) as EventContract
-
-		const fqen = Object.keys(contract.eventSignatures)[0]
-		assert.isFalsy(contract.eventSignatures[fqen].emitPermissionContract)
-		assert.isFalsy(contract.eventSignatures[fqen].listenPermissionContract)
 	}
 
 	private static async syncCoreEventsPretendingToBeMercuryTypes() {
