@@ -26,6 +26,17 @@ jobs:
           name: "Build"
           command: |
             yarn build.ci
+      - run:
+          name: "Cache Tests"
+          command: |
+            cd packages/spruce-cli
+            yarn run cache.tests
+      - save_cache:
+          name: Save Cached Tests
+          key: cli-tests-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /tmp/spruce-cli
+            - ~/project/packages/spruce-cli/src/.spruce/tmp/cached-skills.json
       - save_cache:
           name: Cache node modules/build
           key: cli-build-{{ .Environment.CIRCLE_SHA1 }}
@@ -53,6 +64,10 @@ jobs:
       - spruce/check_and_skip_if_npm_publish
       - spruce/install_rsync
       - restore_cache:
+          name: Restoring Cached Tests
+          keys:
+            - cli-tests-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
           name: Restoring Cached node modules/build
           keys:
             - cli-build-{{ .Environment.CIRCLE_SHA1 }}
@@ -60,7 +75,6 @@ jobs:
           name: "ENV file creation"
           command: |
             [ -n "$BASE64_ENV" ] && echo $BASE64_ENV | base64 --decode > packages/spruce-cli/.env
-
       - run:
           name: "Test 💪"
           command: |
