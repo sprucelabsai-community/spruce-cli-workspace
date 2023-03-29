@@ -127,7 +127,7 @@
     "@types/eslint": "^8.21.3",
     "@types/fs-extra": "^11.0.1",
     "@types/inquirer": "^8.2.1",
-    "@types/lodash": "^4.14.192",
+    "@types/lodash": "4.14.191",
     "@types/md5": "^2.3.2",
     "@types/node": "^18.15.11",
     "@types/promise.allsettled": "^1.0.3",

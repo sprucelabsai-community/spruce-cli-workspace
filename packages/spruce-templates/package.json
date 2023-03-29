@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/lodash": "^4.14.192",
+    "@types/lodash": "4.14.191",
     "@types/node": "^18.15.11",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.0.1",
