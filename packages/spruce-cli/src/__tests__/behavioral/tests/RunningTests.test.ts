@@ -3,6 +3,13 @@ import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 
 export default class RunningTestsTest extends AbstractTestTest {
+	private static hasCreatedTest: any
+
+	protected static async beforeEach(): Promise<void> {
+		await super.beforeEach()
+		this.hasCreatedTest = false
+	}
+
 	@test()
 	protected static async hasTestAction() {
 		await this.Cli()
@@ -12,34 +19,23 @@ export default class RunningTestsTest extends AbstractTestTest {
 	@test()
 	protected static async runningTestsActuallyRunsTests() {
 		await this.installTests()
-		const creationPromise = this.Action('test', 'create').execute({
-			type: 'behavioral',
+
+		const creationResults = await this.createTest({
 			nameReadable: 'Can book appointment',
 			nameCamel: 'canBookAppointment',
 			namePascal: 'CanBookAppointment',
 		})
-
-		await this.waitForInput()
-		await this.ui.sendInput('')
-
-		const creationResults = await creationPromise
 
 		const file = creationResults.files?.[0]
 		assert.isTruthy(file)
 
 		this.fixBadTest(file.path)
 
-		const promise = this.Action('test', 'create').execute({
-			type: 'behavioral',
+		await this.createTest({
 			nameReadable: 'Can cancel appointment',
 			nameCamel: 'canCancelAppointment',
 			namePascal: 'CanCancelAppointment',
 		})
-
-		await this.waitForInput()
-		await this.ui.sendInput('')
-
-		await promise
 
 		await this.Service('build').build()
 
@@ -65,5 +61,29 @@ export default class RunningTestsTest extends AbstractTestTest {
 			totalTests: 4,
 			totalTodo: 0,
 		})
+	}
+
+	private static async createTest(options: {
+		nameReadable: string
+		nameCamel: string
+		namePascal: string
+	}) {
+		const creationPromise = this.Action('test', 'create').execute({
+			type: 'behavioral',
+			...options,
+		})
+
+		if (this.hasCreatedTest) {
+			await this.waitForInput()
+			await this.ui.sendInput({ path: '.' })
+		}
+
+		this.hasCreatedTest = true
+
+		await this.waitForInput()
+		await this.ui.sendInput('')
+
+		const creationResults = await creationPromise
+		return creationResults
 	}
 }

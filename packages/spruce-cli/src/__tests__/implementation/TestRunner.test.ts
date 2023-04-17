@@ -8,9 +8,11 @@ import { CliInterface } from '../../types/cli.types'
 
 export default class TestRunnerTest extends AbstractTestTest {
 	protected static testRunner: TestRunner
+	private static hasCreatedTest: boolean
 
 	protected static async beforeEach() {
 		await super.beforeEach()
+		this.hasCreatedTest = false
 		this.testRunner = new TestRunner({
 			cwd: this.cwd,
 			commandService: this.Service('command'),
@@ -143,6 +145,13 @@ export default class TestRunnerTest extends AbstractTestTest {
 		})
 
 		await this.waitForInput()
+		if (this.hasCreatedTest) {
+			await this.ui.sendInput('')
+			await this.waitForInput()
+		}
+
+		this.hasCreatedTest = true
+
 		await this.ui.sendInput('')
 
 		const results = await promise
