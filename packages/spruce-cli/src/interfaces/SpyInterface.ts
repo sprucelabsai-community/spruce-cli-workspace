@@ -91,11 +91,17 @@ export default class SpyInterface implements GraphicsInterface {
 		return this.invocations[this.invocations.length - 1]
 	}
 
-	public async sendInput(input: string | string[]): Promise<void> {
+	public async sendInput(input: Input): Promise<void> {
 		this.trackInvocation('sendInput', input)
 
 		this.optionallyRenderLine(
-			`Sending input: "${input.length > 0 ? input : 'ENTER'}"`
+			`Sending input: "${
+				(input as FilePromptInput).path
+					? (input as FilePromptInput).path
+					: (input as string).length > 0
+					? input
+					: 'ENTER'
+			}"`
 		)
 
 		if (this.waitForEnterResolver) {
@@ -114,7 +120,7 @@ export default class SpyInterface implements GraphicsInterface {
 
 			resolver(
 				input === '\n' ||
-					input.length === 0 ||
+					(input as string).length === 0 ||
 					(typeof input === 'string' && input.toLowerCase() === 'y')
 			)
 		} else {
@@ -360,3 +366,9 @@ export default class SpyInterface implements GraphicsInterface {
 		this.trackInvocation('clearBelowCursor')
 	}
 }
+
+type FilePromptInput = {
+	path: string
+}
+
+type Input = string | string[] | FilePromptInput

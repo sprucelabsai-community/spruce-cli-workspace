@@ -36,6 +36,15 @@ const uiAssert = {
 		})
 	},
 
+	assertRendersDirectorySelect(ui: SpyInterface, defaultValue: string) {
+		const last = ui.getLastInvocation()
+
+		assert.doesInclude(last.options, {
+			type: 'directory',
+			defaultValue: { path: defaultValue },
+		})
+	},
+
 	async assertRendersConfirmWriteFile(ui: SpyInterface) {
 		await ui.waitForInput()
 

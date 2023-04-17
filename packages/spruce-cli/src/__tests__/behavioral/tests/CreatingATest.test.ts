@@ -59,33 +59,12 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 			testType
 		)
 
-		uiAssert.assertSelectRenderChoice(this.ui, '.', testType)
-		uiAssert.assertSelectRenderChoice(this.ui, `dummy1`, `${testType}/dummy1`)
+		uiAssert.assertRendersDirectorySelect(
+			this.ui,
+			this.resolvePath('src', '__tests__', testType)
+		)
 
-		await this.ui.sendInput('.')
-		await this.waitAndSelectSubClass()
-
-		await promise
-	}
-
-	@test()
-	protected static async listsManyDirsIfExistInsideTestDir() {
-		await this.installTests()
-
-		const dirs = ['dir1', 'dir2', 'dir3']
-
-		for (const dir of dirs) {
-			this.createTestSubDir('behavioral', dir)
-		}
-
-		const { promise } = await this.installAndStartTestActionAndWaitForInput()
-
-		for (const dir of dirs) {
-			uiAssert.assertSelectRenderChoice(this.ui, `${dir}`, `behavioral/${dir}`)
-		}
-
-		await this.ui.sendInput('.')
-
+		await this.ui.sendInput('')
 		await this.waitAndSelectSubClass()
 
 		await promise
@@ -95,13 +74,13 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	@test('can select sub dir 2', 'test-2')
 	protected static async selectingAnOptionRendersToSubDir(dirName: string) {
 		await this.installTests()
-		this.createTestSubDir('behavioral', dirName)
+		const dir = this.createTestSubDir('behavioral', dirName)
 
 		const { promise } = await this.installAndStartTestActionAndWaitForInput(
 			'behavioral'
 		)
 
-		await this.ui.sendInput(`${dirName}`)
+		await this.ui.sendInput({ path: dir })
 
 		await this.waitAndSelectSubClass()
 
@@ -147,6 +126,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	private static createTestSubDir(...testDirs: string[]) {
 		const newDir = this.resolveTestDir(...testDirs)
 		diskUtil.createDir(newDir)
+		return newDir
 	}
 
 	private static resolveTestDir(...testDirs: string[]) {

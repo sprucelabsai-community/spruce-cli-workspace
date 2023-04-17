@@ -38,10 +38,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 		const candidates = await testFeature.buildParentClassCandidates()
 
 		if (diskUtil.doesDirExist(resolvedDestination)) {
-			resolvedDestination = await this.promptForSubDir(
-				resolvedDestination,
-				type
-			)
+			resolvedDestination = await this.promptForSubDir(resolvedDestination)
 		}
 
 		if (candidates.length > 0) {
@@ -70,34 +67,18 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 			hints: ["run `spruce test` in your skill when you're ready!"],
 		}
 	}
-	private async promptForSubDir(resolvedDestination: string, type: string) {
-		const subdirs = diskUtil
-			.readDir(resolvedDestination)
-			.filter((d) =>
-				diskUtil.isDir(diskUtil.resolvePath(resolvedDestination, d))
-			)
+	private async promptForSubDir(resolvedDestination: string) {
+		const match = await this.ui.prompt({
+			type: 'directory',
+			label: 'Where should I write this test?',
+			isRequired: true,
+			defaultValue: {
+				path: diskUtil.resolvePath(resolvedDestination),
+			},
+		})
 
-		if (subdirs.length > 0) {
-			const match = await this.ui.prompt({
-				type: 'select',
-				label: 'Where should I write this test?',
-				isRequired: true,
-				options: {
-					choices: [
-						{
-							value: '.',
-							label: `${type}`,
-						},
-						...subdirs.map((dir) => ({
-							value: `${dir}`,
-							label: `${type}/${dir}`,
-						})),
-					],
-				},
-			})
+		resolvedDestination = diskUtil.resolvePath(resolvedDestination, match.path)
 
-			resolvedDestination = diskUtil.resolvePath(resolvedDestination, match)
-		}
 		return resolvedDestination
 	}
 
