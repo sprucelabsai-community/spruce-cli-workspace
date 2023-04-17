@@ -42,14 +42,14 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 	@test()
 	protected static async canSelectAbstractClassWhileSelectingSubDir() {
 		const testDir = this.resolvePath('src', '__tests__', 'behavioral', 'taco')
+
 		diskUtil.createDir(testDir)
 
 		await this.installAndCopyTestFiles()
 
 		const { promise } = await this.invokeCreateActionAndWaitForInput()
 
-		await this.ui.sendInput('taco')
-
+		await this.ui.sendInput({ path: 'taco' })
 		await this.waitForInput()
 
 		this.selectOptionBasedOnLabel('AbstractBananaTestDifferentThanFileName')
