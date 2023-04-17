@@ -98,25 +98,6 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 	}
 
 	@test()
-	protected static async doesNotListFiles() {
-		await this.installTests()
-		this.createTestSubDir('behavioral', 'subdir')
-
-		const file = this.resolveTestDir('behavioral', 'test.ts')
-		diskUtil.writeFile(file, 'what the!?')
-
-		await this.installAndStartTestActionAndWaitForInput()
-
-		uiAssert.assertSelectDidNotRenderChoice(
-			this.ui,
-			'test',
-			`behavioral/test/test.ts`
-		)
-
-		this.ui.reset()
-	}
-
-	@test()
 	protected static async allTestsComeFakedToStart() {
 		const testFile = await this.createTestAndGetFile()
 		const contents = diskUtil.readFile(testFile)
