@@ -10,7 +10,7 @@ export default class PolishFeature extends AbstractFeature {
 	public dependencies: FeatureDependency[] = [
 		{
 			code: 'skill',
-			isRequired: true,
+			isRequired: false,
 		},
 	]
 	public packageDependencies: NpmPackage[] = [
