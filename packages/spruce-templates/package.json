@@ -73,7 +73,7 @@
     "concurrently": "^8.2.0",
     "conventional-changelog-sprucelabs": "^1.1.2",
     "prettier": "^2.8.8",
-    "typescript": "^5.1.5"
+    "typescript": "^5.1.6"
   },
   "yarn-upgrade-all": {
     "ignore": []
