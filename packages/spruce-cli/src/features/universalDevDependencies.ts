@@ -4,7 +4,7 @@ const universalDevDependencies = [
 	{ name: 'typescript', isDev: true },
 	{ name: 'eslint', isDev: true },
 	{ name: 'eslint-config-spruce', isDev: true },
-	{ name: 'prettier', isDev: true },
+	{ name: 'prettier', version: '2.8.8', isDev: true },
 	{ name: 'chokidar-cli', isDev: true },
 	{ name: 'concurrently', isDev: true },
 	{ name: 'tsc-watch', isDev: true },
