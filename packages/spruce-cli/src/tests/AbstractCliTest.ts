@@ -2,7 +2,7 @@ import pathUtil from 'path'
 import globby from '@sprucelabs/globby'
 import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { SchemaRegistry } from '@sprucelabs/schema'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { AuthService, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test-utils'
 import fs from 'fs-extra'
@@ -91,6 +91,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		this.cwd = this.freshTmpDir()
 		this.homeDir = this.freshTmpDir()
+
+		AuthService.homeDir = this.homeDir
 
 		this._emitter = undefined
 		this._featureInstaller = undefined
