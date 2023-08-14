@@ -4,33 +4,6 @@ import { RegisteredSkill } from '../../../types/cli.types'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
-const optionsSchema = buildSchema({
-	id: 'registerSkillAction',
-	description:
-		'Register your skill with Mercury so you can start communicating with other skills.',
-	fields: {
-		nameReadable: {
-			type: 'text',
-			label: `What is your skill's name?`,
-			isRequired: true,
-			hint: 'The name people will see with their special eyes!',
-		},
-		nameKebab: {
-			type: 'text',
-			label: 'Namespace',
-			isRequired: true,
-			hint: 'The namespace of your skill in-kebab-case',
-		},
-		description: {
-			type: 'text',
-			label: 'Describe your skill',
-		},
-	},
-})
-
-type OptionsSchema = typeof optionsSchema
-type Options = SchemaValues<OptionsSchema>
-
 export default class RegisterAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['register.skill', 'register']
@@ -86,3 +59,30 @@ export function generateSkillSummaryLines(skill: RegisteredSkill) {
 		`API Key: ${skill.apiKey}`,
 	]
 }
+
+const optionsSchema = buildSchema({
+	id: 'registerSkillAction',
+	description:
+		'Register your skill with Mercury so you can start communicating with other skills.',
+	fields: {
+		nameReadable: {
+			type: 'text',
+			label: `What is your skill's name?`,
+			isRequired: true,
+			hint: 'The name people will see with their special eyes!',
+		},
+		nameKebab: {
+			type: 'text',
+			label: 'Namespace',
+			isRequired: true,
+			hint: 'The namespace of your skill in-kebab-case',
+		},
+		description: {
+			type: 'text',
+			label: 'Describe your skill',
+		},
+	},
+})
+
+type OptionsSchema = typeof optionsSchema
+type Options = SchemaValues<OptionsSchema>
