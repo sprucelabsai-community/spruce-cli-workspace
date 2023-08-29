@@ -20,7 +20,7 @@ export interface FeatureMap {}
 export interface FeatureOptionsMap {}
 
 export type InstallFeature<
-	Keys extends keyof FeatureOptionsMap = keyof FeatureOptionsMap
+	Keys extends keyof FeatureOptionsMap = keyof FeatureOptionsMap,
 > = {
 	[Key in Keys]: Omit<
 		{

@@ -213,8 +213,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 			const isInstalled = await this.isInstalledOrPendingInstall(code)
 
 			if (!isInstalled && isRequired) {
-				const installOptions =
-					//@ts-ignore
+				const installOptions = //@ts-ignore
 					options.features.find((f) => f.code === code)?.options
 
 				const installFeature = {
