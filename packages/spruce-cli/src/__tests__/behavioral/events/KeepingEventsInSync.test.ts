@@ -256,8 +256,9 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 			)
 		}
 
-		const imported: EventContract[] =
-			await this.Service('import').importDefault(eventContractsFile)
+		const imported: EventContract[] = await this.Service(
+			'import'
+		).importDefault(eventContractsFile)
 
 		return imported
 	}

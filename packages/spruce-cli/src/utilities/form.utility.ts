@@ -6,10 +6,8 @@ import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 const formUtil = {
 	/** Help guess on answers */
 	onWillAskQuestionHandler<
-		K extends
-			keyof SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem = keyof SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem,
-		V extends
-			Optional<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem> = Optional<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem>,
+		K extends keyof SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem = keyof SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem,
+		V extends Optional<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem> = Optional<SpruceSchemas.SpruceCli.v2020_07_22.NamedTemplateItem>
 	>(fieldName: K, fieldDefinition: FieldDefinitions, values: V) {
 		switch (fieldName) {
 			case 'nameCamel':

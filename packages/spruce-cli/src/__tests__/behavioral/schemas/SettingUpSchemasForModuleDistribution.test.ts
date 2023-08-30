@@ -293,8 +293,9 @@ export default class SettingUpSchemasForModuleDistributionTest extends AbstractS
 			results.files
 		)
 
-		const localSchema =
-			await this.Service('import').importDefault(localSchemaFile)
+		const localSchema = await this.Service('import').importDefault(
+			localSchemaFile
+		)
 
 		assert.isEqualDeep(localSchema.importsWhenRemote, importsWhenRemote)
 

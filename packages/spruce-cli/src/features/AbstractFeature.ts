@@ -29,7 +29,7 @@ import FeatureInstaller from './FeatureInstaller'
 import { FeatureCode } from './features.types'
 
 export default abstract class AbstractFeature<
-	S extends Schema | undefined = Schema | undefined,
+	S extends Schema | undefined = Schema | undefined
 > implements ServiceProvider
 {
 	public abstract description: string

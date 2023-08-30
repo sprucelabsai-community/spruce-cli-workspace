@@ -53,8 +53,9 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 			results.files
 		)
 
-		const importedOptions =
-			await this.Service('import').importDefault(optionsFile)
+		const importedOptions = await this.Service('import').importDefault(
+			optionsFile
+		)
 		assert.isEqualDeep(importedOptions, {
 			isGlobal: true,
 		})
@@ -65,8 +66,9 @@ export default class RegisteringGlobalEventsTest extends AbstractSkillTest {
 			results.files
 		)
 
-		const importedContract =
-			await this.Service('import').importDefault(contractFile)
+		const importedContract = await this.Service('import').importDefault(
+			contractFile
+		)
 
 		const sig =
 			importedContract.eventSignatures[

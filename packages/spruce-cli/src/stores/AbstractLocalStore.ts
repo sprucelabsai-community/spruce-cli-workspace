@@ -4,7 +4,7 @@ import { StoreOptions } from './AbstractStore'
 export interface LocalStoreSettings {}
 
 export default abstract class AbstractLocalStore<
-	Settings extends LocalStoreSettings,
+	Settings extends LocalStoreSettings
 > extends AbstractStore {
 	public constructor(options: StoreOptions) {
 		super(options)

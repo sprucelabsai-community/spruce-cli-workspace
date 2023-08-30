@@ -278,7 +278,7 @@ type KeySelectChoices = [
 	{ label: 'CTRL_ALT_Z'; value: 'CTRL_ALT_Z' },
 	{ label: 'ALT_SHIFT_Z'; value: 'ALT_SHIFT_Z' },
 	{ label: 'Z'; value: 'Z' },
-	{ label: 'z'; value: 'Z' },
+	{ label: 'z'; value: 'Z' }
 ]
 
 export type Key = KeySelectChoices[number]['value']

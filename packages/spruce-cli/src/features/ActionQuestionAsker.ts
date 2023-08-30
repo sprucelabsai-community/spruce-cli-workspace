@@ -374,7 +374,7 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
 type FeatureCommandExecuteOptions<
 	F extends FeatureCode,
-	S extends Schema | undefined = FeatureMap[F]['optionsSchema'],
+	S extends Schema | undefined = FeatureMap[F]['optionsSchema']
 > = S extends Schema ? SchemaPartialValues<S> : undefined
 
 type FeatureDependencyWithFeature = FeatureDependency & {
