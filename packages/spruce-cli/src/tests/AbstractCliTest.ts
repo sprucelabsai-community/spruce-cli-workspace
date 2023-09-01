@@ -286,7 +286,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	}
 
 	protected static async skipInstallSkillPrompts<
-		E extends () => Promise<FeatureActionResponse>
+		E extends () => Promise<FeatureActionResponse>,
 	>(
 		execute?: E
 	): Promise<E extends undefined ? undefined : FeatureActionResponse> {
@@ -450,7 +450,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 	protected static Action<
 		Action extends AbstractAction = AbstractAction,
-		F extends FeatureCode = FeatureCode
+		F extends FeatureCode = FeatureCode,
 	>(featureCode: F, actionCode: string, options?: ExecuterOptions): Action {
 		const executer = this.ActionExecuter({
 			shouldThrowOnListenerError: true,
