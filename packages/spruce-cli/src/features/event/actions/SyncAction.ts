@@ -16,9 +16,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const builder = this.ContractBuilder()
 
-		const results: FeatureActionResponse = await builder.fetchAndWriteContracts(
-			options
-		)
+		const results: FeatureActionResponse =
+			await builder.fetchAndWriteContracts(options)
 
 		if (results.errors) {
 			return {

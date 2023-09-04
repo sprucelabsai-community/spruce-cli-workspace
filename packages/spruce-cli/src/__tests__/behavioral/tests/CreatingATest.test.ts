@@ -55,9 +55,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 
 		this.createTestSubDir(testType, 'dummy1')
 
-		const { promise } = await this.installAndStartTestActionAndWaitForInput(
-			testType
-		)
+		const { promise } =
+			await this.installAndStartTestActionAndWaitForInput(testType)
 
 		uiAssert.assertRendersDirectorySelect(
 			this.ui,
@@ -76,9 +75,8 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
 		await this.installTests()
 		const dir = this.createTestSubDir('behavioral', dirName)
 
-		const { promise } = await this.installAndStartTestActionAndWaitForInput(
-			'behavioral'
-		)
+		const { promise } =
+			await this.installAndStartTestActionAndWaitForInput('behavioral')
 
 		await this.ui.sendInput({ path: dir })
 

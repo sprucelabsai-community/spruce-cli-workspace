@@ -12,9 +12,8 @@ export default class CreatingAConversationTopicTest extends AbstractCliTest {
 
 	@test()
 	protected static async createsValidConversationTopicDefinition() {
-		const cli = await this.FeatureFixture().installCachedFeatures(
-			'conversation'
-		)
+		const cli =
+			await this.FeatureFixture().installCachedFeatures('conversation')
 
 		const results = await this.Action('conversation', 'create').execute({
 			nameReadable: 'book an appointment',

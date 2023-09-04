@@ -29,7 +29,7 @@ declare module '../../features/features.types' {
 }
 
 export default class NodeFeature<
-	S extends OptionsSchema = OptionsSchema
+	S extends OptionsSchema = OptionsSchema,
 > extends AbstractFeature<S> {
 	public code: FeatureCode = 'node'
 	public nameReadable = 'nodejs support'
