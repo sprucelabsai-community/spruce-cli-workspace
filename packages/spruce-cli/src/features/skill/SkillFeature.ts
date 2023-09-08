@@ -12,7 +12,7 @@ import universalScripts from '../universalScripts'
 import Updater from './updaters/Updater'
 
 export default class SkillFeature<
-	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema
+	S extends SkillFeatureOptionsSchema = SkillFeatureOptionsSchema,
 > extends AbstractFeature<S> {
 	public nameReadable = 'Skill'
 	public code: FeatureCode = 'skill'
