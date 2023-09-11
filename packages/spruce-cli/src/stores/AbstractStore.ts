@@ -48,7 +48,7 @@ interface AbstractStoreOptions {
 }
 
 export type StoreOptions<
-	Options extends Record<string, any> | undefined = undefined
+	Options extends Record<string, any> | undefined = undefined,
 > = Options extends Record<string, any>
 	? AbstractStoreOptions & Options
 	: AbstractStoreOptions
