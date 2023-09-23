@@ -5,10 +5,9 @@ export type Script = ScriptItem[]
 type ScriptItem = string | ScriptItemCallback
 type ScriptRedirect = string
 interface ScriptItemCallback {
-	(player: CallbackPlayer):
-		| Promise<void | ScriptRedirect>
-		| void
-		| ScriptRedirect
+	(
+		player: CallbackPlayer
+	): Promise<void | ScriptRedirect> | void | ScriptRedirect
 }
 
 export interface CallbackPlayer {
