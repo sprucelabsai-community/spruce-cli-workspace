@@ -1,10 +1,15 @@
 import {
 	AbstractSkillViewController,
+	ViewControllerOptions,
 	SkillView,
 } from '@sprucelabs/heartwood-view-controllers'
 
 export default class {{namePascal}}SkillViewController extends AbstractSkillViewController {
 	public static id = '{{nameKebab}}'
+
+	public constructor(options: ViewControllerOptions) {
+		super(options)
+	}
 
 	public render(): SkillView {
 		return {
