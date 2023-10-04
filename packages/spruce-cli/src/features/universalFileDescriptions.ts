@@ -17,6 +17,11 @@ const universalFileDescriptions: FileDescription[] = [
 		shouldOverwriteWhenChanged: false,
 	},
 	{
+		path: '.npmignore',
+		description: 'Came out of nowhere!',
+		shouldOverwriteWhenChanged: false,
+	},
+	{
 		path: '.nvmrc',
 		description: 'Keep node at the latest.',
 		shouldOverwriteWhenChanged: true,
