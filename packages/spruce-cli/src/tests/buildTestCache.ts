@@ -33,7 +33,10 @@ const onlyInstall = testSkillsToCache?.split(',').map((t) => t.trim()) as
 const shouldRunSequentially = !!process.argv.find(
 	(a) => a === '--shouldRunSequentially=true' || a === '--shouldRunSequentially'
 )
-const maxSimultaneous = process.env.MAX_SIMULTANEOUS_SKILL_CACHERS ?? 10
+const maxSimultaneous = parseInt(
+	process.env.MAX_SIMULTANEOUS_SKILL_CACHERS ?? '10',
+	10
+)
 let totalSimultaneous = 0
 let progressInterval: any
 const doesSupportColor = TerminalInterface.doesSupportColor()

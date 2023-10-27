@@ -24,7 +24,7 @@ export default class WidgetFactory {
 		const instance = new Class({
 			...options,
 			term: this.term,
-			eventContract: contractRegistry[type],
+			eventContract: contractRegistry[type] as any,
 		})
 
 		//@ts-ignore
