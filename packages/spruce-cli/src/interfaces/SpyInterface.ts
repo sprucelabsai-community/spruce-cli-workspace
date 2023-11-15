@@ -99,8 +99,8 @@ export default class SpyInterface implements GraphicsInterface {
 				(input as FilePromptInput).path
 					? (input as FilePromptInput).path
 					: (input as string).length > 0
-					? input
-					: 'ENTER'
+					  ? input
+					  : 'ENTER'
 			}"`
 		)
 
