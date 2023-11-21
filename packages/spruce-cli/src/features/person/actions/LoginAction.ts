@@ -3,25 +3,6 @@ import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
-const optionsSchema = buildSchema({
-	id: 'loginAction',
-	description:
-		'Authenticate as a person. From here, you can begin creating skill, organizations, conversation topics, etc.',
-	fields: {
-		phone: {
-			type: 'phone',
-			label: 'Phone number',
-			isRequired: true,
-		},
-		pin: {
-			type: 'text',
-			label: 'Pin',
-		},
-	},
-})
-type OptionsSchema = typeof optionsSchema
-type Options = SchemaValues<OptionsSchema>
-
 export default class LoginAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema: OptionsSchema = optionsSchema
 	public commandAliases = ['login']
@@ -78,3 +59,22 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
 		return response
 	}
 }
+
+const optionsSchema = buildSchema({
+	id: 'loginAction',
+	description:
+		'Authenticate as a person. From here, you can begin creating skill, organizations, conversation topics, etc.',
+	fields: {
+		phone: {
+			type: 'phone',
+			label: 'Phone number',
+			isRequired: true,
+		},
+		pin: {
+			type: 'text',
+			label: 'Pin',
+		},
+	},
+})
+type OptionsSchema = typeof optionsSchema
+type Options = SchemaValues<OptionsSchema>

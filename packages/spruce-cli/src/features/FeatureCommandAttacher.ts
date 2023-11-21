@@ -9,14 +9,6 @@ import ActionExecuter from './ActionExecuter'
 import featuresUtil from './feature.utilities'
 import { FeatureAction, FeatureActionResponse } from './features.types'
 
-export interface OptionOverrides {
-	[command: string]: Record<string, any>
-}
-
-export interface BlockedCommands {
-	[command: string]: string
-}
-
 export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private ui: GraphicsInterface
@@ -154,4 +146,12 @@ export default class FeatureCommandAttacher {
 			}
 		})
 	}
+}
+
+export interface OptionOverrides {
+	[command: string]: Record<string, any>
+}
+
+export interface BlockedCommands {
+	[command: string]: string
 }

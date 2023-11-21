@@ -6,12 +6,7 @@ export default class PersonFeature extends AbstractFeature {
 	public code: FeatureCode = 'person'
 	public nameReadable = 'Person'
 	public description = 'Log in, log out, etc.'
-	public dependencies: FeatureDependency[] = [
-		{
-			code: 'skill',
-			isRequired: true,
-		},
-	]
+	public dependencies: FeatureDependency[] = []
 	public packageDependencies = []
 
 	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
