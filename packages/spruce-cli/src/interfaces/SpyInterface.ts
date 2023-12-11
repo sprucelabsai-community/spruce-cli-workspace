@@ -36,7 +36,7 @@ export default class SpyInterface implements GraphicsInterface {
 		this.term = this.shouldRenderTestLogs()
 			? new TerminalInterface(process.cwd(), true, (...strs: []) => {
 					this.optionallyRenderLine(strs.join(' '))
-			  })
+				})
 			: undefined
 	}
 
@@ -99,8 +99,8 @@ export default class SpyInterface implements GraphicsInterface {
 				(input as FilePromptInput).path
 					? (input as FilePromptInput).path
 					: (input as string).length > 0
-					  ? input
-					  : 'ENTER'
+						? input
+						: 'ENTER'
 			}"`
 		)
 
