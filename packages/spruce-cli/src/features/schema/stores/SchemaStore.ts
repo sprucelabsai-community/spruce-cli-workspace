@@ -367,7 +367,7 @@ export default class SchemaStore extends AbstractStore {
 							return false
 						}
 					})
-			  )
+				)
 
 		const allFields = uniqBy(
 			[
