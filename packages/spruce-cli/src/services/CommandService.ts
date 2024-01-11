@@ -82,7 +82,7 @@ export default class CommandService {
 							FORCE_COLOR: options?.forceColor ? '1' : '0',
 							...options?.env,
 						},
-					}
+				  }
 				: {
 						cwd,
 						env: {
@@ -93,7 +93,7 @@ export default class CommandService {
 						},
 						shell: true,
 						...options?.spawnOptions,
-					}
+				  }
 
 			const child = spawn(executable, args, spawnOptions)
 			this.activeChildProcess = child

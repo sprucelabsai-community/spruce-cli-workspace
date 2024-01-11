@@ -62,7 +62,7 @@ interface UniversalOptions {
 export type CreateStoreOptions<Code extends StoreCode> =
 	Code extends keyof StoreOptionsMap
 		? //@ts-ignore
-			StoreOptionsMap[Code] & UniversalOptions
+		  StoreOptionsMap[Code] & UniversalOptions
 		: UniversalOptions
 
 export interface StoreMap {

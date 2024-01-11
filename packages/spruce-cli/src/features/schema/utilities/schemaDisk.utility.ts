@@ -51,7 +51,7 @@ const schemaDiskUtil = {
 						cwd,
 						schemaTypesDestinationDirOrFile,
 						'core.schemas.types.ts'
-					)
+				  )
 				: schemaTypesDestinationDirOrFile
 		)
 

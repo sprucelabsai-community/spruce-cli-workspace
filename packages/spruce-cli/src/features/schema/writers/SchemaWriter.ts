@@ -53,7 +53,7 @@ export default class SchemaWriter extends AbstractWriter {
 						destinationDir,
 						options.version ?? LATEST_HANDLEBARS,
 						filename
-					)
+				  )
 
 		if (diskUtil.doesFileExist(resolvedBuilderDestination)) {
 			throw new SpruceError({
@@ -207,7 +207,7 @@ export default class SchemaWriter extends AbstractWriter {
 			? diskUtil.resolveRelativePath(
 					pathUtil.dirname(resolvedDestination),
 					options.typesFile
-				)
+			  )
 			: undefined
 
 		if (typesFile) {
