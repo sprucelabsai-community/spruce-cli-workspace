@@ -633,8 +633,8 @@ export default class TestReporter {
 					columns: [{ id: 'errors', width: '100%' }],
 				})
 
-				this.bottomLayout.setRowHeight(0, '50%')
-				this.bottomLayout.setRowHeight(1, '50%')
+				this.bottomLayout.setRowHeight(0, '80%')
+				this.bottomLayout.setRowHeight(1, '20%')
 			} else {
 				this.bottomLayout.addColumn(0, { id: 'errors', width: '50%' })
 				this.bottomLayout.setColumnWidth({
