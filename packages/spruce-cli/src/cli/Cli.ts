@@ -337,7 +337,7 @@ export default class Cli implements CliInterface {
 					})
 
 					return client
-			  }
+				}
 
 		const {
 			shouldAuthAsCurrentSkill = false,
