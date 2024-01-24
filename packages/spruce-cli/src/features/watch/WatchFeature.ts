@@ -60,12 +60,9 @@ export default class WatchFeature extends AbstractFeature {
 					clearTimeout(this.timeoutId)
 				}
 
-				this.timeoutId = setTimeout(
-					async () => {
-						await this.fireChange()
-					},
-					options?.delay ?? 500
-				)
+				this.timeoutId = setTimeout(async () => {
+					await this.fireChange()
+				}, options?.delay ?? 500)
 			}
 		})
 	}
