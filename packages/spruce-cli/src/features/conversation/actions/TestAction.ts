@@ -43,7 +43,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 							? undefined
 							: {
 									stdio: [process.stdin, 'pipe', 'pipe'],
-							  },
+								},
 
 						onData: shouldRunSilently
 							? undefined
@@ -62,7 +62,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 											data.replace('Skill :: Skill booted', '')
 										)
 									}
-							  },
+								},
 						onError: (data) => {
 							if (!data.includes('warning package.json')) {
 								// const err = new SpruceError({
