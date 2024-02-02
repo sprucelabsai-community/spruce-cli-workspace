@@ -119,7 +119,7 @@ const testUtil = {
 		//@ts-ignore
 		const prefix = global.activeTest
 			? //@ts-ignore
-			  `${global.activeTest?.file}::${global.activeTest?.test} :: `
+				`${global.activeTest?.file}::${global.activeTest?.test} :: `
 			: ''
 
 		if (process.env.TEST_LOG_FILTER) {
