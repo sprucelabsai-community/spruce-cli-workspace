@@ -40,6 +40,8 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 			const dependencyResults = await this.reInstallPackageDependencies()
 
+			await this.Service('lint').fix('**/*.ts')
+
 			return actionUtil.mergeActionResults(dependencyResults, {
 				headline: 'Upgrade',
 				files,

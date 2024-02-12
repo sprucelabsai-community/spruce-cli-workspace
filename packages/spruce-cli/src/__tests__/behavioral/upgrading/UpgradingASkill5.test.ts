@@ -1,15 +1,29 @@
+import {
+	Schema,
+	SchemaStaticValues,
+	StaticSchemaAllValues,
+} from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test-utils'
+import ActionFactory from '../../../features/ActionFactory'
+import { FeatureAction } from '../../../features/features.types'
 import CommandService from '../../../services/CommandService'
+import LintService from '../../../services/LintService'
+import ServiceFactory from '../../../services/ServiceFactory'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class UpgradingASkill5Test extends AbstractCliTest {
+	public static invocationLog: string[] = []
+
+	protected static async beforeEach() {
+		await super.beforeEach()
+		this.invocationLog = []
+	}
+
 	@test()
 	protected static async upgradeResetsEventCache() {
 		await this.installSetListenerCacheAndBlockExecute()
 
-		await assert.doesThrowAsync(() =>
-			this.Action('node', 'upgrade').execute({})
-		)
+		await assert.doesThrowAsync(() => this.upgrade())
 
 		const value = this.Settings().getListenerCache()
 		assert.isFalsy(value)
@@ -60,14 +74,14 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 			return {}
 		})
 
-		await this.Action('node', 'upgrade').execute({})
+		await this.upgrade()
 
 		assert.isTrue(wasHit === shouldCreateSchema)
 	}
 
 	@test()
 	protected static async modulesMovedFromDevToProdDependenciesStayThere() {
-		await this.FeatureFixture().installCachedFeatures('skills')
+		await this.installSkillsBuild()
 
 		await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
 		await this.moveDependencyToDev('@sprucelabs/error')
@@ -92,10 +106,40 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 			},
 		})
 
-		await this.Action('node', 'upgrade').execute({})
+		await this.upgrade()
 
 		assert.isFalse(wasMovedBackToDev, 'dependency moved back to dev')
 		assert.isFalse(wasMovedBackToProd, 'dependency moved back to prod')
+	}
+
+	@test()
+	protected static async runsFixLintAfterUpgrade() {
+		ActionFactory.setActionClass(
+			'node',
+			'updateDependencies',
+			SpyUpdateDependenciesAction
+		)
+
+		ServiceFactory.setFactoryClass('lint', SpyLintService)
+
+		CommandService.fakeCommand('*', {
+			code: 0,
+		})
+
+		await this.installSkillsBuild()
+
+		await this.upgrade()
+
+		assert.isEqualDeep(this.invocationLog, ['updateDependencies', 'fixLint'])
+		assert.isEqual(SpyLintService.fixPattern, '**/*.ts')
+	}
+
+	private static async upgrade() {
+		await this.Action('node', 'upgrade').execute({})
+	}
+
+	private static async installSkillsBuild() {
+		await this.FeatureFixture().installCachedFeatures('skills')
 	}
 
 	private static async moveDependencyToDev(name: string) {
@@ -124,5 +168,24 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 
 	private static Settings() {
 		return this.Service('eventSettings')
+	}
+}
+
+class SpyUpdateDependenciesAction implements FeatureAction {
+	public optionsSchema?: Schema | undefined
+	public commandAliases: string[] = []
+	public invocationMessage: string = 'Nothing'
+	public async execute() {
+		UpgradingASkill5Test.invocationLog.push('updateDependencies')
+		return {}
+	}
+}
+
+class SpyLintService extends LintService {
+	public static fixPattern: string
+	public fix = async (pattern: string): Promise<string[]> => {
+		SpyLintService.fixPattern = pattern
+		UpgradingASkill5Test.invocationLog.push('fixLint')
+		return []
 	}
 }

@@ -9,7 +9,6 @@ import {
 } from '../features/features.types'
 import { GlobalEmitter } from '../GlobalEmitter'
 import { BlockedCommands, OptionOverrides } from '../types/cli.types'
-import AbstractAction from './AbstractAction'
 import ActionExecuter from './ActionExecuter'
 import FeatureInstaller from './FeatureInstaller'
 import OverrideActionDecorator from './OverrideActionDecorator'
@@ -44,7 +43,7 @@ export default class ActionFactory {
 			)
 		}
 
-		let Class: new (options: ActionOptions) => AbstractAction | undefined
+		let Class: new (options: ActionOptions) => FeatureAction | undefined
 		let originalError: Error | undefined
 
 		const key = ActionFactory.overrideKey(featureCode, actionCode)
@@ -133,4 +132,4 @@ export interface FeatureActionFactoryOptions
 	optionOverrides?: OptionOverrides
 }
 
-type ActionConstructor = new (options: ActionOptions) => AbstractAction
+type ActionConstructor = new (options: ActionOptions) => FeatureAction

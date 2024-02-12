@@ -16,30 +16,14 @@ import LintService from './LintService'
 import PkgService from './PkgService'
 import TypeCheckerService from './TypeCheckerService'
 
-export interface ServiceMap {
-	pkg: PkgService
-	vsCode: VsCodeService
-	schema: SchemaService
-	lint: LintService
-	command: CommandService
-	typeChecker: TypeCheckerService
-	import: ImportService
-	build: BuildService
-	settings: SettingsService
-	env: EnvService
-	auth: AuthService
-	remote: RemoteService
-	eventSettings: EventSettingsService
-	dependency: DependencyService
-}
-
-export type Service = keyof ServiceMap
-
-export interface ServiceProvider {
-	Service<S extends Service>(type: S, cwd?: string): ServiceMap[S]
-}
 export default class ServiceFactory {
+	public static serviceClassOverides: Record<string, any> = {}
+
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
+		if (ServiceFactory.serviceClassOverides[type]) {
+			return new ServiceFactory.serviceClassOverides[type](cwd) as ServiceMap[S]
+		}
+
 		switch (type) {
 			case 'auth':
 				return AuthService.Auth(cwd) as ServiceMap[S]
@@ -100,4 +84,35 @@ export default class ServiceFactory {
 			command: new CommandService(cwd),
 		})
 	}
+
+	public static reset() {
+		this.serviceClassOverides = {}
+	}
+
+	public static setFactoryClass(name: string, Class: any) {
+		this.serviceClassOverides[name] = Class
+	}
+}
+
+export interface ServiceMap {
+	pkg: PkgService
+	vsCode: VsCodeService
+	schema: SchemaService
+	lint: LintService
+	command: CommandService
+	typeChecker: TypeCheckerService
+	import: ImportService
+	build: BuildService
+	settings: SettingsService
+	env: EnvService
+	auth: AuthService
+	remote: RemoteService
+	eventSettings: EventSettingsService
+	dependency: DependencyService
+}
+
+export type Service = keyof ServiceMap
+
+export interface ServiceProvider {
+	Service<S extends Service>(type: S, cwd?: string): ServiceMap[S]
 }
