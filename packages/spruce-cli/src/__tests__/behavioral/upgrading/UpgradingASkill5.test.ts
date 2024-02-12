@@ -108,7 +108,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 		assert.isFalse(wasMovedBackToProd, 'dependency moved back to prod')
 	}
 
-	@test()
+	@test.only('lint after upgrade')
 	protected static async runsFixLintAfterUpgrade() {
 		ActionFactory.setActionClass(
 			'node',
@@ -118,16 +118,23 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 
 		ServiceFactory.setFactoryClass('lint', SpyLintService)
 
-		CommandService.fakeCommand('*', {
+		CommandService.fakeCommand(/.*/gi, {
 			code: 0,
+			callback: (command, args) => {
+				this.invocationLog.push([command, ...args].join(' '))
+			},
 		})
 
 		await this.installSkillsBuild()
-
 		await this.upgrade()
 
-		assert.isEqualDeep(this.invocationLog, ['updateDependencies', 'fixLint'])
-		assert.isEqual(SpyLintService.fixPattern, '**/*.ts')
+		assert.isEqualDeep(this.invocationLog, [
+			'which code',
+			'updateDependencies',
+			'yarn fix.lint',
+			'yarn clean.build',
+			'yarn build.dev',
+		])
 	}
 
 	private static async upgrade() {

@@ -40,7 +40,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 			const dependencyResults = await this.reInstallPackageDependencies()
 
-			await this.Service('lint').fix('**/*.ts')
+			await this.Service('command').execute('yarn fix.lint')
 
 			return actionUtil.mergeActionResults(dependencyResults, {
 				headline: 'Upgrade',
