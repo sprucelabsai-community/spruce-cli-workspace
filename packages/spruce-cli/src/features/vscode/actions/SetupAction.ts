@@ -108,7 +108,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 					options: {
 						choices,
 					},
-			  })
+				})
 
 		if (answers && answers?.length > 0) {
 			this.ui.startLoading(`Installing ${answers.length} extensions...`)
