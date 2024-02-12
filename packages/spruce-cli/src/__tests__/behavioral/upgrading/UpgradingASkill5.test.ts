@@ -1,8 +1,4 @@
-import {
-	Schema,
-	SchemaStaticValues,
-	StaticSchemaAllValues,
-} from '@sprucelabs/schema'
+import { Schema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test-utils'
 import ActionFactory from '../../../features/ActionFactory'
 import { FeatureAction } from '../../../features/features.types'
