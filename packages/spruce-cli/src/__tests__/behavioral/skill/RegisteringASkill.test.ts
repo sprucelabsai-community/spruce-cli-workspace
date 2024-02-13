@@ -31,6 +31,9 @@ export default class RegisteringASkillTest extends AbstractCliTest {
 	protected static async returnsErrorWhenRegistrationFails() {
 		MercuryClientFactory.setIsTestMode(true)
 
+		await this.eventFaker.fakeRequestPin()
+		await this.eventFaker.fakeConfirmPin()
+
 		await this.people.loginAsDemoPerson()
 		await this.FeatureFixture().installCachedFeatures('skills')
 		const slug = `my-new-skill-${new Date().getTime()}`

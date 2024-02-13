@@ -1,5 +1,6 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
+import { generateId } from '@sprucelabs/test-utils'
 import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
 export default class EventFaker {
@@ -18,5 +19,26 @@ export default class EventFaker {
 				}
 			}
 		)
+	}
+
+	public async fakeRequestPin() {
+		await eventFaker.on('request-pin::v2020_12_25', () => {
+			return {
+				challenge: generateId(),
+			}
+		})
+	}
+
+	public async fakeConfirmPin() {
+		await eventFaker.on('confirm-pin::v2020_12_25', () => {
+			return {
+				token: generateId(),
+				person: {
+					id: generateId(),
+					casualName: generateId(),
+					dateCreated: 0,
+				},
+			}
+		})
 	}
 }

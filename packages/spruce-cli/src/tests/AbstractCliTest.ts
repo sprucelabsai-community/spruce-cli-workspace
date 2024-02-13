@@ -7,6 +7,7 @@ import { templates } from '@sprucelabs/spruce-templates'
 import AbstractSpruceTest, { assert } from '@sprucelabs/test-utils'
 import fs from 'fs-extra'
 import * as uuid from 'uuid'
+import EventFaker from '../__tests__/support/EventFaker'
 import AbstractAction from '../features/AbstractAction'
 import { FeatureOptions } from '../features/AbstractFeature'
 import ActionExecuter, {
@@ -60,6 +61,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 	private static viewFixture?: ViewFixture
 	private static originalEnv: { [x: string]: string | undefined }
 	private static _writers?: WriterFactory
+	protected static eventFaker: EventFaker
 
 	protected static async beforeAll() {
 		await super.beforeAll()
@@ -70,6 +72,8 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
 		ImportService.setCacheDir(diskUtil.createRandomTempDir())
 		ImportService.enableCaching()
+
+		this.eventFaker = new EventFaker()
 
 		process.env.ENABLE_INSTALL_ENTERTAINMENT = 'false'
 

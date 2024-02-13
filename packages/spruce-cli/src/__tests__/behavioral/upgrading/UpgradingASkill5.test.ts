@@ -108,7 +108,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 		assert.isFalse(wasMovedBackToProd, 'dependency moved back to prod')
 	}
 
-	@test.only('lint after upgrade')
+	@test()
 	protected static async runsFixLintAfterUpgrade() {
 		ActionFactory.setActionClass(
 			'node',
