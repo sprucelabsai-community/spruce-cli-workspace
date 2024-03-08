@@ -18,15 +18,16 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 		assert.isFunction(this.action.execute)
 	}
 
-	@test('creates expected plugin file 1', 'test', 'test')
-	@test('creates expected plugin file 2', 'another', 'another')
-	@test('creates expected plugin file 3', 'a third', 'aThird')
+	@test('creates expected plugin file 1', 'test', 'test', 'updated')
+	@test('creates expected plugin file 2', 'another', 'another', 'updated')
+	@test('creates expected plugin file 3', 'a third', 'aThird', 'generated')
 	protected static async createsExpectedFile(
 		readable: string,
-		expected: string
+		expected: string,
+		combinedViewAction: string
 	) {
 		const results = await this.execute({ nameReadable: readable })
-		this.assertExpectedFileCreated(results, expected)
+		this.assertExpectedFileCreated(results, expected, combinedViewAction)
 		assert.isFalsy(
 			results.errors,
 			'Errors were returned and none were expected!'
@@ -40,7 +41,7 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 			nameCamel: 'testCamel',
 		})
 
-		this.assertExpectedFileCreated(results, 'testCamel')
+		this.assertExpectedFileCreated(results, 'testCamel', 'updated')
 	}
 
 	@test()
@@ -63,18 +64,30 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 		this.assertPluginContentsEqualExpected('aThird', 'AThird')
 	}
 
+	@test()
+	protected static async updatesViewCombinedFileAsExpected() {
+		const combined = this.getPathToCombinedViewsFile()
+
+		const contents = diskUtil.readFile(combined)
+		assert.doesInclude(
+			contents,
+			`	interface ViewControllerPlugins {
+		'aThird': AThirdViewPlugin
+		'another': AnotherViewPlugin
+		'test': TestViewPlugin
+		'testCamel': TestCamelViewPlugin
+	}`
+		)
+
+		await this.Service('typeChecker').check(combined)
+	}
+
 	private static assertPluginContentsEqualExpected(
 		nameCamel: string,
 		namePascal: string
 	) {
 		const contents = diskUtil.readFile(this.buildPathToViewPlugin(nameCamel))
-		const expected = `export default class ${namePascal}ViewPlugin {}
-
-declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
-	interface ViewControllerPlugins {
-		${nameCamel}: ${namePascal}ViewPlugin
-	}
-}`
+		const expected = `export default class ${namePascal}ViewPlugin {}`
 
 		assert.isEqual(contents.trim(), expected.trim())
 	}
@@ -105,13 +118,25 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 
 	private static assertExpectedFileCreated(
 		results: FeatureActionResponse,
-		expected: string
+		expected: string,
+		combinedViewAction: string
 	) {
 		const expectedName = `${expected}.view.plugin.ts`
+
 		assert.doesInclude(results.files?.[0], {
 			action: 'generated',
 			name: expectedName,
 			path: this.resolvePath('src', 'viewPlugins', expectedName),
 		})
+
+		assert.doesInclude(results.files?.[1], {
+			action: combinedViewAction,
+			name: 'views.ts',
+			path: this.getPathToCombinedViewsFile(),
+		})
+	}
+
+	private static getPathToCombinedViewsFile() {
+		return this.resolveHashSprucePath('views', 'views.ts')
 	}
 }

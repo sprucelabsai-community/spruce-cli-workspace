@@ -1,6 +1,7 @@
 import { SchemaValues, buildSchema } from '@sprucelabs/schema'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import namedTemplateItemBuilder from '../../../schemas/v2020_07_22/namedTemplateItem.builder'
+import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -26,9 +27,9 @@ export default class CreatePluginAction extends AbstractAction<OptionsSchema> {
 			namePascal: normalizedNamePascal,
 		})
 
-		return {
-			files,
-		}
+		const sync = await this.Action('view', 'sync').execute({})
+
+		return actionUtil.mergeActionResults({ files }, sync)
 	}
 }
 

@@ -260,12 +260,11 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				message = `You already have ${options.namespace} as a dependency!`
 				break
 
-			
-            case 'VIEW_PLUGIN_ALREADY_EXISTS':
-                message = 'A View plugin already exists just happened!'
-                break
+			case 'VIEW_PLUGIN_ALREADY_EXISTS':
+				message = `A view plugin by the name ${options.name} already exists!`
+				break
 
-default:
+			default:
 				message = super.friendlyMessage()
 		}
 

@@ -1,6 +1,7 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
 	VcTemplateItem,
+	ViewControllerPluginItem,
 	ViewsOptions,
 } from '../../../../../spruce-templates/build'
 import SpruceError from '../../../errors/SpruceError'
@@ -24,7 +25,8 @@ export default class ViewWriter extends AbstractWriter {
 	}
 
 	public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {
-		let { vcTemplateItems, svcTemplateItems, ...rest } = options
+		let { vcTemplateItems, svcTemplateItems, viewPluginItems, ...rest } =
+			options
 
 		const destinationDir = diskUtil.resolveHashSprucePath(cwd, 'views')
 		const destination = diskUtil.resolvePath(destinationDir, 'views.ts')
@@ -39,9 +41,15 @@ export default class ViewWriter extends AbstractWriter {
 			destinationDir
 		)
 
+		viewPluginItems = this.removeFileExtensionsFromTemplateItems(
+			viewPluginItems,
+			destinationDir
+		)
+
 		const contents = this.templates.views({
 			vcTemplateItems,
 			svcTemplateItems,
+			viewPluginItems,
 			...rest,
 		})
 
@@ -54,10 +62,9 @@ export default class ViewWriter extends AbstractWriter {
 		return results
 	}
 
-	private removeFileExtensionsFromTemplateItems(
-		vcTemplateItems: VcTemplateItem[],
-		destinationDir: string
-	): VcTemplateItem[] {
+	private removeFileExtensionsFromTemplateItems<
+		T extends VcTemplateItem | ViewControllerPluginItem,
+	>(vcTemplateItems: T[], destinationDir: string): T[] {
 		return vcTemplateItems.map((i) => ({
 			...i,
 			path: diskUtil

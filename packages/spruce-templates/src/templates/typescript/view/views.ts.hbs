@@ -4,6 +4,11 @@ import {{namePascal}} from '{{path}}'
 {{#each vcTemplateItems}}
 import {{namePascal}} from '{{path}}'
 {{/each}}
+{{#each viewPluginItems}}
+import {{namePascal}} from '{{path}}'
+{{/each}}
+
+import '@sprucelabs/heartwood-view-controllers'
 
 const vcs = {
     {{#each svcTemplateItems}}
@@ -44,6 +49,12 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 		 {{#each vcTemplateItems}}
 		'{{../namespaceKebab}}.{{id}}': ConstructorParameters<typeof {{namePascal}}>[0]
         {{/each}}
+	}
+
+	interface ViewControllerPlugins {
+		{{#each viewPluginItems}}
+		'{{nameCamel}}': {{namePascal}}
+		{{/each}}
 	}
 }
 

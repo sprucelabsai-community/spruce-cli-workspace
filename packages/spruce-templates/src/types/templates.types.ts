@@ -123,10 +123,17 @@ export interface VcTemplateItem {
 	id: string
 }
 
+export interface ViewControllerPluginItem {
+	namePascal: string
+	nameCamel: string
+	path: string
+}
+
 export interface ViewsOptions {
 	namespaceKebab: string
 	svcTemplateItems: VcTemplateItem[]
 	vcTemplateItems: VcTemplateItem[]
+	viewPluginItems: ViewControllerPluginItem[]
 }
 
 export type ListenerTemplateItem = Omit<EventFeatureListener, 'callback'> & {
