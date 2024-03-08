@@ -111,6 +111,39 @@ export default class ViewWriter extends AbstractWriter {
 		return diskUtil.doesFileExist(path)
 	}
 
+	public async writeViewControllerPlugin(options: {
+		cwd: string
+		nameCamel: string
+		namePascal: string
+	}) {
+		const { nameCamel, namePascal, cwd } = options
+
+		const destination = diskUtil.resolvePath(
+			cwd,
+			'src',
+			'viewPlugins',
+			`${nameCamel}.view.plugin.ts`
+		)
+
+		const contents = this.templates.viewControllerPlugin({
+			nameCamel,
+			namePascal,
+		})
+
+		if (diskUtil.doesFileExist(destination)) {
+			throw new SpruceError({
+				code: 'VIEW_PLUGIN_ALREADY_EXISTS',
+				name: nameCamel,
+			})
+		}
+
+		return this.writeFileIfChangedMixinResults(
+			destination,
+			contents,
+			`Your new view plugin!`
+		)
+	}
+
 	public writePlugin(cwd: string) {
 		const destination = diskUtil.resolveHashSprucePath(
 			cwd,

@@ -32,6 +32,35 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
+	export interface ViewPluginAlreadyExists {
+		
+			
+			'name': string
+	}
+
+	export interface ViewPluginAlreadyExistsSchema extends SpruceSchema.Schema {
+		id: 'viewPluginAlreadyExists',
+		namespace: 'SpruceCli',
+		name: 'View plugin already exists',
+		    fields: {
+		            /** . */
+		            'name': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type ViewPluginAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.ViewPluginAlreadyExistsSchema>
+
+}
+
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
 	export interface TransportAlreadyExists {
 		
 			/** Transport name. */

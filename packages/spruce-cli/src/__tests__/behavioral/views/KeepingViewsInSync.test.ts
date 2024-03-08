@@ -36,7 +36,7 @@ export default class KeepingViewsInSyncTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async generatesValidTypesFileWithNoSkillViewsC() {
+	protected static async generatesValidTypesFileWithNoSkillViews() {
 		const results = await this.Action('view', 'create').execute({
 			viewType: 'view',
 			nameReadable: 'test',

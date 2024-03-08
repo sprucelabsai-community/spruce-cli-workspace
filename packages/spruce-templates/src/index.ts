@@ -435,6 +435,13 @@ export const templates = {
 		return template({})
 	},
 
+	viewControllerPlugin(options: { namePascal: string; nameCamel: string }) {
+		const template = templateImportUtil.getTemplate(
+			'view/viewController.plugin.ts.hbs'
+		)
+		return template(options)
+	},
+
 	theme() {
 		const template = templateImportUtil.getTemplate('view/skill.theme.ts.hbs')
 		return template({})

@@ -1,0 +1,7 @@
+export default class {{namePascal}}ViewPlugin {}
+
+declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.types' {
+	interface ViewControllerPlugins {
+		{{nameCamel}}: {{namePascal}}ViewPlugin
+	}
+}

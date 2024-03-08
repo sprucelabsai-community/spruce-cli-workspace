@@ -7,6 +7,78 @@ import formUtil from '../../../utilities/form.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
+export default class CreateAction extends AbstractAction<OptionsSchema> {
+	public optionsSchema: OptionsSchema = optionsSchema
+	public commandAliases = ['create.view']
+	public invocationMessage = 'Creating your new view controller... 🌲'
+
+	public async execute(
+		options: SchemaValues<OptionsSchema>
+	): Promise<FeatureActionResponse> {
+		let { viewType, isRoot, nameReadable, namePascal, viewModel } =
+			this.validateAndNormalizeOptions(options)
+
+		const writer = this.Writer('view')
+
+		if (
+			viewType === 'skillView' &&
+			!isRoot &&
+			!writer.doesRootControllerExist(this.cwd)
+		) {
+			isRoot = await this.ui.confirm(
+				'Do you want to create a root view controller?'
+			)
+		}
+
+		if (!isRoot && !nameReadable) {
+			const form = new FormComponent({
+				ui: this.ui,
+				schema: followUpSchema,
+				onWillAskQuestion: formUtil.onWillAskQuestionHandler,
+			})
+			const answers = await form.present()
+
+			namePascal = answers.namePascal
+			nameReadable = answers.nameReadable
+		}
+
+		if (isRoot) {
+			nameReadable = 'Root'
+		}
+
+		if (!viewModel && viewType === 'view') {
+			viewModel = await this.ui.prompt({
+				...optionsSchema.fields.viewModel,
+				isRequired: true,
+			})
+		}
+
+		namePascal = namePascal ?? namesUtil.toPascal(nameReadable as string)
+
+		const files = await writer[
+			viewType === 'skillView'
+				? 'writeSkillViewController'
+				: 'writeViewController'
+		](this.cwd, {
+			viewType,
+			namePascal,
+			viewModel: viewModel as string,
+			nameKebab: namesUtil.toKebab(namePascal),
+		})
+
+		const syncResults = await this.Action('view', 'sync').execute({})
+
+		const merged = actionUtil.mergeActionResults(
+			{
+				files,
+			},
+			syncResults
+		)
+
+		return merged
+	}
+}
+
 const viewTypeChoices = [
 	{
 		value: 'skillView',
@@ -83,75 +155,3 @@ const followUpSchema = buildSchema({
 })
 
 type OptionsSchema = typeof optionsSchema
-
-export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema: OptionsSchema = optionsSchema
-	public commandAliases = ['create.view']
-	public invocationMessage = 'Creating your new view controller... 🌲'
-
-	public async execute(
-		options: SchemaValues<OptionsSchema>
-	): Promise<FeatureActionResponse> {
-		let { viewType, isRoot, nameReadable, namePascal, viewModel } =
-			this.validateAndNormalizeOptions(options)
-
-		const writer = this.Writer('view')
-
-		if (
-			viewType === 'skillView' &&
-			!isRoot &&
-			!writer.doesRootControllerExist(this.cwd)
-		) {
-			isRoot = await this.ui.confirm(
-				'Do you want to create a root view controller?'
-			)
-		}
-
-		if (!isRoot && !nameReadable) {
-			const form = new FormComponent({
-				ui: this.ui,
-				schema: followUpSchema,
-				onWillAskQuestion: formUtil.onWillAskQuestionHandler,
-			})
-			const answers = await form.present()
-
-			namePascal = answers.namePascal
-			nameReadable = answers.nameReadable
-		}
-
-		if (isRoot) {
-			nameReadable = 'Root'
-		}
-
-		if (!viewModel && viewType === 'view') {
-			viewModel = await this.ui.prompt({
-				...optionsSchema.fields.viewModel,
-				isRequired: true,
-			})
-		}
-
-		namePascal = namePascal ?? namesUtil.toPascal(nameReadable as string)
-
-		const files = await writer[
-			viewType === 'skillView'
-				? 'writeSkillViewController'
-				: 'writeViewController'
-		](this.cwd, {
-			viewType,
-			namePascal,
-			viewModel: viewModel as string,
-			nameKebab: namesUtil.toKebab(namePascal),
-		})
-
-		const syncResults = await this.Action('view', 'sync').execute({})
-
-		const merged = actionUtil.mergeActionResults(
-			{
-				files,
-			},
-			syncResults
-		)
-
-		return merged
-	}
-}
