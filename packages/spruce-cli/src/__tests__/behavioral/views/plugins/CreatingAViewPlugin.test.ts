@@ -65,21 +65,40 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 	}
 
 	@test()
-	protected static async updatesViewCombinedFileAsExpected() {
+	protected static async combineViewsFileIsValid() {
 		const combined = this.getPathToCombinedViewsFile()
-
-		const contents = diskUtil.readFile(combined)
-		assert.doesInclude(
-			contents,
-			`	interface ViewControllerPlugins {
-		'aThird': AThirdViewPlugin
-		'another': AnotherViewPlugin
-		'test': TestViewPlugin
-		'testCamel': TestCamelViewPlugin
-	}`
-		)
-
 		await this.Service('typeChecker').check(combined)
+	}
+
+	@test()
+	protected static async updatesViewCombinedFileWithTypesAsExpected() {
+		const expected = `	interface ViewControllerPlugins {
+		aThird: AThirdViewPlugin
+		another: AnotherViewPlugin
+		test: TestViewPlugin
+		testCamel: TestCamelViewPlugin
+	}`
+		this.assertCombinedFileIncludes(expected)
+	}
+
+	@test()
+	protected static async updatesViewCombinedWithPluginsAsExpected() {
+		const expected = `export const pluginClasses = {
+	aThird: AThirdViewPlugin,
+	another: AnotherViewPlugin,
+	test: TestViewPlugin,
+	testCamel: TestCamelViewPlugin,
+}
+`
+
+		this.assertCombinedFileIncludes(expected)
+		this.assertCombinedFileIncludes('heartwood(vcs, pluginClasses)')
+	}
+
+	private static assertCombinedFileIncludes(expected: string) {
+		const combined = this.getPathToCombinedViewsFile()
+		const contents = diskUtil.readFile(combined)
+		assert.doesInclude(contents, expected)
 	}
 
 	private static assertPluginContentsEqualExpected(

@@ -19,6 +19,12 @@ const vcs = {
     {{/each}}
 }
 
+export const pluginClasses = {
+	{{#each viewPluginItems}}
+	{{nameCamel}}: {{namePascal}},
+	{{/each}}
+}
+
 {{#if svcTemplateItems}}
 type LoadOptions<Args extends Record<string,any>[]> = Args[0]['args'] extends Record<string, any> ? Args[0]['args'] : Record<never, any>
 {{/if}}
@@ -53,13 +59,12 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 
 	interface ViewControllerPlugins {
 		{{#each viewPluginItems}}
-		'{{nameCamel}}': {{namePascal}}
+		{{nameCamel}}: {{namePascal}}
 		{{/each}}
 	}
 }
 
-
 //@ts-ignore
-if(typeof heartwood === 'function') { heartwood(vcs) }
+if(typeof heartwood === 'function') { heartwood(vcs, pluginClasses) }
 
 export default vcs
