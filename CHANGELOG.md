@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.2.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v19.1.42...v19.2.0) (2024-03-08)
+
+
+### Features
+
+* view controller plugins ([0253f8c](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/0253f8c))
+* view plugins yeah! ([642b994](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/642b994))
+
+
+
+
+
 ## [19.1.42](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v19.1.41...v19.1.42) (2024-03-08)
 
 **Note:** Version bump only for package spruce-cli-workspace
