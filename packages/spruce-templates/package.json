@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "19.2.2",
+  "version": "19.2.4",
   "files": [
     "build/**/*",
     "tsconfig.json",
@@ -56,10 +56,10 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/mercury-types": "^46.0.261",
-    "@sprucelabs/schema": "^29.4.24",
-    "@sprucelabs/spruce-event-utils": "^38.1.1",
-    "@sprucelabs/spruce-skill-utils": "^30.3.18",
+    "@sprucelabs/mercury-types": "^46.0.266",
+    "@sprucelabs/schema": "^29.4.28",
+    "@sprucelabs/spruce-event-utils": "^38.1.6",
+    "@sprucelabs/spruce-skill-utils": "^30.3.24",
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.8",
     "lodash": "^4.17.21",
@@ -68,7 +68,7 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.17.0",
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.11.30",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "conventional-changelog-sprucelabs": "^1.1.2",
