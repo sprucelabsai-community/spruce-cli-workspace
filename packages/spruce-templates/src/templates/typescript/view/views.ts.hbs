@@ -19,7 +19,7 @@ const vcs = {
     {{/each}}
 }
 
-export const pluginClasses = {
+export const pluginsByName = {
 	{{#each viewPluginItems}}
 	{{nameCamel}}: {{namePascal}},
 	{{/each}}
@@ -65,6 +65,6 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 }
 
 //@ts-ignore
-if(typeof heartwood === 'function') { heartwood(vcs, pluginClasses) }
+if(typeof heartwood === 'function') { heartwood(vcs, pluginsByName) }
 
 export default vcs

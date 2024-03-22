@@ -83,7 +83,7 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 
 	@test()
 	protected static async updatesViewCombinedWithPluginsAsExpected() {
-		const expected = `export const pluginClasses = {
+		const expected = `export const pluginsByName = {
 	aThird: AThirdViewPlugin,
 	another: AnotherViewPlugin,
 	test: TestViewPlugin,
@@ -92,7 +92,7 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 `
 
 		this.assertCombinedFileIncludes(expected)
-		this.assertCombinedFileIncludes('heartwood(vcs, pluginClasses)')
+		this.assertCombinedFileIncludes('heartwood(vcs, pluginsByName)')
 	}
 
 	private static assertCombinedFileIncludes(expected: string) {
