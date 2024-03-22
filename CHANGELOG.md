@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v19.2.4...v20.0.0) (2024-03-22)
+
+
+### Breaking Changes
+
+* rename of export from views.ts ([8a3a850](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/8a3a850))
+
+
+
+
+
 ## [19.2.4](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v19.2.3...v19.2.4) (2024-03-20)
 
 **Note:** Version bump only for package spruce-cli-workspace
