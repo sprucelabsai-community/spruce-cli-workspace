@@ -49,6 +49,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 					viewPluginItems.push(plugin)
 				} else if (svc) {
 					svcTemplateItems.push(svc)
+				} else {
+					throw new Error('Unexpected class type.')
 				}
 			}
 		})

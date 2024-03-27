@@ -95,6 +95,59 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 		this.assertCombinedFileIncludes('heartwood(vcs, pluginsByName)')
 	}
 
+	@test()
+	protected static async viewPluginCanImportAnotherViewPlugin() {
+		this.writeFile('export class ExternalViewPlugin {}', 'external.ts')
+		this.writeFile(
+			`export { ExternalViewPlugin as default } from './external'`,
+			'actual.view.plugin.ts'
+		)
+
+		await this.syncViews()
+
+		const expected = `export const pluginsByName = {
+	actual: ExternalViewPlugin,
+	aThird: AThirdViewPlugin,
+	another: AnotherViewPlugin,
+	test: TestViewPlugin,
+	testCamel: TestCamelViewPlugin,
+}
+`
+
+		this.assertCombinedFileIncludes(expected)
+	}
+
+	@test()
+	protected static async canImportPluginFromExternalLibrary() {
+		this.writeFile(
+			"export { CardViewController as default } from '@sprucelabs/heartwood-view-controllers'",
+			'card.view.plugin.ts'
+		)
+
+		await this.syncViews()
+
+		const expected = `export const pluginsByName = {
+	actual: ExternalViewPlugin,
+	card: CardViewController,
+	aThird: AThirdViewPlugin,
+	another: AnotherViewPlugin,
+	test: TestViewPlugin,
+	testCamel: TestCamelViewPlugin,
+}
+`
+		this.assertCombinedFileIncludes(expected)
+	}
+
+	private static async syncViews() {
+		await this.Action('view', 'sync').execute({})
+	}
+
+	private static writeFile(content: string, fileName: string) {
+		const actualPlugiContent = content
+		const actualDestination = this.resolvePath('src', fileName)
+		diskUtil.writeFile(actualDestination, actualPlugiContent)
+	}
+
 	private static assertCombinedFileIncludes(expected: string) {
 		const combined = this.getPathToCombinedViewsFile()
 		const contents = diskUtil.readFile(combined)

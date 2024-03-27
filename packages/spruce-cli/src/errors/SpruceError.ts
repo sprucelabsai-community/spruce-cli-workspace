@@ -235,7 +235,9 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 				break
 
 			case 'DOCKER_NOT_STARTED':
-				message = 'Docker has not been started! Start it and try again!'
+				message =
+					'Docker has not been started! Start it and try again! Originial error:\n\n' +
+					options.originalError?.stack
 				break
 
 			case 'SCHEMA_TEMPLATE_ITEM_BUILDING_FAILED':

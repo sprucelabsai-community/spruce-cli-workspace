@@ -39,6 +39,7 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 			if (err.options?.cmd?.includes('which')) {
 				error = new SpruceError({
 					code: 'MISSING_DEPENDENCIES',
+					originalError: err,
 					dependencies: [
 						{
 							name: 'Docker',
@@ -46,8 +47,11 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 						},
 					],
 				})
-			} else {
-				error = new SpruceError({ code: 'DOCKER_NOT_STARTED' })
+			} else if (!err.options?.cmd?.includes('npm')) {
+				error = new SpruceError({
+					code: 'DOCKER_NOT_STARTED',
+					originalError: err,
+				})
 			}
 
 			return {
