@@ -255,7 +255,7 @@ import { vcDiskUtil } from '@sprucelabs/spruce-test-fixtures'
 AuthenticatorImpl.setStorage(new StubStorage())
 
 const vcFactory = ViewControllerFactory.Factory({
-	controllerMap: vcDiskUtil.loadViewControllersAndBuildMap('testing-views', __dirname),
+	controllerMap: vcDiskUtil.loadViewControllersAndBuildMap('testing-views', __dirname).map,
 	device: {} as any,
 	connectToApi: async () => {
 		return 'yes' as any
