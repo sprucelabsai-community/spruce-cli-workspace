@@ -236,7 +236,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
 
 			case 'DOCKER_NOT_STARTED':
 				message =
-					'Docker has not been started! Start it and try again! Originial error:\n\n' +
+					'Docker has not been started (or you are trying to run this command in a monorepo)! Start it and try again (or move out of a monorepo)! Originial error:\n\n' +
 					options.originalError?.stack
 				break
 

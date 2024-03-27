@@ -36,6 +36,7 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 			}
 		} catch (err: any) {
 			let error = err
+
 			if (err.options?.cmd?.includes('which')) {
 				error = new SpruceError({
 					code: 'MISSING_DEPENDENCIES',
@@ -47,7 +48,7 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 						},
 					],
 				})
-			} else if (!err.options?.cmd?.includes('npm')) {
+			} else {
 				error = new SpruceError({
 					code: 'DOCKER_NOT_STARTED',
 					originalError: err,

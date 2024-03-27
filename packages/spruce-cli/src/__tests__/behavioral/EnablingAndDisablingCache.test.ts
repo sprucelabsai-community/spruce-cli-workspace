@@ -41,6 +41,7 @@ export default class EnablingAndDisablingCacheTest extends AbstractCliTest {
 	protected static async returnsErrorWhenDockerNotEnabled() {
 		CommandService.fakeCommand(/npm config/gis, {
 			code: 1,
+			stderr: 'which',
 		})
 
 		const results = await this.Action('cache', 'enable').execute({})
