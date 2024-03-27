@@ -58,35 +58,37 @@ const introspectionUtil = {
 				if (!this.hasClassDefinition(sourceFile)) {
 					const exports = this.getExports(sourceFile)
 					const firstExport = exports[0]
-					const declaration = this.getClassDeclarationFromImportedFile(
-						firstExport,
-						dirname(tsFile),
-						program
-					)
-
-					if (declaration) {
-						const { classes, interfaces } = getDeclarationsFromNode(
-							declaration,
-							checker,
-							sourceFile
+					if (firstExport) {
+						const declaration = this.getClassDeclarationFromImportedFile(
+							firstExport,
+							dirname(tsFile),
+							program
 						)
-						results.classes.push(...classes)
-						results.interfaces.push(...interfaces)
-					} else {
-						// must have imported from somewhere else (another node module)
-						const className = //@ts-ignore
-							firstExport.exportClause?.elements?.[0]?.propertyName?.text
 
-						if (className) {
-							results.classes.push({
-								className,
-								classPath: tsFile,
-								isAbstract: false,
-								optionsInterfaceName: undefined,
-								parentClassName: undefined,
-								parentClassPath: undefined,
-								staticProperties: {},
-							})
+						if (declaration) {
+							const { classes, interfaces } = getDeclarationsFromNode(
+								declaration,
+								checker,
+								sourceFile
+							)
+							results.classes.push(...classes)
+							results.interfaces.push(...interfaces)
+						} else {
+							// must have imported from somewhere else (another node module)
+							const className = //@ts-ignore
+								firstExport.exportClause?.elements?.[0]?.propertyName?.text
+
+							if (className) {
+								results.classes.push({
+									className,
+									classPath: tsFile,
+									isAbstract: false,
+									optionsInterfaceName: undefined,
+									parentClassName: undefined,
+									parentClassPath: undefined,
+									staticProperties: {},
+								})
+							}
 						}
 					}
 				} else {
