@@ -3,7 +3,7 @@ import {
 	EnvService,
 	AuthService,
 } from '@sprucelabs/spruce-skill-utils'
-import EventSettingsService from '../features/event/services/EventSettingsService'
+import EventCacheService from '../features/event/services/EventCacheService'
 import RemoteService from '../features/event/services/RemoteService'
 import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
@@ -19,10 +19,12 @@ import TypeCheckerService from './TypeCheckerService'
 export default class ServiceFactory {
 	public static serviceClassOverides: Record<string, any> = {}
 
+	public static setServiceClass(name: Service, Class: any) {
+		this.serviceClassOverides[name] = Class
+	}
+
 	public Service<S extends Service>(cwd: string, type: S): ServiceMap[S] {
-		if (ServiceFactory.serviceClassOverides[type]) {
-			return new ServiceFactory.serviceClassOverides[type](cwd) as ServiceMap[S]
-		}
+		const Class = ServiceFactory.serviceClassOverides[type] as any
 
 		switch (type) {
 			case 'auth':
@@ -55,7 +57,8 @@ export default class ServiceFactory {
 					this.buildImportService(cwd)
 				) as ServiceMap[S]
 			case 'settings':
-				return new SettingsService<FeatureCode>(cwd) as ServiceMap[S]
+				//@ts-ignore
+				return new (Class ?? SettingsService)<FeatureCode>(cwd) as ServiceMap[S]
 			case 'dependency':
 				return new DependencyService(
 					new SettingsService<FeatureCode>(cwd)
@@ -69,8 +72,8 @@ export default class ServiceFactory {
 					new LintService(cwd, () => this.Service(cwd, 'command'))
 				) as ServiceMap[S]
 			}
-			case 'eventSettings':
-				return new EventSettingsService(
+			case 'eventCache':
+				return new (Class ?? EventCacheService)(
 					new SettingsService(cwd)
 				) as ServiceMap[S]
 			default:
@@ -107,7 +110,7 @@ export interface ServiceMap {
 	env: EnvService
 	auth: AuthService
 	remote: RemoteService
-	eventSettings: EventSettingsService
+	eventCache: EventCacheService
 	dependency: DependencyService
 }
 

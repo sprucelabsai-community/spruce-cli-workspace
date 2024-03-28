@@ -94,7 +94,7 @@ export default class EventFeature extends AbstractFeature {
 		}
 
 		if (featureCode === 'node' || featureCode === 'upgrade') {
-			const settings = this.Service('eventSettings')
+			const settings = this.Service('eventCache')
 			settings.clearListenerCache()
 		}
 
@@ -177,7 +177,7 @@ export default class EventFeature extends AbstractFeature {
 	private async handleDidFetchSchemas(payload: { schemas?: Schema[] | null }) {
 		const isInstalled = await this.features.isInstalled(this.code)
 
-		const lastSync = this.Service('eventSettings').getLastSyncOptions()
+		const lastSync = this.Service('eventCache').getLastSyncOptions()
 
 		if (lastSync && isInstalled) {
 			const writer = this.getEventContractBuilder()

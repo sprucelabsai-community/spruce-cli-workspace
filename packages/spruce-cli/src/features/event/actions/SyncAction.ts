@@ -25,7 +25,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
-		this.Service('eventSettings').setLastSyncOptions(options)
+		this.Service('eventCache').setLastSyncCache(options)
 
 		const schemaSyncResults = await this.Action('schema', 'sync').execute({})
 

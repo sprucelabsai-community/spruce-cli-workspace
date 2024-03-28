@@ -170,7 +170,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 	}
 
 	private static Settings() {
-		return this.Service('eventSettings')
+		return this.Service('eventCache')
 	}
 }
 

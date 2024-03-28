@@ -1,16 +1,18 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 
-export default class EventSettingsService {
-	private settings: SettingsService<string>
+export default class EventCacheService {
+	protected settings: SettingsService<string>
+
 	public constructor(settings: SettingsService) {
 		this.settings = settings
+		this.settings.setFile('event-cache.json')
 	}
 
 	public getLastSyncOptions() {
 		return this.settings.get('events.lastSync')
 	}
 
-	public setLastSyncOptions(options: {
+	public setLastSyncCache(options: {
 		shouldSyncOnlyCoreEvents?: boolean | null
 	}) {
 		this.settings.set('events.lastSync', options)
