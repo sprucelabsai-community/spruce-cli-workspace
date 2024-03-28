@@ -47,4 +47,4 @@ tmp/
 yarn.lock
 package-lock.json
 
-.spruce/*cache.json
+**/.spruce/*cache.json
