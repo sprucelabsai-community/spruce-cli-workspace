@@ -14,7 +14,7 @@ const universalFileDescriptions: FileDescription[] = [
 	{
 		path: '.gitignore',
 		description: 'The usual suspects.',
-		shouldOverwriteWhenChanged: false,
+		shouldOverwriteWhenChanged: true,
 	},
 	{
 		path: '.npmignore',
