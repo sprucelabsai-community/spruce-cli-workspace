@@ -7,10 +7,6 @@ import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
-type OptionsSchema =
-	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
-type Options = SchemaValues<OptionsSchema>
-
 export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	public invocationMessage = 'Upgrading your skill... 💪'
 	public optionsSchema = upgradeSkillActionSchema
@@ -77,3 +73,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 		})
 	}
 }
+
+type OptionsSchema =
+	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
+type Options = SchemaValues<OptionsSchema>
