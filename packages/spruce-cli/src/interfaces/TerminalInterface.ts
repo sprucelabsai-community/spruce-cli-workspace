@@ -272,7 +272,7 @@ export default class TerminalInterface implements GraphicsInterface {
 	) {
 		const isSpruce = effects.indexOf(GraphicsTextEffect.SpruceHeader) > -1
 
-		if (isSpruce) {
+		if (isSpruce && TerminalInterface.doesSupportColor()) {
 			fonts.say(message, {
 				font: GraphicsTextEffect.SpruceHeader,
 				align: 'left',
@@ -292,6 +292,11 @@ export default class TerminalInterface implements GraphicsInterface {
 	}
 
 	public renderHero(message: string, effects?: GraphicsTextEffect[]) {
+		if (!TerminalInterface.doesSupportColor()) {
+			this.renderLine(message)
+			return
+		}
+
 		const shouldStripVowels = process.stdout.columns < 80
 
 		let stripped = shouldStripVowels
