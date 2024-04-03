@@ -4,15 +4,6 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import { ENABLE_NPM_CACHE_COMMAND } from '../constants'
 
-const optionsSchema = buildSchema({
-	id: 'enableCacheAction',
-	description: 'Enable npm caching so pulling node_modules is much faster.',
-	fields: {},
-})
-
-type OptionsSchema = typeof optionsSchema
-type Options = SchemaValues<OptionsSchema>
-
 export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 	public optionsSchema = optionsSchema
 	public commandAliases = [
@@ -61,3 +52,12 @@ export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
 		}
 	}
 }
+
+const optionsSchema = buildSchema({
+	id: 'enableCacheAction',
+	description: 'Enable npm caching so pulling node_modules is much faster.',
+	fields: {},
+})
+
+type OptionsSchema = typeof optionsSchema
+type Options = SchemaValues<OptionsSchema>
