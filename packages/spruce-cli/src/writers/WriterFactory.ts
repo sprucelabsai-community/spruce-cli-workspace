@@ -38,26 +38,6 @@ const classMap = {
 	permission: PermissionWriter,
 }
 
-export interface WriterMap {
-	error: ErrorWriter
-	event: EventWriter
-	schema: SchemaWriter
-	skill: SkillGenerator
-	test: TestGenerator
-	node: NodeWriter
-	vscode: VsCodeWriter
-	conversation: ConversationWriter
-	deploy: DeployWriter
-	sandbox: SandboxWriter
-	store: StoreWriter
-	view: ViewWriter
-	log: LogWriter
-	polish: PolishWriter
-	permission: PermissionWriter
-}
-
-export type WriterCode = keyof WriterMap
-
 export default class WriterFactory {
 	private templates: Templates
 	private ui: GraphicsInterface
@@ -99,3 +79,23 @@ export default class WriterFactory {
 		}) as WriterMap[C]
 	}
 }
+
+export interface WriterMap {
+	error: ErrorWriter
+	event: EventWriter
+	schema: SchemaWriter
+	skill: SkillGenerator
+	test: TestGenerator
+	node: NodeWriter
+	vscode: VsCodeWriter
+	conversation: ConversationWriter
+	deploy: DeployWriter
+	sandbox: SandboxWriter
+	store: StoreWriter
+	view: ViewWriter
+	log: LogWriter
+	polish: PolishWriter
+	permission: PermissionWriter
+}
+
+export type WriterCode = keyof WriterMap

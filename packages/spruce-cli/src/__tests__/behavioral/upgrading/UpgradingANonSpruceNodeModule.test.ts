@@ -3,7 +3,6 @@ import { test, assert, generateId } from '@sprucelabs/test-utils'
 import CommandService from '../../../services/CommandService'
 import PkgService from '../../../services/PkgService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
-import CommandFaker from '../../../tests/CommandFaker'
 import ScriptUpdaterImpl, {
 	ScriptUpdater,
 } from '../../../updaters/ScriptUpdater'
@@ -58,10 +57,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async passesTheWFlagIfInWorkspace() {
-		this.pkg.set({
-			path: 'workspaces',
-			value: ['packages/*'],
-		})
+		this.setWorkspaces(['packages/*'])
 
 		let wasHit = false
 
@@ -79,12 +75,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
 	@test()
 	protected static async shouldNotInstallDependenciesNotAlreadyInstalled() {
-		this.pkg.set({
-			path: 'dependencies',
-			value: {
-				'@sprucelabs/spruce-core': '1.0.0',
-			},
-		})
+		this.addDependencyDirectlyToPackage()
 
 		const commands: string[] = []
 
@@ -110,6 +101,49 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 	protected static async shouldNotCleanBuild() {
 		this.commandFaker.makeCommandThrow(`yarn clean.build`)
 		await this.upgrade()
+	}
+
+	@test.skip('revisit when really ready to loop through workspaces')
+	protected static async runsUpgradeInEveryPackageInWorkspace() {
+		this.setWorkspaces(['packages/*'])
+
+		CommandService.clearFakedResponses()
+
+		const moduleName = 'test1'
+		const path = this.resolvePath('packages', moduleName)
+		diskUtil.createDir(path)
+
+		const commands = this.Service('command', path)
+		await commands.execute('yarn init -y')
+
+		const pkg = this.Service('pkg', path)
+		this.addDependencyDirectlyToPackage(pkg)
+
+		this.fakeYarnCommands()
+
+		await this.emitter.on('feature.did-execute', async (payload) => {
+			console.log(payload)
+		})
+
+		await this.upgrade()
+	}
+
+	private static setWorkspaces(packages: string[]) {
+		this.pkg.set({
+			path: 'workspaces',
+			value: packages,
+		})
+	}
+
+	private static addDependencyDirectlyToPackage(
+		pkgService: PkgService = this.pkg
+	) {
+		pkgService.set({
+			path: 'dependencies',
+			value: {
+				'@sprucelabs/spruce-core': '1.0.0',
+			},
+		})
 	}
 
 	private static async upgrade() {
