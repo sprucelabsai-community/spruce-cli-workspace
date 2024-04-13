@@ -33,6 +33,7 @@ export interface ExecutionResults extends FeatureActionResponse {
 	actionCode: string
 	headline: string
 	action: FeatureAction
+	namespace?: string
 }
 
 type Skill = Omit<SpruceSchemas.Spruce.v2020_07_22.Skill, 'creators'>

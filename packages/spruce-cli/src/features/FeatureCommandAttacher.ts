@@ -1,6 +1,7 @@
 import { Schema, SchemaEntityFactory } from '@sprucelabs/schema'
 import { CommanderStatic } from 'commander'
 import SpruceError from '../errors/SpruceError'
+import PkgService from '../services/PkgService'
 import { GraphicsInterface } from '../types/cli.types'
 import commanderUtil from '../utilities/commander.utility'
 import uiUtil from '../utilities/ui.utility'
@@ -13,16 +14,19 @@ export default class FeatureCommandAttacher {
 	private program: CommanderStatic['program']
 	private ui: GraphicsInterface
 	private actionExecuter: ActionExecuter
+	private pkg: PkgService
 
 	public constructor(options: {
 		program: CommanderStatic['program']
 		ui: GraphicsInterface
 		actionExecuter: ActionExecuter
+		pkgService: PkgService
 	}) {
-		const { program, ui: term, actionExecuter } = options
+		const { program, ui: term, actionExecuter, pkgService } = options
 
 		this.program = program
 		this.ui = term
+		this.pkg = pkgService
 		this.actionExecuter = actionExecuter
 	}
 
@@ -52,6 +56,7 @@ export default class FeatureCommandAttacher {
 
 		command = command.action(async (...args: any[]) => {
 			this.clearAndRenderMasthead(action)
+
 			const startTime = new Date().getTime()
 
 			const options = commanderUtil.mapIncomingToOptions(
@@ -91,6 +96,7 @@ export default class FeatureCommandAttacher {
 	}
 
 	private clearAndRenderResults(options: {
+		namespace?: string
 		featureCode: string
 		actionCode: string
 		totalTime: number
@@ -103,13 +109,13 @@ export default class FeatureCommandAttacher {
 		this.ui.clear()
 
 		this.ui.renderActionSummary({
-			//@ts-ignore
-			headline: `${actionCode} finished!`,
+			namespace: this.pkg.getSkillNamespace(),
 			featureCode,
 			actionCode,
 			totalTime,
 			action,
 			...results,
+			headline: results.headline ?? `${actionCode} finished!`,
 		})
 	}
 

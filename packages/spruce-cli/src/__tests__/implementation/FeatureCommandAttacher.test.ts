@@ -16,6 +16,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 		const actionExecuter = this.ActionExecuter()
 
 		this.attacher = new FeatureCommandAttacher({
+			pkgService: this.Service('pkg'),
 			program: this.program,
 			ui: this.ui,
 			actionExecuter,

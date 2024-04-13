@@ -177,10 +177,12 @@ export default class TerminalInterface implements GraphicsInterface {
 
 		const errors = results.errors ?? []
 		const packagesInstalled = results.packagesInstalled ?? []
+		const namespace = results.namespace
 
 		this.renderHero(`${results.headline}`)
 
 		let summaryLines: string[] = [
+			namespace ? `Namespace: ${namespace}` : null,
 			errors.length > 0 ? `Errors: ${errors.length}` : null,
 			generatedFiles.length > 0
 				? `Generated files: ${generatedFiles.length}`
@@ -196,6 +198,7 @@ export default class TerminalInterface implements GraphicsInterface {
 		if (summaryLines.length === 0) {
 			summaryLines.push('Nothing to report!')
 		}
+
 		this.renderSection({
 			headline: `${featuresUtil.generateCommand(
 				results.featureCode,
@@ -211,6 +214,7 @@ export default class TerminalInterface implements GraphicsInterface {
 				wordWrap: true,
 				colAligns: ['left', 'center'],
 			})
+
 			packagesInstalled
 				.sort((one, two) => (one.name > two.name ? 1 : -1))
 				.forEach((pkg) => {

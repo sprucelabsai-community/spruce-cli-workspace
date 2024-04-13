@@ -238,6 +238,7 @@ export default class Cli implements CliInterface {
 
 		if (program) {
 			attacher = new FeatureCommandAttacher({
+				pkgService: pkg,
 				program,
 				ui,
 				actionExecuter,
