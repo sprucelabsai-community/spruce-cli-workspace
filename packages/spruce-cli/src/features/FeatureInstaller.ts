@@ -1,4 +1,5 @@
 import { validateSchemaValues } from '@sprucelabs/schema'
+import { HASH_SPRUCE_DIR, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { uniq } from 'lodash'
 import merge from 'lodash/merge'
 import SpruceError from '../errors/SpruceError'
@@ -36,6 +37,12 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 	public constructor(cwd: string, serviceFactory: ServiceFactory) {
 		this.cwd = cwd
 		this.serviceFactory = serviceFactory
+	}
+
+	public isInSpruceModule(): boolean {
+		return diskUtil.doesDirExist(
+			diskUtil.resolvePath(this.cwd, HASH_SPRUCE_DIR)
+		)
 	}
 
 	public async isInstalled(code: FeatureCode): Promise<boolean> {
@@ -509,4 +516,5 @@ export default interface FeatureInstaller {
 	): FeatureDependency[]
 	getAllCodes(): FeatureCode[]
 	mapFeature<C extends FeatureCode>(code: C, feature: FeatureMap[C]): void
+	isInSpruceModule(): boolean
 }

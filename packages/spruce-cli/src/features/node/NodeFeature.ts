@@ -52,7 +52,12 @@ export default class NodeFeature<
 		super(options)
 
 		void this.emitter.on('feature.did-execute', async (payload) => {
-			if (payload.featureCode === 'node' && payload.actionCode === 'upgrade') {
+			const shouldUpgrade =
+				payload.featureCode === 'node' &&
+				payload.actionCode === 'upgrade' &&
+				this.features.isInSpruceModule()
+
+			if (shouldUpgrade) {
 				return this.handleUpgrade()
 			}
 

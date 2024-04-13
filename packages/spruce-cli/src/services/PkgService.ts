@@ -6,12 +6,6 @@ import {
 import isCi from '../utilities/isCi'
 import CommandService from './CommandService'
 
-export interface AddOptions {
-	isDev?: boolean
-	shouldForceInstall?: boolean
-	shouldCleanupLockFiles?: boolean
-}
-
 export default class PkgService extends BasePkgService {
 	private commandService: CommandService
 
@@ -57,6 +51,11 @@ export default class PkgService extends BasePkgService {
 				toInstall,
 				options
 			)
+
+			const isInWorkspace = this.get('workspaces')?.length > 0
+			if (isInWorkspace) {
+				args.push('-W')
+			}
 
 			await this.commandService.execute(executable, {
 				args,
@@ -108,4 +107,10 @@ export default class PkgService extends BasePkgService {
 
 		await this.install()
 	}
+}
+
+export interface AddOptions {
+	isDev?: boolean
+	shouldForceInstall?: boolean
+	shouldCleanupLockFiles?: boolean
 }

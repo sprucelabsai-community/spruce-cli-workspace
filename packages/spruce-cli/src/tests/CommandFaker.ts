@@ -1,3 +1,4 @@
+import { assert } from '@sprucelabs/test-utils'
 import CommandService from '../services/CommandService'
 
 type Command = RegExp | string
@@ -6,6 +7,13 @@ export default class CommandFaker {
 	public fakeCommand(command: Command, code = 0) {
 		CommandService.fakeCommand(command, {
 			code,
+		})
+	}
+
+	public makeCommandThrow(command: Command) {
+		CommandService.fakeCommand(command, {
+			code: 1,
+			callback: () => assert.fail(`${command} should not have been called`),
 		})
 	}
 

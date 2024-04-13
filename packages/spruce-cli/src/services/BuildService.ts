@@ -22,6 +22,7 @@ export default class BuildService {
 		if (options?.shouldFixLintFirst !== false) {
 			await this.lintService.fix('**/*.ts')
 		}
+		debugger
 		const results = await this.commandService.execute(`yarn build.dev`)
 		return results
 	}
