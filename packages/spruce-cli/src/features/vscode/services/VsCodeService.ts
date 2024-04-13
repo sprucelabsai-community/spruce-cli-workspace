@@ -1,15 +1,6 @@
 import semver from 'semver'
 import CommandService from '../../../services/CommandService'
 
-const VSCODE_MINIMUM_VERSION = '1.44.0'
-
-export interface Extension {
-	/** The vscode extension id like dbaeumer.vscode-eslint  */
-	id: string
-	/** A friendly name / description that will describe what the extension is or does */
-	label: string
-}
-
 export default class VsCodeService extends CommandService {
 	/** Returns whether or not vscode is installed */
 	public async isInstalled(): Promise<boolean> {
@@ -58,4 +49,13 @@ export default class VsCodeService extends CommandService {
 			args,
 		})
 	}
+}
+
+const VSCODE_MINIMUM_VERSION = '1.44.0'
+
+export interface Extension {
+	/** The vscode extension id like dbaeumer.vscode-eslint  */
+	id: string
+	/** A friendly name / description that will describe what the extension is or does */
+	label: string
 }

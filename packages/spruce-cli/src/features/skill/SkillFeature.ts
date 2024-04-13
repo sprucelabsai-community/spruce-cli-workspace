@@ -3,7 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeature.schema'
 import { FileDescription, NpmPackage } from '../../types/cli.types'
-import ScriptUpdater from '../../updaters/ScriptUpdater'
+import ScriptUpdaterImpl from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 import universalDevDependencies from '../universalDevDependencies'
@@ -150,7 +150,7 @@ export default class SkillFeature<
 	}
 
 	public async installScripts(destination = this.cwd) {
-		const scriptUpdater = ScriptUpdater.FromFeature(this, {
+		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this, {
 			cwd: destination,
 		})
 

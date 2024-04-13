@@ -3,7 +3,7 @@ import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import nodeFeatureOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/nodeFeatureOptions.schema'
 import { FileDescription, GeneratedFile } from '../../types/cli.types'
-import ScriptUpdater from '../../updaters/ScriptUpdater'
+import ScriptUpdaterImpl from '../../updaters/ScriptUpdater'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import {
 	ActionOptions,
@@ -136,7 +136,7 @@ export default class NodeFeature<
 	}
 
 	private async installScripts(destination = this.cwd) {
-		const scriptUpdater = ScriptUpdater.FromFeature(this, {
+		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this, {
 			cwd: destination,
 		})
 

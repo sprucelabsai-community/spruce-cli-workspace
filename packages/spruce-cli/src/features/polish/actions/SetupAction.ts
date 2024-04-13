@@ -1,6 +1,6 @@
 import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import ScriptUpdater from '../../../updaters/ScriptUpdater'
+import ScriptUpdaterImpl from '../../../updaters/ScriptUpdater'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -23,7 +23,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 			namespace.toLowerCase()
 		)
 
-		const scriptUpdater = ScriptUpdater.FromFeature(this.parent, {
+		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
 			cwd: this.cwd,
 		})
 

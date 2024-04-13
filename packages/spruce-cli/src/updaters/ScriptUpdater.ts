@@ -8,20 +8,17 @@ import AbstractFeature from '../features/AbstractFeature'
 import PkgService from '../services/PkgService'
 import { GraphicsInterface } from '../types/cli.types'
 
-export default class ScriptUpdater {
+export default class ScriptUpdaterImpl implements ScriptUpdater {
 	private pkg: PkgService
 	private latestScripts: Record<string, any>
 	private shouldConfirmIfScriptExistsButIsDifferent: boolean
 	private ui: GraphicsInterface
 	private settings: SettingsService<string>
+	public static Class?: new (
+		options: ScriptUpdaterContructorOptions
+	) => ScriptUpdater
 
-	public constructor(options: {
-		pkg: PkgService
-		latestScripts: Record<string, any>
-		shouldConfirmIfScriptExistsButIsDifferent?: boolean
-		ui: GraphicsInterface
-		settings: SettingsService
-	}) {
+	public constructor(options: ScriptUpdaterContructorOptions) {
 		this.pkg = options.pkg
 		this.latestScripts = options.latestScripts
 		this.shouldConfirmIfScriptExistsButIsDifferent =
@@ -36,7 +33,7 @@ export default class ScriptUpdater {
 	) {
 		const cwd = options?.cwd ?? feature.cwd
 
-		const updater = new ScriptUpdater({
+		const updater = new (this.Class ?? ScriptUpdaterImpl)({
 			pkg: feature.Service('pkg', cwd),
 			latestScripts: feature.scripts ?? [],
 			//@ts-ignore
@@ -134,4 +131,18 @@ export default class ScriptUpdater {
 		this.settings.set('scriptUpdater', updaterSettings)
 		this.pkg.set({ path: 'scripts', value: scripts })
 	}
+}
+
+export interface ScriptUpdater {
+	update(options?: {
+		shouldConfirmIfScriptExistsButIsDifferent?: boolean
+	}): Promise<void>
+}
+
+interface ScriptUpdaterContructorOptions {
+	pkg: PkgService
+	latestScripts: Record<string, any>
+	shouldConfirmIfScriptExistsButIsDifferent?: boolean
+	ui: GraphicsInterface
+	settings: SettingsService
 }

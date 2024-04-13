@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { FILE_ACTION_ALWAYS_SKIP } from '../../constants'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
-import ScriptUpdater from '../../updaters/ScriptUpdater'
+import ScriptUpdaterImpl from '../../updaters/ScriptUpdater'
 
 export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest {
 	protected static skillCacheKey = 'schemas'
@@ -49,7 +49,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 	}
 
 	private static ScriptUpdater(key: string, value: string) {
-		const updater = new ScriptUpdater({
+		const updater = new ScriptUpdaterImpl({
 			pkg: this.Service('pkg'),
 			latestScripts: {
 				[key]: value,
@@ -60,7 +60,7 @@ export default class RememberingUpgradeSelectionsTest extends AbstractSkillTest 
 		return updater
 	}
 
-	private static async assertShowsAlwaysSkipOption(updater: ScriptUpdater) {
+	private static async assertShowsAlwaysSkipOption(updater: ScriptUpdaterImpl) {
 		void updater.update()
 
 		await this.waitForInput()

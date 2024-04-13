@@ -1,8 +1,9 @@
 import { SchemaValues } from '@sprucelabs/schema'
+import { HASH_SPRUCE_DIR, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
 import InFlightEntertainment from '../../../InFlightEntertainment'
-import ScriptUpdater from '../../../updaters/ScriptUpdater'
+import ScriptUpdaterImpl from '../../../updaters/ScriptUpdater'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -13,15 +14,15 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	public commandAliases = ['upgrade', 'update']
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
+		const { upgradeMode } = this.validateAndNormalizeOptions(options)
 
 		await this.updateScripts({
-			shouldConfirm: normalizedOptions.upgradeMode !== 'forceEverything',
+			shouldConfirm: upgradeMode !== 'forceEverything',
 		})
 
 		try {
 			const files = await this.Writer('node', {
-				upgradeMode: normalizedOptions.upgradeMode,
+				upgradeMode,
 			}).writeNodeModule(this.cwd, {
 				shouldConfirmBeforeWriting: true,
 				shouldWriteIndex: false,
@@ -55,6 +56,14 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 	private async updateScripts(options: { shouldConfirm: boolean }) {
 		const features = await this.features.getInstalledFeatures()
 
+		const doesHashSpruceExist = diskUtil.doesDirExist(
+			diskUtil.resolvePath(this.cwd, HASH_SPRUCE_DIR)
+		)
+
+		if (!doesHashSpruceExist) {
+			return
+		}
+
 		let scripts: Record<string, any> = {}
 
 		for (const feature of features) {
@@ -64,7 +73,7 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 			}
 		}
 
-		const scriptUpdater = ScriptUpdater.FromFeature(this.parent, {
+		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
 			latestScripts: scripts,
 		})
 

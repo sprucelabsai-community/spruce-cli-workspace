@@ -64,6 +64,8 @@ export default class WriterFactory {
 	private linter?: LintService
 	private settings: SettingsService<string>
 
+	private static classMap = classMap
+
 	public constructor(options: {
 		templates: Templates
 		ui: GraphicsInterface
@@ -78,11 +80,16 @@ export default class WriterFactory {
 		this.settings = settings
 	}
 
+	public static setWriter(code: WriterCode, writer: any) {
+		this.classMap[code] = writer
+	}
+
 	public Writer<C extends WriterCode>(
 		code: C,
 		options: Partial<WriterOptions> & { fileDescriptions: FileDescription[] }
 	): WriterMap[C] {
-		const Class = classMap[code]
+		const Class = WriterFactory.classMap[code]
+
 		return new Class({
 			templates: this.templates,
 			term: this.ui,
