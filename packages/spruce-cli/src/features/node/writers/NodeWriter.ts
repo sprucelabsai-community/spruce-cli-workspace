@@ -8,8 +8,7 @@ import AbstractWriter, {
 
 export const NODE_FILES_TO_UPGRADE = [
 	'tsconfig.json',
-	'.eslintrc.js',
-	'.eslintignore',
+	'eslint.config.mjs',
 	'.gitignore',
 	'.nvmrc',
 ]

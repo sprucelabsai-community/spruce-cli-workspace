@@ -216,9 +216,15 @@ export const templates = {
 		return template({})
 	},
 
-	vsCodeSettings() {
-		const template = templateImportUtil.getTemplate('vscode/settings.json')
-		return template({})
+	async vsCodeSettings() {
+		const files = await templates.directoryTemplate({
+			kind: DirectoryTemplateCode.VsCode,
+			context: {},
+		})
+
+		const settings = files.find((f) => f.filename === 'settings.json')!
+
+		return settings.contents
 	},
 
 	listener(options: EventListenerOptions) {

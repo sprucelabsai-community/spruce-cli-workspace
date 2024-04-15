@@ -2,12 +2,7 @@ import { FileDescription } from '../types/cli.types'
 
 const universalFileDescriptions: FileDescription[] = [
 	{
-		path: '.eslintignore',
-		description: 'Ignore things like build and node_module dirs.',
-		shouldOverwriteWhenChanged: true,
-	},
-	{
-		path: '.eslintrc.js',
+		path: 'eslint.config.mjs',
 		description: 'Extends Spruce configurations.',
 		shouldOverwriteWhenChanged: true,
 	},

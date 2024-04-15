@@ -15,7 +15,7 @@ export default class CommandService {
 	private ignoreCloseErrors = false
 	private static fakeResponses: {
 		command: string | RegExp
-		response: MockResponse
+		response: FakedCommandResponse
 	}[] = []
 	private static commandsRunCapturedByMockResponses: string[] = []
 
@@ -177,7 +177,10 @@ export default class CommandService {
 		return { mockResponse: match?.response, mockKey }
 	}
 
-	public static fakeCommand(command: string | RegExp, response: MockResponse) {
+	public static fakeCommand(
+		command: string | RegExp,
+		response: FakedCommandResponse
+	) {
 		this.fakeResponses.unshift({
 			command,
 			response,
@@ -189,9 +192,11 @@ export default class CommandService {
 	}
 }
 
-interface MockResponse {
+export type FakedCommandCallback = (executable: string, args: any[]) => void
+
+interface FakedCommandResponse {
 	code: number
 	stdout?: string
 	stderr?: string
-	callback?: (executable: string, args: any[]) => void
+	callback?: FakedCommandCallback
 }

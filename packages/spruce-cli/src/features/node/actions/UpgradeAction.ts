@@ -2,6 +2,7 @@ import { SchemaValues } from '@sprucelabs/schema'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import upgradeSkillActionSchema from '#spruce/schemas/spruceCli/v2020_07_22/upgradeSkillOptions.schema'
 import InFlightEntertainment from '../../../InFlightEntertainment'
+import EsLint9Migrator from '../../../migration/EsLint9Migrator'
 import ScriptUpdaterImpl from '../../../updaters/ScriptUpdater'
 import actionUtil from '../../../utilities/action.utility'
 import AbstractAction from '../../AbstractAction'
@@ -14,6 +15,10 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
 	public async execute(options: Options): Promise<FeatureActionResponse> {
 		const { upgradeMode } = this.validateAndNormalizeOptions(options)
+
+		await EsLint9Migrator.Migrator({
+			cwd: this.cwd,
+		}).migrate()
 
 		const isInSpruceModule = this.features.isInSpruceModule()
 

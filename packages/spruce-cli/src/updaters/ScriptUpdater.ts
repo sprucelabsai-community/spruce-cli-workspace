@@ -80,7 +80,7 @@ export default class ScriptUpdaterImpl implements ScriptUpdater {
 			) {
 				this.ui.clear()
 				this.ui.renderSection({
-					headline: `Change to \`${name}\` detected!`,
+					headline: `Change to \`${name}\` detected in ${this.pkg.getSkillNamespace()}!`,
 					object: {
 						Current: oldScript,
 						'    New': script,

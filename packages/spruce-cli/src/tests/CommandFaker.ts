@@ -10,6 +10,13 @@ export default class CommandFaker {
 		})
 	}
 
+	public on(command: Command, cb: () => void) {
+		CommandService.fakeCommand(command, {
+			code: 0,
+			callback: cb,
+		})
+	}
+
 	public makeCommandThrow(command: Command) {
 		CommandService.fakeCommand(command, {
 			code: 1,
