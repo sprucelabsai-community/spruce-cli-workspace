@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-/* eslint-disable no-redeclare */
-
 import { default as SchemaEntity } from '@sprucelabs/schema'
 {{#each imports}}
 import * as {{importAs}} from '{{package}}'
 {{/each}}
-
-
-
 {{#each schemaTemplateItems}}
 
 {{#each imports}}
 {{{this}}}
 {{/each}}
+{{/each}}
+
+
+
+{{#each schemaTemplateItems}}
 
 export declare namespace {{../globalSchemaNamespace}}.{{namespace}}{{#if (isDefined schema.version)}}.{{schema.version}}{{/if}} {
 
