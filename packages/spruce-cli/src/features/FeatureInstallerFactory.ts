@@ -32,93 +32,100 @@ import VsCodeFeature from './vscode/VsCodeFeature'
 import WatchFeature from './watch/WatchFeature'
 
 export default class FeatureInstallerFactory {
-	private static readonly features: any[] = [
-		ErrorFeature,
-		SchemaFeature,
-		SkillFeature,
-		TestFeature,
-		VsCodeFeature,
-		EventFeature,
-		WatchFeature,
-		NodeFeature,
-		OnboardFeature,
-		PersonFeature,
-		OrganizationFeature,
-		ConversationFeature,
-		EventContractFeature,
-		DeployFeature,
-		SandboxFeature,
-		StoreFeature,
-		ViewFeature,
-		CacheFeature,
-		LogFeature,
-		DependencyFeature,
-		PolishFeature,
-		PermissionFeature,
-	]
+    private static readonly features: any[] = [
+        ErrorFeature,
+        SchemaFeature,
+        SkillFeature,
+        TestFeature,
+        VsCodeFeature,
+        EventFeature,
+        WatchFeature,
+        NodeFeature,
+        OnboardFeature,
+        PersonFeature,
+        OrganizationFeature,
+        ConversationFeature,
+        EventContractFeature,
+        DeployFeature,
+        SandboxFeature,
+        StoreFeature,
+        ViewFeature,
+        CacheFeature,
+        LogFeature,
+        DependencyFeature,
+        PolishFeature,
+        PermissionFeature,
+    ]
 
-	public static readonly featureCodes: FeatureCode[] = [
-		'error',
-		'schema',
-		'skill',
-		'test',
-		'vscode',
-		'event',
-		'watch',
-		'node',
-		'onboard',
-		'person',
-		'organization',
-		'conversation',
-		'eventContract',
-		'deploy',
-		'sandbox',
-		'store',
-		'view',
-		'cache',
-		'log',
-		'dependency',
-		'polish',
-		'permission',
-	]
+    public static readonly featureCodes: FeatureCode[] = [
+        'error',
+        'schema',
+        'skill',
+        'test',
+        'vscode',
+        'event',
+        'watch',
+        'node',
+        'onboard',
+        'person',
+        'organization',
+        'conversation',
+        'eventContract',
+        'deploy',
+        'sandbox',
+        'store',
+        'view',
+        'cache',
+        'log',
+        'dependency',
+        'polish',
+        'permission',
+    ]
 
-	public static WithAllFeatures(
-		options: InstallerWithAllFeaturesOptions
-	): FeatureInstaller {
-		const { cwd, serviceFactory, storeFactory, ui, emitter, actionExecuter } =
-			options
+    public static WithAllFeatures(
+        options: InstallerWithAllFeaturesOptions
+    ): FeatureInstaller {
+        const {
+            cwd,
+            serviceFactory,
+            storeFactory,
+            ui,
+            emitter,
+            actionExecuter,
+        } = options
 
-		const featureInstaller =
-			options.featureInstaller ?? new FeatureInstallerImpl(cwd, serviceFactory)
+        const featureInstaller =
+            options.featureInstaller ??
+            new FeatureInstallerImpl(cwd, serviceFactory)
 
-		const featureOptions: FeatureOptions = {
-			cwd,
-			serviceFactory,
-			templates,
-			storeFactory,
-			featureInstaller,
-			ui,
-			emitter,
-			actionExecuter,
-			apiClientFactory: options.apiClientFactory,
-		}
+        const featureOptions: FeatureOptions = {
+            cwd,
+            serviceFactory,
+            templates,
+            storeFactory,
+            featureInstaller,
+            ui,
+            emitter,
+            actionExecuter,
+            apiClientFactory: options.apiClientFactory,
+        }
 
-		this.features.forEach((Feature) => {
-			const feature = new Feature(featureOptions)
-			featureInstaller.mapFeature(feature.code, feature)
-		})
+        this.features.forEach((Feature) => {
+            const feature = new Feature(featureOptions)
+            featureInstaller.mapFeature(feature.code, feature)
+        })
 
-		return featureInstaller
-	}
+        return featureInstaller
+    }
 }
 
 interface InstallerWithAllFeaturesOptions {
-	cwd: string
-	serviceFactory: ServiceFactory
-	storeFactory: StoreFactory
-	featureInstaller?: FeatureInstaller
-	ui: GraphicsInterface
-	emitter: GlobalEmitter
-	apiClientFactory: ApiClientFactory
-	actionExecuter: ActionExecuter
+    cwd: string
+    serviceFactory: ServiceFactory
+    storeFactory: StoreFactory
+    featureInstaller?: FeatureInstaller
+    ui: GraphicsInterface
+    emitter: GlobalEmitter
+    apiClientFactory: ApiClientFactory
+    actionExecuter: ActionExecuter
 }

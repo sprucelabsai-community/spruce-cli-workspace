@@ -21,81 +21,83 @@ import { GraphicsInterface } from '../types/cli.types'
 import { WriterOptions } from './AbstractWriter'
 
 const classMap = {
-	error: ErrorWriter,
-	event: EventWriter,
-	schema: SchemaWriter,
-	skill: SkillGenerator,
-	test: TestGenerator,
-	node: NodeWriter,
-	vscode: VsCodeWriter,
-	conversation: ConversationWriter,
-	deploy: DeployWriter,
-	sandbox: SandboxWriter,
-	store: StoreWriter,
-	view: ViewWriter,
-	log: LogWriter,
-	polish: PolishWriter,
-	permission: PermissionWriter,
+    error: ErrorWriter,
+    event: EventWriter,
+    schema: SchemaWriter,
+    skill: SkillGenerator,
+    test: TestGenerator,
+    node: NodeWriter,
+    vscode: VsCodeWriter,
+    conversation: ConversationWriter,
+    deploy: DeployWriter,
+    sandbox: SandboxWriter,
+    store: StoreWriter,
+    view: ViewWriter,
+    log: LogWriter,
+    polish: PolishWriter,
+    permission: PermissionWriter,
 }
 
 export default class WriterFactory {
-	private templates: Templates
-	private ui: GraphicsInterface
-	private linter?: LintService
-	private settings: SettingsService<string>
+    private templates: Templates
+    private ui: GraphicsInterface
+    private linter?: LintService
+    private settings: SettingsService<string>
 
-	private static classMap = classMap
+    private static classMap = classMap
 
-	public constructor(options: {
-		templates: Templates
-		ui: GraphicsInterface
-		linter?: LintService
-		settings: SettingsService
-	}) {
-		const { templates, ui, linter, settings } = options
+    public constructor(options: {
+        templates: Templates
+        ui: GraphicsInterface
+        linter?: LintService
+        settings: SettingsService
+    }) {
+        const { templates, ui, linter, settings } = options
 
-		this.templates = templates
-		this.ui = ui
-		this.linter = linter
-		this.settings = settings
-	}
+        this.templates = templates
+        this.ui = ui
+        this.linter = linter
+        this.settings = settings
+    }
 
-	public static setWriter(code: WriterCode, writer: any) {
-		this.classMap[code] = writer
-	}
+    public static setWriter(code: WriterCode, writer: any) {
+        this.classMap[code] = writer
+    }
 
-	public Writer<C extends WriterCode>(
-		code: C,
-		options: Partial<WriterOptions> & { fileDescriptions: FileDescription[] }
-	): WriterMap[C] {
-		const Class = WriterFactory.classMap[code]
+    public Writer<C extends WriterCode>(
+        code: C,
+        options: Partial<WriterOptions> & {
+            fileDescriptions: FileDescription[]
+        }
+    ): WriterMap[C] {
+        const Class = WriterFactory.classMap[code]
 
-		return new Class({
-			templates: this.templates,
-			term: this.ui,
-			linter: this.linter,
-			settings: this.settings,
-			...(options || {}),
-		}) as WriterMap[C]
-	}
+        return new Class({
+            templates: this.templates,
+            term: this.ui,
+            linter: this.linter,
+            settings: this.settings,
+            ...(options || {}),
+        }) as WriterMap[C]
+    }
 }
 
 export interface WriterMap {
-	error: ErrorWriter
-	event: EventWriter
-	schema: SchemaWriter
-	skill: SkillGenerator
-	test: TestGenerator
-	node: NodeWriter
-	vscode: VsCodeWriter
-	conversation: ConversationWriter
-	deploy: DeployWriter
-	sandbox: SandboxWriter
-	store: StoreWriter
-	view: ViewWriter
-	log: LogWriter
-	polish: PolishWriter
-	permission: PermissionWriter
+    error: ErrorWriter
+    event: EventWriter
+    schema: SchemaWriter
+    skill: SkillGenerator
+    test: TestGenerator
+    node: NodeWriter
+    vscode: VsCodeWriter
+    conversation: ConversationWriter
+    deploy: DeployWriter
+    sandbox: SandboxWriter
+    store: StoreWriter
+    view: ViewWriter
+    log: LogWriter
+    polish: PolishWriter
+    permission: PermissionWriter
 }
 
 export type WriterCode = keyof WriterMap

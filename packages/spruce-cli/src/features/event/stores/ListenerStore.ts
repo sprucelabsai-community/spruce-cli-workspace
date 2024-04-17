@@ -5,30 +5,30 @@ import { ListenerTemplateItem } from '@sprucelabs/spruce-templates'
 import AbstractStore from '../../../stores/AbstractStore'
 
 export type Listener = ListenerTemplateItem & {
-	path: string
+    path: string
 }
 
 export default class ListenerStore extends AbstractStore {
-	public name = 'listener'
+    public name = 'listener'
 
-	public async loadListeners() {
-		const matches = await globby(this.generateGlobbyPattern())
+    public async loadListeners() {
+        const matches = await globby(this.generateGlobbyPattern())
 
-		const listeners: Listener[] = []
+        const listeners: Listener[] = []
 
-		for (const match of matches) {
-			const listener = eventDiskUtil.splitPathToListener(match)
+        for (const match of matches) {
+            const listener = eventDiskUtil.splitPathToListener(match)
 
-			listeners.push({
-				...listener,
-				path: match,
-			})
-		}
+            listeners.push({
+                ...listener,
+                path: match,
+            })
+        }
 
-		return listeners
-	}
+        return listeners
+    }
 
-	private generateGlobbyPattern(): string {
-		return diskUtil.resolvePath(this.cwd, 'src', '**/*.listener.ts')
-	}
+    private generateGlobbyPattern(): string {
+        return diskUtil.resolvePath(this.cwd, 'src', '**/*.listener.ts')
+    }
 }

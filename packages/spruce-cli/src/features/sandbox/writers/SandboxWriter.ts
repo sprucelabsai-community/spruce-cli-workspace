@@ -2,11 +2,11 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
 export default class SandboxWriter extends AbstractWriter {
-	public async writeDidBootListener(filepath: string) {
-		const newContents = this.templates.sandboxWillBootListener()
+    public async writeDidBootListener(filepath: string) {
+        const newContents = this.templates.sandboxWillBootListener()
 
-		diskUtil.writeFile(filepath, newContents)
+        diskUtil.writeFile(filepath, newContents)
 
-		await this.lint(filepath)
-	}
+        await this.lint(filepath)
+    }
 }

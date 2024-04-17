@@ -12,11 +12,11 @@ const term = new TerminalInterface(__dirname)
 const dir = testUtil.resolveTestDir()
 
 if (process.env.CLEAN_CACHE_SCRIPT) {
-	term.renderHeadline('Running CLEAN_CACHE_SCRIPT')
-	execSync(process.env.CLEAN_CACHE_SCRIPT)
+    term.renderHeadline('Running CLEAN_CACHE_SCRIPT')
+    execSync(process.env.CLEAN_CACHE_SCRIPT)
 } else {
-	term.renderHeadline(`Clearing test cache at ${dir}.`)
-	diskUtil.deleteDir(dir)
+    term.renderHeadline(`Clearing test cache at ${dir}.`)
+    diskUtil.deleteDir(dir)
 }
 
 term.renderLine('Test cache cleared!', [GraphicsTextEffect.Green])

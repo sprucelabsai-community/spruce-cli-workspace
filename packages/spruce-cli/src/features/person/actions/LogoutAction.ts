@@ -4,35 +4,35 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
-	id: 'logoutAction',
-	description: 'Logout as a person.',
-	fields: {},
+    id: 'logoutAction',
+    description: 'Logout as a person.',
+    fields: {},
 })
 type OptionsSchema = typeof optionsSchema
 
 export default class LogoutAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema: OptionsSchema = optionsSchema
-	public commandAliases = ['logout']
-	public invocationMessage = 'Logging out... 🤝'
+    public optionsSchema: OptionsSchema = optionsSchema
+    public commandAliases = ['logout']
+    public invocationMessage = 'Logging out... 🤝'
 
-	public async execute(): Promise<FeatureActionResponse> {
-		const auth = this.Service('auth')
-		const person = auth.getLoggedInPerson()
+    public async execute(): Promise<FeatureActionResponse> {
+        const auth = this.Service('auth')
+        const person = auth.getLoggedInPerson()
 
-		if (!person) {
-			return {
-				errors: [
-					new SpruceError({
-						code: 'NOT_LOGGED_IN',
-					}),
-				],
-			}
-		}
+        if (!person) {
+            return {
+                errors: [
+                    new SpruceError({
+                        code: 'NOT_LOGGED_IN',
+                    }),
+                ],
+            }
+        }
 
-		auth.logOutPerson()
+        auth.logOutPerson()
 
-		return {
-			summaryLines: ['You have been logged out!'],
-		}
-	}
+        return {
+            summaryLines: ['You have been logged out!'],
+        }
+    }
 }

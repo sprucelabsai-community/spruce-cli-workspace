@@ -9,85 +9,85 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 export default class UpgradeAction extends AbstractAction<OptionsSchema> {
-	public invocationMessage = 'Upgrading your skill... 💪'
-	public optionsSchema = upgradeSkillActionSchema
-	public commandAliases = ['upgrade', 'update']
+    public invocationMessage = 'Upgrading your skill... 💪'
+    public optionsSchema = upgradeSkillActionSchema
+    public commandAliases = ['upgrade', 'update']
 
-	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const { upgradeMode } = this.validateAndNormalizeOptions(options)
+    public async execute(options: Options): Promise<FeatureActionResponse> {
+        const { upgradeMode } = this.validateAndNormalizeOptions(options)
 
-		await EsLint9Migrator.Migrator({
-			cwd: this.cwd,
-		}).migrate()
+        await EsLint9Migrator.Migrator({
+            cwd: this.cwd,
+        }).migrate()
 
-		const isInSpruceModule = this.features.isInSpruceModule()
+        const isInSpruceModule = this.features.isInSpruceModule()
 
-		if (isInSpruceModule) {
-			await this.updateScripts({
-				shouldConfirm: upgradeMode !== 'forceEverything',
-			})
-		}
+        if (isInSpruceModule) {
+            await this.updateScripts({
+                shouldConfirm: upgradeMode !== 'forceEverything',
+            })
+        }
 
-		try {
-			const files = isInSpruceModule
-				? await this.Writer('node', {
-						upgradeMode,
-					}).writeNodeModule(this.cwd, {
-						shouldConfirmBeforeWriting: true,
-						shouldWriteIndex: false,
-					})
-				: []
+        try {
+            const files = isInSpruceModule
+                ? await this.Writer('node', {
+                      upgradeMode,
+                  }).writeNodeModule(this.cwd, {
+                      shouldConfirmBeforeWriting: true,
+                      shouldWriteIndex: false,
+                  })
+                : []
 
-			this.ui.clear()
+            this.ui.clear()
 
-			InFlightEntertainment.start([
-				"Let's start the upgrade!",
-				'While things are going, see if you can beat 1k points!',
-				'Go!!!!',
-			])
+            InFlightEntertainment.start([
+                "Let's start the upgrade!",
+                'While things are going, see if you can beat 1k points!',
+                'Go!!!!',
+            ])
 
-			const dependencyResults = await this.reInstallPackageDependencies()
+            const dependencyResults = await this.reInstallPackageDependencies()
 
-			if (isInSpruceModule) {
-				await this.Service('command').execute('yarn fix.lint')
-			}
+            if (isInSpruceModule) {
+                await this.Service('command').execute('yarn fix.lint')
+            }
 
-			return actionUtil.mergeActionResults(dependencyResults, {
-				headline: 'Upgrade',
-				files,
-			})
-		} finally {
-			InFlightEntertainment.stop()
-			this.ui.renderHero('Upgrade')
-		}
-	}
+            return actionUtil.mergeActionResults(dependencyResults, {
+                headline: 'Upgrade',
+                files,
+            })
+        } finally {
+            InFlightEntertainment.stop()
+            this.ui.renderHero('Upgrade')
+        }
+    }
 
-	private async reInstallPackageDependencies() {
-		return this.Action('node', 'updateDependencies').execute({})
-	}
+    private async reInstallPackageDependencies() {
+        return this.Action('node', 'updateDependencies').execute({})
+    }
 
-	private async updateScripts(options: { shouldConfirm: boolean }) {
-		const features = await this.features.getInstalledFeatures()
+    private async updateScripts(options: { shouldConfirm: boolean }) {
+        const features = await this.features.getInstalledFeatures()
 
-		let scripts: Record<string, any> = {}
+        let scripts: Record<string, any> = {}
 
-		for (const feature of features) {
-			scripts = {
-				...scripts,
-				...feature.scripts,
-			}
-		}
+        for (const feature of features) {
+            scripts = {
+                ...scripts,
+                ...feature.scripts,
+            }
+        }
 
-		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
-			latestScripts: scripts,
-		})
+        const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
+            latestScripts: scripts,
+        })
 
-		await scriptUpdater.update({
-			shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
-		})
-	}
+        await scriptUpdater.update({
+            shouldConfirmIfScriptExistsButIsDifferent: options.shouldConfirm,
+        })
+    }
 }
 
 type OptionsSchema =
-	SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
+    SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkillOptionsSchema
 type Options = SchemaValues<OptionsSchema>

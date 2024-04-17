@@ -1,117 +1,117 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, {
-	FeatureDependency,
-	FeatureOptions,
-	InstallResults,
+    FeatureDependency,
+    FeatureOptions,
+    InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 export default class SchemaFeature extends AbstractFeature {
-	public nameReadable = 'Schema'
-	public description = 'Define, validate, and normalize everything.'
-	public dependencies: FeatureDependency[] = [
-		{ code: 'skill', isRequired: false },
-		{ code: 'node', isRequired: true },
-	]
-	public packageDependencies: NpmPackage[] = [
-		{
-			name: '@sprucelabs/schema@latest',
-		},
-		{
-			name: '@sprucelabs/spruce-core-schemas@latest',
-		},
-		{ name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
-		{
-			name: '@sprucelabs/spruce-skill-utils',
-		},
-	]
+    public nameReadable = 'Schema'
+    public description = 'Define, validate, and normalize everything.'
+    public dependencies: FeatureDependency[] = [
+        { code: 'skill', isRequired: false },
+        { code: 'node', isRequired: true },
+    ]
+    public packageDependencies: NpmPackage[] = [
+        {
+            name: '@sprucelabs/schema@latest',
+        },
+        {
+            name: '@sprucelabs/spruce-core-schemas@latest',
+        },
+        { name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
+        {
+            name: '@sprucelabs/spruce-skill-utils',
+        },
+    ]
 
-	public code: FeatureCode = 'schema'
+    public code: FeatureCode = 'schema'
 
-	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+    public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public constructor(options: FeatureOptions) {
-		super(options)
+    public constructor(options: FeatureOptions) {
+        super(options)
 
-		void this.emitter.on(
-			'feature.will-execute',
-			this.handleWillExecute.bind(this)
-		)
+        void this.emitter.on(
+            'feature.will-execute',
+            this.handleWillExecute.bind(this)
+        )
 
-		void this.emitter.on(
-			'feature.did-execute',
-			this.handleDidExecute.bind(this)
-		)
-	}
+        void this.emitter.on(
+            'feature.did-execute',
+            this.handleDidExecute.bind(this)
+        )
+    }
 
-	private async handleWillExecute(payload: {
-		actionCode: string
-		featureCode: string
-	}) {
-		const isInstalled = await this.features.isInstalled('schema')
-		const isSkillInstalled = await this.features.isInstalled('skill')
+    private async handleWillExecute(payload: {
+        actionCode: string
+        featureCode: string
+    }) {
+        const isInstalled = await this.features.isInstalled('schema')
+        const isSkillInstalled = await this.features.isInstalled('skill')
 
-		if (
-			payload.featureCode === 'node' &&
-			payload.actionCode === 'upgrade' &&
-			isInstalled &&
-			isSkillInstalled
-		) {
-			const files = await this.writePlugin()
-			return { files }
-		}
+        if (
+            payload.featureCode === 'node' &&
+            payload.actionCode === 'upgrade' &&
+            isInstalled &&
+            isSkillInstalled
+        ) {
+            const files = await this.writePlugin()
+            return { files }
+        }
 
-		return {}
-	}
+        return {}
+    }
 
-	private async handleDidExecute(payload: {
-		actionCode: string
-		featureCode: string
-	}) {
-		const isInstalled = await this.features.isInstalled('schema')
+    private async handleDidExecute(payload: {
+        actionCode: string
+        featureCode: string
+    }) {
+        const isInstalled = await this.features.isInstalled('schema')
 
-		if (
-			payload.featureCode === 'node' &&
-			payload.actionCode === 'upgrade' &&
-			isInstalled
-		) {
-			const hasLocalSchemas = await this.Store('schema').hasLocalSchemas()
-			if (hasLocalSchemas) {
-				const results = await this.Action('schema', 'sync').execute({})
+        if (
+            payload.featureCode === 'node' &&
+            payload.actionCode === 'upgrade' &&
+            isInstalled
+        ) {
+            const hasLocalSchemas = await this.Store('schema').hasLocalSchemas()
+            if (hasLocalSchemas) {
+                const results = await this.Action('schema', 'sync').execute({})
 
-				return results
-			}
-		}
+                return results
+            }
+        }
 
-		return {}
-	}
+        return {}
+    }
 
-	public async afterPackageInstall(): Promise<InstallResults> {
-		const isSkillInstalled = await this.features.isInstalled('skill')
+    public async afterPackageInstall(): Promise<InstallResults> {
+        const isSkillInstalled = await this.features.isInstalled('skill')
 
-		if (!isSkillInstalled) {
-			return {}
-		}
+        if (!isSkillInstalled) {
+            return {}
+        }
 
-		const files = await this.writePlugin()
+        const files = await this.writePlugin()
 
-		return {
-			files,
-		}
-	}
+        return {
+            files,
+        }
+    }
 
-	private async writePlugin() {
-		return this.Writer('schema').writePlugin(this.cwd)
-	}
+    private async writePlugin() {
+        return this.Writer('schema').writePlugin(this.cwd)
+    }
 }
 
 declare module '../../features/features.types' {
-	interface FeatureMap {
-		schema: SchemaFeature
-	}
+    interface FeatureMap {
+        schema: SchemaFeature
+    }
 
-	interface FeatureOptionsMap {
-		schema: undefined
-	}
+    interface FeatureOptionsMap {
+        schema: undefined
+    }
 }

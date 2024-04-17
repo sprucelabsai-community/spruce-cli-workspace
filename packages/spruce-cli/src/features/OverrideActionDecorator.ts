@@ -6,142 +6,144 @@ import AbstractFeature from './AbstractFeature'
 import featuresUtil from './feature.utilities'
 
 const methodDelegator = {
-	getAllFuncs(toCheck: any) {
-		const props = []
-		let obj = toCheck
-		do {
-			props.push(...Object.getOwnPropertyNames(obj))
-		} while ((obj = Object.getPrototypeOf(obj)))
+    getAllFuncs(toCheck: any) {
+        const props = []
+        let obj = toCheck
+        do {
+            props.push(...Object.getOwnPropertyNames(obj))
+        } while ((obj = Object.getPrototypeOf(obj)))
 
-		return props.sort().filter((e: any, i: any, arr: any) => {
-			return e != arr[i + 1] && typeof toCheck[e] == 'function'
-		})
-	},
+        return props.sort().filter((e: any, i: any, arr: any) => {
+            return e != arr[i + 1] && typeof toCheck[e] == 'function'
+        })
+    },
 
-	delegateFunctionCalls(from: any, to: any) {
-		const props = this.getAllFuncs(to)
-		for (const prop of props) {
-			//@ts-ignore
-			if (!from[prop]) {
-				//@ts-ignore
-				from[prop] = (...args: []) => {
-					//@ts-ignore
-					return to[prop](...args)
-				}
-			}
-		}
-	},
+    delegateFunctionCalls(from: any, to: any) {
+        const props = this.getAllFuncs(to)
+        for (const prop of props) {
+            //@ts-ignore
+            if (!from[prop]) {
+                //@ts-ignore
+                from[prop] = (...args: []) => {
+                    //@ts-ignore
+                    return to[prop](...args)
+                }
+            }
+        }
+    },
 }
 
 export default class OverrideActionDecorator implements FeatureAction {
-	private blockedCommands?: BlockedCommands
-	private optionOverrides?: OptionOverrides
-	private ui?: GraphicsInterface
-	private actionCode: string
+    private blockedCommands?: BlockedCommands
+    private optionOverrides?: OptionOverrides
+    private ui?: GraphicsInterface
+    private actionCode: string
 
-	public get invocationMessage() {
-		return this.childAction.invocationMessage
-	}
+    public get invocationMessage() {
+        return this.childAction.invocationMessage
+    }
 
-	public get commandAliases() {
-		return this.childAction.commandAliases
-	}
+    public get commandAliases() {
+        return this.childAction.commandAliases
+    }
 
-	private childAction: FeatureAction
-	private parent: AbstractFeature
+    private childAction: FeatureAction
+    private parent: AbstractFeature
 
-	public get optionsSchema() {
-		return this.childAction.optionsSchema
-	}
+    public get optionsSchema() {
+        return this.childAction.optionsSchema
+    }
 
-	public getChild() {
-		return this.childAction
-	}
+    public getChild() {
+        return this.childAction
+    }
 
-	public constructor(options: {
-		action: FeatureAction
-		feature: AbstractFeature
-		ui?: GraphicsInterface
-		blockedCommands?: BlockedCommands
-		optionOverrides?: OptionOverrides
-		actionCode: string
-	}) {
-		const {
-			action,
-			feature,
-			ui,
-			blockedCommands,
-			optionOverrides,
-			actionCode,
-		} = options
+    public constructor(options: {
+        action: FeatureAction
+        feature: AbstractFeature
+        ui?: GraphicsInterface
+        blockedCommands?: BlockedCommands
+        optionOverrides?: OptionOverrides
+        actionCode: string
+    }) {
+        const {
+            action,
+            feature,
+            ui,
+            blockedCommands,
+            optionOverrides,
+            actionCode,
+        } = options
 
-		if (!action || !action.execute) {
-			throw new SpruceError({
-				code: 'GENERIC',
-				friendlyMessage: `${feature.nameReadable} failed to load action.`,
-			})
-		}
+        if (!action || !action.execute) {
+            throw new SpruceError({
+                code: 'GENERIC',
+                friendlyMessage: `${feature.nameReadable} failed to load action.`,
+            })
+        }
 
-		this.childAction = action
-		this.parent = feature
-		this.blockedCommands = blockedCommands
-		this.optionOverrides = optionOverrides
-		this.ui = ui
-		this.actionCode = actionCode
+        this.childAction = action
+        this.parent = feature
+        this.blockedCommands = blockedCommands
+        this.optionOverrides = optionOverrides
+        this.ui = ui
+        this.actionCode = actionCode
 
-		methodDelegator.delegateFunctionCalls(this, action)
-	}
+        methodDelegator.delegateFunctionCalls(this, action)
+    }
 
-	private assertCommandIsNotBlocked() {
-		const commands = this.getCommands()
+    private assertCommandIsNotBlocked() {
+        const commands = this.getCommands()
 
-		for (const commandStr of commands) {
-			if (this.blockedCommands?.[commandStr]) {
-				throw new SpruceError({
-					code: 'COMMAND_BLOCKED',
-					command: commandStr,
-					hint: this.blockedCommands[commandStr],
-				})
-			}
-		}
-	}
+        for (const commandStr of commands) {
+            if (this.blockedCommands?.[commandStr]) {
+                throw new SpruceError({
+                    code: 'COMMAND_BLOCKED',
+                    command: commandStr,
+                    hint: this.blockedCommands[commandStr],
+                })
+            }
+        }
+    }
 
-	public execute = async (optionsArg: any) => {
-		this.assertCommandIsNotBlocked()
+    public execute = async (optionsArg: any) => {
+        this.assertCommandIsNotBlocked()
 
-		const options = this.mixinOptionOverrides(optionsArg)
-		const response = await this.childAction.execute(options)
+        const options = this.mixinOptionOverrides(optionsArg)
+        const response = await this.childAction.execute(options)
 
-		return response
-	}
+        return response
+    }
 
-	private getCommands() {
-		return featuresUtil.generateCommandsIncludingAliases(
-			this.parent.code,
-			this.actionCode,
-			this
-		)
-	}
+    private getCommands() {
+        return featuresUtil.generateCommandsIncludingAliases(
+            this.parent.code,
+            this.actionCode,
+            this
+        )
+    }
 
-	private mixinOptionOverrides(optionsArgs: any) {
-		let { ...options } = optionsArgs
+    private mixinOptionOverrides(optionsArgs: any) {
+        let { ...options } = optionsArgs
 
-		const commands = this.getCommands()
-		const pkg = this.parent.Service('pkg')
-		const namespace = pkg.getSkillNamespace()
+        const commands = this.getCommands()
+        const pkg = this.parent.Service('pkg')
+        const namespace = pkg.getSkillNamespace()
 
-		for (const commandStr of commands) {
-			const overrides = this.optionOverrides?.[commandStr]
-			if (overrides) {
-				this.ui?.renderLine(`Overrides found in package.json of ${namespace}.`)
-				this.ui?.renderObject(overrides)
-				options = {
-					...options,
-					...overrides,
-				}
-			}
-		}
+        for (const commandStr of commands) {
+            const overrides = this.optionOverrides?.[commandStr]
+            if (overrides) {
+                this.ui?.renderLine(
+                    `Overrides found in package.json of ${namespace}.`
+                )
+                this.ui?.renderObject(overrides)
+                options = {
+                    ...options,
+                    ...overrides,
+                }
+            }
+        }
 
-		return options
-	}
+        return options
+    }
 }

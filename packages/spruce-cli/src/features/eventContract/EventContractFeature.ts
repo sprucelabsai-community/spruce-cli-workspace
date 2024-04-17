@@ -4,21 +4,21 @@ import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
-	interface FeatureMap {
-		eventContract: EventContractFeature
-	}
+    interface FeatureMap {
+        eventContract: EventContractFeature
+    }
 }
 
 export default class EventContractFeature extends AbstractFeature {
-	public code: FeatureCode = 'eventContract'
-	public nameReadable = 'Event Contract'
-	public description =
-		'Pull core Mercury events down and write to single, portable, dependency-free, strongly typed contract.'
-	public dependencies: FeatureDependency[] = []
-	public packageDependencies = []
+    public code: FeatureCode = 'eventContract'
+    public nameReadable = 'Event Contract'
+    public description =
+        'Pull core Mercury events down and write to single, portable, dependency-free, strongly typed contract.'
+    public dependencies: FeatureDependency[] = []
+    public packageDependencies = []
 
-	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
-	public readonly fileDescriptions: FileDescription[] = []
+    public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+    public readonly fileDescriptions: FileDescription[] = []
 
-	public isInstalled = async () => true
+    public isInstalled = async () => true
 }

@@ -56,10 +56,10 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/mercury-types": "^46.0.300",
-    "@sprucelabs/schema": "^29.4.60",
-    "@sprucelabs/spruce-event-utils": "^38.1.42",
-    "@sprucelabs/spruce-skill-utils": "^30.4.29",
+    "@sprucelabs/mercury-types": "^47.0.1",
+    "@sprucelabs/schema": "^30.0.3",
+    "@sprucelabs/spruce-event-utils": "^40.0.1",
+    "@sprucelabs/spruce-skill-utils": "^31.0.2",
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.8",
     "lodash": "^4.17.21",
@@ -68,12 +68,12 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.17.0",
-    "@types/node": "^20.12.4",
+    "@types/node": "^20.12.7",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "conventional-changelog-sprucelabs": "^1.1.2",
+    "conventional-changelog-sprucelabs": "^2.0.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "yarn-upgrade-all": {
     "ignore": []

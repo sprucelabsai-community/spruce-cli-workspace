@@ -11,150 +11,156 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema = createTestActionSchema
-	public invocationMessage = 'Creating a test... 🛡'
+    public optionsSchema = createTestActionSchema
+    public invocationMessage = 'Creating a test... 🛡'
 
-	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const { testDestinationDir, namePascal, nameCamel, type } =
-			normalizedOptions
+    public async execute(options: Options): Promise<FeatureActionResponse> {
+        const normalizedOptions = this.validateAndNormalizeOptions(options)
+        const { testDestinationDir, namePascal, nameCamel, type } =
+            normalizedOptions
 
-		let resolvedDestination = diskUtil.resolvePath(
-			this.cwd,
-			testDestinationDir,
-			type
-		)
+        let resolvedDestination = diskUtil.resolvePath(
+            this.cwd,
+            testDestinationDir,
+            type
+        )
 
-		this.ui.startLoading('Checking potential parent test classes')
+        this.ui.startLoading('Checking potential parent test classes')
 
-		const testFeature = this.parent as TestFeature
+        const testFeature = this.parent as TestFeature
 
-		this.ui.stopLoading()
+        this.ui.stopLoading()
 
-		let parentTestClass:
-			| undefined
-			| { name: string; importPath: string; isDefaultExport: boolean }
+        let parentTestClass:
+            | undefined
+            | { name: string; importPath: string; isDefaultExport: boolean }
 
-		const candidates = await testFeature.buildParentClassCandidates()
+        const candidates = await testFeature.buildParentClassCandidates()
 
-		if (diskUtil.doesDirExist(resolvedDestination)) {
-			resolvedDestination = await this.promptForSubDir(resolvedDestination)
-		}
+        if (diskUtil.doesDirExist(resolvedDestination)) {
+            resolvedDestination =
+                await this.promptForSubDir(resolvedDestination)
+        }
 
-		if (candidates.length > 0) {
-			parentTestClass =
-				await this.promptForParentTestClassAndOptionallyInstallDependencies(
-					candidates,
-					parentTestClass,
-					resolvedDestination
-				)
-		}
+        if (candidates.length > 0) {
+            parentTestClass =
+                await this.promptForParentTestClassAndOptionallyInstallDependencies(
+                    candidates,
+                    parentTestClass,
+                    resolvedDestination
+                )
+        }
 
-		this.ui.startLoading('Generating test file...')
+        this.ui.startLoading('Generating test file...')
 
-		const writer = this.Writer('test')
+        const writer = this.Writer('test')
 
-		const results = await writer.generateTest(resolvedDestination, {
-			...normalizedOptions,
-			type,
-			nameCamel,
-			parentTestClass,
-			namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
-		})
+        const results = await writer.generateTest(resolvedDestination, {
+            ...normalizedOptions,
+            type,
+            nameCamel,
+            parentTestClass,
+            namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
+        })
 
-		return {
-			files: results,
-			hints: ["run `spruce test` in your skill when you're ready!"],
-		}
-	}
-	private async promptForSubDir(resolvedDestination: string) {
-		const match = await this.ui.prompt({
-			type: 'directory',
-			label: 'Where should I write this test?',
-			isRequired: true,
-			defaultValue: {
-				path: diskUtil.resolvePath(resolvedDestination),
-			},
-		})
+        return {
+            files: results,
+            hints: ["run `spruce test` in your skill when you're ready!"],
+        }
+    }
+    private async promptForSubDir(resolvedDestination: string) {
+        const match = await this.ui.prompt({
+            type: 'directory',
+            label: 'Where should I write this test?',
+            isRequired: true,
+            defaultValue: {
+                path: diskUtil.resolvePath(resolvedDestination),
+            },
+        })
 
-		resolvedDestination = diskUtil.resolvePath(resolvedDestination, match.path)
+        resolvedDestination = diskUtil.resolvePath(
+            resolvedDestination,
+            match.path
+        )
 
-		return resolvedDestination
-	}
+        return resolvedDestination
+    }
 
-	private async promptForParentTestClassAndOptionallyInstallDependencies(
-		candidates: ParentClassCandidate[],
-		parentTestClass:
-			| { name: string; importPath: string; isDefaultExport: boolean }
-			| undefined,
-		resolvedDestination: string
-	) {
-		const idx = await this.ui.prompt({
-			type: 'select',
-			isRequired: true,
-			label: 'Which abstract test class do you want to extend?',
-			options: {
-				choices: [
-					{ value: '', label: 'AbstractSpruceTest (default)' },
-					...candidates.map((candidate, idx) => ({
-						value: `${idx}`,
-						label: candidate.label,
-					})),
-				],
-			},
-		})
+    private async promptForParentTestClassAndOptionallyInstallDependencies(
+        candidates: ParentClassCandidate[],
+        parentTestClass:
+            | { name: string; importPath: string; isDefaultExport: boolean }
+            | undefined,
+        resolvedDestination: string
+    ) {
+        const idx = await this.ui.prompt({
+            type: 'select',
+            isRequired: true,
+            label: 'Which abstract test class do you want to extend?',
+            options: {
+                choices: [
+                    { value: '', label: 'AbstractSpruceTest (default)' },
+                    ...candidates.map((candidate, idx) => ({
+                        value: `${idx}`,
+                        label: candidate.label,
+                    })),
+                ],
+            },
+        })
 
-		if (idx !== '' && candidates[+idx]) {
-			const match = candidates[+idx]
+        if (idx !== '' && candidates[+idx]) {
+            const match = candidates[+idx]
 
-			if (match) {
-				await this.optionallyInstallFeatureBasedOnSelection(match)
+            if (match) {
+                await this.optionallyInstallFeatureBasedOnSelection(match)
 
-				parentTestClass = this.buildParentClassFromCandidate(
-					match,
-					resolvedDestination
-				)
-			}
-		}
-		return parentTestClass
-	}
+                parentTestClass = this.buildParentClassFromCandidate(
+                    match,
+                    resolvedDestination
+                )
+            }
+        }
+        return parentTestClass
+    }
 
-	private async optionallyInstallFeatureBasedOnSelection(
-		match: ParentClassCandidate
-	) {
-		if (match.featureCode) {
-			const isInstalled = await this.features.isInstalled(match.featureCode)
+    private async optionallyInstallFeatureBasedOnSelection(
+        match: ParentClassCandidate
+    ) {
+        if (match.featureCode) {
+            const isInstalled = await this.features.isInstalled(
+                match.featureCode
+            )
 
-			if (!isInstalled) {
-				this.ui.startLoading(`Installing ${match.name}...`)
-				await this.features.install({
-					features: [{ code: match.featureCode as any }],
-				})
-				this.ui.stopLoading()
-			}
-		}
-	}
+            if (!isInstalled) {
+                this.ui.startLoading(`Installing ${match.name}...`)
+                await this.features.install({
+                    features: [{ code: match.featureCode as any }],
+                })
+                this.ui.stopLoading()
+            }
+        }
+    }
 
-	private buildParentClassFromCandidate(
-		match: ParentClassCandidate,
-		resolvedDestination: string
-	): {
-		name: string
-		label: string
-		importPath: string
-		isDefaultExport: boolean
-	} {
-		return {
-			name: match.name,
-			label: match.label,
-			isDefaultExport: match.isDefaultExport,
-			importPath:
-				match.import ??
-				diskUtil.resolveRelativePath(
-					resolvedDestination,
-					//@ts-ignore
-					match.path.replace(pathUtil.extname(match.path), '')
-				),
-		}
-	}
+    private buildParentClassFromCandidate(
+        match: ParentClassCandidate,
+        resolvedDestination: string
+    ): {
+        name: string
+        label: string
+        importPath: string
+        isDefaultExport: boolean
+    } {
+        return {
+            name: match.name,
+            label: match.label,
+            isDefaultExport: match.isDefaultExport,
+            importPath:
+                match.import ??
+                diskUtil.resolveRelativePath(
+                    resolvedDestination,
+                    //@ts-ignore
+                    match.path.replace(pathUtil.extname(match.path), '')
+                ),
+        }
+    }
 }

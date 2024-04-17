@@ -1,8 +1,8 @@
 import { buildSchema } from '@sprucelabs/schema'
 
 const registerSkillViewsResponsePayloadBuilder = buildSchema({
-	id: 'registerSkillViewsResponsePayload',
-	fields: {},
+    id: 'registerSkillViewsResponsePayload',
+    fields: {},
 })
 
 export default registerSkillViewsResponsePayloadBuilder

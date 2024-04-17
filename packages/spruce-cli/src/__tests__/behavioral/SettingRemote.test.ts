@@ -1,8 +1,8 @@
 import {
-	REMOTE_DEV,
-	REMOTE_LOCAL,
-	REMOTE_PROD,
-	REMOTE_SANDBOX,
+    REMOTE_DEV,
+    REMOTE_LOCAL,
+    REMOTE_PROD,
+    REMOTE_SANDBOX,
 } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { FeatureCode } from '../../features/features.types'
@@ -10,75 +10,75 @@ import TerminalInterface from '../../interfaces/TerminalInterface'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
 export default class SettingRemoteTest extends AbstractSkillTest {
-	protected static skillCacheKey = 'events'
+    protected static skillCacheKey = 'events'
 
-	@test()
-	protected static async hasSetRemoteAction() {
-		assert.isFunction(this.Action('event', 'setRemote').execute)
-	}
+    @test()
+    protected static async hasSetRemoteAction() {
+        assert.isFunction(this.Action('event', 'setRemote').execute)
+    }
 
-	@test(`saves local as ${REMOTE_LOCAL}`, `local`, `${REMOTE_LOCAL}`)
-	@test(`saves dev as ${REMOTE_DEV}`, `developer`, `${REMOTE_DEV}`)
-	@test(`saves sandbox as ${REMOTE_SANDBOX}`, `sandbox`, `${REMOTE_SANDBOX}`)
-	@test(`saves prod as ${REMOTE_PROD}`, `production`, `${REMOTE_PROD}`)
-	protected static async savesRemote(remote: string, expected: string) {
-		await this.Action('event', 'setRemote').execute({ remote })
+    @test(`saves local as ${REMOTE_LOCAL}`, `local`, `${REMOTE_LOCAL}`)
+    @test(`saves dev as ${REMOTE_DEV}`, `developer`, `${REMOTE_DEV}`)
+    @test(`saves sandbox as ${REMOTE_SANDBOX}`, `sandbox`, `${REMOTE_SANDBOX}`)
+    @test(`saves prod as ${REMOTE_PROD}`, `production`, `${REMOTE_PROD}`)
+    protected static async savesRemote(remote: string, expected: string) {
+        await this.Action('event', 'setRemote').execute({ remote })
 
-		const env = this.Service('env')
-		const host = env.get('HOST')
+        const env = this.Service('env')
+        const host = env.get('HOST')
 
-		assert.isEqual(host, expected)
-	}
+        assert.isEqual(host, expected)
+    }
 
-	@test('create.event asks for remote on IS TTY', 'event', 'create')
-	@test('sync.events asks for remote on IS TTY', 'event', 'sync')
-	@test('login asks for remote on IS TTY', 'person', 'login')
-	@test('login.skill asks for remote on IS TTY', 'skill', 'login')
-	protected static async shouldAskForRemoteBeforeEventActionIsInvokedIfTerminalSupportsIt(
-		feature: FeatureCode,
-		action: string
-	) {
-		TerminalInterface.setDoesSupportColor(true)
+    @test('create.event asks for remote on IS TTY', 'event', 'create')
+    @test('sync.events asks for remote on IS TTY', 'event', 'sync')
+    @test('login asks for remote on IS TTY', 'person', 'login')
+    @test('login.skill asks for remote on IS TTY', 'skill', 'login')
+    protected static async shouldAskForRemoteBeforeEventActionIsInvokedIfTerminalSupportsIt(
+        feature: FeatureCode,
+        action: string
+    ) {
+        TerminalInterface.setDoesSupportColor(true)
 
-		const env = this.Service('env')
-		env.unset('HOST')
+        const env = this.Service('env')
+        env.unset('HOST')
 
-		void this.Action(feature, action, {
-			shouldAutoHandleDependencies: true,
-		}).execute({})
+        void this.Action(feature, action, {
+            shouldAutoHandleDependencies: true,
+        }).execute({})
 
-		await this.waitForInput()
+        await this.waitForInput()
 
-		const last = this.ui.getLastInvocation()
+        const last = this.ui.getLastInvocation()
 
-		assert.doesInclude(last.options.label, 'remote')
+        assert.doesInclude(last.options.label, 'remote')
 
-		this.ui.reset()
-	}
+        this.ui.reset()
+    }
 
-	@test('create.event throws for remote on NOT TTY', 'create', false)
-	@test('sync.events throws for remote on NOT TTY', 'sync', false)
-	protected static async shouldThrowBeforeEventActionIsInvokedIfTerminalSupportsIt(
-		action: string
-	) {
-		TerminalInterface.setDoesSupportColor(false)
-		const env = this.Service('env')
-		env.unset('HOST')
+    @test('create.event throws for remote on NOT TTY', 'create', false)
+    @test('sync.events throws for remote on NOT TTY', 'sync', false)
+    protected static async shouldThrowBeforeEventActionIsInvokedIfTerminalSupportsIt(
+        action: string
+    ) {
+        TerminalInterface.setDoesSupportColor(false)
+        const env = this.Service('env')
+        env.unset('HOST')
 
-		const results = await this.Action('event', action, {
-			shouldThrowOnListenerError: false,
-		}).execute({})
+        const results = await this.Action('event', action, {
+            shouldThrowOnListenerError: false,
+        }).execute({})
 
-		assert.isTruthy(results.errors)
-		assert.doesInclude(results.errors[0].stack, 'env.HOST')
-	}
+        assert.isTruthy(results.errors)
+        assert.doesInclude(results.errors[0].stack, 'env.HOST')
+    }
 
-	@test()
-	protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
-		this.Service('remote').set('developer')
-		const results = await this.Action('event', 'sync').execute({})
+    @test()
+    protected static async resultsOfCommandHasRemoteMixedIntoSummary() {
+        this.Service('remote').set('developer')
+        const results = await this.Action('event', 'sync').execute({})
 
-		assert.isTruthy(results.summaryLines)
-		assert.doesInclude(results.summaryLines, 'Remote: dev')
-	}
+        assert.isTruthy(results.summaryLines)
+        assert.doesInclude(results.summaryLines, 'Remote: dev')
+    }
 }

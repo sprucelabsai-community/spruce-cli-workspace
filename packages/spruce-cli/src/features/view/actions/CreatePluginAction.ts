@@ -6,49 +6,49 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 export default class CreatePluginAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema = optionsSchema
-	public invocationMessage = 'Creating a new view plugin... 🖼️'
-	public commandAliases: string[] = ['create.view.plugin']
+    public optionsSchema = optionsSchema
+    public invocationMessage = 'Creating a new view plugin... 🖼️'
+    public commandAliases: string[] = ['create.view.plugin']
 
-	public async execute(
-		options: SchemaValues<OptionsSchema>
-	): Promise<FeatureActionResponse> {
-		const { nameReadable, nameCamel, namePascal } =
-			this.validateAndNormalizeOptions(options)
+    public async execute(
+        options: SchemaValues<OptionsSchema>
+    ): Promise<FeatureActionResponse> {
+        const { nameReadable, nameCamel, namePascal } =
+            this.validateAndNormalizeOptions(options)
 
-		const normalizedNameCamel = nameCamel ?? namesUtil.toCamel(nameReadable)
-		const normalizedNamePascal =
-			namePascal ?? namesUtil.toPascal(normalizedNameCamel)
+        const normalizedNameCamel = nameCamel ?? namesUtil.toCamel(nameReadable)
+        const normalizedNamePascal =
+            namePascal ?? namesUtil.toPascal(normalizedNameCamel)
 
-		const writer = this.Writer('view')
-		const files = await writer.writeViewControllerPlugin({
-			cwd: this.cwd,
-			nameCamel: normalizedNameCamel,
-			namePascal: normalizedNamePascal,
-		})
+        const writer = this.Writer('view')
+        const files = await writer.writeViewControllerPlugin({
+            cwd: this.cwd,
+            nameCamel: normalizedNameCamel,
+            namePascal: normalizedNamePascal,
+        })
 
-		const sync = await this.Action('view', 'sync').execute({})
+        const sync = await this.Action('view', 'sync').execute({})
 
-		return actionUtil.mergeActionResults({ files }, sync)
-	}
+        return actionUtil.mergeActionResults({ files }, sync)
+    }
 }
 
 const optionsSchema = buildSchema({
-	id: 'createViewPluginOptions',
-	fields: {
-		nameReadable: {
-			...namedTemplateItemBuilder.fields.nameReadable,
-			label: 'Plugin name',
-		},
-		nameCamel: {
-			...namedTemplateItemBuilder.fields.nameCamel,
-			isRequired: false,
-		},
-		namePascal: {
-			...namedTemplateItemBuilder.fields.namePascal,
-			isRequired: false,
-		},
-	},
+    id: 'createViewPluginOptions',
+    fields: {
+        nameReadable: {
+            ...namedTemplateItemBuilder.fields.nameReadable,
+            label: 'Plugin name',
+        },
+        nameCamel: {
+            ...namedTemplateItemBuilder.fields.nameCamel,
+            isRequired: false,
+        },
+        namePascal: {
+            ...namedTemplateItemBuilder.fields.namePascal,
+            isRequired: false,
+        },
+    },
 })
 
 type OptionsSchema = typeof optionsSchema

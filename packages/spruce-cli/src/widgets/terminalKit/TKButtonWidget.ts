@@ -5,52 +5,52 @@ import TkBaseWidget, { TkWidgetOptions } from './TkBaseWidget'
 const termKit = terminal_kit as any
 
 export default class TKButtonWidget
-	extends TkBaseWidget
-	implements ButtonWidget
+    extends TkBaseWidget
+    implements ButtonWidget
 {
-	private button: any
+    private button: any
 
-	public readonly type = 'button'
+    public readonly type = 'button'
 
-	public constructor(
-		options: TkWidgetOptions & ButtonWidgetOptions & { termKitElement: any }
-	) {
-		super({
-			// shouldLockHeightWithParent: true,
-			// shouldLockWidthWithParent: true,
-			...options,
-		})
+    public constructor(
+        options: TkWidgetOptions & ButtonWidgetOptions & { termKitElement: any }
+    ) {
+        super({
+            // shouldLockHeightWithParent: true,
+            // shouldLockWidthWithParent: true,
+            ...options,
+        })
 
-		const { parent, text, ...rest } = options
+        const { parent, text, ...rest } = options
 
-		const frame = termKitUtil.buildFrame(options, parent)
+        const frame = termKitUtil.buildFrame(options, parent)
 
-		this.button = new termKit.Button({
-			parent: parent ? parent.getTermKitElement() : undefined,
-			content: text,
-			...rest,
-			...frame,
-		})
+        this.button = new termKit.Button({
+            parent: parent ? parent.getTermKitElement() : undefined,
+            content: text,
+            ...rest,
+            ...frame,
+        })
 
-		this.button.on('submit', this.handleClick.bind(this))
-		this.button.__widget = this
+        this.button.on('submit', this.handleClick.bind(this))
+        this.button.__widget = this
 
-		this.calculateSizeLockDeltas()
-	}
+        this.calculateSizeLockDeltas()
+    }
 
-	private handleClick() {
-		void (this as ButtonWidget).emit('click')
-	}
+    private handleClick() {
+        void (this as ButtonWidget).emit('click')
+    }
 
-	public getText(): string {
-		throw new Error('Method not implemented.')
-	}
+    public getText(): string {
+        throw new Error('Method not implemented.')
+    }
 
-	public setText(text: string): void {
-		this.button.setContent(text)
-	}
+    public setText(text: string): void {
+        this.button.setContent(text)
+    }
 
-	public getTermKitElement() {
-		return this.button
-	}
+    public getTermKitElement() {
+        return this.button
+    }
 }

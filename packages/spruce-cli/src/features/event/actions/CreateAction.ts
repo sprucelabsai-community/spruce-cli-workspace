@@ -1,7 +1,7 @@
 import {
-	buildSchema,
-	normalizeSchemaValues,
-	SchemaValues,
+    buildSchema,
+    normalizeSchemaValues,
+    SchemaValues,
 } from '@sprucelabs/schema'
 import { eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
@@ -13,99 +13,106 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
-	id: 'createEventAction',
-	description:
-		"Create a new event and I'll register it with Mercury when you boot the skill!",
-	fields: {
-		nameReadable: {
-			...namedTemplateItemSchema.fields.nameReadable,
-			isRequired: true,
-		},
-		nameKebab: {
-			...namedTemplateItemSchema.fields.nameKebab,
-			label: 'Event name',
-			hint: `kebab-case`,
-			isRequired: true,
-		},
-		nameCamel: {
-			...namedTemplateItemSchema.fields.nameCamel,
-			isRequired: true,
-		},
-		isGlobal: {
-			type: 'boolean',
-			label: 'Is this a global event?',
-			hint: "This will allow skills to listen without being installed at the same organization. You'll need permission to make this happen.",
-		},
-		version: {
-			type: 'text',
-			label: 'Version',
-			isPrivate: true,
-		},
-		...syncEventActionSchema.fields,
-	},
+    id: 'createEventAction',
+    description:
+        "Create a new event and I'll register it with Mercury when you boot the skill!",
+    fields: {
+        nameReadable: {
+            ...namedTemplateItemSchema.fields.nameReadable,
+            isRequired: true,
+        },
+        nameKebab: {
+            ...namedTemplateItemSchema.fields.nameKebab,
+            label: 'Event name',
+            hint: `kebab-case`,
+            isRequired: true,
+        },
+        nameCamel: {
+            ...namedTemplateItemSchema.fields.nameCamel,
+            isRequired: true,
+        },
+        isGlobal: {
+            type: 'boolean',
+            label: 'Is this a global event?',
+            hint: "This will allow skills to listen without being installed at the same organization. You'll need permission to make this happen.",
+        },
+        version: {
+            type: 'text',
+            label: 'Version',
+            isPrivate: true,
+        },
+        ...syncEventActionSchema.fields,
+    },
 })
 
 type OptionsSchema = typeof optionsSchema
 
 export default class CreateAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema: OptionsSchema = optionsSchema
-	public invocationMessage = 'Creating a new event signature... 🜒'
+    public optionsSchema: OptionsSchema = optionsSchema
+    public invocationMessage = 'Creating a new event signature... 🜒'
 
-	public async execute(
-		options: SchemaValues<OptionsSchema>
-	): Promise<FeatureActionResponse> {
-		let { nameKebab, nameReadable, nameCamel, version, isGlobal } =
-			this.validateAndNormalizeOptions(options)
+    public async execute(
+        options: SchemaValues<OptionsSchema>
+    ): Promise<FeatureActionResponse> {
+        let { nameKebab, nameReadable, nameCamel, version, isGlobal } =
+            this.validateAndNormalizeOptions(options)
 
-		const skill = await this.Store('skill').loadCurrentSkill()
+        const skill = await this.Store('skill').loadCurrentSkill()
 
-		if (!skill.id || !skill.slug) {
-			return {
-				errors: [new SpruceError({ code: 'SKILL_NOT_REGISTERED' })],
-			}
-		}
+        if (!skill.id || !skill.slug) {
+            return {
+                errors: [new SpruceError({ code: 'SKILL_NOT_REGISTERED' })],
+            }
+        }
 
-		try {
-			const destinationDir = diskUtil.resolvePath(this.cwd, 'src', 'events')
-			const resolvedVersion = await this.resolveVersion(
-				version,
-				diskUtil.resolvePath(destinationDir, '**', '*')
-			)
+        try {
+            const destinationDir = diskUtil.resolvePath(
+                this.cwd,
+                'src',
+                'events'
+            )
+            const resolvedVersion = await this.resolveVersion(
+                version,
+                diskUtil.resolvePath(destinationDir, '**', '*')
+            )
 
-			const files = await this.Writer('event').writeEvent(destinationDir, {
-				nameKebab,
-				nameCamel,
-				version: resolvedVersion,
-				nameReadable,
-				isGlobal,
-			})
+            const files = await this.Writer('event').writeEvent(
+                destinationDir,
+                {
+                    nameKebab,
+                    nameCamel,
+                    version: resolvedVersion,
+                    nameReadable,
+                    isGlobal,
+                }
+            )
 
-			const syncOptions = normalizeSchemaValues(
-				syncEventActionSchema,
-				options,
-				{
-					shouldIncludePrivateFields: true,
-				}
-			)
+            const syncOptions = normalizeSchemaValues(
+                syncEventActionSchema,
+                options,
+                {
+                    shouldIncludePrivateFields: true,
+                }
+            )
 
-			const syncResponse = await this.Action('event', 'sync').execute(
-				syncOptions
-			)
+            const syncResponse = await this.Action('event', 'sync').execute(
+                syncOptions
+            )
 
-			const fqen = eventNameUtil.join({
-				eventName: nameKebab,
-				eventNamespace: skill.slug,
-				version: resolvedVersion,
-			})
+            const fqen = eventNameUtil.join({
+                eventName: nameKebab,
+                eventNamespace: skill.slug,
+                version: resolvedVersion,
+            })
 
-			return actionUtil.mergeActionResults(
-				{ files, meta: { fqen } },
-				syncResponse
-			)
-		} catch (err: any) {
-			return {
-				errors: [err],
-			}
-		}
-	}
+            return actionUtil.mergeActionResults(
+                { files, meta: { fqen } },
+                syncResponse
+            )
+        } catch (err: any) {
+            return {
+                errors: [err],
+            }
+        }
+    }
 }

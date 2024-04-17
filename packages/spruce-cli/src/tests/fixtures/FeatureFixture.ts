@@ -5,284 +5,290 @@ import FeatureInstaller from '../../features/FeatureInstaller'
 import { InstallFeature } from '../../features/features.types'
 import { GlobalEmitter } from '../../GlobalEmitter'
 import ServiceFactory, {
-	ServiceProvider,
-	Service,
-	ServiceMap,
+    ServiceProvider,
+    Service,
+    ServiceMap,
 } from '../../services/ServiceFactory'
 import { ApiClientFactory } from '../../types/apiClient.types'
 import {
-	CliBootOptions,
-	CliInterface,
-	GraphicsInterface,
+    CliBootOptions,
+    CliInterface,
+    GraphicsInterface,
 } from '../../types/cli.types'
 import testUtil from '../utilities/test.utility'
 
 export default class FeatureFixture implements ServiceProvider {
-	private cwd: string
-	private installedSkills: Record<string, CachedCli> = {}
-	private serviceFactory: ServiceFactory
-	private static linkedUtils = false
-	private static dirsToDelete: string[] = []
-	private ui: GraphicsInterface
-	private generateCacheIfMissing = false
-	private apiClientFactory: ApiClientFactory
-	private emitter?: GlobalEmitter
-	private featureInstaller?: FeatureInstaller
+    private cwd: string
+    private installedSkills: Record<string, CachedCli> = {}
+    private serviceFactory: ServiceFactory
+    private static linkedUtils = false
+    private static dirsToDelete: string[] = []
+    private ui: GraphicsInterface
+    private generateCacheIfMissing = false
+    private apiClientFactory: ApiClientFactory
+    private emitter?: GlobalEmitter
+    private featureInstaller?: FeatureInstaller
 
-	public constructor(options: FeatureFixtureOptions) {
-		if (options.cwd.search('packages/spruce-cli') > -1) {
-			throw new Error("You can't run FeatureFixture in the cli directory.")
-		}
+    public constructor(options: FeatureFixtureOptions) {
+        if (options.cwd.search('packages/spruce-cli') > -1) {
+            throw new Error(
+                "You can't run FeatureFixture in the cli directory."
+            )
+        }
 
-		this.cwd = options.cwd
-		this.serviceFactory = options.serviceFactory
-		this.ui = options.ui
-		this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
-		this.apiClientFactory = options.apiClientFactory
-		this.emitter = options.emitter
-		this.featureInstaller = options.featureInstaller
-	}
+        this.cwd = options.cwd
+        this.serviceFactory = options.serviceFactory
+        this.ui = options.ui
+        this.generateCacheIfMissing = !!options.shouldGenerateCacheIfMissing
+        this.apiClientFactory = options.apiClientFactory
+        this.emitter = options.emitter
+        this.featureInstaller = options.featureInstaller
+    }
 
-	public static deleteOldSkillDirs() {
-		for (const dir of this.dirsToDelete) {
-			diskUtil.deleteDir(dir)
-		}
+    public static deleteOldSkillDirs() {
+        for (const dir of this.dirsToDelete) {
+            diskUtil.deleteDir(dir)
+        }
 
-		this.dirsToDelete = []
-	}
+        this.dirsToDelete = []
+    }
 
-	public Service<S extends Service>(
-		type: S,
-		cwd?: string | undefined
-	): ServiceMap[S] {
-		return this.serviceFactory.Service(cwd ?? this.cwd, type)
-	}
+    public Service<S extends Service>(
+        type: S,
+        cwd?: string | undefined
+    ): ServiceMap[S] {
+        return this.serviceFactory.Service(cwd ?? this.cwd, type)
+    }
 
-	public async Cli(options?: CliBootOptions) {
-		await this.linkWorkspacePackages()
+    public async Cli(options?: CliBootOptions) {
+        await this.linkWorkspacePackages()
 
-		const cli = await Cli.Boot({
-			cwd: this.cwd,
-			graphicsInterface: this.ui,
-			apiClientFactory: this.apiClientFactory,
-			emitter: this.emitter,
-			featureInstaller: this.featureInstaller,
-			...(options ?? {}),
-		})
+        const cli = await Cli.Boot({
+            cwd: this.cwd,
+            graphicsInterface: this.ui,
+            apiClientFactory: this.apiClientFactory,
+            emitter: this.emitter,
+            featureInstaller: this.featureInstaller,
+            ...(options ?? {}),
+        })
 
-		return cli
-	}
+        return cli
+    }
 
-	private async linkWorkspacePackages() {
-		if (!FeatureFixture.linkedUtils) {
-			FeatureFixture.linkedUtils = true
+    private async linkWorkspacePackages() {
+        if (!FeatureFixture.linkedUtils) {
+            FeatureFixture.linkedUtils = true
 
-			// const expectedLinkedDir = pathUtil.join(
-			// 	os.homedir(),
-			// 	'.config',
-			// 	'yarn',
-			// 	'link',
-			// 	'@sprucelabs',
-			// 	'spruce-skill-utils'
-			// )
+            // const expectedLinkedDir = pathUtil.join(
+            // 	os.homedir(),
+            // 	'.config',
+            // 	'yarn',
+            // 	'link',
+            // 	'@sprucelabs',
+            // 	'spruce-skill-utils'
+            // )
 
-			// if (!fsUtil.existsSync(expectedLinkedDir)) {
-			// 	const command = this.Service('command')
-			// 	try {
-			// 		await command.execute(
-			// 			`cd ${pathUtil.join(
-			// 				__dirname,
-			// 				'..',
-			// 				'..',
-			// 				'..',
-			// 				'spruce-skill-utils'
-			// 			)} && yarn link`
-			// 		)
-			// 	} catch (err) {
-			// 		if (fsUtil.existsSync(expectedLinkedDir)) {
-			// 			log.warn(`Symlink ${expectedLinkedDir} already exists`)
-			// 		} else {
-			// 			log.warn(
-			// 				`Symlink ${expectedLinkedDir} failed, but the check thinks it is missing`
-			// 			)
-			// 		}
-			// 	}
-			// }
-		}
-	}
+            // if (!fsUtil.existsSync(expectedLinkedDir)) {
+            // 	const command = this.Service('command')
+            // 	try {
+            // 		await command.execute(
+            // 			`cd ${pathUtil.join(
+            // 				__dirname,
+            // 				'..',
+            // 				'..',
+            // 				'..',
+            // 				'spruce-skill-utils'
+            // 			)} && yarn link`
+            // 		)
+            // 	} catch (err) {
+            // 		if (fsUtil.existsSync(expectedLinkedDir)) {
+            // 			log.warn(`Symlink ${expectedLinkedDir} already exists`)
+            // 		} else {
+            // 			log.warn(
+            // 				`Symlink ${expectedLinkedDir} failed, but the check thinks it is missing`
+            // 			)
+            // 		}
+            // 	}
+            // }
+        }
+    }
 
-	public async installCachedFeatures(
-		cacheKey: string,
-		bootOptions?: CliBootOptions
-	) {
-		return this.installFeatures([], cacheKey, bootOptions)
-	}
+    public async installCachedFeatures(
+        cacheKey: string,
+        bootOptions?: CliBootOptions
+    ) {
+        return this.installFeatures([], cacheKey, bootOptions)
+    }
 
-	public async installFeatures(
-		features: InstallFeature[],
-		cacheKey?: string,
-		bootOptions?: CliBootOptions
-	) {
-		if (this.isCached(cacheKey)) {
-			return this.installedSkills[cacheKey as string].cli
-		}
+    public async installFeatures(
+        features: InstallFeature[],
+        cacheKey?: string,
+        bootOptions?: CliBootOptions
+    ) {
+        if (this.isCached(cacheKey)) {
+            return this.installedSkills[cacheKey as string].cli
+        }
 
-		let isCached = false
-		if (cacheKey && testUtil.isCacheEnabled()) {
-			isCached = this.doesCacheExist(cacheKey)
+        let isCached = false
+        if (cacheKey && testUtil.isCacheEnabled()) {
+            isCached = this.doesCacheExist(cacheKey)
 
-			if (!isCached && !this.generateCacheIfMissing) {
-				throw new Error(
-					`Cached skill not found, make sure\n\n"${cacheKey}"\n\nis in your package.json under "testSkillCache" and run\n\n\`yarn cache.tests\``
-				)
-			}
+            if (!isCached && !this.generateCacheIfMissing) {
+                throw new Error(
+                    `Cached skill not found, make sure\n\n"${cacheKey}"\n\nis in your package.json under "testSkillCache" and run\n\n\`yarn cache.tests\``
+                )
+            }
 
-			if (isCached) {
-				await this.copyCachedSkillToCwd(cacheKey)
-			} else {
-				this.removeCwdFromCacheTracker(cacheKey)
-			}
-		}
+            if (isCached) {
+                await this.copyCachedSkillToCwd(cacheKey)
+            } else {
+                this.removeCwdFromCacheTracker(cacheKey)
+            }
+        }
 
-		const cli = await this.Cli(bootOptions)
+        const cli = await this.Cli(bootOptions)
 
-		if (!isCached) {
-			await cli.installFeatures({
-				features,
-			})
-		}
+        if (!isCached) {
+            await cli.installFeatures({
+                features,
+            })
+        }
 
-		if (cacheKey && testUtil.isCacheEnabled()) {
-			!isCached && this.addCwdToCacheTracker(cacheKey)
-			this.cacheCli(cacheKey, cli)
-		}
+        if (cacheKey && testUtil.isCacheEnabled()) {
+            !isCached && this.addCwdToCacheTracker(cacheKey)
+            this.cacheCli(cacheKey, cli)
+        }
 
-		await this.linkLocalPackages()
+        await this.linkLocalPackages()
 
-		return cli
-	}
+        return cli
+    }
 
-	private isCached(cacheKey: string | undefined) {
-		return (
-			cacheKey && this.installedSkills[cacheKey] && testUtil.isCacheEnabled()
-		)
-	}
+    private isCached(cacheKey: string | undefined) {
+        return (
+            cacheKey &&
+            this.installedSkills[cacheKey] &&
+            testUtil.isCacheEnabled()
+        )
+    }
 
-	public async linkLocalPackages() {
-		// const command = this.Service('command')
-		// await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
-	}
+    public async linkLocalPackages() {
+        // const command = this.Service('command')
+        // await command.execute(`yarn link @sprucelabs/spruce-skill-utils`)
+    }
 
-	private async copyCachedSkillToCwd(cacheKey: string) {
-		let isCached = this.doesCacheExist(cacheKey)
+    private async copyCachedSkillToCwd(cacheKey: string) {
+        let isCached = this.doesCacheExist(cacheKey)
 
-		if (isCached) {
-			let settings = this.loadCacheTracker()
-			await diskUtil.copyDir(settings[cacheKey], this.cwd)
+        if (isCached) {
+            let settings = this.loadCacheTracker()
+            await diskUtil.copyDir(settings[cacheKey], this.cwd)
 
-			if (process.env.TEST_HOST) {
-				this.Service('env').set('HOST', process.env.TEST_HOST)
-			}
+            if (process.env.TEST_HOST) {
+                this.Service('env').set('HOST', process.env.TEST_HOST)
+            }
 
-			FeatureFixture.dirsToDelete.push(this.cwd)
-		}
-	}
+            FeatureFixture.dirsToDelete.push(this.cwd)
+        }
+    }
 
-	private addCwdToCacheTracker(cacheKey: string) {
-		let settings = this.loadCacheTracker()
+    private addCwdToCacheTracker(cacheKey: string) {
+        let settings = this.loadCacheTracker()
 
-		if (!settings) {
-			settings = {}
-		}
+        if (!settings) {
+            settings = {}
+        }
 
-		if (!settings[cacheKey]) {
-			settings[cacheKey] = this.cwd
-			this.writeCacheSettings(settings)
-		}
-		return settings
-	}
+        if (!settings[cacheKey]) {
+            settings[cacheKey] = this.cwd
+            this.writeCacheSettings(settings)
+        }
+        return settings
+    }
 
-	private removeCwdFromCacheTracker(cacheKey: string) {
-		let settings = this.loadCacheTracker()
+    private removeCwdFromCacheTracker(cacheKey: string) {
+        let settings = this.loadCacheTracker()
 
-		if (!settings) {
-			settings = {}
-		}
+        if (!settings) {
+            settings = {}
+        }
 
-		if (settings[cacheKey]) {
-			delete settings[cacheKey]
-			this.writeCacheSettings(settings)
-		}
-	}
+        if (settings[cacheKey]) {
+            delete settings[cacheKey]
+            this.writeCacheSettings(settings)
+        }
+    }
 
-	private writeCacheSettings(settings: Record<string, any>) {
-		const settingsFile = this.getTestCacheTrackerFilePath()
-		const settingsFolder = pathUtil.dirname(settingsFile)
+    private writeCacheSettings(settings: Record<string, any>) {
+        const settingsFile = this.getTestCacheTrackerFilePath()
+        const settingsFolder = pathUtil.dirname(settingsFile)
 
-		!diskUtil.doesDirExist(settingsFolder) && diskUtil.createDir(settingsFolder)
+        !diskUtil.doesDirExist(settingsFolder) &&
+            diskUtil.createDir(settingsFolder)
 
-		diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
-	}
+        diskUtil.writeFile(settingsFile, JSON.stringify(settings, null, 2))
+    }
 
-	private doesCacheExist(cacheKey: string) {
-		let alreadyInstalled = false
+    private doesCacheExist(cacheKey: string) {
+        let alreadyInstalled = false
 
-		const settings = this.loadCacheTracker()
+        const settings = this.loadCacheTracker()
 
-		if (settings?.[cacheKey]) {
-			alreadyInstalled = true
-		}
+        if (settings?.[cacheKey]) {
+            alreadyInstalled = true
+        }
 
-		if (alreadyInstalled) {
-			alreadyInstalled = diskUtil.doesDirExist(
-				diskUtil.resolvePath(settings[cacheKey], 'node_modules')
-			)
-		}
+        if (alreadyInstalled) {
+            alreadyInstalled = diskUtil.doesDirExist(
+                diskUtil.resolvePath(settings[cacheKey], 'node_modules')
+            )
+        }
 
-		return alreadyInstalled
-	}
+        return alreadyInstalled
+    }
 
-	public loadCacheTracker() {
-		const settingsFile = this.getTestCacheTrackerFilePath()
+    public loadCacheTracker() {
+        const settingsFile = this.getTestCacheTrackerFilePath()
 
-		const exists = diskUtil.doesFileExist(settingsFile)
-		let settingsObject: Record<string, any> = {}
+        const exists = diskUtil.doesFileExist(settingsFile)
+        let settingsObject: Record<string, any> = {}
 
-		try {
-			settingsObject = exists ? JSON.parse(diskUtil.readFile(settingsFile)) : {}
-			// eslint-disable-next-line no-empty
-		} catch {}
+        try {
+            settingsObject = exists
+                ? JSON.parse(diskUtil.readFile(settingsFile))
+                : {}
+        } catch {}
 
-		return settingsObject
-	}
+        return settingsObject
+    }
 
-	public getTestCacheTrackerFilePath() {
-		return diskUtil.resolveHashSprucePath(
-			__dirname,
-			'tmp',
-			`cached-skills.json`
-		)
-	}
+    public getTestCacheTrackerFilePath() {
+        return diskUtil.resolveHashSprucePath(
+            __dirname,
+            'tmp',
+            `cached-skills.json`
+        )
+    }
 
-	private cacheCli(cacheKey: string, cli: CliInterface) {
-		this.installedSkills[cacheKey] = {
-			cwd: this.cwd,
-			cli,
-		}
-	}
+    private cacheCli(cacheKey: string, cli: CliInterface) {
+        this.installedSkills[cacheKey] = {
+            cwd: this.cwd,
+            cli,
+        }
+    }
 }
 
 export interface CachedCli {
-	cli: CliInterface
-	cwd: string
+    cli: CliInterface
+    cwd: string
 }
 
 export interface FeatureFixtureOptions {
-	cwd: string
-	serviceFactory: ServiceFactory
-	ui: GraphicsInterface
-	shouldGenerateCacheIfMissing?: boolean
-	apiClientFactory: ApiClientFactory
-	emitter?: GlobalEmitter
-	featureInstaller?: FeatureInstaller
+    cwd: string
+    serviceFactory: ServiceFactory
+    ui: GraphicsInterface
+    shouldGenerateCacheIfMissing?: boolean
+    apiClientFactory: ApiClientFactory
+    emitter?: GlobalEmitter
+    featureInstaller?: FeatureInstaller
 }

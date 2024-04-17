@@ -8,45 +8,48 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SetupTestsOptions
 
 export default class SetupAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema = setupTestsOptionsSchema
-	public commandAliases = ['setup.testing']
-	public invocationMessage = 'Setting up for testing... 🛡'
+    public optionsSchema = setupTestsOptionsSchema
+    public commandAliases = ['setup.testing']
+    public invocationMessage = 'Setting up for testing... 🛡'
 
-	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const normalizedOptions = this.validateAndNormalizeOptions(options)
-		const { demoNumber, skillSlug } = normalizedOptions
+    public async execute(options: Options): Promise<FeatureActionResponse> {
+        const normalizedOptions = this.validateAndNormalizeOptions(options)
+        const { demoNumber, skillSlug } = normalizedOptions
 
-		const loginResponse = await this.Action('person', 'login').execute({
-			phone: demoNumber,
-			pin: demoNumber.substr(demoNumber.length - 4),
-		})
+        const loginResponse = await this.Action('person', 'login').execute({
+            phone: demoNumber,
+            pin: demoNumber.substr(demoNumber.length - 4),
+        })
 
-		const registerResponse = await this.Action('skill', 'register').execute({
-			nameReadable: skillSlug,
-			nameKebab: skillSlug,
-		})
+        const registerResponse = await this.Action('skill', 'register').execute(
+            {
+                nameReadable: skillSlug,
+                nameKebab: skillSlug,
+            }
+        )
 
-		const err = registerResponse.errors?.[0]
+        const err = registerResponse.errors?.[0]
 
-		const isDuplicateSlugError =
-			err?.options?.responseErrors?.length === 1 &&
-			err?.options?.responseErrors?.[0]?.options?.code === 'DUPLICATE_SLUG'
+        const isDuplicateSlugError =
+            err?.options?.responseErrors?.length === 1 &&
+            err?.options?.responseErrors?.[0]?.options?.code ===
+                'DUPLICATE_SLUG'
 
-		let loginAsSkillResponse: any = {}
+        let loginAsSkillResponse: any = {}
 
-		if (isDuplicateSlugError) {
-			delete registerResponse.errors
+        if (isDuplicateSlugError) {
+            delete registerResponse.errors
 
-			loginAsSkillResponse = await this.Action('skill', 'login').execute({
-				skillSlug,
-			})
-		}
+            loginAsSkillResponse = await this.Action('skill', 'login').execute({
+                skillSlug,
+            })
+        }
 
-		return actionUtil.mergeActionResults(
-			{},
-			loginResponse,
-			registerResponse,
-			loginAsSkillResponse
-		)
-	}
+        return actionUtil.mergeActionResults(
+            {},
+            loginResponse,
+            registerResponse,
+            loginAsSkillResponse
+        )
+    }
 }

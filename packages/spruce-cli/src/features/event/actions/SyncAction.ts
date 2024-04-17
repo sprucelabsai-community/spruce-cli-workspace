@@ -9,35 +9,37 @@ type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
 type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
 
 export default class SyncAction extends AbstractAction<OptionsSchema> {
-	public commandAliases = ['sync.events']
-	public optionsSchema: OptionsSchema = syncEventActionSchema
-	public invocationMessage = 'Syncing event contracts... 🜒'
+    public commandAliases = ['sync.events']
+    public optionsSchema: OptionsSchema = syncEventActionSchema
+    public invocationMessage = 'Syncing event contracts... 🜒'
 
-	public async execute(options: Options): Promise<FeatureActionResponse> {
-		const builder = this.ContractBuilder()
+    public async execute(options: Options): Promise<FeatureActionResponse> {
+        const builder = this.ContractBuilder()
 
-		const results: FeatureActionResponse =
-			await builder.fetchAndWriteContracts(options)
+        const results: FeatureActionResponse =
+            await builder.fetchAndWriteContracts(options)
 
-		if (results.errors) {
-			return {
-				errors: results.errors,
-			}
-		}
+        if (results.errors) {
+            return {
+                errors: results.errors,
+            }
+        }
 
-		this.Service('eventCache').setLastSyncCache(options)
+        this.Service('eventCache').setLastSyncCache(options)
 
-		const schemaSyncResults = await this.Action('schema', 'sync').execute({})
+        const schemaSyncResults = await this.Action('schema', 'sync').execute(
+            {}
+        )
 
-		const mergedResults = actionUtil.mergeActionResults(
-			schemaSyncResults,
-			results
-		)
+        const mergedResults = actionUtil.mergeActionResults(
+            schemaSyncResults,
+            results
+        )
 
-		return mergedResults
-	}
+        return mergedResults
+    }
 
-	private ContractBuilder() {
-		return (this.parent as EventFeature).getEventContractBuilder()
-	}
+    private ContractBuilder() {
+        return (this.parent as EventFeature).getEventContractBuilder()
+    }
 }

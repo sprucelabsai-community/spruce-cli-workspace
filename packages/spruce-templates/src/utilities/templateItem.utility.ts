@@ -1,43 +1,36 @@
 import { SchemaTemplateItem, FieldTemplateItem } from '@sprucelabs/schema'
 
 const templateItemUtil = {
-	groupSchemaTemplatesByNamespaceAndName(
-		schemaTemplateItems: SchemaTemplateItem[]
-	) {
-		const hash: {
-			[namespace: string]: {
-				[name: string]: SchemaTemplateItem[]
-			}
-		} = {}
+    groupSchemaTemplatesByNamespaceAndName(
+        schemaTemplateItems: SchemaTemplateItem[]
+    ) {
+        const hash: Record<string, Record<string, SchemaTemplateItem[]>> = {}
 
-		schemaTemplateItems.forEach((item) => {
-			if (!hash[item.namespace]) {
-				hash[item.namespace] = {}
-			}
+        schemaTemplateItems.forEach((item) => {
+            if (!hash[item.namespace]) {
+                hash[item.namespace] = {}
+            }
 
-			if (!hash[item.namespace][item.nameCamel]) {
-				hash[item.namespace][item.nameCamel] = []
-			}
+            if (!hash[item.namespace][item.nameCamel]) {
+                hash[item.namespace][item.nameCamel] = []
+            }
 
-			hash[item.namespace][item.nameCamel].push(item)
-		})
+            hash[item.namespace][item.nameCamel].push(item)
+        })
 
-		return hash
-	},
+        return hash
+    },
 
-	groupFieldItemsByNamespace(fieldTemplateItems: FieldTemplateItem[]) {
-		const fieldTemplatesByType: {
-			[namespace: string]: FieldTemplateItem[]
-		} = {}
+    groupFieldItemsByNamespace(fieldTemplateItems: FieldTemplateItem[]) {
+        const fieldTemplatesByType: Record<string, FieldTemplateItem[]> = {}
 
-		fieldTemplateItems.forEach((item) => {
-			if (!fieldTemplatesByType[item.camelType]) {
-				fieldTemplatesByType[item.camelType] = []
-			}
-			fieldTemplatesByType[item.camelType].push(item)
-		})
-	},
-	// eslint-disable-next-line no-undef
+        fieldTemplateItems.forEach((item) => {
+            if (!fieldTemplatesByType[item.camelType]) {
+                fieldTemplatesByType[item.camelType] = []
+            }
+            fieldTemplatesByType[item.camelType].push(item)
+        })
+    },
 } as const
 
 export default templateItemUtil

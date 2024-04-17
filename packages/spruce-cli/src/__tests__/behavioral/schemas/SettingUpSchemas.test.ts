@@ -5,45 +5,45 @@ import AbstractSchemaTest from '../../../tests/AbstractSchemaTest'
 import tsConfigUtil from '../../../utilities/tsConfig.utility'
 
 export default class SettingUpSchemasTests extends AbstractSchemaTest {
-	@test()
-	protected static async failsBecauseMissingSkillInformation() {
-		const cli = await this.Cli()
+    @test()
+    protected static async failsBecauseMissingSkillInformation() {
+        const cli = await this.Cli()
 
-		const err = await assert.doesThrowAsync(() =>
-			cli.installFeatures({
-				features: [
-					{
-						code: 'schema',
-					},
-				],
-			})
-		)
+        const err = await assert.doesThrowAsync(() =>
+            cli.installFeatures({
+                features: [
+                    {
+                        code: 'schema',
+                    },
+                ],
+            })
+        )
 
-		errorAssert.assertError(err, 'VALIDATION_FAILED')
-	}
+        errorAssert.assertError(err, 'VALIDATION_FAILED')
+    }
 
-	@test()
-	protected static async installsSchema() {
-		await this.installSchemaFeature('schemas')
+    @test()
+    protected static async installsSchema() {
+        await this.installSchemaFeature('schemas')
 
-		const pgkPath = this.resolvePath('package.json')
-		const contents = JSON.stringify(diskUtil.readFile(pgkPath))
+        const pgkPath = this.resolvePath('package.json')
+        const contents = JSON.stringify(diskUtil.readFile(pgkPath))
 
-		assert.doesInclude(contents, '@sprucelabs/schema')
+        assert.doesInclude(contents, '@sprucelabs/schema')
 
-		const tsConfig = tsConfigUtil.readConfig(this.cwd)
+        const tsConfig = tsConfigUtil.readConfig(this.cwd)
 
-		assert.isEqualDeep(tsConfig['compilerOptions']['paths'], {
-			'#spruce/*': ['.spruce/*'],
-		})
-	}
+        assert.isEqualDeep(tsConfig['compilerOptions']['paths'], {
+            '#spruce/*': ['.spruce/*'],
+        })
+    }
 
-	@test()
-	protected static async schemaPassesHealthCheck() {
-		const cli = await this.installSchemaFeature('schemas')
-		const health = await cli.checkHealth()
+    @test()
+    protected static async schemaPassesHealthCheck() {
+        const cli = await this.installSchemaFeature('schemas')
+        const health = await cli.checkHealth()
 
-		assert.isTruthy(health.schema)
-		assert.isEqual(health.schema.status, 'passed')
-	}
+        assert.isTruthy(health.schema)
+        assert.isEqual(health.schema.status, 'passed')
+    }
 }

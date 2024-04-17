@@ -26,7 +26,7 @@
         "build.babel": "babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
         "build.babel.debug": "node --inspect-brk=5200 ../../node_modules/.bin/babel src --out-dir build --extensions \".ts,.tsx\" --root-mode upward --source-maps --copy-files",
         "build.resolve-paths": "resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
-        "rebuild": "yarn clean && rm -rf node_modules && yarn && yarn build",
+        "rebuild": "yarn clean && rm -rf node_modules && yarn install && yarn build",
         "clean": "rm -rf build/",
         "lint": "eslint '**/*.ts' && tsc -p . --noEmit && echo 'PASS'",
         "watch.lint": "chokidar 'src/**/*' -c 'yarn lint'",
@@ -89,7 +89,6 @@
             "socket.io-client",
             "@sprucelabs/jest-json-reporter",
             "@sprucelabs/resolve-path-aliases",
-
             "@sprucelabs/semantic-release",
             "@sprucelabs/test",
             "@sprucelabs/error",

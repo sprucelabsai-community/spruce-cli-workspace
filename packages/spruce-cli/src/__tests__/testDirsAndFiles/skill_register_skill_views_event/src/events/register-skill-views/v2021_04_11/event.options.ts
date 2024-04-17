@@ -1,13 +1,13 @@
 import { EventSignature } from '@sprucelabs/mercury-types'
 
 const eventOptions: Omit<
-	EventSignature,
-	| 'responsePayloadSchema'
-	| 'emitPayloadSchema'
-	| 'listenPermissionContract'
-	| 'emitPermissionContract'
+    EventSignature,
+    | 'responsePayloadSchema'
+    | 'emitPayloadSchema'
+    | 'listenPermissionContract'
+    | 'emitPermissionContract'
 > = {
-	isGlobal: true,
+    isGlobal: true,
 }
 
 export default eventOptions

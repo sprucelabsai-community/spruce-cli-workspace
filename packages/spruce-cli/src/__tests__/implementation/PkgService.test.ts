@@ -5,78 +5,81 @@ import PkgService from '../../services/PkgService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
 export default class PkgServiceTest extends AbstractSkillTest {
-	protected static skillCacheKey = 'skills'
-	private static pkg: PkgService
+    protected static skillCacheKey = 'skills'
+    private static pkg: PkgService
 
-	protected static async beforeEach() {
-		await super.beforeEach()
-		this.pkg = this.Service('pkg')
-	}
+    protected static async beforeEach() {
+        await super.beforeEach()
+        this.pkg = this.Service('pkg')
+    }
 
-	@test()
-	protected static async canCreatePkgService() {
-		assert.isTruthy(this.pkg)
-	}
+    @test()
+    protected static async canCreatePkgService() {
+        assert.isTruthy(this.pkg)
+    }
 
-	@test()
-	protected static async installANonSpruceLabsModuleMakesItsVersionAnActualVersion() {
-		const version = this.pkg.get('dependencies.dotenv')
-		assert.isNotEqual(version, 'latest')
-	}
+    @test()
+    protected static async installANonSpruceLabsModuleMakesItsVersionAnActualVersion() {
+        const version = this.pkg.get('dependencies.dotenv')
+        assert.isNotEqual(version, 'latest')
+    }
 
-	@test()
-	protected static async handlesAtLatestInName() {
-		CommandService.fakeCommand(new RegExp(/yarn/gis), {
-			code: 0,
-		})
+    @test()
+    protected static async handlesAtLatestInName() {
+        CommandService.fakeCommand(new RegExp(/yarn/gis), {
+            code: 0,
+        })
 
-		await this.pkg.install('@sprucelabs/heartwood-view-controllers@latest')
+        await this.pkg.install('@sprucelabs/heartwood-view-controllers@latest')
 
-		this.pkg.isInstalled('@sprucelabs/heartwood-view-controllers')
-	}
+        this.pkg.isInstalled('@sprucelabs/heartwood-view-controllers')
+    }
 
-	@test()
-	protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
-		CommandService.fakeCommand(new RegExp(/npm.*?install.*?--no-progress/gis), {
-			code: 1,
-		})
+    @test()
+    protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
+        CommandService.fakeCommand(
+            new RegExp(/npm.*?install.*?--no-progress/gis),
+            {
+                code: 1,
+            }
+        )
 
-		const { totalInstalled } = await this.pkg.install(
-			'@sprucelabs/jest-json-reporter'
-		)
+        const { totalInstalled } = await this.pkg.install(
+            '@sprucelabs/jest-json-reporter'
+        )
 
-		assert.isEqual(totalInstalled, 1)
+        assert.isEqual(totalInstalled, 1)
 
-		const expectedPath = this.resolvePath(
-			'node_modules',
-			'@sprucelabs',
-			'jest-json-reporter'
-		)
+        const expectedPath = this.resolvePath(
+            'node_modules',
+            '@sprucelabs',
+            'jest-json-reporter'
+        )
 
-		assert.isTrue(
-			diskUtil.doesFileExist(expectedPath),
-			`No module installed at ${expectedPath}.`
-		)
-	}
+        assert.isTrue(
+            diskUtil.doesFileExist(expectedPath),
+            `No module installed at ${expectedPath}.`
+        )
+    }
 
-	@test()
-	protected static async installingSpruceAndOtherModulesDoesntRemoveSpruceModule() {
-		const { totalInstalled } = await this.pkg.install([
-			'moment',
-			'@sprucelabs/calendar-utils',
-		])
+    @test()
+    protected static async installingSpruceAndOtherModulesDoesntRemoveSpruceModule() {
+        const { totalInstalled } = await this.pkg.install([
+            'moment',
+            '@sprucelabs/calendar-utils',
+        ])
 
-		assert.isEqual(totalInstalled, 2)
+        assert.isEqual(totalInstalled, 2)
 
-		const expectedPath = this.resolvePath(
-			'node_modules',
-			'@sprucelabs',
-			'calendar-utils'
-		)
+        const expectedPath = this.resolvePath(
+            'node_modules',
+            '@sprucelabs',
+            'calendar-utils'
+        )
 
-		assert.isTrue(
-			diskUtil.doesFileExist(expectedPath),
-			`No module installed at ${expectedPath}.`
-		)
-	}
+        assert.isTrue(
+            diskUtil.doesFileExist(expectedPath),
+            `No module installed at ${expectedPath}.`
+        )
+    }
 }

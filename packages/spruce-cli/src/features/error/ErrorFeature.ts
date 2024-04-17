@@ -1,101 +1,104 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, {
-	FeatureDependency,
-	FeatureOptions,
-	InstallResults,
+    FeatureDependency,
+    FeatureOptions,
+    InstallResults,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
 declare module '../../features/features.types' {
-	interface FeatureMap {
-		error: ErrorFeature
-	}
+    interface FeatureMap {
+        error: ErrorFeature
+    }
 
-	interface FeatureOptionsMap {
-		error: undefined
-	}
+    interface FeatureOptionsMap {
+        error: undefined
+    }
 }
 
 export default class ErrorFeature extends AbstractFeature {
-	public nameReadable = 'error handling'
-	public description =
-		'Errors: Use schemas to define your errors and get great type checking!'
-	public code: FeatureCode = 'error'
+    public nameReadable = 'error handling'
+    public description =
+        'Errors: Use schemas to define your errors and get great type checking!'
+    public code: FeatureCode = 'error'
 
-	public dependencies: FeatureDependency[] = [
-		{ code: 'schema', isRequired: true },
-		{ code: 'node', isRequired: true },
-	]
-	public packageDependencies: NpmPackage[] = [
-		{
-			name: '@sprucelabs/error@latest',
-		},
-	]
-	public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
+    public dependencies: FeatureDependency[] = [
+        { code: 'schema', isRequired: true },
+        { code: 'node', isRequired: true },
+    ]
+    public packageDependencies: NpmPackage[] = [
+        {
+            name: '@sprucelabs/error@latest',
+        },
+    ]
+    public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-	public constructor(options: FeatureOptions) {
-		super(options)
+    public constructor(options: FeatureOptions) {
+        super(options)
 
-		void this.emitter.on(
-			'feature.did-execute',
-			this.handleDidExecuteCommand.bind(this)
-		)
+        void this.emitter.on(
+            'feature.did-execute',
+            this.handleDidExecuteCommand.bind(this)
+        )
 
-		void this.emitter.on('skill.will-write-directory-template', async () => {
-			const isInstalled = await this.features.isInstalled('error')
-			if (isInstalled) {
-				return {
-					filesToSkip: ['options.types.ts'],
-				}
-			}
+        void this.emitter.on(
+            'skill.will-write-directory-template',
+            async () => {
+                const isInstalled = await this.features.isInstalled('error')
+                if (isInstalled) {
+                    return {
+                        filesToSkip: ['options.types.ts'],
+                    }
+                }
 
-			return {}
-		})
-	}
+                return {}
+            }
+        )
+    }
 
-	public async afterPackageInstall(): Promise<InstallResults> {
-		const isSkillInstalled = await this.features.isInstalled('skill')
+    public async afterPackageInstall(): Promise<InstallResults> {
+        const isSkillInstalled = await this.features.isInstalled('skill')
 
-		if (!isSkillInstalled) {
-			return {}
-		}
+        if (!isSkillInstalled) {
+            return {}
+        }
 
-		const files = await this.writePlugin()
+        const files = await this.writePlugin()
 
-		return {
-			files,
-		}
-	}
+        return {
+            files,
+        }
+    }
 
-	private async handleDidExecuteCommand(payload: {
-		featureCode: string
-		actionCode: string
-	}) {
-		const { featureCode, actionCode } = payload
+    private async handleDidExecuteCommand(payload: {
+        featureCode: string
+        actionCode: string
+    }) {
+        const { featureCode, actionCode } = payload
 
-		const isInstalled = await this.features.isInstalled('error')
+        const isInstalled = await this.features.isInstalled('error')
 
-		const isSkillInstalled = await this.features.isInstalled('skill')
+        const isSkillInstalled = await this.features.isInstalled('skill')
 
-		if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
-			const results = await this.Action('error', 'sync').execute({})
+        if (isInstalled && featureCode === 'node' && actionCode === 'upgrade') {
+            const results = await this.Action('error', 'sync').execute({})
 
-			if (isSkillInstalled) {
-				if (!results.files) {
-					results.files = []
-				}
+            if (isSkillInstalled) {
+                if (!results.files) {
+                    results.files = []
+                }
 
-				const plugin = await this.writePlugin()
-				results.files.push(...plugin)
-			}
+                const plugin = await this.writePlugin()
+                results.files.push(...plugin)
+            }
 
-			return results
-		}
+            return results
+        }
 
-		return {}
-	}
-	private async writePlugin() {
-		return this.Writer('error').writePlugin(this.cwd)
-	}
+        return {}
+    }
+    private async writePlugin() {
+        return this.Writer('error').writePlugin(this.cwd)
+    }
 }

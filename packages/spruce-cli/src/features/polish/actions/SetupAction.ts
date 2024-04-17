@@ -5,32 +5,32 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
 const optionsSchema = buildSchema({
-	id: 'setupPolishAction',
-	fields: {},
+    id: 'setupPolishAction',
+    fields: {},
 })
 
 type OptionsSchema = typeof optionsSchema
 
 export default class SetupAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema: OptionsSchema = optionsSchema
-	public invocationMessage = 'Setting up polish... ✨'
+    public optionsSchema: OptionsSchema = optionsSchema
+    public invocationMessage = 'Setting up polish... ✨'
 
-	public async execute(): Promise<FeatureActionResponse> {
-		const namespace = await this.Store('skill').loadCurrentSkillsNamespace()
-		const writer = this.Writer('polish')
-		const files = await writer.writePolishScript(
-			diskUtil.resolvePath(this.cwd, 'src'),
-			namespace.toLowerCase()
-		)
+    public async execute(): Promise<FeatureActionResponse> {
+        const namespace = await this.Store('skill').loadCurrentSkillsNamespace()
+        const writer = this.Writer('polish')
+        const files = await writer.writePolishScript(
+            diskUtil.resolvePath(this.cwd, 'src'),
+            namespace.toLowerCase()
+        )
 
-		const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
-			cwd: this.cwd,
-		})
+        const scriptUpdater = ScriptUpdaterImpl.FromFeature(this.parent, {
+            cwd: this.cwd,
+        })
 
-		await scriptUpdater.update()
+        await scriptUpdater.update()
 
-		return {
-			files,
-		}
-	}
+        return {
+            files,
+        }
+    }
 }

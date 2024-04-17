@@ -1,8 +1,8 @@
 import { eventDiskUtil, eventNameUtil } from '@sprucelabs/spruce-event-utils'
 import {
-	diskUtil,
-	namesUtil,
-	versionUtil,
+    diskUtil,
+    namesUtil,
+    versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
@@ -19,114 +19,116 @@ const EVENT_NAME = 'my-fantastically-amazing-event'
 const EVENT_CAMEL = 'myFantasticallyAmazingEvent'
 
 export default class CreatingAnEventTest extends AbstractEventTest {
-	private static readonly expectedVersion =
-		versionUtil.generateVersion().constValue
+    private static readonly expectedVersion =
+        versionUtil.generateVersion().constValue
 
-	@test()
-	protected static async hasCreateAction() {
-		assert.isFunction(this.Action('event', 'create').execute)
-	}
+    @test()
+    protected static async hasCreateAction() {
+        assert.isFunction(this.Action('event', 'create').execute)
+    }
 
-	@test()
-	protected static async cantCreateEventWithoutBeingRegistered() {
-		await this.FeatureFixture().installCachedFeatures('events')
+    @test()
+    protected static async cantCreateEventWithoutBeingRegistered() {
+        await this.FeatureFixture().installCachedFeatures('events')
 
-		const results = await this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-			version: this.expectedVersion,
-		})
+        const results = await this.Action('event', 'create').execute({
+            nameReadable: EVENT_NAME_READABLE,
+            nameKebab: EVENT_NAME,
+            nameCamel: EVENT_CAMEL,
+            version: this.expectedVersion,
+        })
 
-		assert.isArray(results.errors)
-		errorAssert.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
-	}
+        assert.isArray(results.errors)
+        errorAssert.assertError(results.errors[0], 'SKILL_NOT_REGISTERED')
+    }
 
-	@test()
-	protected static async createsPayloadBuildersAndSchemas() {
-		const { results, skill } = await this.createEvent()
+    @test()
+    protected static async createsPayloadBuildersAndSchemas() {
+        const { results, skill } = await this.createEvent()
 
-		const filesThatShouldExist = [
-			new RegExp(
-				`${namesUtil.toCamel(skill.slug)}.*?${
-					this.expectedVersion
-				}.*?myFantasticallyAmazingEventResponsePayload`,
-				'gis'
-			),
-			new RegExp(
-				`${namesUtil.toCamel(skill.slug)}.*?${
-					this.expectedVersion
-				}.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
-				'gis'
-			),
-			new RegExp(
-				`${namesUtil.toCamel(skill.slug)}.*?${
-					this.expectedVersion
-				}.*?myFantasticallyAmazingEventEmitPayload`,
-				'gis'
-			),
-			'emitPayload.builder.ts',
-			'emitTarget.builder.ts',
-		]
+        const filesThatShouldExist = [
+            new RegExp(
+                `${namesUtil.toCamel(skill.slug)}.*?${
+                    this.expectedVersion
+                }.*?myFantasticallyAmazingEventResponsePayload`,
+                'gis'
+            ),
+            new RegExp(
+                `${namesUtil.toCamel(skill.slug)}.*?${
+                    this.expectedVersion
+                }.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
+                'gis'
+            ),
+            new RegExp(
+                `${namesUtil.toCamel(skill.slug)}.*?${
+                    this.expectedVersion
+                }.*?myFantasticallyAmazingEventEmitPayload`,
+                'gis'
+            ),
+            'emitPayload.builder.ts',
+            'emitTarget.builder.ts',
+        ]
 
-		const checker = this.Service('typeChecker')
+        const checker = this.Service('typeChecker')
 
-		for (const name of filesThatShouldExist) {
-			const match = testUtil.assertFileByPathInGeneratedFiles(
-				name,
-				results.files
-			)
-			await checker.check(match)
-		}
-	}
+        for (const name of filesThatShouldExist) {
+            const match = testUtil.assertFileByPathInGeneratedFiles(
+                name,
+                results.files
+            )
+            await checker.check(match)
+        }
+    }
 
-	@test()
-	protected static async createsEventWithPayloadsPermissionsAndOptions() {
-		const { results, cli, skill } = await this.createEvent()
-		assert.isFalsy(results.errors)
+    @test()
+    protected static async createsEventWithPayloadsPermissionsAndOptions() {
+        const { results, cli, skill } = await this.createEvent()
+        assert.isFalsy(results.errors)
 
-		await this.copyEventBuildersAndPermissions(EVENT_NAME)
+        await this.copyEventBuildersAndPermissions(EVENT_NAME)
 
-		const syncResults = await this.Action('event', 'sync').execute({})
-		assert.isFalsy(syncResults.errors)
+        const syncResults = await this.Action('event', 'sync').execute({})
+        assert.isFalsy(syncResults.errors)
 
-		const mixedResults = actionUtil.mergeActionResults(results, syncResults)
+        const mixedResults = actionUtil.mergeActionResults(results, syncResults)
 
-		await this.assertExpectedTargetAndPayload(mixedResults, skill)
-		await this.assertExpectedPayloadSchemas(mixedResults)
-		await this.assertReturnsEventFromHealthCheck(cli, skill)
-		await this.assertCreatesOptionsFile(mixedResults)
-	}
+        await this.assertExpectedTargetAndPayload(mixedResults, skill)
+        await this.assertExpectedPayloadSchemas(mixedResults)
+        await this.assertReturnsEventFromHealthCheck(cli, skill)
+        await this.assertCreatesOptionsFile(mixedResults)
+    }
 
-	@test()
-	protected static async createdEventsAreTypedCorrectly() {
-		const { results } = await this.createEvent()
+    @test()
+    protected static async createdEventsAreTypedCorrectly() {
+        const { results } = await this.createEvent()
 
-		assert.isFalsy(results.errors)
+        assert.isFalsy(results.errors)
 
-		const { fqen } = results.meta ?? {}
+        const { fqen } = results.meta ?? {}
 
-		const testFileContents = diskUtil
-			.readFile(this.resolveTestPath('client-test.ts.hbs'))
-			.replace('{{fqen}}', fqen)
+        const testFileContents = diskUtil
+            .readFile(this.resolveTestPath('client-test.ts.hbs'))
+            .replace('{{fqen}}', fqen)
 
-		const testFile = this.resolvePath('src', 'test-client.ts')
-		diskUtil.writeFile(testFile, testFileContents)
+        const testFile = this.resolvePath('src', 'test-client.ts')
+        diskUtil.writeFile(testFile, testFileContents)
 
-		await this.Service('typeChecker').check(testFile)
-	}
+        await this.Service('typeChecker').check(testFile)
+    }
 
-	@test()
-	protected static async canReferenceSchemaFromOtherModule() {
-		const { results } = await this.createEvent()
-		await this.Service('pkg').install('@sprucelabs/heartwood-view-controllers')
+    @test()
+    protected static async canReferenceSchemaFromOtherModule() {
+        const { results } = await this.createEvent()
+        await this.Service('pkg').install(
+            '@sprucelabs/heartwood-view-controllers'
+        )
 
-		const emitPayloadFile = testUtil.assertFileByNameInGeneratedFiles(
-			'emitPayload.builder.ts',
-			results.files
-		)
+        const emitPayloadFile = testUtil.assertFileByNameInGeneratedFiles(
+            'emitPayload.builder.ts',
+            results.files
+        )
 
-		const newContents = `import { formBuilderImportExportObjectSchema } from '@sprucelabs/heartwood-view-controllers'
+        const newContents = `import { formBuilderImportExportObjectSchema } from '@sprucelabs/heartwood-view-controllers'
 import { buildSchema } from '@sprucelabs/schema'
 
 const createFormEmitPayloadBuilder = buildSchema({
@@ -139,155 +141,158 @@ const createFormEmitPayloadBuilder = buildSchema({
 export default createFormEmitPayloadBuilder
 		`
 
-		diskUtil.writeFile(emitPayloadFile, newContents)
+        diskUtil.writeFile(emitPayloadFile, newContents)
 
-		const syncResults = await this.Action('event', 'sync').execute({})
+        const syncResults = await this.Action('event', 'sync').execute({})
 
-		assert.isFalsy(syncResults.errors)
-	}
+        assert.isFalsy(syncResults.errors)
+    }
 
-	@test()
-	protected static async asksForVersionIfPreviousVersionExistsOnDifferentDay() {
-		await this.createEvent({
-			version: versionUtil.generateVersion('2020_01_10').constValue,
-		})
+    @test()
+    protected static async asksForVersionIfPreviousVersionExistsOnDifferentDay() {
+        await this.createEvent({
+            version: versionUtil.generateVersion('2020_01_10').constValue,
+        })
 
-		void this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-		})
+        void this.Action('event', 'create').execute({
+            nameReadable: EVENT_NAME_READABLE,
+            nameKebab: EVENT_NAME,
+            nameCamel: EVENT_CAMEL,
+        })
 
-		await uiAssert.assertRendersSelect(this.ui)
+        await uiAssert.assertRendersSelect(this.ui)
 
-		this.ui.reset()
-	}
+        this.ui.reset()
+    }
 
-	private static async createEvent(options?: { version?: string }) {
-		const cli = await this.FeatureFixture().installCachedFeatures('events')
+    private static async createEvent(options?: { version?: string }) {
+        const cli = await this.FeatureFixture().installCachedFeatures('events')
 
-		const skill = await this.registerCurrentSkill()
+        const skill = await this.registerCurrentSkill()
 
-		const results = await this.Action('event', 'create').execute({
-			nameReadable: EVENT_NAME_READABLE,
-			nameKebab: EVENT_NAME,
-			nameCamel: EVENT_CAMEL,
-			version: this.expectedVersion,
-			...options,
-		})
+        const results = await this.Action('event', 'create').execute({
+            nameReadable: EVENT_NAME_READABLE,
+            nameKebab: EVENT_NAME,
+            nameCamel: EVENT_CAMEL,
+            version: this.expectedVersion,
+            ...options,
+        })
 
-		return { results, cli, skill }
-	}
+        return { results, cli, skill }
+    }
 
-	private static async registerCurrentSkill() {
-		return await this.getSkillFixture().registerCurrentSkill(
-			{
-				name: 'my new skill',
-			},
-			{
-				phone: DEMO_NUMBER_CREATING_AN_EVENT,
-			}
-		)
-	}
+    private static async registerCurrentSkill() {
+        return await this.getSkillFixture().registerCurrentSkill(
+            {
+                name: 'my new skill',
+            },
+            {
+                phone: DEMO_NUMBER_CREATING_AN_EVENT,
+            }
+        )
+    }
 
-	private static async assertCreatesOptionsFile(
-		results: FeatureActionResponse
-	) {
-		const optionsFile = testUtil.assertFileByNameInGeneratedFiles(
-			'event.options.ts',
-			results.files
-		)
+    private static async assertCreatesOptionsFile(
+        results: FeatureActionResponse
+    ) {
+        const optionsFile = testUtil.assertFileByNameInGeneratedFiles(
+            'event.options.ts',
+            results.files
+        )
 
-		const imported = await this.Service('import').importDefault(optionsFile)
+        const imported = await this.Service('import').importDefault(optionsFile)
 
-		assert.isEqualDeep(imported, { isGlobal: false })
-	}
+        assert.isEqualDeep(imported, { isGlobal: false })
+    }
 
-	private static async assertExpectedTargetAndPayload(
-		results: FeatureActionResponse,
-		skill: RegisteredSkill
-	) {
-		const match = testUtil.assertFileByPathInGeneratedFiles(
-			new RegExp(
-				`${namesUtil.toCamel(skill.slug)}.*?${
-					this.expectedVersion
-				}.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
-				'gis'
-			),
-			results.files
-		)
+    private static async assertExpectedTargetAndPayload(
+        results: FeatureActionResponse,
+        skill: RegisteredSkill
+    ) {
+        const match = testUtil.assertFileByPathInGeneratedFiles(
+            new RegExp(
+                `${namesUtil.toCamel(skill.slug)}.*?${
+                    this.expectedVersion
+                }.*?myFantasticallyAmazingEventEmitTargetAndPayload`,
+                'gis'
+            ),
+            results.files
+        )
 
-		const schema = await this.Service('schema').importSchema(match)
+        const schema = await this.Service('schema').importSchema(match)
 
-		assert.isEqual(schema.id, 'myFantasticallyAmazingEventEmitTargetAndPayload')
-		assert.isTruthy(schema.fields?.payload)
-		assert.isTruthy(schema.fields?.target)
-	}
+        assert.isEqual(
+            schema.id,
+            'myFantasticallyAmazingEventEmitTargetAndPayload'
+        )
+        assert.isTruthy(schema.fields?.payload)
+        assert.isTruthy(schema.fields?.target)
+    }
 
-	private static async assertReturnsEventFromHealthCheck(
-		cli: CliInterface,
-		skill: RegisteredSkill
-	) {
-		const health = await cli.checkHealth()
+    private static async assertReturnsEventFromHealthCheck(
+        cli: CliInterface,
+        skill: RegisteredSkill
+    ) {
+        const health = await cli.checkHealth()
 
-		assert.isTruthy(health.event)
-		assert.isLength(health.event.events, 1)
+        assert.isTruthy(health.event)
+        assert.isLength(health.event.events, 1)
 
-		const eventName = EVENT_NAME
-		const eventNamespace = namesUtil.toKebab(skill.slug)
+        const eventName = EVENT_NAME
+        const eventNamespace = namesUtil.toKebab(skill.slug)
 
-		assert.doesInclude(health.event.events, {
-			eventName,
-			eventNamespace,
-			version: this.expectedVersion,
-		})
+        assert.doesInclude(health.event.events, {
+            eventName,
+            eventNamespace,
+            version: this.expectedVersion,
+        })
 
-		assert.doesInclude(health.event.contracts, {
-			fullyQualifiedEventName: eventNameUtil.join({
-				eventName,
-				eventNamespace,
-				version: this.expectedVersion,
-			}),
-		})
-	}
+        assert.doesInclude(health.event.contracts, {
+            fullyQualifiedEventName: eventNameUtil.join({
+                eventName,
+                eventNamespace,
+                version: this.expectedVersion,
+            }),
+        })
+    }
 
-	private static async assertExpectedPayloadSchemas(
-		results: FeatureActionResponse
-	) {
-		const payloadSchemas = [
-			{
-				fileName: 'emitPayload.builder.ts',
-				expectedId: 'myFantasticallyAmazingEventEmitPayload',
-			},
-			{
-				fileName: 'emitTarget.builder.ts',
-				expectedId: 'myFantasticallyAmazingEventEmitTarget',
-			},
-			{
-				fileName: 'responsePayload.builder.ts',
-				expectedId: 'myFantasticallyAmazingEventResponsePayload',
-			},
-		]
+    private static async assertExpectedPayloadSchemas(
+        results: FeatureActionResponse
+    ) {
+        const payloadSchemas = [
+            {
+                fileName: 'emitPayload.builder.ts',
+                expectedId: 'myFantasticallyAmazingEventEmitPayload',
+            },
+            {
+                fileName: 'emitTarget.builder.ts',
+                expectedId: 'myFantasticallyAmazingEventEmitTarget',
+            },
+            {
+                fileName: 'responsePayload.builder.ts',
+                expectedId: 'myFantasticallyAmazingEventResponsePayload',
+            },
+        ]
 
-		const schemas = this.Service('schema')
+        const schemas = this.Service('schema')
 
-		for (const payload of payloadSchemas) {
-			const match = testUtil.assertFileByNameInGeneratedFiles(
-				payload.fileName,
-				results.files
-			)
+        for (const payload of payloadSchemas) {
+            const match = testUtil.assertFileByNameInGeneratedFiles(
+                payload.fileName,
+                results.files
+            )
 
-			assert.isEqual(
-				match,
-				eventDiskUtil.resolveEventPath(this.cwd + '/src/events', {
-					fileName: payload.fileName as any,
-					eventName: EVENT_NAME,
-					version: this.expectedVersion,
-				})
-			)
+            assert.isEqual(
+                match,
+                eventDiskUtil.resolveEventPath(this.cwd + '/src/events', {
+                    fileName: payload.fileName as any,
+                    eventName: EVENT_NAME,
+                    version: this.expectedVersion,
+                })
+            )
 
-			const imported = await schemas.importSchema(match)
-			assert.isEqual(imported.id, payload.expectedId)
-		}
-	}
+            const imported = await schemas.importSchema(match)
+            assert.isEqual(imported.id, payload.expectedId)
+        }
+    }
 }

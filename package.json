@@ -27,7 +27,7 @@
     "lint": "lerna run lint --parallel",
     "lint.tsc": "lerna run lint.tsc --parallel",
     "publish": "lerna publish",
-    "rebuild": "yarn clean.all && yarn && yarn build.dev; yarn cache.tests",
+    "rebuild": "yarn clean.all && yarn install && yarn build.dev; yarn cache.tests",
     "update.dependencies": "yarn clean.dependencies && yarn",
     "sync.ct": "yarn chokidar \"**/*.ts\" \"**/*.js\" \"**/*.json\" --ignore \"**/build/**\" -c \"rsync . root@3.tcp.ngrok.io:/media/ramdisk/$(basename `pwd`)/ -e 'ssh -p 25956' -avz --exclude=yarn.lock --exclude=node_modules --exclude=build --exclude=.git --exclude=tmp --inplace --delete --progress\"",
     "test": "lerna run test --parallel --",
@@ -37,7 +37,7 @@
     "upgrade.packages.test": "yarn upgrade.packages.all && yarn lint && yarn build.dev && yarn test",
     "watch.build.dev": "lerna run watch.build.dev --stream --parallel",
     "watch.lint": "lerna run watch.lint --stream --parallel",
-    "watch.rebuild": "yarn clean.all && yarn && yarn watch.build.dev",
+    "watch.rebuild": "yarn clean.all && yarn install && yarn watch.build.dev",
     "watch.tests": "lerna run watch.tests --parallel"
   },
   "dependencies": {

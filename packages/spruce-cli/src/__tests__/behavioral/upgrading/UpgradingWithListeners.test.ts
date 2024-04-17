@@ -5,66 +5,69 @@ import { FeatureCode } from '../../../features/features.types'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class UpgradingWithListeners extends AbstractCliTest {
-	@test('should sync listeners when installed', 'events', true)
-	@test('should not sync listeners when not installed', 'skills', false)
-	@test(
-		'should not sync listeners when creating node when not installed',
-		'testsInNodeModule',
-		false,
-		'create'
-	)
-	@test(
-		'should not sync listeners when creating node when installed',
-		'events',
-		false,
-		'create'
-	)
-	protected static async upgradingSyncsListeners(
-		featureCode: FeatureCode,
-		shouldHit: boolean,
-		actionCode = 'upgrade'
-	) {
-		await this.FeatureFixture().installCachedFeatures(featureCode)
-		await this.assertListenersSynced(actionCode, shouldHit)
-	}
+    @test('should sync listeners when installed', 'events', true)
+    @test('should not sync listeners when not installed', 'skills', false)
+    @test(
+        'should not sync listeners when creating node when not installed',
+        'testsInNodeModule',
+        false,
+        'create'
+    )
+    @test(
+        'should not sync listeners when creating node when installed',
+        'events',
+        false,
+        'create'
+    )
+    protected static async upgradingSyncsListeners(
+        featureCode: FeatureCode,
+        shouldHit: boolean,
+        actionCode = 'upgrade'
+    ) {
+        await this.FeatureFixture().installCachedFeatures(featureCode)
+        await this.assertListenersSynced(actionCode, shouldHit)
+    }
 
-	@test()
-	protected static async willNotSyncIfSkillNotInstalled() {
-		await this.FeatureFixture().installCachedFeatures('events')
-		this.featureInstaller.markAsPermanentlySkipped('skill')
-		await this.assertListenersSynced('upgrade', false)
-	}
+    @test()
+    protected static async willNotSyncIfSkillNotInstalled() {
+        await this.FeatureFixture().installCachedFeatures('events')
+        this.featureInstaller.markAsPermanentlySkipped('skill')
+        await this.assertListenersSynced('upgrade', false)
+    }
 
-	private static async assertListenersSynced(
-		actionCode: string,
-		shouldHit: boolean
-	) {
-		this.commandFaker.fakeCommand(new RegExp(/yarn/))
+    private static async assertListenersSynced(
+        actionCode: string,
+        shouldHit: boolean
+    ) {
+        this.commandFaker.fakeCommand(new RegExp(/yarn/))
 
-		let wasHit = false
+        let wasHit = false
 
-		await this.emitter.on(
-			'feature.will-execute',
-			async ({ featureCode, actionCode }) => {
-				if (featureCode === 'event' && actionCode === 'sync.listeners') {
-					wasHit = true
-				}
-			}
-		)
+        await this.emitter.on(
+            'feature.will-execute',
+            async ({ featureCode, actionCode }) => {
+                if (
+                    featureCode === 'event' &&
+                    actionCode === 'sync.listeners'
+                ) {
+                    wasHit = true
+                }
+            }
+        )
 
-		const results = await this.emitter.emit('feature.did-execute', {
-			featureCode: 'node',
-			actionCode,
-			results: {},
-		})
+        const results = await this.emitter.emit('feature.did-execute', {
+            featureCode: 'node',
+            actionCode,
+            results: {},
+        })
 
-		const { errors } = eventResponseUtil.getAllResponsePayloadsAndErrors(
-			results,
-			SpruceError
-		)
+        const { errors } = eventResponseUtil.getAllResponsePayloadsAndErrors(
+            results,
+            SpruceError
+        )
 
-		assert.isFalsy(errors)
+        assert.isFalsy(errors)
 
-		assert.isEqual(wasHit, shouldHit)
-	}
+        assert.isEqual(wasHit, shouldHit)
+    }
 }

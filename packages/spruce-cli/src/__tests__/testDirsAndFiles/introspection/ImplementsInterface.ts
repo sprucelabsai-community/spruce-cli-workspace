@@ -1,7 +1,7 @@
 interface TestInterface {
-	name: string
+    name: string
 }
 
 export default class ImplementsInterface implements TestInterface {
-	public name = 'test'
+    public name = 'test'
 }

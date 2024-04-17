@@ -5,58 +5,58 @@ import { FeatureActionResponse } from '../../features.types'
 import { ENABLE_NPM_CACHE_COMMAND } from '../constants'
 
 export default class EnableCacheAction extends AbstractAction<OptionsSchema> {
-	public optionsSchema = optionsSchema
-	public commandAliases = [
-		'enable.cache',
-		'start.cache',
-		'enable.caching',
-		'start.caching',
-	]
-	public invocationMessage = 'Enabling cache... 💪'
+    public optionsSchema = optionsSchema
+    public commandAliases = [
+        'enable.cache',
+        'start.cache',
+        'enable.caching',
+        'start.caching',
+    ]
+    public invocationMessage = 'Enabling cache... 💪'
 
-	public async execute(_options: Options): Promise<FeatureActionResponse> {
-		try {
-			await this.Service('command').execute('which docker')
+    public async execute(_options: Options): Promise<FeatureActionResponse> {
+        try {
+            await this.Service('command').execute('which docker')
 
-			await this.Action('cache', 'disable').execute({})
-			await this.Service('command').execute(ENABLE_NPM_CACHE_COMMAND)
+            await this.Action('cache', 'disable').execute({})
+            await this.Service('command').execute(ENABLE_NPM_CACHE_COMMAND)
 
-			return {
-				headline: 'Starting cache',
-				summaryLines: ['Booting cache systems now. Give it a sec!'],
-			}
-		} catch (err: any) {
-			let error = err
+            return {
+                headline: 'Starting cache',
+                summaryLines: ['Booting cache systems now. Give it a sec!'],
+            }
+        } catch (err: any) {
+            let error = err
 
-			if (err.options?.cmd?.includes('which')) {
-				error = new SpruceError({
-					code: 'MISSING_DEPENDENCIES',
-					originalError: err,
-					dependencies: [
-						{
-							name: 'Docker',
-							hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
-						},
-					],
-				})
-			} else {
-				error = new SpruceError({
-					code: 'DOCKER_NOT_STARTED',
-					originalError: err,
-				})
-			}
+            if (err.options?.cmd?.includes('which')) {
+                error = new SpruceError({
+                    code: 'MISSING_DEPENDENCIES',
+                    originalError: err,
+                    dependencies: [
+                        {
+                            name: 'Docker',
+                            hint: 'Get Docker here: https://www.docker.com/products/docker-desktop',
+                        },
+                    ],
+                })
+            } else {
+                error = new SpruceError({
+                    code: 'DOCKER_NOT_STARTED',
+                    originalError: err,
+                })
+            }
 
-			return {
-				errors: [error],
-			}
-		}
-	}
+            return {
+                errors: [error],
+            }
+        }
+    }
 }
 
 const optionsSchema = buildSchema({
-	id: 'enableCacheAction',
-	description: 'Enable npm caching so pulling node_modules is much faster.',
-	fields: {},
+    id: 'enableCacheAction',
+    description: 'Enable npm caching so pulling node_modules is much faster.',
+    fields: {},
 })
 
 type OptionsSchema = typeof optionsSchema

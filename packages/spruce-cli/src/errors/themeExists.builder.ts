@@ -1,8 +1,8 @@
 import { buildErrorSchema } from '@sprucelabs/schema'
 
 export default buildErrorSchema({
-	id: 'themeExists',
-	name: 'Theme exists',
-	description: '',
-	fields: {},
+    id: 'themeExists',
+    name: 'Theme exists',
+    description: '',
+    fields: {},
 })

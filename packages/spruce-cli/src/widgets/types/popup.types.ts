@@ -1,17 +1,17 @@
 import { BaseWidget } from './widgets.types'
 
 export const popupEventContract = {
-	eventSignatures: {
-		close: {},
-	},
+    eventSignatures: {
+        close: {},
+    },
 }
 
 export type PopupEventContract = typeof popupEventContract
 
 export interface PopupWidgetOptions {
-	title?: string
+    title?: string
 }
 
 export interface PopupWidget extends BaseWidget<PopupEventContract> {
-	readonly type: 'popup'
+    readonly type: 'popup'
 }

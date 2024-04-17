@@ -6,148 +6,149 @@ import testUtil from '../../../tests/utilities/test.utility'
 import uiAssert from '../../../tests/utilities/uiAssert.utility'
 
 export default class CreatingBehavioralTestsTest extends AbstractTestTest {
-	@test()
-	protected static async hasCreateAction() {
-		assert.isFunction(this.Action('test', 'create').execute)
-	}
+    @test()
+    protected static async hasCreateAction() {
+        assert.isFunction(this.Action('test', 'create').execute)
+    }
 
-	@test()
-	protected static async requiresInstallIfFeatureNotInstalled() {
-		await this.installTests('testsInNodeModule')
+    @test()
+    protected static async requiresInstallIfFeatureNotInstalled() {
+        await this.installTests('testsInNodeModule')
 
-		const testFeature = this.featureInstaller.getFeature('test')
-		const candidates = await testFeature.buildParentClassCandidates()
+        const testFeature = this.featureInstaller.getFeature('test')
+        const candidates = await testFeature.buildParentClassCandidates()
 
-		assert.doesInclude(candidates, {
-			label: 'AbstractStoreTest (requires install)',
-			name: 'AbstractStoreTest',
-		})
-	}
+        assert.doesInclude(candidates, {
+            label: 'AbstractStoreTest (requires install)',
+            name: 'AbstractStoreTest',
+        })
+    }
 
-	@test(
-		'can create behavioral test with AbstractSpruceFixtureTest',
-		'AbstractSpruceFixtureTest'
-	)
-	@test(
-		'can create behavioral test with AbstractStoreTest',
-		'AbstractStoreTest (requires install)'
-	)
-	protected static async canCreateBehavioralTest(testName: string) {
-		LintService.enableLinting()
-		const match = await this.createTestAndGetFile(testName)
+    @test(
+        'can create behavioral test with AbstractSpruceFixtureTest',
+        'AbstractSpruceFixtureTest'
+    )
+    @test(
+        'can create behavioral test with AbstractStoreTest',
+        'AbstractStoreTest (requires install)'
+    )
+    protected static async canCreateBehavioralTest(testName: string) {
+        LintService.enableLinting()
+        const match = await this.createTestAndGetFile(testName)
 
-		assert.doesInclude(match, 'behavioral')
+        assert.doesInclude(match, 'behavioral')
 
-		await this.Service('build').build()
+        await this.Service('build').build()
 
-		await assert.doesThrowAsync(
-			() => this.Service('command').execute('yarn test'),
-			/false.*?does not equal.*?true/gis
-		)
-	}
+        await assert.doesThrowAsync(
+            () => this.Service('command').execute('yarn test'),
+            /false.*?does not equal.*?true/gis
+        )
+    }
 
-	@test('finds folders inside behavioral', 'behavioral')
-	@test('finds folders inside implementation', 'implementation')
-	protected static async promptsToSelectFolderIfInsideTestDir(
-		testType: string
-	) {
-		await this.installTests()
+    @test('finds folders inside behavioral', 'behavioral')
+    @test('finds folders inside implementation', 'implementation')
+    protected static async promptsToSelectFolderIfInsideTestDir(
+        testType: string
+    ) {
+        await this.installTests()
 
-		this.createTestSubDir(testType, 'dummy1')
+        this.createTestSubDir(testType, 'dummy1')
 
-		const { promise } =
-			await this.installAndStartTestActionAndWaitForInput(testType)
+        const { promise } =
+            await this.installAndStartTestActionAndWaitForInput(testType)
 
-		uiAssert.assertRendersDirectorySelect(
-			this.ui,
-			this.resolvePath('src', '__tests__', testType)
-		)
+        uiAssert.assertRendersDirectorySelect(
+            this.ui,
+            this.resolvePath('src', '__tests__', testType)
+        )
 
-		await this.ui.sendInput('')
-		await this.waitAndSelectSubClass()
+        await this.ui.sendInput('')
+        await this.waitAndSelectSubClass()
 
-		await promise
-	}
+        await promise
+    }
 
-	@test('can select sub dir 1', 'test')
-	@test('can select sub dir 2', 'test-2')
-	protected static async selectingAnOptionRendersToSubDir(dirName: string) {
-		await this.installTests()
-		const dir = this.createTestSubDir('behavioral', dirName)
+    @test('can select sub dir 1', 'test')
+    @test('can select sub dir 2', 'test-2')
+    protected static async selectingAnOptionRendersToSubDir(dirName: string) {
+        await this.installTests()
+        const dir = this.createTestSubDir('behavioral', dirName)
 
-		const { promise } =
-			await this.installAndStartTestActionAndWaitForInput('behavioral')
+        const { promise } =
+            await this.installAndStartTestActionAndWaitForInput('behavioral')
 
-		await this.ui.sendInput({ path: dir })
+        await this.ui.sendInput({ path: dir })
 
-		await this.waitAndSelectSubClass()
+        await this.waitAndSelectSubClass()
 
-		const results = await promise
+        const results = await promise
 
-		const expectedPath = this.resolvePath(
-			'src',
-			'__tests__',
-			'behavioral',
-			dirName,
-			'CanBookAppointment.test.ts'
-		)
+        const expectedPath = this.resolvePath(
+            'src',
+            '__tests__',
+            'behavioral',
+            dirName,
+            'CanBookAppointment.test.ts'
+        )
 
-		assert.isEqual(expectedPath, results.files?.[0]?.path)
-	}
+        assert.isEqual(expectedPath, results.files?.[0]?.path)
+    }
 
-	@test()
-	protected static async allTestsComeFakedToStart() {
-		const testFile = await this.createTestAndGetFile()
-		const contents = diskUtil.readFile(testFile)
-		assert.doesInclude(contents, 'fake.login()')
-	}
+    @test()
+    protected static async allTestsComeFakedToStart() {
+        const testFile = await this.createTestAndGetFile()
+        const contents = diskUtil.readFile(testFile)
+        assert.doesInclude(contents, 'fake.login()')
+    }
 
-	private static createTestSubDir(...testDirs: string[]) {
-		const newDir = this.resolveTestDir(...testDirs)
-		diskUtil.createDir(newDir)
-		return newDir
-	}
+    private static createTestSubDir(...testDirs: string[]) {
+        const newDir = this.resolveTestDir(...testDirs)
+        diskUtil.createDir(newDir)
+        return newDir
+    }
 
-	private static resolveTestDir(...testDirs: string[]) {
-		return this.resolvePath('src', '__tests__', ...testDirs)
-	}
+    private static resolveTestDir(...testDirs: string[]) {
+        return this.resolvePath('src', '__tests__', ...testDirs)
+    }
 
-	private static async createTest(testName = 'AbstractSpruceFixtureTest') {
-		const { promise } = await this.installAndStartTestActionAndWaitForInput()
+    private static async createTest(testName = 'AbstractSpruceFixtureTest') {
+        const { promise } =
+            await this.installAndStartTestActionAndWaitForInput()
 
-		this.selectOptionBasedOnLabel(testName)
+        this.selectOptionBasedOnLabel(testName)
 
-		const response = await promise
-		return response
-	}
+        const response = await promise
+        return response
+    }
 
-	private static async installAndStartTestActionAndWaitForInput(
-		testType = 'behavioral'
-	) {
-		await this.installTests()
-		const promise = this.Action('test', 'create').execute({
-			type: testType,
-			nameReadable: 'Can book appointment',
-			nameCamel: 'canBookAppointment',
-			namePascal: 'CanBookAppointment',
-		})
+    private static async installAndStartTestActionAndWaitForInput(
+        testType = 'behavioral'
+    ) {
+        await this.installTests()
+        const promise = this.Action('test', 'create').execute({
+            type: testType,
+            nameReadable: 'Can book appointment',
+            nameCamel: 'canBookAppointment',
+            namePascal: 'CanBookAppointment',
+        })
 
-		await this.waitForInput()
-		return { promise }
-	}
+        await this.waitForInput()
+        return { promise }
+    }
 
-	private static async waitAndSelectSubClass(selectedSubClass?: string) {
-		await this.waitForInput()
-		await this.ui.sendInput(selectedSubClass ?? '')
-	}
+    private static async waitAndSelectSubClass(selectedSubClass?: string) {
+        await this.waitForInput()
+        await this.ui.sendInput(selectedSubClass ?? '')
+    }
 
-	private static async createTestAndGetFile(testName?: string) {
-		const response = await this.createTest(testName)
+    private static async createTestAndGetFile(testName?: string) {
+        const response = await this.createTest(testName)
 
-		const match = testUtil.assertFileByNameInGeneratedFiles(
-			'CanBookAppointment.test.ts',
-			response.files
-		)
-		return match
-	}
+        const match = testUtil.assertFileByNameInGeneratedFiles(
+            'CanBookAppointment.test.ts',
+            response.files
+        )
+        return match
+    }
 }

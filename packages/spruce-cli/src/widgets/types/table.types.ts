@@ -5,5 +5,5 @@ import { BaseWidget } from './widgets.types'
 export interface TableWidgetOptions {}
 
 export interface TableWidget extends BaseWidget {
-	type: 'table'
+    type: 'table'
 }
