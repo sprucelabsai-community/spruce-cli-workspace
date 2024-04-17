@@ -102,11 +102,13 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 
 		pkg.deleteLockFile()
 
+		const namespace = pkg.getSkillNamespace()
+
 		if (dependencies.length > 0) {
 			InFlightEntertainment.writeStatus(
 				`Installing ${dependencies.length} dependenc${
 					dependencies.length === 1 ? 'y' : 'ies'
-				}.`
+				} for ${namespace}.`
 			)
 			await pkg.install(
 				dependencies.map((d) => d.name),
@@ -121,7 +123,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
 			InFlightEntertainment.writeStatus(
 				`Installing ${devDependencies.length} dev dependenc${
 					dependencies.length === 1 ? 'y' : 'ies'
-				}.`
+				} for ${namespace}.`
 			)
 			await pkg.install(
 				devDependencies.map((d) => d.name),

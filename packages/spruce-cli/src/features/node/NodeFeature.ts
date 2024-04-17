@@ -73,7 +73,10 @@ export default class NodeFeature<
 			this.ui.startLoading('Cleaning build...')
 			await this.Service('command').execute('yarn clean.build')
 
-			this.ui.startLoading('Building for development...')
+			const pkg = this.Service('pkg')
+			const namespace = pkg.getSkillNamespace()
+
+			this.ui.startLoading(`Building ${namespace} for development...`)
 			await this.Service('command').execute('yarn build.dev')
 
 			return {

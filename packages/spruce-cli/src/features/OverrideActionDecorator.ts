@@ -127,11 +127,13 @@ export default class OverrideActionDecorator implements FeatureAction {
 		let { ...options } = optionsArgs
 
 		const commands = this.getCommands()
+		const pkg = this.parent.Service('pkg')
+		const namespace = pkg.getSkillNamespace()
 
 		for (const commandStr of commands) {
 			const overrides = this.optionOverrides?.[commandStr]
 			if (overrides) {
-				this.ui?.renderLine(`Overrides found in package.json`)
+				this.ui?.renderLine(`Overrides found in package.json of ${namespace}.`)
 				this.ui?.renderObject(overrides)
 				options = {
 					...options,
