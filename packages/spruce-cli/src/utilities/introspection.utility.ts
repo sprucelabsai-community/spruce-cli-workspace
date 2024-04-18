@@ -50,8 +50,7 @@ const introspectionUtil = {
         // for building results
         const introspects: Introspection[] = []
 
-        for (let i = 0; i < filePaths.length; i += 1) {
-            const tsFile = filePaths[i]
+        for (const tsFile of filePaths) {
             const sourceFile = program.getSourceFile(tsFile)
             const results: Introspection = { classes: [], interfaces: [] }
             if (sourceFile && _.includes(filePaths, sourceFile.fileName)) {
