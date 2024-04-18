@@ -34,12 +34,6 @@ export default class UpgradingASkillTest extends AbstractCliTest {
                 forceRequiredSkipRestAction: 'updated',
             },
             {
-                name: '.eslintrc.js',
-                path: '.eslintrc.js',
-                forceEverythingAction: 'updated',
-                forceRequiredSkipRestAction: 'updated',
-            },
-            {
                 name: 'SpruceError.ts',
                 path: 'src/errors/SpruceError.ts',
                 forceEverythingAction: 'updated',

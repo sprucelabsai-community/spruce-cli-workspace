@@ -1,5 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
+import LintService from '../../services/LintService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class BuildServiceTest extends AbstractCliTest {
@@ -11,6 +12,7 @@ export default class BuildServiceTest extends AbstractCliTest {
 
     @test()
     protected static async canBuildSkill() {
+        LintService.enableLinting()
         await this.installSkill('skills')
 
         const testFile = "const testVar = 'hello world'\nconsole.log(testVar)\n"

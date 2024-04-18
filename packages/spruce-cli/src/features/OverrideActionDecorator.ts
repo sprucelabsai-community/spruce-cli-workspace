@@ -127,8 +127,14 @@ export default class OverrideActionDecorator implements FeatureAction {
         let { ...options } = optionsArgs
 
         const commands = this.getCommands()
-        const pkg = this.parent.Service('pkg')
-        const namespace = pkg.getSkillNamespace()
+        let namespace: string | undefined
+
+        try {
+            const pkg = this.parent.Service('pkg')
+            namespace = pkg.getSkillNamespace()
+        } catch {
+            namespace = 'new skill'
+        }
 
         for (const commandStr of commands) {
             const overrides = this.optionOverrides?.[commandStr]

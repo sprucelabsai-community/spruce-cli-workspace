@@ -301,7 +301,7 @@ export default class SpyInterface implements GraphicsInterface {
     }
 
     public async waitForInput() {
-        const ttl = 1000 * 60 * 5
+        const ttl = 1000 * 60 * 2
         const checkInterval = 100
         let loops = ttl / checkInterval
         let lastWriteCount = this.invocations.length

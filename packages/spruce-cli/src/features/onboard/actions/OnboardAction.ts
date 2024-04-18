@@ -11,12 +11,15 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
     public invocationMessage = 'All aboard... 🛤'
 
     public async execute(_options: Options): Promise<FeatureActionResponse> {
+        debugger
         const store = this.getParent().OnboardingStore()
         const mode = store.getMode()
         let response = {}
 
-        const player = await this.getParent().ScriptPlayer()
+        debugger
 
+        const player = await this.getParent().ScriptPlayer()
+        debugger
         switch (mode) {
             case 'short':
             case 'immersive':
@@ -25,7 +28,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
             default:
                 await player.playScriptWithKey('onboarding.first')
         }
-
+        debugger
         const stage = store.getStage()
 
         if (stage) {

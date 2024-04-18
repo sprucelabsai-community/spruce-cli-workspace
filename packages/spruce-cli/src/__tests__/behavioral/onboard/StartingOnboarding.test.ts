@@ -39,10 +39,13 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
         // get through first onboarding script and select short onboarding
         await this.waitForInput()
+
         await this.ui.sendInput('\n')
         await this.waitForInput()
+
         await this.ui.sendInput('short')
         await this.waitForInput()
+
         await this.ui.sendInput('\n')
 
         await onboardPromise
@@ -58,6 +61,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
         // create skill confirmation
         await this.waitForInput()
+
         await this.ui.sendInput('\n')
 
         await this.wait(100)

@@ -1,9 +1,15 @@
 import { test, assert } from '@sprucelabs/test-utils'
+import LintService from '../../../services/LintService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import { DEMO_NUMBER_VIEWS_ON_BOOT } from '../../../tests/constants'
 
 export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
     protected static skillCacheKey = 'views'
+
+    protected static async beforeEach() {
+        await super.beforeEach()
+        LintService.enableLinting()
+    }
 
     @test()
     protected static async noEventsToStart() {
