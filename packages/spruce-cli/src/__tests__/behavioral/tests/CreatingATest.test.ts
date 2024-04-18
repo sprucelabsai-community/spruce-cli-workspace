@@ -34,6 +34,7 @@ export default class CreatingBehavioralTestsTest extends AbstractTestTest {
     )
     protected static async canCreateBehavioralTest(testName: string) {
         LintService.enableLinting()
+
         const match = await this.createTestAndGetFile(testName)
 
         assert.doesInclude(match, 'behavioral')
