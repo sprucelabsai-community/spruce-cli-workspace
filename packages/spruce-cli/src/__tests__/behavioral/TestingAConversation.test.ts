@@ -63,10 +63,10 @@ export default class TestingAConversationTest extends AbstractCliTest {
     @test()
     protected static async doesntReturnErrorWhenKilled() {
         await this.installAndCreateConversation()
-        //@ts-ignore
         const test = this.Action(
             'conversation',
             'test'
+            //@ts-ignore
         ).getChild() as TestAction
 
         setTimeout(async () => {

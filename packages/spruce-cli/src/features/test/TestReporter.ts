@@ -429,14 +429,11 @@ export default class TestReporter {
             }
 
             line++
+            const tests = file.tests ?? []
 
-            for (let c = 0; c < (file.tests ?? []).length; c++) {
-                if (line === row) {
-                    return file.path
-                }
-
+            tests.forEach(() => {
                 line++
-            }
+            })
         }
 
         return undefined

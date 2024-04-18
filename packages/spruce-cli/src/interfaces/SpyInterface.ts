@@ -209,7 +209,8 @@ export default class SpyInterface implements GraphicsInterface {
                 `${
                     //@ts-ignore
                     global.activeTest?.test
-                        ? global.activeTest?.test + ' :: '
+                        ? //@ts-ignore
+                          global.activeTest?.test + ' :: '
                         : ''
                 }${friendly} :: ${message}`
             )

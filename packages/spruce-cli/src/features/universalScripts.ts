@@ -1,28 +1,31 @@
 const universalScripts = {
-    'build.ci': 'yarn build.tsc && yarn build.resolve-paths && yarn lint',
-    'build.dev': 'yarn build.tsc --sourceMap ; yarn resolve-paths.lint',
+    'build.ci':
+        'yarn run build.tsc && yarn run build.resolve-paths && yarn run lint',
+    'build.dev': 'yarn run build.tsc --sourceMap ; yarn run resolve-paths.lint',
     'build.copy-files':
         "mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
     'build.resolve-paths':
         "resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
-    'build.tsc': 'yarn build.copy-files && tsc',
-    clean: 'yarn clean.build',
-    'clean.all': 'yarn clean.dependencies && yarn clean.build',
+    'build.tsc': 'yarn run build.copy-files && tsc',
+    clean: 'yarn run clean.build',
+    'clean.all': 'yarn run clean.dependencies && yarn run clean.build',
     'clean.build': 'rm -rf build/',
     'clean.dependencies': 'rm -rf node_modules/ package-lock.json yarn.lock',
-    'fix.lint': 'eslint --fix --cache',
-    lint: 'eslint --cache',
+    'fix.lint': "eslint --fix --cache '**/*.ts'",
+    lint: "eslint --cache '**/*.ts'",
     'lint.tsc': 'tsc -p . --noEmit',
-    'post.watch.build': 'yarn build.copy-files && yarn build.resolve-paths',
-    rebuild: 'yarn clean.all && yarn install && yarn build.dev',
-    'update.dependencies': 'yarn clean.dependencies && yarn',
-    'resolve-paths.lint': 'yarn build.resolve-paths ; yarn lint',
+    'post.watch.build':
+        'yarn run build.copy-files && yarn run build.resolve-paths',
+    rebuild: 'yarn run clean.all && yarn install && yarn run build.dev',
+    'update.dependencies': 'yarn run clean.dependencies && yarn',
+    'resolve-paths.lint': 'yarn run build.resolve-paths ; yarn run lint',
     test: 'jest',
     'watch.build.dev':
-        "tsc-watch --sourceMap --onCompilationComplete 'yarn post.watch.build'",
+        "tsc-watch --sourceMap --onCompilationComplete 'yarn run post.watch.build'",
     'watch.lint':
-        "concurrently 'yarn lint' \"chokidar 'src/**/*' -c 'yarn lint.tsc'\"",
-    'watch.rebuild': 'yarn clean.all && yarn install && yarn watch.build.dev',
+        "concurrently 'yarn run lint' \"chokidar 'src/**/*' -c 'yarn run lint.tsc'\"",
+    'watch.rebuild':
+        'yarn run clean.all && yarn install && yarn run watch.build.dev',
     'watch.tsc': 'tsc -w',
 }
 

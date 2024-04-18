@@ -96,8 +96,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
             })
         )
 
-        for (let i = 0; i < results.length; i += 1) {
-            const result = results[i]
+        for (const result of results) {
             if (!result) {
                 return false
             }
@@ -134,16 +133,14 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
         const feature = this.getFeature(featureDependency.code)
         const dependencies = feature.dependencies
 
-        for (let i = 0; i < dependencies.length; i += 1) {
-            const dependency = dependencies[i]
+        for (const dependency of dependencies) {
             if (!this.isDependencyInTracker(trackedFeatures, dependency)) {
                 features.push(dependency)
                 trackedFeatures.push(dependency)
             }
         }
 
-        for (let x = 0; x < dependencies.length; x += 1) {
-            const dependency = dependencies[x]
+        for (const dependency of dependencies) {
             let dependencyDependencies =
                 this.getFeatureDependenciesIncludingSelf(
                     dependency,
@@ -199,8 +196,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 
         let dependenciesToInstall: FeatureDependency[] = []
 
-        for (let i = 0; i < features.length; i += 1) {
-            const f = features[i]
+        for (const f of features) {
             const code = f.code
 
             didUpdateHandler?.(`Checking if ${code} is installed...`)
@@ -223,9 +219,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
         dependenciesToInstall = uniq(dependenciesToInstall)
         dependenciesToInstall = this.sortFeatures(dependenciesToInstall)
 
-        for (let x = 0; x < dependenciesToInstall.length; x += 1) {
-            const { code, isRequired } = dependenciesToInstall[x]
-
+        for (const { code, isRequired } of dependenciesToInstall) {
             const isInstalled = await this.isInstalledOrPendingInstall(code)
 
             if (!isInstalled && isRequired) {

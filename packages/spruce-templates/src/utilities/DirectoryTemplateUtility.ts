@@ -45,8 +45,7 @@ export default class DirectoryTemplateUtility {
 
         const files = await this.filesInTemplate(kind)
 
-        for (let i = 0; i < files.length; i += 1) {
-            const file = files[i]
+        for (const file of files) {
             const { isHandlebarsTemplate, path } = file
 
             let contents = fs.readFileSync(path).toString()

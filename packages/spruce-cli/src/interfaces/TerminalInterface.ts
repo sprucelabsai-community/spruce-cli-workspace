@@ -367,7 +367,7 @@ export default class TerminalInterface implements GraphicsInterface {
         }).start()
     }
 
-    public async stopLoading() {
+    public stopLoading() {
         TerminalInterface.loader?.stop()
         TerminalInterface.loader = null
     }

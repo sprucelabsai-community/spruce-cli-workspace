@@ -213,7 +213,7 @@ export default class CreatingANewSchemaBuilderTest extends AbstractSchemaTest {
             },
         ])
 
-        this.ui.sendInput(newVersion.dirValue)
+        void this.ui.sendInput(newVersion.dirValue)
 
         const createResults = await createPromise
 

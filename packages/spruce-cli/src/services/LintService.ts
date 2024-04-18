@@ -44,7 +44,7 @@ export default class LintService {
         try {
             // const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
             // fixedFiles = await cli.lintFiles([pattern])
-            const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', }); const result = await cli.lintFiles(['${pattern}']); console.log(JSON.stringify(result)); } catch (err) { console.log(err.toString()); }})()"`
+            const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', useFlatConfig: true }); const result = await cli.lintFiles(['${pattern}']); console.log(JSON.stringify(result)); } catch (err) { console.log(err.toString()); }})()"`
 
             const { stdout } = await this.getCommand().execute('node', {
                 args: ['-e', script],
@@ -59,10 +59,10 @@ export default class LintService {
             })
         }
 
-        if (fixedFiles) {
-            for (let i = 0; i < fixedFiles.length; i += 1) {
-                const fixedFile = fixedFiles[i]
+        console.log('DID THIS WORK?')
 
+        if (fixedFiles) {
+            for (const fixedFile of fixedFiles) {
                 if (fixedFile?.output) {
                     await fs.writeFile(fixedFile.filePath, fixedFile.output)
                     fixedPaths.push(fixedFile.filePath)
