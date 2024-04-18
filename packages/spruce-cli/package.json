@@ -43,7 +43,7 @@
 		"build.dev": "yarn build.tsc --sourceMap ; yarn resolve-paths.lint",
 		"build.tsc": "yarn build.copy-files && tsc",
 		"build.types": "tsc --emitDeclarationOnly && echo PASS TYPES || (echo FAIL TYPES && false)",
-		"build.copy-files": "mkdir -p build && rsync -avzq --exclude='*.ts' ./src/ ./build/",
+		"build.copy-files": "mkdir -p build && rsync -avzq --include='/__tests__/testDirsAndFiles/***' --exclude='*.ts' ./src/ ./build/",
 		"build.resolve-paths": "resolve-path-aliases --target build --patterns '**/*.js,**/*.d.ts'",
 		"build.types.resolve-paths.lint": "yarn build.types && yarn resolve-paths.lint",
 		"resolve-paths.lint": "yarn build.resolve-paths ; yarn lint",
