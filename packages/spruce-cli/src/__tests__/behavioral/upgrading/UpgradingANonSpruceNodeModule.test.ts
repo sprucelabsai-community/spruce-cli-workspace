@@ -61,7 +61,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
         let wasHit = false
 
-        CommandService.fakeCommand('yarn add test -W', {
+        CommandService.fakeCommand(/yarn.*?-W/, {
             code: 0,
             callback: () => {
                 wasHit = true
@@ -79,7 +79,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
         const commands: string[] = []
 
-        CommandService.fakeCommand(/yarn add .*/gis, {
+        CommandService.fakeCommand(/yarn.*?add .*/gis, {
             code: 0,
             callback: (command, args) => {
                 commands.push([command, ...args].join(' '))
