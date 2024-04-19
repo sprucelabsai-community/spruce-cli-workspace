@@ -27,7 +27,6 @@ export default class LintService {
     }
 
     public fix = async (pattern: string): Promise<string[]> => {
-        debugger
         if (!pattern) {
             throw new SchemaError({
                 code: 'MISSING_PARAMETERS',
@@ -53,7 +52,6 @@ export default class LintService {
 
             fixedFiles = JSON.parse(stdout)
         } catch (err: any) {
-            debugger
             throw new SpruceError({
                 code: 'LINT_FAILED',
                 pattern,

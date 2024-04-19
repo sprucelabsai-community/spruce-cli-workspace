@@ -1,12 +1,14 @@
 import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
+import LintService from '../../../services/LintService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill2Test extends AbstractCliTest {
     protected static async beforeEach() {
         await super.beforeEach()
         this.commandFaker.fakeRebuild()
+        LintService.disableLinting()
     }
 
     @test(
@@ -29,7 +31,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
         'Upgrades view.plugin (even if skill is broken)',
         'view.plugin.ts',
         'views',
-        true
+        false
     )
     protected static async upgradesPlugins(
         pluginName: string,
@@ -38,7 +40,9 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
     ) {
         await this.FeatureFixture().installCachedFeatures(cacheKey)
 
+        this.commandFaker.fakeBuild()
         shouldBlockYarn && this.commandFaker.fakeCommand(/yarn/, 0)
+        !shouldBlockYarn && LintService.enableLinting()
 
         const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
         const originalContents = diskUtil.readFile(pluginPath)

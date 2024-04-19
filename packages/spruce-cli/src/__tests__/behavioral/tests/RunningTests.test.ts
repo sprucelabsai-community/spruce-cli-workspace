@@ -1,5 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
+import LintService from '../../../services/LintService'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 
 export default class RunningTestsTest extends AbstractTestTest {
@@ -8,6 +9,7 @@ export default class RunningTestsTest extends AbstractTestTest {
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
         this.hasCreatedTest = false
+        LintService.enableLinting()
     }
 
     @test()

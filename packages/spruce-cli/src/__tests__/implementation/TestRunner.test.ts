@@ -3,6 +3,7 @@ import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { SpruceTestResults } from '../../features/test/test.types'
 import TestRunner from '../../features/test/TestRunner'
+import LintService from '../../services/LintService'
 import AbstractTestTest from '../../tests/AbstractTestTest'
 import { CliInterface } from '../../types/cli.types'
 
@@ -13,6 +14,7 @@ export default class TestRunnerTest extends AbstractTestTest {
     protected static async beforeEach() {
         await super.beforeEach()
         this.hasCreatedTest = false
+        LintService.enableLinting()
         this.testRunner = new TestRunner({
             cwd: this.cwd,
             commandService: this.Service('command'),

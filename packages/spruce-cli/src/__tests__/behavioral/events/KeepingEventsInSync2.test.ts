@@ -17,6 +17,7 @@ import {
 import { test, assert } from '@sprucelabs/test-utils'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
+import LintService from '../../../services/LintService'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 import testUtil from '../../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
@@ -67,7 +68,7 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
     @test()
     protected static async canGetNumberOfEventsBackFromHealthCheck() {
         const cli = await this.FeatureFixture().installCachedFeatures('events')
-
+        LintService.enableLinting()
         const results = await this.Action('event', 'sync').execute({})
 
         assert.isFalsy(results.errors)

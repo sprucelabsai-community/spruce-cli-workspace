@@ -2,6 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import CommandService from '../../services/CommandService'
+import LintService from '../../services/LintService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -112,6 +113,8 @@ export default class DeployingASkillTest extends AbstractCliTest {
     @test()
     protected static async deployHaltedWithBadTest() {
         await this.FeatureFixture().installCachedFeatures('deployWithTests')
+
+        LintService.enableLinting()
 
         await this.getSkillFixture().registerCurrentSkill({
             name: 'haulted wth bad test',

@@ -3,6 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { FeatureCode } from '../../../features/features.types'
 import CreateAction from '../../../features/test/actions/CreateAction'
+import LintService from '../../../services/LintService'
 import AbstractTestTest from '../../../tests/AbstractTestTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -27,6 +28,7 @@ const featuresWithRegisteredTests: {
 export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
     @test()
     protected static async asksForYouToSelectABaseClass() {
+        LintService.enableLinting()
         const { promise } =
             await this.installCopyTestFilesSelectLocalAbstractTest()
 
@@ -42,6 +44,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
     @test()
     protected static async canSelectAbstractClassWhileSelectingSubDir() {
+        LintService.enableLinting()
         const testDir = this.resolvePath(
             'src',
             '__tests__',
