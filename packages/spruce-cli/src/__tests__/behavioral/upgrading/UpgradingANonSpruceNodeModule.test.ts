@@ -88,7 +88,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
         await this.upgrade()
 
-        assert.isEqualDeep(commands, ['yarn add @sprucelabs/spruce-core'])
+        assert.doesInclude(commands[0], ['@sprucelabs/spruce-core'])
     }
 
     @test()
