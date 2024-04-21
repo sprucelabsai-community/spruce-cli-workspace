@@ -424,16 +424,14 @@ export default class TestReporter {
         let line = this.testLog.getScrollY()
 
         for (let file of this.lastResults.testFiles ?? []) {
-            if (line === row) {
+            const minRow = line
+            const maxRow = line + (file.tests ?? []).length
+
+            if (row >= minRow && row <= maxRow) {
                 return file.path
             }
 
-            line++
-            const tests = file.tests ?? []
-
-            tests.forEach(() => {
-                line++
-            })
+            line = maxRow
         }
 
         return undefined
