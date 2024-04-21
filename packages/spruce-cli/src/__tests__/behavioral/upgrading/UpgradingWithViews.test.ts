@@ -6,7 +6,6 @@ import {
     FeatureAction,
     FeatureActionResponse,
 } from '../../../features/features.types'
-import ServiceFactory from '../../../services/ServiceFactory'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class UpgradingWithViewsTest extends AbstractSkillTest {
