@@ -77,7 +77,7 @@ export default class NodeFeature<
             const namespace = pkg.getSkillNamespace()
 
             this.ui.startLoading(`Building ${namespace} for development...`)
-            await this.Service('command').execute('yarn build.dev')
+            await this.Service('build').build()
 
             return {
                 summaryLines: [

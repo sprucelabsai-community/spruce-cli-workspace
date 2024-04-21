@@ -44,7 +44,7 @@ export default class ServiceFactory {
                     command: new CommandService(cwd),
                 }) as ServiceMap[S]
             case 'lint':
-                return new LintService(cwd, () =>
+                return new (Class ?? LintService)(cwd, () =>
                     this.Service(cwd, 'command')
                 ) as ServiceMap[S]
             case 'command': {
