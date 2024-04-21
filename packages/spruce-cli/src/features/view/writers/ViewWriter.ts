@@ -59,8 +59,6 @@ export default class ViewWriter extends AbstractWriter {
             'Used to export your controllers to Heartwood.'
         )
 
-        await this.lint(destination)
-
         return results
     }
 
@@ -117,8 +115,6 @@ export default class ViewWriter extends AbstractWriter {
             contents,
             'Test'
         )
-
-        await this.lint(path)
 
         return results
     }

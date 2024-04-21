@@ -51,8 +51,6 @@ export default class EventWriter extends AbstractWriter {
 
         const all = await Promise.all(generated)
 
-        await this.lint(destinationDir)
-
         return all
     }
 
@@ -159,8 +157,6 @@ export default class EventWriter extends AbstractWriter {
             listenerContents,
             `Listener for ${fullyQualifiedEventName}.`
         )
-
-        await this.lint(resolvedDestination)
 
         return results
     }

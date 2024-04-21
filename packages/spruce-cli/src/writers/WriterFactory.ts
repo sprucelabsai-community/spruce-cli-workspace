@@ -60,7 +60,11 @@ export default class WriterFactory {
         this.settings = settings
     }
 
-    public static setWriter(code: WriterCode, writer: any) {
+    public static reset() {
+        this.classMap = classMap
+    }
+
+    public static setWriterClass(code: WriterCode, writer: any) {
         this.classMap[code] = writer
     }
 

@@ -69,6 +69,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
 
         LintService.disableLinting()
         ServiceFactory.reset()
+        WriterFactory.reset()
 
         ImportService.setCacheDir(diskUtil.createRandomTempDir())
         ImportService.enableCaching()

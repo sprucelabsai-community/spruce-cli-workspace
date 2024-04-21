@@ -11,27 +11,6 @@ import LintService from '../services/LintService'
 import { FileDescription, GeneratedFile, UpgradeMode } from '../types/cli.types'
 import { GraphicsInterface } from '../types/cli.types'
 
-export type WriteResults = GeneratedFile[]
-
-export interface WriterOptions {
-    templates: Templates
-    term: GraphicsInterface
-    upgradeMode?: UpgradeMode
-    fileDescriptions: FileDescription[]
-    linter?: LintService
-    settings: SettingsService
-}
-
-export interface WriteDirectoryTemplateOptions {
-    destinationDir: string
-    code: DirectoryTemplateCode
-    filesToWrite?: string[]
-    filesToSkip?: string[]
-    context: any
-    shouldConfirmBeforeWriting?: boolean
-    firstFileWriteMessage?: string
-}
-
 export default abstract class AbstractWriter {
     protected templates: Templates
     protected ui: GraphicsInterface
@@ -205,6 +184,8 @@ export default abstract class AbstractWriter {
 
         myResults.push({ name, description: desc, path: destination, action })
 
+        await this.lint(destination)
+
         return myResults
     }
 
@@ -271,4 +252,25 @@ export default abstract class AbstractWriter {
             ? diskUtil.resolvePath(dirOrFile, fallbackFileName)
             : dirOrFile
     }
+}
+
+export type WriteResults = GeneratedFile[]
+
+export interface WriterOptions {
+    templates: Templates
+    term: GraphicsInterface
+    upgradeMode?: UpgradeMode
+    fileDescriptions: FileDescription[]
+    linter?: LintService
+    settings: SettingsService
+}
+
+export interface WriteDirectoryTemplateOptions {
+    destinationDir: string
+    code: DirectoryTemplateCode
+    filesToWrite?: string[]
+    filesToSkip?: string[]
+    context: any
+    shouldConfirmBeforeWriting?: boolean
+    firstFileWriteMessage?: string
 }

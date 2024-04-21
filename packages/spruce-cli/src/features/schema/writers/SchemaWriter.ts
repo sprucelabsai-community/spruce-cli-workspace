@@ -71,8 +71,6 @@ export default class SchemaWriter extends AbstractWriter {
             'The source of truth for building your schemas and their types. Run spruce sync.errors when you change this.'
         )
 
-        await this.lint(resolvedBuilderDestination)
-
         return results
     }
 
@@ -145,8 +143,6 @@ export default class SchemaWriter extends AbstractWriter {
                 schemaTypesContents,
                 'Namespace for accessing all your schemas. Type `SpruceSchemas` in your IDE to get started. ⚡️'
             )
-
-            await this.lint(resolvedTypesDestination)
         }
 
         this.ui.startLoading(

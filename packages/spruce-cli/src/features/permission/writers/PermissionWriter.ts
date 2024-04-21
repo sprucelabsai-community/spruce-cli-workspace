@@ -87,8 +87,6 @@ export default class PermissionWriter extends AbstractWriter {
             'Your brand new permissions contract!'
         )
 
-        await this.lint(destination)
-
         return files
     }
 

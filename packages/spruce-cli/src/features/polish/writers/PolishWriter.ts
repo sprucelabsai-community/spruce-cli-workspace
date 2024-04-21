@@ -16,8 +16,6 @@ export default class PolishWriter extends AbstractWriter {
             `Polish script at ${filename}!`
         )
 
-        await this.lint(resolvedDestination)
-
         return results
     }
 }

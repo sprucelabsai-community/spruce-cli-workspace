@@ -88,8 +88,6 @@ export default class StoreWriter extends AbstractWriter {
             'The type merging for so the StoreFactory properly types you stores.'
         )
 
-        await this.lint(file)
-
         return files
     }
 
@@ -105,8 +103,6 @@ export default class StoreWriter extends AbstractWriter {
             mapContent,
             'A reference to all your data stores for easy inclusion.'
         )
-
-        await this.lint(file)
 
         return files
     }

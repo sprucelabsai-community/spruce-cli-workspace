@@ -131,8 +131,6 @@ export default class ErrorWriter extends AbstractWriter {
             'A union of all possible error codes and their options.'
         )
 
-        await this.lint(destination)
-
         return results
     }
 
@@ -150,8 +148,6 @@ export default class ErrorWriter extends AbstractWriter {
             pluginContents,
             'Supports your skill with Error generation and handling.'
         )
-
-        await this.lint(destination)
 
         return results
     }

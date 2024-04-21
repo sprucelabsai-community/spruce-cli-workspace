@@ -17,7 +17,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
         ScriptUpdaterImpl.Class = MockScriptUpdater
         MockScriptUpdater.reset()
 
-        WriterFactory.setWriter('node', MockNodeWriter)
+        WriterFactory.setWriterClass('node', MockNodeWriter)
         MockNodeWriter.reset()
 
         this.cwd = this.resolvePath(generateId() + '_module')
