@@ -84,7 +84,7 @@ export default class ViewFeature extends AbstractFeature {
         const files = await this.Writer('view').writePlugin(this.cwd)
         const results = await this.Action('view', 'sync').execute({})
 
-        return [...files, ...results!.files!]
+        return [...files, ...(results?.files ?? [])]
     }
 
     public async afterPackageInstall() {

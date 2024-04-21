@@ -59,6 +59,8 @@ export default class ViewWriter extends AbstractWriter {
             'Used to export your controllers to Heartwood.'
         )
 
+        await this.lint(destination)
+
         return results
     }
 

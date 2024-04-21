@@ -66,8 +66,6 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             }
         )
 
-        await this.Service('lint').fix(files[0].path)
-
         return {
             files,
         }

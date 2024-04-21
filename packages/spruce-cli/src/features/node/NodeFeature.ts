@@ -14,20 +14,6 @@ import universalDevDependencies from '../universalDevDependencies'
 import universalFileDescriptions from '../universalFileDescriptions'
 import universalScripts from '../universalScripts'
 
-type OptionsSchema =
-    SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptions
-
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        node: NodeFeature
-    }
-
-    interface FeatureOptionsMap {
-        node: SchemaValues<OptionsSchema>
-    }
-}
-
 export default class NodeFeature<
     S extends OptionsSchema = OptionsSchema,
 > extends AbstractFeature<S> {
@@ -155,5 +141,19 @@ export default class NodeFeature<
         return diskUtil.doesFileExist(
             diskUtil.resolvePath(this.cwd, 'package.json')
         )
+    }
+}
+
+type OptionsSchema =
+    SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.NodeFeatureOptions
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        node: NodeFeature
+    }
+
+    interface FeatureOptionsMap {
+        node: SchemaValues<OptionsSchema>
     }
 }
