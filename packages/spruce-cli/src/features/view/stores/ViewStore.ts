@@ -18,21 +18,17 @@ export default class ViewStore extends AbstractStore {
             })
         }
 
-        try {
-            const results = await client.emit(
-                'heartwood.get-skill-views::v2021_02_11' as any,
-                {
-                    target: {
-                        namespace: skill.slug,
-                    },
-                }
-            )
+        const results = await client.emit(
+            'heartwood.get-skill-views::v2021_02_11' as any,
+            {
+                target: {
+                    namespace: skill.slug,
+                },
+            }
+        )
 
-            const views = eventResponseUtil.getFirstResponseOrThrow(results)
+        const views = eventResponseUtil.getFirstResponseOrThrow(results)
 
-            return views
-        } catch (err) {
-            return null
-        }
+        return views
     }
 }
