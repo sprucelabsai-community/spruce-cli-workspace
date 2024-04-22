@@ -1,3 +1,4 @@
+import { MutableContractClient } from '@sprucelabs/mercury-client'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore from '../../../stores/AbstractStore'
@@ -9,6 +10,11 @@ export default class ViewStore extends AbstractStore {
         const client = await this.connectToApi({
             shouldAuthAsCurrentSkill: true,
         })
+        // @ts-ignore
+        delete client._eventContract
+        // @ts-ignore
+        delete MutableContractClient.inMemoryContract
+
         const skill = this.Service('auth').getCurrentSkill()
 
         if (!skill) {
