@@ -47,13 +47,13 @@ export default class LintService {
         try {
             // const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
             // fixedFiles = await cli.lintFiles([pattern])
-            const script = `"(async function lint() { try { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}' }); const result = await cli.lintFiles(['${pattern}']); ESLint.outputFixes(result); } catch (err) { console.log(err.toString()); }})()"`
+            const script = `"(async function lint() { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}' }); const result = await cli.lintFiles(['${pattern}']); ESLint.outputFixes(result); })()"`
 
             await this.getCommand().execute('node', {
                 args: ['-e', script],
             })
 
-            // fixedFiles = JSON.parse(stdout)
+            // JSON.parse(stdout)
         } catch (err: any) {
             throw new SpruceError({
                 code: 'LINT_FAILED',
