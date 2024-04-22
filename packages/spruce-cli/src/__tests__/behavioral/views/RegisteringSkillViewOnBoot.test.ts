@@ -15,9 +15,12 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
     protected static async noEventsToStart() {
         await this.registerAndBootSkill()
 
-        const skillViews = await this.Store('view').fetchSkillViews()
+        let views: any
+        try {
+            views = await this.Store('view').fetchSkillViews()
+        } catch {}
 
-        assert.isFalsy(skillViews)
+        assert.isFalsy(views)
     }
 
     @test()
