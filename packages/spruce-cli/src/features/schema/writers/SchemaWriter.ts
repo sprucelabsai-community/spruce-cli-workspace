@@ -119,6 +119,8 @@ export default class SchemaWriter extends AbstractWriter {
             typesTemplate,
         } = options
 
+        this.isLintEnabled = false
+
         const resolvedTypesDestination = this.resolveFilenameWithFallback(
             destinationDirOrFilename,
             DEFAULT_SCHEMA_TYPES_FILENAME
@@ -158,6 +160,10 @@ export default class SchemaWriter extends AbstractWriter {
         )
 
         results.push(...allSchemaResults)
+
+        this.isLintEnabled = true
+
+        await this.lint(pathUtil.dirname(destinationDirOrFilename))
 
         return results
     }

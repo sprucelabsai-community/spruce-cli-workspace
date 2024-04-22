@@ -21,6 +21,7 @@ export default abstract class AbstractWriter {
     private firstFileWriteMessage?: string
     private hasShownFirstWriteMessage = false
     private settings: SettingsService<string>
+    protected isLintEnabled = true
 
     public constructor(options: WriterOptions) {
         this.templates = options.templates
@@ -32,8 +33,10 @@ export default abstract class AbstractWriter {
     }
 
     protected async lint(file: string) {
-        this.ui.startLoading(`Linting ${pathUtil.basename(file)}...`)
-        await this.linter?.fix(file).catch(() => {})
+        if (this.isLintEnabled) {
+            this.ui.startLoading(`Linting ${pathUtil.basename(file)}...`)
+            await this.linter?.fix(file).catch(() => {})
+        }
     }
 
     protected async writeDirectoryTemplate(
