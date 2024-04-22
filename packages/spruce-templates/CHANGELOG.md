@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v20.0.6...v21.0.0) (2024-04-22)
+
+
+### Breaking Changes
+
+* upgrade ([6e845dc](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/6e845dc))
+* upgrade eslint / move off babel ([233e267](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/233e267))
+
+
+### Features
+
+* can migrate es9 ([2b980cd](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/2b980cd))
+
+
+
+
+
 ## [20.0.6](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v20.0.5...v20.0.6) (2024-04-12)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
