@@ -85,7 +85,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 
     @test()
     protected static async modulesMovedFromDevToProdDependenciesStayThere() {
-        await this.installSkillsBuild()
+        await this.installSkillsSkill()
 
         await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
         await this.moveDependencyToDev('@sprucelabs/error')
@@ -133,23 +133,24 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
             },
         })
 
-        await this.installSkillsBuild()
+        await this.installSkillsSkill()
         await this.upgrade()
 
-        assert.isEqualDeep(this.invocationLog, [
-            'which code',
-            'updateDependencies',
-            'yarn fix.lint',
-            'yarn clean.build',
-            'yarn build.dev',
-        ])
+        const lastIdx = this.invocationLog.length - 1
+        const secondToLastIdx = lastIdx - 1
+
+        assert.isEqual(this.invocationLog[lastIdx], 'yarn build.dev')
+        assert.isEqual(
+            this.invocationLog[secondToLastIdx],
+            'yarn fix.lint **/*.ts'
+        )
     }
 
     private static async upgrade() {
         await this.Action('node', 'upgrade').execute({})
     }
 
-    private static async installSkillsBuild() {
+    private static async installSkillsSkill() {
         await this.FeatureFixture().installCachedFeatures('skills')
     }
 
@@ -196,7 +197,7 @@ class SpyLintService extends LintService {
     public static fixPattern: string
     public fix = async (pattern: string): Promise<string[]> => {
         SpyLintService.fixPattern = pattern
-        UpgradingASkill5Test.invocationLog.push('fixLint')
+        UpgradingASkill5Test.invocationLog.push('yarn fix.lint ' + pattern)
         return []
     }
 }

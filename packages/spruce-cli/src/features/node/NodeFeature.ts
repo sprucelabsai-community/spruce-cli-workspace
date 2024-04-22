@@ -63,6 +63,7 @@ export default class NodeFeature<
             const namespace = pkg.getSkillNamespace()
 
             this.ui.startLoading(`Building ${namespace} for development...`)
+
             await this.Service('build').build()
 
             return {

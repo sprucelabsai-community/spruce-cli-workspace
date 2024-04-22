@@ -27,7 +27,11 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
             isRoot: true,
         })
 
-        await this.buildSkill()
+        LintService.enableLinting()
+
+        const buildResults = await this.buildSkill()
+
+        this.log('build buildResults', buildResults)
 
         const results = await this.bootSkill()
 
@@ -53,7 +57,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
     }
 
     private static async buildSkill() {
-        await this.Service('build').build()
+        return await this.Service('build').build()
     }
 
     protected static async registerCurrentSkillAndInstallToOrg() {

@@ -48,10 +48,6 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
             const dependencyResults = await this.reInstallPackageDependencies()
 
-            if (isInSpruceModule) {
-                await this.Service('command').execute('yarn fix.lint')
-            }
-
             return actionUtil.mergeActionResults(dependencyResults, {
                 headline: 'Upgrade',
                 files,

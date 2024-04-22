@@ -71,7 +71,7 @@ export default class ServiceFactory {
                 const commandService = new CommandService(cwd)
                 return new BuildService(
                     commandService,
-                    new LintService(cwd, () => this.Service(cwd, 'command'))
+                    this.Service(cwd, 'lint')
                 ) as ServiceMap[S]
             }
             case 'eventCache':
