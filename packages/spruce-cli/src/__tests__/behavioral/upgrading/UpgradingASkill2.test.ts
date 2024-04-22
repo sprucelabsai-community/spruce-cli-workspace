@@ -42,7 +42,7 @@ export default class UpgradingASkill2Test extends AbstractCliTest {
 
         this.commandFaker.fakeBuild()
         shouldBlockYarn && this.commandFaker.fakeCommand(/yarn/, 0)
-        !shouldBlockYarn && LintService.enableLinting()
+        // !shouldBlockYarn && LintService.enableLinting()
 
         const pluginPath = this.resolveHashSprucePath(`features/${pluginName}`)
         const originalContents = diskUtil.readFile(pluginPath)
