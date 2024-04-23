@@ -83,7 +83,7 @@ export default class LintServiceTest extends AbstractCliTest {
     protected static async partialMatchesOtherWay() {
         this.setIgnorePatterns(['valueType.tmp'])
         await this.fixAndAssertNotFixed(this.resolvePath('valueType.tmp'))
-    }.
+    }
 
     private static async fixAndAssertNotFixed(pattern: string) {
         await this.fix(pattern)
