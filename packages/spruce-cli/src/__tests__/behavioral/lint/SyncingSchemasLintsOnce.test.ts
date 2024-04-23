@@ -2,6 +2,7 @@ import { test, assert, generateId } from '@sprucelabs/test-utils'
 import SchemaWriter from '../../../features/schema/writers/SchemaWriter'
 import ServiceFactory from '../../../services/ServiceFactory'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
+import MockLintService from './MockLintService'
 
 export default class SyncingSchemasLintsOnceTest extends AbstractCliTest {
     private static writer: SchemaWriter
@@ -11,10 +12,7 @@ export default class SyncingSchemasLintsOnceTest extends AbstractCliTest {
     protected static async beforeEach() {
         await super.beforeEach()
         this.destinationPath = this.resolvePath('/tmp', generateId())
-        this.filepath = this.resolvePath(
-            this.destinationPath,
-            'schemas.types.ts'
-        )
+        this.filepath = this.destinationPath
 
         ServiceFactory.setServiceClass('lint', MockLintService)
         this.writer = this.writers.Writer('schema', {
@@ -23,7 +21,7 @@ export default class SyncingSchemasLintsOnceTest extends AbstractCliTest {
         })
     }
 
-    @test()
+    @test.only()
     protected static async onlyLintsOnceWhenWritingLocalSchemas() {
         await this.writeSchemasAndTypes()
         MockLintService.assertPatterns([this.destinationPath])
@@ -74,17 +72,5 @@ export default class SyncingSchemasLintsOnceTest extends AbstractCliTest {
             shouldImportCoreSchemas: false,
             valueTypes: {},
         })
-    }
-}
-
-class MockLintService {
-    private static patterns: string[] = []
-    public async fix(pattern: string) {
-        MockLintService.patterns.push(pattern)
-        return
-    }
-
-    public static assertPatterns(patterns: string[]) {
-        assert.isEqualDeep(this.patterns, patterns, `Patterns did not match`)
     }
 }

@@ -7,6 +7,12 @@ import CommandService from './CommandService'
 export default class LintService {
     public cwd: string
     private getCommand: () => CommandService
+    public static ignorePatterns: string[] = [
+        'valueType.tmp',
+        '.md',
+        '.js',
+        '.gitignore',
+    ]
 
     private static isLintingEnabled = true
 
@@ -36,7 +42,9 @@ export default class LintService {
 
         if (
             !LintService.isLintingEnabled ||
-            pattern.includes('valueType.tmp')
+            !!LintService.ignorePatterns.find(
+                (p) => p.includes(pattern) || pattern.includes(p)
+            )
         ) {
             return []
         }
@@ -47,7 +55,7 @@ export default class LintService {
         try {
             // const cli = new ESLint({ fix: true, cwd: this.cwd, cache: true })
             // fixedFiles = await cli.lintFiles([pattern])
-            const script = `"(async function lint() { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}' }); const result = await cli.lintFiles(['${pattern}']); ESLint.outputFixes(result); })()"`
+            const script = `"(async function lint() { const { ESLint } = require('eslint'); const cli = new ESLint({ fix: true, cwd: '${this.cwd}', cache: true }); const result = await cli.lintFiles(['${pattern}']); ESLint.outputFixes(result); })()"`
 
             await this.getCommand().execute('node', {
                 args: ['-e', script],

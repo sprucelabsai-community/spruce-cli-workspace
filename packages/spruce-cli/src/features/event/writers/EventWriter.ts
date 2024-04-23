@@ -25,6 +25,8 @@ export default class EventWriter extends AbstractWriter {
             eventBuilderFile: string
         }
     ) {
+        this.isLintEnabled = false
+
         const { eventContractTemplateItems, shouldImportCoreEvents = true } =
             options
 
@@ -50,6 +52,10 @@ export default class EventWriter extends AbstractWriter {
         )
 
         const all = await Promise.all(generated)
+
+        this.isLintEnabled = true
+
+        await this.lint(destinationDir)
 
         return all
     }

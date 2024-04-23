@@ -163,7 +163,7 @@ export default class SchemaWriter extends AbstractWriter {
 
         this.isLintEnabled = true
 
-        await this.lint(pathUtil.dirname(destinationDirOrFilename))
+        await this.lint(destinationDirOrFilename)
 
         return results
     }
