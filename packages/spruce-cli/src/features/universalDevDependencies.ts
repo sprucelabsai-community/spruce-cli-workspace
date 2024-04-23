@@ -6,7 +6,6 @@ const universalDevDependencies = [
     { name: 'eslint-config-spruce', isDev: true },
     { name: 'prettier', isDev: true },
     { name: 'chokidar-cli', isDev: true },
-    { name: 'concurrently', isDev: true },
     { name: 'tsc-watch', isDev: true },
     { name: 'ts-node', isDev: true },
 ]

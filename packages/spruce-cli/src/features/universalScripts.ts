@@ -22,8 +22,6 @@ const universalScripts = {
     test: 'jest',
     'watch.build.dev':
         "tsc-watch --sourceMap --onCompilationComplete 'yarn run post.watch.build'",
-    'watch.lint':
-        "concurrently 'yarn run lint' \"chokidar 'src/**/*' -c 'yarn run lint.tsc'\"",
     'watch.rebuild':
         'yarn run clean.all && yarn install && yarn run watch.build.dev',
     'watch.tsc': 'tsc -w',
