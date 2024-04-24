@@ -26,7 +26,7 @@ export default class LintService {
 
     public static shouldIgnorePattern(pattern: string) {
         return !!LintService.ignorePatterns.find(
-            (p) => p.includes(pattern) || pattern.includes(pattern)
+            (p) => p.includes(pattern) || pattern.includes(p)
         )
     }
 
