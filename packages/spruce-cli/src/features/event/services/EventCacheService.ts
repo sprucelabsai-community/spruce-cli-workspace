@@ -14,6 +14,7 @@ export default class EventCacheService {
 
     public setLastSyncCache(options: {
         shouldSyncOnlyCoreEvents?: boolean | null
+        shouldOnlySyncRemoteEvents?: boolean | null
     }) {
         this.settings.set('events.lastSync', options)
     }

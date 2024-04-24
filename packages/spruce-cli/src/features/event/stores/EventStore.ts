@@ -35,7 +35,12 @@ export default class EventStore extends AbstractStore {
     public async fetchEventContracts(
         options?: FetchContractsOptions
     ): Promise<EventStoreFetchEventContractsResponse> {
-        const { localNamespace, didUpdateHandler, namespaces } = options ?? {}
+        const {
+            localNamespace,
+            didUpdateHandler,
+            namespaces,
+            shouldOnlySyncRemoteEvents,
+        } = options ?? {}
 
         didUpdateHandler?.('Pulling remote contracts...')
 
@@ -45,6 +50,13 @@ export default class EventStore extends AbstractStore {
         } catch (err: any) {
             const error = err.options.responseErrors?.[0] ?? err
             throw error
+        }
+
+        if (shouldOnlySyncRemoteEvents) {
+            return {
+                contracts,
+                errors: [],
+            }
         }
 
         const localContract =
@@ -326,4 +338,5 @@ export interface FetchContractsOptions {
     localNamespace?: string
     namespaces?: string[]
     didUpdateHandler?: InternalUpdateHandler
+    shouldOnlySyncRemoteEvents?: boolean
 }

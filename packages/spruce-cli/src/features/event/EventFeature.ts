@@ -189,7 +189,8 @@ export default class EventFeature extends AbstractFeature {
             const uniqueSchemas =
                 await writer.fetchContractsAndGenerateUniqueSchemas(
                     payload.schemas ?? [],
-                    lastSync.shouldSyncOnlyCoreEvents
+                    lastSync.shouldSyncOnlyCoreEvents,
+                    lastSync.shouldOnlySyncRemoteEvents
                 )
 
             return {

@@ -16,9 +16,6 @@ import validateAndNormalizer from '../../validateAndNormalize.utility'
 import EventStore from '../stores/EventStore'
 import EventWriter from '../writers/EventWriter'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions
-
 export default class EventContractBuilder {
     private optionsSchema: OptionsSchema
     private ui: GraphicsInterface
@@ -47,11 +44,12 @@ export default class EventContractBuilder {
     }
 
     public async fetchAndWriteContracts(
-        options: Options
+        options: Options & { shouldOnlySyncRemoteEvents?: boolean }
     ): Promise<FeatureActionResponse> {
+        const { shouldOnlySyncRemoteEvents, ...rest } = options
         const normalizedOptions = validateAndNormalizer.validateAndNormalize(
             this.optionsSchema,
-            options
+            rest
         )
 
         const { contractDestinationDir } = normalizedOptions
@@ -66,6 +64,7 @@ export default class EventContractBuilder {
                 shouldSyncOnlyCoreEvents:
                     options.shouldSyncOnlyCoreEvents ?? false,
                 eventBuilderFile: normalizedOptions.eventBuilderFile,
+                shouldOnlySyncRemoteEvents,
             })
 
         if (errors && errors?.length > 0) {
@@ -110,10 +109,14 @@ export default class EventContractBuilder {
 
     public async fetchContractsAndGenerateUniqueSchemas(
         existingSchemas: Schema[],
-        shouldSyncOnlyCoreEvents: boolean
+        shouldSyncOnlyCoreEvents: boolean,
+        shouldOnlySyncRemoteEvents?: boolean
     ): Promise<FeatureActionResponse & { schemas?: Schema[] }> {
         const { errors, schemaTemplateItems } =
-            await this.fetchAndBuildTemplateItems({ shouldSyncOnlyCoreEvents })
+            await this.fetchAndBuildTemplateItems({
+                shouldSyncOnlyCoreEvents,
+                shouldOnlySyncRemoteEvents,
+            })
 
         if (errors && errors?.length > 0) {
             return {
@@ -149,8 +152,13 @@ export default class EventContractBuilder {
     private async fetchAndBuildTemplateItems(options: {
         shouldSyncOnlyCoreEvents?: boolean
         eventBuilderFile?: string
+        shouldOnlySyncRemoteEvents?: boolean
     }) {
-        const { shouldSyncOnlyCoreEvents, eventBuilderFile } = options
+        const {
+            shouldSyncOnlyCoreEvents,
+            eventBuilderFile,
+            shouldOnlySyncRemoteEvents,
+        } = options
 
         this.ui.startLoading('Loading skill details...')
 
@@ -166,6 +174,7 @@ export default class EventContractBuilder {
         const contractResults = await this.eventStore.fetchEventContracts({
             localNamespace: namespace,
             namespaces,
+            shouldOnlySyncRemoteEvents,
             didUpdateHandler: (msg) => {
                 this.ui.startLoading(msg)
             },
@@ -202,3 +211,6 @@ export default class EventContractBuilder {
         }
     }
 }
+
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncEventOptions

@@ -16,6 +16,20 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
     public async execute(options: Options): Promise<FeatureActionResponse> {
         const builder = this.ContractBuilder()
 
+        await builder.fetchAndWriteContracts({
+            ...options,
+            shouldOnlySyncRemoteEvents: true,
+        })
+
+        this.Service('eventCache').setLastSyncCache({
+            ...options,
+            shouldOnlySyncRemoteEvents: true,
+        })
+
+        await this.Action('schema', 'sync').execute({
+            shouldFetchLocalSchemas: false,
+        })
+
         const results: FeatureActionResponse =
             await builder.fetchAndWriteContracts(options)
 
