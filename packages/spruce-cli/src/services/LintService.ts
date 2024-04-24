@@ -24,6 +24,12 @@ export default class LintService {
         this.isLintingEnabled = true
     }
 
+    public static shouldIgnorePattern(pattern: string) {
+        return !!LintService.ignorePatterns.find(
+            (p) => p.includes(pattern) || pattern.includes(papttern)
+        )
+    }
+
     public constructor(
         cwd: string,
         commandServiceFactory: () => CommandService
@@ -42,9 +48,7 @@ export default class LintService {
 
         if (
             !LintService.isLintingEnabled ||
-            !!LintService.ignorePatterns.find(
-                (p) => p.includes(pattern) || pattern.includes(p)
-            )
+            LintService.shouldIgnorePattern(pattern)
         ) {
             return []
         }

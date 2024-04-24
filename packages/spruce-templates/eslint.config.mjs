@@ -6,5 +6,6 @@ export default buildEsLintConfig({
         'node_modules/**',
         'mercury.min.*',
         'src/templates/**',
+        '**/.spruce/**'
     ]
 })

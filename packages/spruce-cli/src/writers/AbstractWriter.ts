@@ -33,7 +33,7 @@ export default abstract class AbstractWriter {
     }
 
     protected async lint(file: string) {
-        if (this.isLintEnabled) {
+        if (this.isLintEnabled && !LintService.shouldIgnorePattern(file)) {
             this.ui.startLoading(`Linting ${pathUtil.basename(file)}...`)
             await this.linter?.fix(file).catch(() => {})
         }
