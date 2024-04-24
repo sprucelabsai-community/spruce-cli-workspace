@@ -48,6 +48,8 @@ export default class LintServiceTest extends AbstractCliTest {
             '.gitignore',
             '.mjs',
             '.spruce',
+            '.nvmrc',
+            'tsconfig.json',
         ])
     }
 

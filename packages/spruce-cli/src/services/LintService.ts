@@ -14,6 +14,8 @@ export default class LintService {
         '.gitignore',
         '.mjs',
         '.spruce',
+        '.nvmrc',
+        'tsconfig.json',
     ]
 
     private static isLintingEnabled = true
