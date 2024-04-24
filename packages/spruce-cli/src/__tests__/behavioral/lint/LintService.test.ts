@@ -47,7 +47,7 @@ export default class LintServiceTest extends AbstractCliTest {
             '.js',
             '.gitignore',
             '.mjs',
-            '.spruce'
+            '.spruce',
         ])
     }
 
