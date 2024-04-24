@@ -1,5 +1,4 @@
 <img src="/docs/images/hero.jpg">
-
 <h1 align="center">
 Spruce XP Documentation
 </h1>
