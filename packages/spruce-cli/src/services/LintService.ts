@@ -12,6 +12,8 @@ export default class LintService {
         '.md',
         '.js',
         '.gitignore',
+        '.mjs',
+        '.spruce',
     ]
 
     private static isLintingEnabled = true
