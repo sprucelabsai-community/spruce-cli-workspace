@@ -585,7 +585,8 @@
 			"inquirer-file-tree-selection-prompt",
 			"ora",
 			"terminal-image",
-			"terminal-kit"
+			"terminal-kit",
+			"inquirer"
 		]
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
