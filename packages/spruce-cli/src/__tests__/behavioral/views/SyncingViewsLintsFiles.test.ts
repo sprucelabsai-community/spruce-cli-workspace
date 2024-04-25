@@ -22,7 +22,7 @@ export default class SyncingViewsLintsFilesTest extends AbstractSkillTest {
     @test()
     protected static async fixesWithExpectedPattern() {
         await this.executeSync()
-        const file = this.resolvePath('src/viewControllers/testViews.vc.ts')
+        const file = this.resolvePath('src/viewControllers/testView.vc.ts')
         MockLintService.assertFixPattern(file)
     }
 
