@@ -50,6 +50,7 @@ export default class LintServiceTest extends AbstractCliTest {
             '.spruce',
             '.nvmrc',
             'tsconfig.json',
+            '.npmignore',
         ])
     }
 
