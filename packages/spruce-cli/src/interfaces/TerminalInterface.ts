@@ -67,12 +67,14 @@ interface TerminalSpecificOptions {
 }
 
 export default class TerminalInterface implements GraphicsInterface {
+    private static loader?: ora.Ora | null
+    private static _doesSupportColor = process?.stdout?.isTTY && !isCi()
+    public static ora = ora
+
     public isPromptActive = false
     public cwd: string
     private renderStackTraces = false
-    private static loader?: ora.Ora | null
     private progressBar: ProgressBarController | null = null
-    private static _doesSupportColor = process?.stdout?.isTTY && !isCi()
     private log: (...args: any[]) => void
 
     public constructor(
@@ -362,9 +364,11 @@ export default class TerminalInterface implements GraphicsInterface {
 
     public async startLoading(message?: string) {
         this.stopLoading()
-        TerminalInterface.loader = ora({
-            text: message,
-        }).start()
+        if (!this.isPromptActive) {
+            TerminalInterface.loader = TerminalInterface.ora({
+                text: message,
+            }).start()
+        }
     }
 
     public stopLoading() {

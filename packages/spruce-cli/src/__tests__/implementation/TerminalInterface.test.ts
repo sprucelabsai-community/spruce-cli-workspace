@@ -1,0 +1,45 @@
+import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
+import TerminalInterface from '../../interfaces/TerminalInterface'
+
+export default class TerminalInterfaceTest extends AbstractSpruceTest {
+    private static wasOraHit: boolean
+    private static ui: TerminalInterface
+
+    protected static async beforeEach() {
+        await super.beforeEach()
+        this.wasOraHit = false
+        //@ts-ignore
+        TerminalInterface.ora = () => {
+            this.wasOraHit = true
+            return {
+                start: () => {},
+                stop: () => {},
+            }
+        }
+
+        this.ui = new TerminalInterface(this.cwd)
+    }
+
+    @test()
+    protected static async dontShowProgressIfPrompting() {
+        this.prompt()
+        await this.startLoading()
+        assert.isFalse(this.wasOraHit)
+    }
+
+    @test()
+    protected static async startsLoadingAsExpectedIfNotPrompting() {
+        await this.startLoading()
+        assert.isTrue(this.wasOraHit)
+    }
+
+    private static async startLoading() {
+        await this.ui.startLoading()
+    }
+
+    private static prompt() {
+        void this.ui.prompt({
+            type: 'text',
+        })
+    }
+}
