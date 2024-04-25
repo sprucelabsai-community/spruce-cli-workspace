@@ -16,7 +16,7 @@ export default class LintService {
         '.spruce',
         '.nvmrc',
         'tsconfig.json',
-        '.npmignore'
+        '.npmignore',
     ]
 
     private static isLintingEnabled = true
