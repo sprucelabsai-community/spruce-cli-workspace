@@ -56,10 +56,10 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/mercury-types": "^47.0.11",
-    "@sprucelabs/schema": "^30.0.15",
-    "@sprucelabs/spruce-event-utils": "^40.0.11",
-    "@sprucelabs/spruce-skill-utils": "^31.0.15",
+    "@sprucelabs/mercury-types": "^47.0.15",
+    "@sprucelabs/schema": "^30.0.20",
+    "@sprucelabs/spruce-event-utils": "^40.0.17",
+    "@sprucelabs/spruce-skill-utils": "^31.0.22",
     "fs-extra": "^11.2.0",
     "handlebars": "^4.7.8",
     "lodash": "^4.17.21",
