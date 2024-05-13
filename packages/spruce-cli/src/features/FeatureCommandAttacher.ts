@@ -95,21 +95,18 @@ export default class FeatureCommandAttacher {
         }
     }
 
-    private clearAndRenderResults(options: {
-        namespace?: string
-        featureCode: string
-        actionCode: string
-        totalTime: number
-        action: FeatureAction
-        results: FeatureActionResponse
-    }) {
+    protected clearAndRenderResults(
+        options: ClearResultsAndRenderResultsOptions
+    ) {
         const { featureCode, actionCode, results, totalTime, action } = options
 
         this.ui.stopLoading()
         this.ui.clear()
 
         this.ui.renderActionSummary({
-            namespace: this.pkg.getSkillNamespace(),
+            namespace: this.pkg.doesExist()
+                ? this.pkg.getSkillNamespace()
+                : undefined,
             featureCode,
             actionCode,
             totalTime,
@@ -157,3 +154,12 @@ export default class FeatureCommandAttacher {
 export type OptionOverrides = Record<string, Record<string, any>>
 
 export type BlockedCommands = Record<string, string>
+
+export interface ClearResultsAndRenderResultsOptions {
+    namespace?: string
+    featureCode: string
+    actionCode: string
+    totalTime: number
+    action: FeatureAction
+    results: FeatureActionResponse
+}

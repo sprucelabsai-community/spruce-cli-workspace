@@ -1,11 +1,13 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import FeatureCommandAttacher from '../../features/FeatureCommandAttacher'
+import FeatureCommandAttacher, {
+    ClearResultsAndRenderResultsOptions,
+} from '../../features/FeatureCommandAttacher'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import MockProgramFactory, { MockProgram } from '../../tests/MockProgramFactory'
 
 export default class FeatureCommandAttacherTest extends AbstractCliTest {
-    private static attacher: FeatureCommandAttacher
+    private static attacher: SpyFeatureCommandAttacher
     private static program: MockProgram
 
     protected static async beforeEach() {
@@ -15,7 +17,7 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
         const actionExecuter = this.ActionExecuter()
 
-        this.attacher = new FeatureCommandAttacher({
+        this.attacher = new SpyFeatureCommandAttacher({
             pkgService: this.Service('pkg'),
             program: this.program,
             ui: this.ui,
@@ -148,6 +150,17 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
         assert.isFalse(diskUtil.doesFileExist(personPath))
     }
 
+    @test()
+    protected static async doesNotCrashWhenRenderingResultsWithoutPackageJson() {
+        this.attacher.clearAndRenderResults({
+            action: 'test' as any,
+            actionCode: 'test',
+            featureCode: 'test',
+            results: {},
+            totalTime: 0,
+        })
+    }
+
     private static async attachSchemaFeature() {
         const cli = await this.Cli()
         const schemaFeature = cli.getFeature('schema')
@@ -157,5 +170,13 @@ export default class FeatureCommandAttacherTest extends AbstractCliTest {
 
     private static MockCommanderProgram(): MockProgram {
         return MockProgramFactory.Program()
+    }
+}
+
+class SpyFeatureCommandAttacher extends FeatureCommandAttacher {
+    public clearAndRenderResults(
+        options: ClearResultsAndRenderResultsOptions
+    ): void {
+        return super.clearAndRenderResults(options)
     }
 }
