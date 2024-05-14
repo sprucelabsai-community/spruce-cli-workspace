@@ -2,8 +2,8 @@ import pathUtil from 'path'
 import { TestOptions } from '@sprucelabs/spruce-templates'
 import AbstractWriter from '../../../writers/AbstractWriter'
 
-export default class TestGenerator extends AbstractWriter {
-    public async generateTest(
+export default class TestWriter extends AbstractWriter {
+    public async writeTest(
         destinationDir: string,
         options: TestOptions & { type: string }
     ) {

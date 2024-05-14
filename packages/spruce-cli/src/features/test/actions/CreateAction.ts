@@ -7,9 +7,6 @@ import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 import TestFeature, { ParentClassCandidate } from '../TestFeature'
 
-type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions
-
 export default class CreateAction extends AbstractAction<OptionsSchema> {
     public optionsSchema = createTestActionSchema
     public invocationMessage = 'Creating a test... 🛡'
@@ -25,16 +22,11 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
             type
         )
 
-        this.ui.startLoading('Checking potential parent test classes')
-
-        const testFeature = this.parent as TestFeature
-
-        this.ui.stopLoading()
-
         let parentTestClass:
             | undefined
             | { name: string; importPath: string; isDefaultExport: boolean }
 
+        const testFeature = this.parent as TestFeature
         const candidates = await testFeature.buildParentClassCandidates()
 
         if (diskUtil.doesDirExist(resolvedDestination)) {
@@ -55,11 +47,16 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
         const writer = this.Writer('test')
 
-        const results = await writer.generateTest(resolvedDestination, {
+        const isTestFixturesInstalled = !!this.Service('pkg').get(
+            'devDependencies.@sprucelabs/spruce-test-fixtures'
+        )
+
+        const results = await writer.writeTest(resolvedDestination, {
             ...normalizedOptions,
             type,
             nameCamel,
             parentTestClass,
+            isTestFixturesInstalled,
             namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
         })
 
@@ -68,6 +65,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
             hints: ["run `spruce test` in your skill when you're ready!"],
         }
     }
+
     private async promptForSubDir(resolvedDestination: string) {
         const match = await this.ui.prompt({
             type: 'directory',
@@ -164,3 +162,6 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
         }
     }
 }
+
+type OptionsSchema = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.CreateTestOptions

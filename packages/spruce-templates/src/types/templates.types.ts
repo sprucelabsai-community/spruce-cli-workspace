@@ -75,6 +75,7 @@ export type ValueTypes = Record<
 export interface TestOptions {
     namePascal: string
     nameCamel: string
+    isTestFixturesInstalled: boolean
     parentTestClass?: {
         name: string
         importPath: string

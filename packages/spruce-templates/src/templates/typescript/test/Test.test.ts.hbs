@@ -1,9 +1,9 @@
-import { fake } from '@sprucelabs/spruce-test-fixtures'
+{{#if isTestFixturesInstalled}}import { fake } from '@sprucelabs/spruce-test-fixtures'{{/if}}
 import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test-utils'
 {{#if (isDefined parentTestClass)}}import {{#if parentTestClass.isDefaultExport}}{{parentTestClass.name}}{{else}}{ {{parentTestClass.name}} }{{/if}} from '{{parentTestClass.importPath}}'
 {{/if}}
 
-@fake.login()
+{{#if isTestFixturesInstalled}}@fake.login(){{/if}}
 export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass)}}{{parentTestClass.name}}{{else}}AbstractSpruceTest{{/if}} {
 	@test()
 	protected static async canCreate{{namePascal}}() {

@@ -12,7 +12,7 @@ import SandboxWriter from '../features/sandbox/writers/SandboxWriter'
 import SchemaWriter from '../features/schema/writers/SchemaWriter'
 import SkillGenerator from '../features/skill/writers/SkillWriter'
 import StoreWriter from '../features/store/writers/StoreWriter'
-import TestGenerator from '../features/test/writers/TestWriter'
+import TestWriter from '../features/test/writers/TestWriter'
 import ViewWriter from '../features/view/writers/ViewWriter'
 import VsCodeWriter from '../features/vscode/writers/VsCodeWriter'
 import LintService from '../services/LintService'
@@ -25,7 +25,7 @@ const classMap = {
     event: EventWriter,
     schema: SchemaWriter,
     skill: SkillGenerator,
-    test: TestGenerator,
+    test: TestWriter,
     node: NodeWriter,
     vscode: VsCodeWriter,
     conversation: ConversationWriter,
@@ -91,7 +91,7 @@ export interface WriterMap {
     event: EventWriter
     schema: SchemaWriter
     skill: SkillGenerator
-    test: TestGenerator
+    test: TestWriter
     node: NodeWriter
     vscode: VsCodeWriter
     conversation: ConversationWriter

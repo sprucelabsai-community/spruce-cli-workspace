@@ -15,25 +15,29 @@ import {
     FeatureMap,
 } from './features.types'
 
-export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
+export default class ActionQuestionAskerImpl<
+    F extends FeatureCode = FeatureCode,
+> implements ActionQuestionAsker<F>
+{
     private ui: GraphicsInterface
+    public static Class?: new (
+        options: ActionQuestionAskerOptions
+    ) => ActionQuestionAsker<any>
     private featureInstaller: FeatureInstaller
     private actionCode: string
     private feature: AbstractFeature
     private shouldAutoHandleDependencies = true
 
-    public constructor(options: {
-        ui: GraphicsInterface
-        featureInstaller: FeatureInstaller
-        actionCode: string
-        feature: AbstractFeature
-        shouldAutoHandleDependencies: boolean
-    }) {
+    protected constructor(options: ActionQuestionAskerOptions) {
         this.ui = options.ui
         this.featureInstaller = options.featureInstaller
         this.actionCode = options.actionCode
         this.feature = options.feature
         this.shouldAutoHandleDependencies = options.shouldAutoHandleDependencies
+    }
+
+    public static Asker(options: ActionQuestionAskerOptions) {
+        return new (this.Class ?? ActionQuestionAskerImpl)(options)
     }
 
     public async installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse> {
@@ -122,10 +126,8 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
 
     public async askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
         isInstalled: boolean,
-        options:
-            | (Record<string, any> & FeatureCommandExecuteOptions<F>)
-            | undefined
-    ) {
+        options?: Record<string, any> & FeatureCommandExecuteOptions<F>
+    ): Promise<Record<string, any> & FeatureCommandExecuteOptions<F>> {
         let installOptions = { ...options }
 
         if (!isInstalled) {
@@ -138,15 +140,14 @@ export default class ActionOptionAsker<F extends FeatureCode = FeatureCode> {
                 installOptions = { ...installOptions, ...answers }
             }
         }
-        return installOptions
+        return installOptions as Record<string, any> &
+            FeatureCommandExecuteOptions<F>
     }
 
-    public async askAboutMissingActionOptions(
-        action: FeatureAction<Schema>,
-        options:
-            | (Record<string, any> & FeatureCommandExecuteOptions<F>)
-            | undefined
-    ) {
+    public async askAboutMissingActionOptions<S extends Schema>(
+        action: FeatureAction<S>,
+        options?: Record<string, any> & FeatureCommandExecuteOptions<F>
+    ): Promise<SchemaValues<S> | undefined> {
         let answers
 
         const schema = action.optionsSchema
@@ -394,4 +395,33 @@ function s(array: any[]) {
 
 function areIs(array: any[]) {
     return array.length === 1 ? 'is' : 'are'
+}
+
+interface ActionQuestionAskerOptions {
+    ui: GraphicsInterface
+    featureInstaller: FeatureInstaller
+    actionCode: string
+    feature: AbstractFeature
+    shouldAutoHandleDependencies: boolean
+}
+
+export type QuestionAskerOptionsOptions<F extends FeatureCode> = Record<
+    string,
+    any
+> &
+    FeatureCommandExecuteOptions<F>
+
+export interface ActionQuestionAsker<F extends FeatureCode = FeatureCode> {
+    installOrMarkAsSkippedMissingDependencies(): Promise<FeatureInstallResponse>
+    askAboutMissingFeatureOptionsIfFeatureIsNotInstalled(
+        isInstalled: boolean,
+        options?: QuestionAskerOptionsOptions<F>
+    ): Promise<Record<string, any> & FeatureCommandExecuteOptions<F>>
+    askAboutMissingActionOptions<S extends Schema>(
+        action: FeatureAction<S>,
+        options?: QuestionAskerOptionsOptions<F>
+    ): Promise<SchemaValues<S> | undefined>
+    installOurFeature(
+        installOptions: Record<string, any>
+    ): Promise<FeatureInstallResponse>
 }

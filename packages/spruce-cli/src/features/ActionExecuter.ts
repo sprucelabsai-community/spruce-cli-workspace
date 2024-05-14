@@ -5,7 +5,7 @@ import { GlobalEmitter } from '../GlobalEmitter'
 import { GraphicsInterface } from '../types/cli.types'
 import actionUtil from '../utilities/action.utility'
 import ActionFactory from './ActionFactory'
-import ActionOptionAsker from './ActionQuestionAsker'
+import ActionQuestionAskerImpl from './ActionQuestionAsker'
 import FeatureInstaller from './FeatureInstaller'
 import {
     FeatureCode,
@@ -90,7 +90,7 @@ export default class ActionExecuter {
 
         const feature = installer.getFeature(featureCode)
 
-        const asker = new ActionOptionAsker({
+        const asker = ActionQuestionAskerImpl.Asker({
             featureInstaller: installer,
             feature,
             actionCode,
