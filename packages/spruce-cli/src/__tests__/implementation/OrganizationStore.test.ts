@@ -71,6 +71,7 @@ export default class OrganizationStoreTest extends AbstractCliTest {
     @test()
     protected static async canGetMyOrgs() {
         await this.FeatureFixture().installCachedFeatures('organizations')
+
         const orgFixture = this.getOrganizationFixture()
         const org1 = await orgFixture.seedDemoOrg({
             name: 'A cool org',
