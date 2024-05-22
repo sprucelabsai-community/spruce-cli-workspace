@@ -11,8 +11,8 @@ export default class PersonFeature extends AbstractFeature {
 
     public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-    public isInstalled = () => {
-        return this.features.isInstalled('skill')
+    public isInstalled = async () => {
+        return true
     }
 }
 
