@@ -161,7 +161,7 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
         const contents = diskUtil.readFile(
             this.buildPathToViewPlugin(nameCamel)
         )
-        const expected = `export default class ${namePascal}ViewPlugin {}`
+        const expected = `import { ViewControllerPlugin } from '@sprucelabs/heartwood-view-controllers'\n\nexport default class ${namePascal}ViewPlugin implements ViewControllerPlugin {}`
 
         assert.isEqual(contents.trim(), expected.trim())
     }
