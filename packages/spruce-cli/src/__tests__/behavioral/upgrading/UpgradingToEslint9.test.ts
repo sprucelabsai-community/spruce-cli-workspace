@@ -20,6 +20,9 @@ export default class UpgradingToEslint9Test extends AbstractCliTest {
         this.migrator = EsLint9Migrator.Migrator({ cwd: this.cwd })
 
         delete EsLint9Migrator.Class
+        EsLint9Migrator.disk = {
+            ...diskUtil,
+        }
         EsLint9Migrator.disk.deleteFile = (file) => {
             this.deletedFiles.push(file)
         }
@@ -107,6 +110,21 @@ export default class UpgradingToEslint9Test extends AbstractCliTest {
 
         const actual = diskUtil.readFile(eslintrcPath)
         assert.isEqual(actual, 'old eslintrc')
+    }
+
+    @test()
+    protected static async doNotCopyVsCodeSettingsIfLegacyEsLintConfigDoesNotExist() {
+        EsLint9Migrator.disk = diskUtil
+        await this.copyLegacyModuleAndMigrate()
+
+        EsLint9Migrator.disk.writeFile = () =>
+            assert.fail('Should not write file')
+
+        await this.migrate()
+
+        this.migrator = EsLint9Migrator.Migrator({ cwd: this.cwd })
+
+        await this.migrate()
     }
 
     private static async copyLegacyModuleAndMigrate() {

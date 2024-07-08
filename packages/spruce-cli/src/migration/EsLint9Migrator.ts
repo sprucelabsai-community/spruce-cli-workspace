@@ -18,9 +18,12 @@ export default class EsLint9Migrator implements Migrator {
     }
 
     public async migrate() {
-        this.deleteFileIfExists('.eslintignore')
+        const didDeleteFile = this.deleteFileIfExists('.eslintignore')
         this.deleteFileIfExists('.eslintrc.js')
-        await this.updateVsCodeSettingsIfExists()
+
+        if (didDeleteFile) {
+            await this.updateVsCodeSettingsIfExists()
+        }
     }
 
     private async updateVsCodeSettingsIfExists() {
@@ -41,7 +44,9 @@ export default class EsLint9Migrator implements Migrator {
         const path = this.disk.resolvePath(this.cwd, filename)
         if (this.disk.doesFileExist(path)) {
             this.disk.deleteFile(path)
+            return true
         }
+        return false
     }
 
     private get disk() {
