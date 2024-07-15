@@ -163,7 +163,7 @@ export default class SchemaTemplateItemBuilder {
     private pluckFields(localSchema: Schema) {
         const fields = localSchema.dynamicFieldSignature
             ? { dynamicField: localSchema.dynamicFieldSignature }
-            : localSchema.fields ?? {}
+            : (localSchema.fields ?? {})
 
         const namedFields = Object.keys(fields).map((name) => ({
             name,
