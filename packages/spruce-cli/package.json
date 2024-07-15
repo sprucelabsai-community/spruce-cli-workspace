@@ -139,7 +139,7 @@
 		"@types/uuid": "^10.0.0",
 		"chokidar-cli": "^3.0.0",
 		"concurrently": "^8.2.2",
-		"conventional-changelog-sprucelabs": "^2.0.5",
+		"conventional-changelog-sprucelabs": "2.0.1",
 		"dotenv": "^16.4.5",
 		"eslint": "^9.7.0",
 		"eslint-config-spruce": "^11.2.26",

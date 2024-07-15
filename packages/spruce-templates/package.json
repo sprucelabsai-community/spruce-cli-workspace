@@ -71,7 +71,7 @@
     "@types/node": "^20.14.10",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "conventional-changelog-sprucelabs": "^2.0.5",
+    "conventional-changelog-sprucelabs": "2.0.1",
     "prettier": "^3.3.3",
     "typescript": "^5.5.3"
   },
