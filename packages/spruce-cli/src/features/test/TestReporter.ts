@@ -195,7 +195,7 @@ export default class TestReporter {
     private updateOrientation() {
         const frame = this.window.getFrame()
 
-        if (frame.width * 0.7 > frame.height) {
+        if (frame.width * 0.4 > frame.height) {
             this.orientation = 'landscape'
         } else {
             this.orientation = 'portrait'
