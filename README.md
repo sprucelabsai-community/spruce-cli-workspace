@@ -16,5 +16,4 @@ Spruce XP Documentation
 <br />
 <p align="center">
 <a href="https://developer.spruce.ai/#/getting-started"><img width="250" src="docs/images/read-full-docs.png" /></a>
-
 </p>
