@@ -59,6 +59,7 @@ export default class SettingUpPolishTest extends AbstractCliTest {
             value: namespace,
         })
 
+        await this.setupPolish()
         await this.assertPolishScriptWrittenToExpectedPlace()
     }
 
