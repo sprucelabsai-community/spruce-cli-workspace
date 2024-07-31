@@ -81,7 +81,7 @@ jobs:
             cd packages/spruce-cli
             mkdir ~/junit
             TEST=$(circleci tests glob 'build/__tests__/implementation/**/*.test.js' 'build/__tests__/behavioral/**/*.test.js' | circleci tests split --split-by=timings)
-            yarn test --verbose -w 2 $TEST
+            yarn test --verbose -w 1 $TEST
             mv junit.xml ~/junit
           no_output_timeout: 20m
       - store_test_results:
