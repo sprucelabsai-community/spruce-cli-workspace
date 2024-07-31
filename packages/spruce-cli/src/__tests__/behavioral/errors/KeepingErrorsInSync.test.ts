@@ -12,7 +12,7 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
     }
 
     @test()
-    protected static async returnsHelpfulErrorWhenTsNodeIsRemoved() {
+    protected static async returnsErrorWhenSyncingSchemasFails() {
         await this.installErrorFeature('errors')
 
         const createAction = this.Action('error', 'create')
@@ -22,9 +22,9 @@ export default class KeepingErrorsInSyncTest extends AbstractErrorTest {
             nameCamel: 'testError',
         })
 
-        const pkg = this.Service('pkg')
-        await pkg.uninstall('ts-node')
-
+        this.commandFaker.fakeCommand(/yarn/, 1)
+        this.commandFaker.fakeCommand(/node/, 1)
+        ImportService.disableCache()
         ImportService.clearCache()
 
         const results = await this.Action('error', 'sync').execute({})
