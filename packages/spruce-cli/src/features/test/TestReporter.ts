@@ -51,8 +51,8 @@ export default class TestReporter {
     private handletoggleStandardWatch?: () => void
     private handleToggleSmartWatch?: () => any
     private minWidth = 50
-    private orientationWhenErrorLogWasShown: TestReporterOrientation =
-        'landscape'
+    // private orientationWhenErrorLogWasShown: TestReporterOrientation =
+    // 'landscape'
 
     public constructor(options?: TestReporterOptions) {
         this.cwd = options?.cwd
@@ -586,7 +586,8 @@ export default class TestReporter {
         this.testLog.setText(logContent)
 
         if (!errorContent) {
-            this.errorLog && this.destroyErrorLog()
+            // this.errorLog && this.destroyErrorLog()
+            this.errorLog?.setText('  Nothing to report...')
         } else {
             !this.errorLog && this.dropInErrorLog()
             const cleanedLog = this.cwd
@@ -621,7 +622,7 @@ export default class TestReporter {
     }
 
     private dropInErrorLog() {
-        this.orientationWhenErrorLogWasShown = this.orientation
+        // this.orientationWhenErrorLogWasShown = this.orientation
 
         if (this.bottomLayout.getRows().length === 1) {
             if (this.orientation === 'portrait') {
@@ -633,11 +634,11 @@ export default class TestReporter {
                 this.bottomLayout.setRowHeight(0, '60%')
                 this.bottomLayout.setRowHeight(1, '40%')
             } else {
-                this.bottomLayout.addColumn(0, { id: 'errors', width: '50%' })
+                this.bottomLayout.addColumn(0, { id: 'errors', width: '40%' })
                 this.bottomLayout.setColumnWidth({
                     rowIdx: 0,
                     columnIdx: 0,
-                    width: '50%',
+                    width: '60%',
                 })
             }
 
@@ -663,23 +664,22 @@ export default class TestReporter {
     }
 
     private destroyErrorLog() {
-        if (this.errorLog) {
-            void this.errorLog?.destroy()
-            this.errorLog = undefined
-
-            if (this.orientationWhenErrorLogWasShown === 'landscape') {
-                this.bottomLayout.removeColumn(0, 1)
-                this.bottomLayout.setColumnWidth({
-                    rowIdx: 0,
-                    columnIdx: 0,
-                    width: '100%',
-                })
-            } else {
-                this.bottomLayout.removeRow(1)
-                this.bottomLayout.setRowHeight(0, '100%')
-            }
-            this.bottomLayout.updateLayout()
-        }
+        // if (this.errorLog) {
+        //     void this.errorLog?.destroy()
+        //     this.errorLog = undefined
+        //     if (this.orientationWhenErrorLogWasShown === 'landscape') {
+        //         this.bottomLayout.removeColumn(0, 1)
+        //         this.bottomLayout.setColumnWidth({
+        //             rowIdx: 0,
+        //             columnIdx: 0,
+        //             width: '100%',
+        //         })
+        //     } else {
+        //         this.bottomLayout.removeRow(1)
+        //         this.bottomLayout.setRowHeight(0, '100%')
+        //     }
+        //     this.bottomLayout.updateLayout()
+        // }
     }
 
     private updateProgressBar(results: SpruceTestResults) {
