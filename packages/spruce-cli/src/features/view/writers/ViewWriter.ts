@@ -113,7 +113,7 @@ export default class ViewWriter extends AbstractWriter {
         const results = this.writeFileIfChangedMixinResults(
             path,
             contents,
-            'Test'
+            'Your new view controller!'
         )
 
         return results
