@@ -18,10 +18,6 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
             label: 'ESLint syntax validation and fixing',
         },
         {
-            id: 'eg2.vscode-npm-script',
-            label: 'NPM package.json validation and warnings',
-        },
-        {
             id: 'christian-kohler.npm-intellisense',
             label: 'Intellisense autocompletion of installed npm modules',
         },
