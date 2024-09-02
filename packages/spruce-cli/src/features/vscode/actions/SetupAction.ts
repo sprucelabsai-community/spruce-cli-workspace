@@ -86,7 +86,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
             "Ok, now that that's done 😅, lets make sure Visual Studio Code can run tasks whenever you open this project.",
             '',
             'Step 1: Open the Command Palette (View -> Command Palette or cmd+shift+p) and type "Manage".',
-            'Step 2: Select "Tasks: Manage Automatic Tasks in Folder".',
+            'Step 2: Select "Tasks: Manage Automatic Tasks".',
             'Step 3: Allow.',
             'Step 4: Open the Command Palette (cmd+shift+p)).',
             'Step 5: Select "Developer: Reload Window".',
