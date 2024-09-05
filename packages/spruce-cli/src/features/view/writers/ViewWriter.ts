@@ -3,7 +3,7 @@ import {
     VcTemplateItem,
     ViewControllerPluginItem,
     ViewsOptions,
-} from '../../../../../spruce-templates/build'
+} from '@sprucelabs/spruce-templates'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractWriter from '../../../writers/AbstractWriter'
 

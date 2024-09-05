@@ -4,7 +4,7 @@ import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
     VcTemplateItem,
     ViewControllerPluginItem,
-} from '../../../../../spruce-templates/build'
+} from '@sprucelabs/spruce-templates'
 import introspectionUtil, {
     IntrospectionClass,
 } from '../../../utilities/introspection.utility'
