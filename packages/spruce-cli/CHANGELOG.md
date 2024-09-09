@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.1.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v21.0.40...v21.1.0) (2024-09-09)
+
+
+### Features
+
+* can watch dist directory ([0e08390](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/0e08390))
+
+
+
+
+
 ## [21.0.40](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v21.0.39...v21.0.40) (2024-09-06)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
