@@ -5,18 +5,6 @@ import { GeneratedFile, GeneratedFileOrDir } from '../../types/cli.types'
 import AbstractFeature from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-type ChokidarAction = 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
-
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        watch: WatchFeature
-    }
-
-    interface FeatureOptionsMap {
-        watch: undefined
-    }
-}
-
 export default class WatchFeature extends AbstractFeature {
     public description =
         'Watches for changes on the file system and emits app level events for other features to respond to.'
@@ -48,10 +36,15 @@ export default class WatchFeature extends AbstractFeature {
             ignoreInitial: true,
         })
 
-        const startsWith = diskUtil.resolvePath(watchDir, 'build')
+        const startsWith = [
+            diskUtil.resolvePath(watchDir, 'build'),
+            diskUtil.resolvePath(watchDir, 'dist'),
+        ]
 
         this.watcher.on('all', async (action, path) => {
-            if (path.startsWith(startsWith)) {
+            if (
+                !!startsWith.find((startsWith) => path.startsWith(startsWith))
+            ) {
                 this.changesSinceLastChange.push({
                     schemaId: this.mapChokidarActionToSchemaId(action),
                     version: 'v2020_07_22',
@@ -106,5 +99,17 @@ export default class WatchFeature extends AbstractFeature {
     public async stopWatching() {
         this._isWatching = false
         await this.watcher?.close()
+    }
+}
+
+type ChokidarAction = 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        watch: WatchFeature
+    }
+
+    interface FeatureOptionsMap {
+        watch: undefined
     }
 }

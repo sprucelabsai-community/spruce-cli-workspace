@@ -36,6 +36,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
     @test('does not watch src', 'src', false)
     @test('does watch build', 'build', true)
+    @test('does watch dist', 'dist', true)
     protected static async watchesInCorrectDir(
         path: string,
         shouldFire: boolean
