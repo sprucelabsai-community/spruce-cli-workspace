@@ -11,10 +11,10 @@ export default class KeepingListenersInSyncTest extends AbstractEventTest {
     }
 
     @test()
-    protected static async deletingAListener() {
+    protected static async deletingAListenerAndSyncingUpdatesListener() {
         await this.FeatureFixture().installCachedFeatures('events')
-
         await this.createBootListener('did-boot')
+
         const results = await this.createBootListener('will-boot')
 
         this.deleteLastFile(results)

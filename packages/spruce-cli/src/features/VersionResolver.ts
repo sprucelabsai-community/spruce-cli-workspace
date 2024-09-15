@@ -20,6 +20,9 @@ export default class VersionResolver {
         resolvedDestination: string,
         userSuppliedVersion?: string | null
     ) {
+        if (userSuppliedVersion) {
+            versionUtil.assertValidVersion(userSuppliedVersion)
+        }
         let resolvedVersion = versionUtil.generateVersion(
             userSuppliedVersion ?? undefined
         ).constValue
@@ -99,9 +102,11 @@ export default class VersionResolver {
     private loadVersions(resolvedDestination: string) {
         const versions = versionUtil.getAllVersions(resolvedDestination)
         const persistedVersion = this.pkg.get('skill.version')
+        const todaysVersion = versionUtil.generateVersion().dirValue
 
         if (
             persistedVersion &&
+            todaysVersion !== persistedVersion &&
             !versions.find((v) => v.dirValue === persistedVersion)
         ) {
             versions.push({
