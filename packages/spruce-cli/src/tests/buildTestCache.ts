@@ -48,7 +48,7 @@ async function run() {
     term.clear()
 
     if (process.env.WILL_BUILD_CACHE_SCRIPT) {
-        term.renderLine('Running pre build cache script')
+        term.renderLine('Running will-build cache script')
         if (process.env.CLEAN_CACHE_SCRIPT) {
             try {
                 execSync(process.env.CLEAN_CACHE_SCRIPT)
@@ -236,7 +236,7 @@ function dropInS(remaining: number) {
 void run()
     .then(() => {
         if (process.env.DID_BUILD_CACHE_SCRIPT) {
-            term.renderLine('Running pre build cache script')
+            term.renderLine('Running did-build cache script')
             execSync(process.env.DID_BUILD_CACHE_SCRIPT)
         }
         if (progressInterval) {

@@ -20,11 +20,12 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
 
         const writer = this.Writer('view')
 
-        if (
+        const shouldAskAboutRootSvc =
             viewType === 'skillView' &&
             !isRoot &&
-            !writer.doesRootControllerExist(this.cwd)
-        ) {
+            !(await writer.doesRootControllerExist(this.cwd))
+
+        if (shouldAskAboutRootSvc) {
             isRoot = await this.ui.confirm(
                 'Do you want to create a root view controller?'
             )

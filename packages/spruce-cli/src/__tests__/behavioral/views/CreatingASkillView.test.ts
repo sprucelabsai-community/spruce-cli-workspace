@@ -103,16 +103,21 @@ export default class CreatingASkillViewTest extends AbstractSkillTest {
     }
 
     @test()
+    protected static async doesNotAskForRootAgainEvenIfRootIsMoved() {
+        const destinationDir = this.resolvePath('src', 'root')
+        diskUtil.createDir(destinationDir)
+        diskUtil.moveFile(
+            this.rootSvc,
+            this.resolvePath(destinationDir, 'Root.svc.ts')
+        )
+
+        await this.createSkillViewAndWaitForPrompt()
+        this.ui.reset()
+    }
+
+    @test()
     protected static async asksForNamesIfCreatingSkillViewNotRoot() {
-        const promise = this.action.execute({
-            viewType: 'skillView',
-        })
-
-        await this.waitForInput()
-
-        let last = this.ui.getLastInvocation()
-
-        assert.isEqual(last.command, 'prompt')
+        const { promise } = await this.createSkillViewAndWaitForPrompt()
 
         await this.ui.sendInput('Dashboard')
         await this.ui.sendInput('\n')
@@ -232,6 +237,19 @@ export const svcId: SkillViewControllerId = 'testing-views.root'`,
             viewContents,
             `'testing-views.root': LoadOptions<Parameters<RootSkillViewController['load']>>`
         )
+    }
+
+    private static async createSkillViewAndWaitForPrompt() {
+        const promise = this.action.execute({
+            viewType: 'skillView',
+        })
+
+        await this.waitForInput()
+
+        let last = this.ui.getLastInvocation()
+
+        assert.isEqual(last.command, 'prompt')
+        return { promise }
     }
 
     private static buildTestfile(options: {

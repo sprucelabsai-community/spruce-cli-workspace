@@ -1,3 +1,4 @@
+import globby from '@sprucelabs/globby'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
     VcTemplateItem,
@@ -119,9 +120,9 @@ export default class ViewWriter extends AbstractWriter {
         return results
     }
 
-    public doesRootControllerExist(cwd: string) {
-        const { path } = this.buildViewControllerPath(cwd, 'skillView', 'Root')
-        return diskUtil.doesFileExist(path)
+    public async doesRootControllerExist(cwd: string) {
+        const matches = await globby('**/Root.svc.ts', { cwd })
+        return matches.length > 0
     }
 
     public async writeViewControllerPlugin(options: {
