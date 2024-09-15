@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../tests/AbstractCliTest'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class GettingCliVersionTest extends AbstractCliTest {
     protected static async beforeEach() {

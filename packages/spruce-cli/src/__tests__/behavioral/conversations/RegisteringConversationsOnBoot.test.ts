@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import AbstractEventTest from '../../tests/AbstractEventTest'
+import AbstractEventTest from '../../../tests/AbstractEventTest'
 
 export default class RegisteringConversationsOnBootTest extends AbstractEventTest {
     @test()

@@ -1,9 +1,8 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import findProcess from 'find-process'
-import TestAction from '../../features/conversation/actions/TestAction'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import testUtil from '../../tests/utilities/test.utility'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class TestingAConversationTest extends AbstractCliTest {
     @test()

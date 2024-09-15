@@ -34,7 +34,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
         )
 
         let resolvedVersion: string | undefined
-
+        debugger
         if (shouldEnableVersioning) {
             resolvedVersion = await this.resolveVersion(
                 version,

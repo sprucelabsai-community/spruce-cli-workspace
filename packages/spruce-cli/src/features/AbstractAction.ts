@@ -1,5 +1,4 @@
 import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
-import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
@@ -30,6 +29,7 @@ import {
     FeatureCode,
 } from './features.types'
 import validateAndNormalizer from './validateAndNormalize.utility'
+import VersionResolver from './VersionResolver'
 
 export default abstract class AbstractAction<S extends Schema = Schema>
     implements FeatureAction<S>, ServiceProvider
@@ -115,64 +115,15 @@ export default abstract class AbstractAction<S extends Schema = Schema>
         userSuppliedVersion: string | null | undefined,
         resolvedDestination: string
     ) {
-        let resolvedVersion = versionUtil.generateVersion(
-            userSuppliedVersion ?? undefined
-        ).constValue
-
-        if (!userSuppliedVersion) {
-            resolvedVersion =
-                await this.askForVersionIfTodaysVersionDoesNotExist(
-                    resolvedDestination,
-                    resolvedVersion
-                )
-        }
-        versionUtil.assertValidVersion(resolvedVersion)
-
-        return versionUtil.generateVersion(resolvedVersion).dirValue
-    }
-
-    private async askForVersionIfTodaysVersionDoesNotExist(
-        resolvedDestination: string,
-        fallbackVersion: string
-    ) {
-        const versions = versionUtil.getAllVersions(resolvedDestination)
-        const todaysVersion = versionUtil.generateVersion()
-
-        let version = fallbackVersion
-        const alreadyHasToday = !!versions.find(
-            (version) => version.dirValue === todaysVersion.dirValue
+        const versions = VersionResolver.Resolver(
+            this.ui,
+            this.serviceFactory.Service(this.cwd, 'pkg')
         )
-        const choices = []
-
-        if (!alreadyHasToday) {
-            choices.push({
-                label: 'New Version',
-                value: todaysVersion.dirValue,
-            })
-        }
-
-        choices.push(
-            ...versions
-                .sort((a, b) => {
-                    return a.intValue > b.intValue ? -1 : 1
-                })
-                .map((version) => ({
-                    value: version.dirValue,
-                    label: version.dirValue,
-                }))
+        const version = await versions.resolveVersion(
+            resolvedDestination,
+            userSuppliedVersion
         )
 
-        if (versions.length > 0) {
-            version = await this.ui.prompt({
-                type: 'select',
-                label: 'Version',
-                hint: 'Confirm which version you want to use?',
-                isRequired: true,
-                options: {
-                    choices,
-                },
-            })
-        }
         return version
     }
 
