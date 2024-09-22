@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.1.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v22.0.0...v22.1.0) (2024-09-22)
+
+
+### Features
+
+* `yarn compile` now uses bun to compile down to executable for whatever platform you are currently on ([086f45b](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/086f45b))
+
+
+
+
+
 # [22.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v21.1.0...v22.0.0) (2024-09-15)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
