@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Font Bundler Script
+# Enables support for Bun --compile and --minify flags with the `cfonts` module
 
 # Function to generate FONT_MAP from JSON files
 generate_font_map() {
@@ -15,6 +16,42 @@ generate_font_map() {
 
     font_map+="};"
     echo -e "$font_map"
+}
+
+validate_directory() {
+    local dir="$1"
+    
+    # Check if node_modules directory exists
+    if [ ! -d "$dir" ]; then
+        echo "Error: The specified node_modules directory does not exist: $dir"
+        exit 1
+    fi
+
+    # Check if cfonts directory exists
+    if [ ! -d "$dir/cfonts" ]; then
+        echo "Error: cfonts module not found in $dir"
+        exit 1
+    fi
+
+    # Check if fonts directory exists
+    if [ ! -d "$dir/cfonts/fonts" ]; then
+        echo "Error: fonts directory not found in cfonts module"
+        exit 1
+    fi
+
+    # Check if GetFont.js exists
+    if [ ! -f "$dir/cfonts/lib/GetFont.js" ]; then
+        echo "Error: GetFont.js not found in cfonts module"
+        exit 1
+    fi
+
+    # Check if there are any JSON files in the fonts directory
+    if [ -z "$(ls -A "$dir/cfonts/fonts/"*.json 2>/dev/null)" ]; then
+        echo "Error: No JSON files found in cfonts/fonts directory"
+        exit 1
+    fi
+
+    echo "Directory validation successful"
 }
 
 

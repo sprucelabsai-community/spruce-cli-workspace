@@ -1,0 +1,48 @@
+# Use the official Ubuntu image as a base
+FROM --platform=linux/arm64 ubuntu:latest
+
+# Set environment variables to non-interactive
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    sudo \
+    curl \
+    gnupg \
+    lsb-release \
+    vim \
+    net-tools \
+    iputils-ping \
+    binutils \
+    dpkg \
+    rpm \
+    git 
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs
+
+# Install Yarn globally using npm
+RUN npm install -g yarn
+
+# Install bun
+RUN npm install -g bun
+
+# Create a user with sudo privileges
+RUN useradd -ms /bin/bash docker && \
+    echo "docker:docker" | chpasswd && \
+    adduser docker sudo
+
+# Set up working directory
+WORKDIR /app/spruce-cli
+
+RUN mkdir -p /run/host_virtiofs/Users/taylorromero/Development/SpruceLabs && \
+    ln -s /app/spruce-cli /run/host_virtiofs/Users/taylorromero/Development/SpruceLabs/spruce-cli-workspace
+
+EXPOSE 22
+
+# Switch to the docker user
+USER docker
+
+# Set the default command to run bash
+CMD ["tail", "-f", "/dev/null"]

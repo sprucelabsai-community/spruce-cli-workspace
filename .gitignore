@@ -74,3 +74,4 @@ api-docs.json
 yarn.lock
 
 .clinic/
+dist/
