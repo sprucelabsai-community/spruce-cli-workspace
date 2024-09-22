@@ -2,8 +2,6 @@
 
 # Font Bundler Script
 
-# ... [Previous functions remain unchanged] ...
-
 # Function to generate FONT_MAP from JSON files
 generate_font_map() {
     local dir="$1"
