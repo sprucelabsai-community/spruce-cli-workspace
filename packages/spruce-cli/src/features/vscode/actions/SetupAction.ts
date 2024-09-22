@@ -25,6 +25,10 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
             id: 'mikestead.dotenv',
             label: '.env support',
         },
+        {
+            id: 'YoavBls.pretty-ts-errors',
+            label: 'Pretty TypeScript errors',
+        },
     ]
 
     public optionsSchema = setupVscodeSchema
