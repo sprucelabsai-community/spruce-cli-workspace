@@ -19,3 +19,5 @@ package-lock.json
 
 tmp/
 .clinic/
+
+dist/

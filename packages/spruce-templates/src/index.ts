@@ -8,7 +8,6 @@ import {
 } from '@sprucelabs/schema'
 import { TemplateRenderAs } from '@sprucelabs/schema'
 import {
-    addonUtil,
     SCHEMA_VERSION_FALLBACK,
     DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
     DEFAULT_BUILDER_FUNCTION,
@@ -38,7 +37,9 @@ import KeyGeneratorUtility from './utilities/KeyGeneratorUtility'
 import templateImportUtil from './utilities/templateImporter.utility'
 import templateItemUtil from './utilities/templateItem.utility'
 
-addonUtil.importSync({}, __dirname, 'addons')
+// Manual import of addons for Bun
+import './addons'
+// addonUtil.importSync({}, __dirname, 'addons')
 
 export const templates = {
     schemasTypes(options: {

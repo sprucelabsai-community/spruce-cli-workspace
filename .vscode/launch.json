@@ -24,7 +24,6 @@
 			"type": "node",
 			"request": "launch",
 			"name": "debug.cli",
-			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
 			"autoAttachChildProcesses": true,
 			"runtimeArgs": [
@@ -32,7 +31,6 @@
 				"local"
 			],
 			"console": "integratedTerminal",
-			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"localRoot": "${workspaceRoot}/packages/spruce-cli",
 			"remoteRoot": "${workspaceRoot}/packages/spruce-cli",
@@ -43,15 +41,26 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "build.exe",
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"run",
+				"build.exe"
+			],
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}/packages/spruce-cli",
+			"localRoot": "${workspaceRoot}/packages/spruce-cli",
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "debug.cache",
-			"protocol": "inspector",
 			"runtimeExecutable": "yarn",
 			"runtimeArgs": [
 				"run",
 				"cache.tests"
 			],
 			"console": "integratedTerminal",
-			"port": 5200,
 			"cwd": "${workspaceFolder}/packages/spruce-cli",
 			"localRoot": "${workspaceRoot}/packages/spruce-cli",
 			"remoteRoot": "${workspaceRoot}/packages/spruce-cli",

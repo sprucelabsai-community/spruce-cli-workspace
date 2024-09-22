@@ -23,6 +23,7 @@
     "clean.cache": "for d in packages/*; do echo $d; cd $d; yarn clean.cache; cd ../..; done",
     "clean.dependencies": "rm -rf node_modules/ package-lock.json yarn.lock && for d in packages/*; do echo $d; cd $d; yarn clean.dependencies; cd ../..; done",
     "clean.test.data": "lerna run clean.test.data --parallel",
+    "compile": "./support/compile.sh",
     "fix.lint": "lerna run fix.lint --parallel",
     "lint": "lerna run lint --parallel",
     "lint.tsc": "lerna run lint.tsc --parallel",
