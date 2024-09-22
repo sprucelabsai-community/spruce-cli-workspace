@@ -15,19 +15,19 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
     private recommendedExtensions: Extension[] = [
         {
             id: 'dbaeumer.vscode-eslint',
-            label: 'ESLint syntax validation and fixing',
+            label: 'ESLint syntax validation and fixing. Formats your code on save for you.',
         },
         {
             id: 'christian-kohler.npm-intellisense',
-            label: 'Intellisense autocompletion of installed npm modules',
+            label: 'Intellisense autocompletion of installed npm modules in your package.json.',
         },
         {
             id: 'mikestead.dotenv',
-            label: '.env support',
+            label: '.env formatting support right in vscode!',
         },
         {
             id: 'YoavBls.pretty-ts-errors',
-            label: 'Pretty TypeScript errors',
+            label: 'Pretty TypeScript errors and warnings. Makes them much easier to read.',
         },
     ]
 
