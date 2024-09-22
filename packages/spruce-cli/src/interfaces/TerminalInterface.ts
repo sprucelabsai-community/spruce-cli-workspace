@@ -34,7 +34,6 @@ import {
 } from '../types/graphicsInterface.types'
 import durationUtil from '../utilities/duration.utility'
 import isCi from '../utilities/isCi'
-const terminalImage = require('terminal-image')
 
 let fieldCount = 0
 function generateInquirerFieldName() {
@@ -639,11 +638,11 @@ export default class TerminalInterface implements GraphicsInterface {
     }
 
     public async renderImage(
-        path: string,
-        options?: ImageDimensions
+        _path: string,
+        _options?: ImageDimensions
     ): Promise<void> {
-        const image = await terminalImage.file(path, options)
-        this.renderLine(image)
+        // const image = await terminalImage.file(path, options)
+        this.renderLine('Images not supported....')
     }
 
     public async getCursorPosition(): Promise<{ x: number; y: number } | null> {
