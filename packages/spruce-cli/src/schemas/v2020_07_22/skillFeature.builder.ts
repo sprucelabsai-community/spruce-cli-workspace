@@ -12,7 +12,7 @@ export default buildSchema({
             type: 'text',
             isRequired: true,
             label: "What's the name of your skill?",
-            hint: 'Make this something readable and memorable.',
+            hint: 'This marketing focused, like "8-bit Stories" or "Adventures".',
         },
         description: {
             type: 'text',
