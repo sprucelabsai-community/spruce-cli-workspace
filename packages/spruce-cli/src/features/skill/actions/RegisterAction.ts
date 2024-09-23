@@ -75,11 +75,11 @@ const optionsSchema = buildSchema({
             type: 'text',
             label: 'Namespace',
             isRequired: true,
-            hint: 'The namespace of your skill in-kebab-case',
+            hint: 'The namespace of your skill in-kebab-case.',
         },
         description: {
             type: 'text',
-            label: 'Describe your skill',
+            label: 'Describe your skill.',
         },
     },
 })
