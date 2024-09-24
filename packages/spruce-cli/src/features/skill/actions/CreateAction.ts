@@ -3,19 +3,6 @@ import skillFeatureSchema from '#spruce/schemas/spruceCli/v2020_07_22/skillFeatu
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
-const optionsSchema = buildSchema({
-    id: 'createSkill',
-    name: 'create skill',
-    description:
-        'A skill is a micro-app, focused on delivering personaziled (and discrete) experiences.',
-    fields: {
-        ...skillFeatureSchema.fields,
-    },
-})
-
-type OptionsSchema = typeof optionsSchema
-type Options = SchemaValues<OptionsSchema>
-
 export default class CreateAction extends AbstractAction<OptionsSchema> {
     public optionsSchema = optionsSchema
     public commandAliases = ['create.skill [destination]']
@@ -37,3 +24,16 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
         }
     }
 }
+
+const optionsSchema = buildSchema({
+    id: 'createSkill',
+    name: 'create skill',
+    description:
+        'A skill is a micro-app, focused on delivering personaziled (and discrete) experiences.',
+    fields: {
+        ...skillFeatureSchema.fields,
+    },
+})
+
+type OptionsSchema = typeof optionsSchema
+type Options = SchemaValues<OptionsSchema>

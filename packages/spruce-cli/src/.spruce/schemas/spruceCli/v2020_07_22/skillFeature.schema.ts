@@ -27,7 +27,6 @@ const skillFeatureSchema: SpruceSchemas.SpruceCli.v2020_07_22.SkillFeatureSchema
 	            'description': {
 	                label: 'How would you describe your skill?',
 	                type: 'text',
-	                isRequired: true,
 	                options: undefined
 	            },
 	    }

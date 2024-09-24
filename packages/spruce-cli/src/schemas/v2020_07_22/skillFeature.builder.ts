@@ -16,7 +16,6 @@ export default buildSchema({
         },
         description: {
             type: 'text',
-            isRequired: true,
             label: 'How would you describe your skill?',
         },
     },
