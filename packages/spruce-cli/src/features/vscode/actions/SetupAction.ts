@@ -26,7 +26,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
             label: '.env formatting support right in vscode!',
         },
         {
-            id: 'YoavBls.pretty-ts-errors',
+            id: 'yoavbls.pretty-ts-errors',
             label: 'Pretty TypeScript errors and warnings. Makes them much easier to read.',
         },
     ]

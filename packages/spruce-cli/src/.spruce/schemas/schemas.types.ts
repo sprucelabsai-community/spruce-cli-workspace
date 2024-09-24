@@ -768,7 +768,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** What's the name of your skill?. This marketing focused, like "8-bit Stories" or "Adventures". */
 				'name': string
 				/** How would you describe your skill?. */
-				'description'?: string| undefined | null
+				'description': string
 		}
 
 		interface SkillFeatureSchema extends SpruceSchema.Schema {
@@ -795,6 +795,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			            'description': {
 			                label: 'How would you describe your skill?',
 			                type: 'text',
+			                isRequired: true,
 			                options: undefined
 			            },
 			    }
