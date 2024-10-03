@@ -11,37 +11,6 @@ import CommandService from '../../services/CommandService'
 import JestJsonParser from '../../tests/JestJsonParser'
 import { SpruceTestResults } from './test.types'
 
-const testRunnerContract = buildEventContract({
-    eventSignatures: {
-        'did-error': {
-            emitPayloadSchema: buildSchema({
-                id: 'testRunnerDidErrorEmitPayload',
-                fields: {
-                    message: {
-                        type: 'text',
-                        isRequired: true,
-                    },
-                },
-            }),
-        },
-        'did-update': {
-            emitPayloadSchema: buildSchema({
-                id: 'testRunnerDidUpdateEmitPayload',
-                fields: {
-                    results: {
-                        type: 'raw',
-                        isRequired: true,
-                        options: {
-                            valueType: 'SpruceTestResults',
-                        },
-                    },
-                },
-            }),
-        },
-    },
-})
-type TestRunnerContract = typeof testRunnerContract
-
 export default class TestRunner extends AbstractEventEmitter<TestRunnerContract> {
     private cwd: string
     private commandService: CommandService
@@ -158,3 +127,34 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
         throw new SpruceError({ code: 'INVALID_TEST_DIRECTORY', dir: this.cwd })
     }
 }
+
+const testRunnerContract = buildEventContract({
+    eventSignatures: {
+        'did-error': {
+            emitPayloadSchema: buildSchema({
+                id: 'testRunnerDidErrorEmitPayload',
+                fields: {
+                    message: {
+                        type: 'text',
+                        isRequired: true,
+                    },
+                },
+            }),
+        },
+        'did-update': {
+            emitPayloadSchema: buildSchema({
+                id: 'testRunnerDidUpdateEmitPayload',
+                fields: {
+                    results: {
+                        type: 'raw',
+                        isRequired: true,
+                        options: {
+                            valueType: 'SpruceTestResults',
+                        },
+                    },
+                },
+            }),
+        },
+    },
+})
+type TestRunnerContract = typeof testRunnerContract

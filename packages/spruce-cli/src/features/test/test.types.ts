@@ -1,4 +1,6 @@
 export type TestResultStatus = 'running' | 'passed' | 'failed'
+export type TestRunnerStatus = 'running' | 'stopped' | 'ready'
+
 export interface SpruceTestFileTest {
     name: string
     status:
@@ -30,5 +32,3 @@ export interface SpruceTestResults {
     totalTestFilesComplete?: number
     testFiles?: SpruceTestFile[]
 }
-
-export type TestRunnerStatus = 'running' | 'stopped' | 'ready'
