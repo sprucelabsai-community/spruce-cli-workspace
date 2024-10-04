@@ -37,6 +37,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
     private originalInspect!: number
     private watcher?: WatchFeature
     private watchMode: WatchMode = 'off'
+    private isRpTraining = false
     private fileChangeTimeout?: any
     private hasWatchEverBeenEnabled = false
 
@@ -78,6 +79,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
                 status: shouldHoldAtStart ? 'stopped' : 'ready',
                 isDebugging: !!inspect,
                 filterPattern: pattern ?? undefined,
+                isRpTraining: this.isRpTraining,
                 handleRestart: this.handleRestart.bind(this),
                 handleStartStop: this.handleStartStop.bind(this),
                 handleQuit: this.handleQuit.bind(this),
@@ -89,6 +91,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
                 handletoggleStandardWatch:
                     this.handletoggleStandardWatch.bind(this),
                 handleToggleSmartWatch: this.handleToggleSmartWatch?.bind(this),
+                handleToggleRpTraining: this.handleToggleRpTraining?.bind(this),
             })
 
             await this.testReporter.start()
@@ -241,6 +244,11 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
         } else {
             this.setWatchMode('smart')
         }
+    }
+
+    private handleToggleRpTraining() {
+        this.isRpTraining = !this.isRpTraining
+        this.testReporter?.setIsRpTraining(this.isRpTraining)
     }
 
     public setWatchMode(mode: WatchMode) {

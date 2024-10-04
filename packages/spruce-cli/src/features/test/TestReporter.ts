@@ -48,9 +48,11 @@ export default class TestReporter {
     private handleFilterChange?: (pattern?: string) => void
     private handleOpenTestFile?: (testFile: string) => void
     private handleToggleDebug?: () => void
+    private handleToggleRpTraining?: () => void
     private handletoggleStandardWatch?: () => void
     private handleToggleSmartWatch?: () => any
     private minWidth = 50
+    private isRpTraining: boolean
     // private orientationWhenErrorLogWasShown: TestReporterOrientation =
     // 'landscape'
 
@@ -66,8 +68,10 @@ export default class TestReporter {
         this.status = options?.status ?? 'ready'
         this.handleToggleDebug = options?.handleToggleDebug
         this.handletoggleStandardWatch = options?.handletoggleStandardWatch
+        this.handleToggleRpTraining = options?.handleToggleRpTraining
         this.isDebugging = options?.isDebugging ?? false
         this.watchMode = options?.watchMode ?? 'off'
+        this.isRpTraining = options?.isRpTraining ?? false
         this.handleToggleSmartWatch = options?.handleToggleSmartWatch
 
         this.errorLogItemGenerator = new TestLogItemGenerator()
@@ -81,13 +85,13 @@ export default class TestReporter {
     }
 
     public setIsDebugging(isDebugging: boolean) {
-        this.menu.setTextForItem(
-            'toggleDebug',
-            `Debug ^${isDebugging ? 'k' : 'w'}^#^${isDebugging ? 'g' : 'r'}${
-                isDebugging ? ' • ' : ' • '
-            }^`
-        )
+        this.setLabelStatus('toggleDebug', 'Debug', isDebugging)
         this.isDebugging = isDebugging
+    }
+
+    public setIsRpTraining(isRpTraining: boolean) {
+        this.setLabelStatus('rp', 'Train AI', isRpTraining)
+        this.isRpTraining = isRpTraining
     }
 
     public startCountdownTimer(durationSec: number) {
@@ -131,14 +135,8 @@ export default class TestReporter {
     }
 
     private setWatchLabel(label: string) {
-        const isWatching = this.watchMode !== 'off'
-
-        this.menu.setTextForItem(
-            'watchDropdown',
-            `${label} ^${isWatching ? 'k' : 'w'}^#^${isWatching ? 'g' : 'r'}${
-                isWatching ? ' • ' : ' • '
-            }^`
-        )
+        const isEnabled = this.watchMode !== 'off'
+        this.setLabelStatus('watchDropdown', label, isEnabled)
 
         this.menu.setTextForItem(
             'toggleStandardWatch',
@@ -148,6 +146,13 @@ export default class TestReporter {
         this.menu.setTextForItem(
             'toggleSmartWatch',
             this.watchMode === 'smart' ? '√ Smart' : 'Smart'
+        )
+    }
+
+    private setLabelStatus(menuKey: string, label: string, isEnabled: boolean) {
+        this.menu.setTextForItem(
+            menuKey,
+            `${label} ^${isEnabled ? 'k' : 'w'}^#^${isEnabled ? 'g' : 'r'}${isEnabled ? ' • ' : ' • '}^`
         )
     }
 
@@ -181,6 +186,7 @@ export default class TestReporter {
         this.setIsDebugging(this.isDebugging)
         this.setWatchMode(this.watchMode)
         this.setStatus(this.status)
+        this.setIsRpTraining(this.isRpTraining)
 
         this.updateInterval = setInterval(
             this.handleUpdateInterval.bind(this),
@@ -230,6 +236,10 @@ export default class TestReporter {
                             value: 'toggleSmartWatch',
                         },
                     ],
+                },
+                {
+                    label: 'Train AI    ',
+                    value: 'rp',
                 },
                 {
                     label: 'Quit',
@@ -291,6 +301,9 @@ export default class TestReporter {
                 break
             case 'toggleSmartWatch':
                 this.handleToggleSmartWatch?.()
+                break
+            case 'rp':
+                this.handleToggleRpTraining?.()
                 break
         }
     }
@@ -815,8 +828,10 @@ interface TestReporterOptions {
     handleToggleDebug?: () => void
     handletoggleStandardWatch?: () => void
     handleToggleSmartWatch?: () => void
+    handleToggleRpTraining?: () => void
     filterPattern?: string
     isDebugging?: boolean
+    isRpTraining?: boolean
     watchMode?: WatchMode
     status?: TestRunnerStatus
     cwd?: string
