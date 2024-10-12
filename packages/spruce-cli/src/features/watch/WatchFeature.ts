@@ -12,7 +12,7 @@ export default class WatchFeature extends AbstractFeature {
     public nameReadable = 'Watch'
 
     private _isWatching = false
-    private watcher?: chokidar.FSWatcher
+    private watcher?: any
 
     private timeoutId?: NodeJS.Timeout
     private changesSinceLastChange: GeneratedFileOrDir[] = []
@@ -41,7 +41,7 @@ export default class WatchFeature extends AbstractFeature {
             diskUtil.resolvePath(watchDir, 'dist'),
         ]
 
-        this.watcher.on('all', async (action, path) => {
+        this.watcher.on('all', async (action: ChokidarAction, path: string) => {
             if (
                 !!startsWith.find((startsWith) => path.startsWith(startsWith))
             ) {
