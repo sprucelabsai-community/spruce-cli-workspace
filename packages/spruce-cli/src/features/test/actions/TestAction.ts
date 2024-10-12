@@ -246,9 +246,12 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
         }
     }
 
-    private handleToggleRpTraining() {
-        this.isRpTraining = !this.isRpTraining
-        this.testReporter?.setIsRpTraining(this.isRpTraining)
+    private async handleToggleRpTraining() {
+        // this.isRpTraining = !this.isRpTraining
+        // this.testReporter?.setIsRpTraining(this.isRpTraining)
+        // if (this.isRpTraining) {
+        await this.testReporter?.askForTrainingToken()
+        // }
     }
 
     public setWatchMode(mode: WatchMode) {

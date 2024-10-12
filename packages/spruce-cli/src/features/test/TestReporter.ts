@@ -28,7 +28,7 @@ export default class TestReporter {
     private menu!: MenuBarWidget
     private statusBar!: TextWidget
     private window!: WindowWidget
-    private widgetFactory: WidgetFactory
+    private widgets: WidgetFactory
     private selectTestPopup?: PopupWidget
     private topLayout!: LayoutWidget
     private filterInput!: InputWidget
@@ -53,6 +53,7 @@ export default class TestReporter {
     private handleToggleSmartWatch?: () => any
     private minWidth = 50
     private isRpTraining: boolean
+    private trainingTokenPopup?: PopupWidget
     // private orientationWhenErrorLogWasShown: TestReporterOrientation =
     // 'landscape'
 
@@ -75,7 +76,7 @@ export default class TestReporter {
         this.handleToggleSmartWatch = options?.handleToggleSmartWatch
 
         this.errorLogItemGenerator = new TestLogItemGenerator()
-        this.widgetFactory = new WidgetFactory()
+        this.widgets = new WidgetFactory()
     }
 
     public setFilterPattern(pattern: string | undefined) {
@@ -159,7 +160,7 @@ export default class TestReporter {
     public async start() {
         this.started = true
 
-        this.window = this.widgetFactory.Widget('window', {})
+        this.window = this.widgets.Widget('window', {})
         this.window.hideCursor()
 
         const { width } = this.window.getFrame()
@@ -209,7 +210,7 @@ export default class TestReporter {
     }
 
     private dropInMenu() {
-        this.menu = this.widgetFactory.Widget('menuBar', {
+        this.menu = this.widgets.Widget('menuBar', {
             parent: this.window,
             left: 0,
             top: 0,
@@ -340,7 +341,7 @@ export default class TestReporter {
         const parent = this.bottomLayout.getChildById('results')
 
         if (parent) {
-            this.testLog = this.widgetFactory.Widget('text', {
+            this.testLog = this.widgets.Widget('text', {
                 parent,
                 isScrollEnabled: true,
                 left: 0,
@@ -366,6 +367,41 @@ export default class TestReporter {
         }
     }
 
+    public async askForTrainingToken() {
+        if (this.trainingTokenPopup) {
+            return
+        }
+
+        this.trainingTokenPopup = this.widgets.Widget('popup', {
+            parent: this.window,
+            top: 10,
+            left: 10,
+            width: 50,
+            height: 10,
+        })
+
+        this.widgets.Widget('text', {
+            parent: this.trainingTokenPopup,
+            left: 4,
+            top: 3,
+            height: 4,
+            width: this.trainingTokenPopup.getFrame().width - 2,
+            text: 'Coming soon...',
+        })
+
+        const button = this.widgets.Widget('button', {
+            parent: this.trainingTokenPopup,
+            left: 20,
+            top: 7,
+            text: ' Ok ',
+        })
+
+        await button.on('click', async () => {
+            await this.trainingTokenPopup?.destroy()
+            delete this.trainingTokenPopup
+        })
+    }
+
     private closeSelectTestPopup() {
         if (this.selectTestPopup) {
             void this.selectTestPopup.destroy()
@@ -380,7 +416,7 @@ export default class TestReporter {
     }) {
         const { testFile, row, column } = options
 
-        this.selectTestPopup = this.widgetFactory.Widget('popup', {
+        this.selectTestPopup = this.widgets.Widget('popup', {
             parent: this.window,
             left: Math.max(1, column - 25),
             top: Math.max(4, row - 2),
@@ -388,7 +424,7 @@ export default class TestReporter {
             height: 10,
         })
 
-        this.widgetFactory.Widget('text', {
+        this.widgets.Widget('text', {
             parent: this.selectTestPopup,
             left: 1,
             top: 1,
@@ -397,21 +433,21 @@ export default class TestReporter {
             text: `What do you wanna do with:\n\n${testFile}`,
         })
 
-        const open = this.widgetFactory.Widget('button', {
+        const open = this.widgets.Widget('button', {
             parent: this.selectTestPopup,
             left: 1,
             top: 6,
             text: 'Open',
         })
 
-        const rerun = this.widgetFactory.Widget('button', {
+        const rerun = this.widgets.Widget('button', {
             parent: this.selectTestPopup,
             left: 20,
             top: 6,
             text: 'Test',
         })
 
-        const cancel = this.widgetFactory.Widget('button', {
+        const cancel = this.widgets.Widget('button', {
             parent: this.selectTestPopup,
             left: 37,
             top: 6,
@@ -452,7 +488,7 @@ export default class TestReporter {
 
     private dropInProgressBar() {
         const parent = this.topLayout.getChildById('progress') ?? this.window
-        this.bar = this.widgetFactory.Widget('progressBar', {
+        this.bar = this.widgets.Widget('progressBar', {
             parent,
             left: 0,
             top: 0,
@@ -467,7 +503,7 @@ export default class TestReporter {
         const parent = this.topLayout.getChildById('filter') ?? this.window
 
         const buttonWidth = 3
-        this.filterInput = this.widgetFactory.Widget('input', {
+        this.filterInput = this.widgets.Widget('input', {
             parent,
             left: 0,
             label: 'Pattern',
@@ -485,7 +521,7 @@ export default class TestReporter {
             this.handleFilterChange?.(payload.value ?? undefined)
         })
 
-        this.clearFilterPatternButton = this.widgetFactory.Widget('button', {
+        this.clearFilterPatternButton = this.widgets.Widget('button', {
             parent,
             left: this.filterInput.getFrame().width,
             width: buttonWidth,
@@ -504,7 +540,7 @@ export default class TestReporter {
     }
 
     private dropInBottomLayout() {
-        this.bottomLayout = this.widgetFactory.Widget('layout', {
+        this.bottomLayout = this.widgets.Widget('layout', {
             parent: this.window,
             width: '100%',
             top: 4,
@@ -526,7 +562,7 @@ export default class TestReporter {
     }
 
     private dropInStatusBar() {
-        this.statusBar = this.widgetFactory.Widget('text', {
+        this.statusBar = this.widgets.Widget('text', {
             parent: this.window,
             top: this.window.getFrame().height - 1,
             width: '100%',
@@ -539,7 +575,7 @@ export default class TestReporter {
     }
 
     private dropInTopLayout() {
-        this.topLayout = this.widgetFactory.Widget('layout', {
+        this.topLayout = this.widgets.Widget('layout', {
             parent: this.window,
             width: '100%',
             top: 1,
@@ -663,7 +699,7 @@ export default class TestReporter {
                 throw new Error('Pulling child error')
             }
 
-            this.errorLog = this.widgetFactory.Widget('text', {
+            this.errorLog = this.widgets.Widget('text', {
                 parent: cell,
                 width: '100%',
                 height: '100%',
