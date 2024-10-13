@@ -5,6 +5,12 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { GeneratedFileOrDir } from '../../../types/cli.types'
 
 export default class WatchingForChangesTest extends AbstractCliTest {
+    protected static async beforeEach(): Promise<void> {
+        await super.beforeEach()
+        diskUtil.createDir(this.resolvePath('dist'))
+        diskUtil.createDir(this.resolvePath('build'))
+    }
+
     @test()
     protected static async installsWatchers() {
         await this.installWatch()
@@ -213,7 +219,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
     }
 
     private static async startWatching(feature: WatchFeature) {
-        void feature.startWatching({ delay: 200, sourceDir: '.' })
+        void feature.startWatching({ delay: 0 })
         await this.wait(1000)
     }
 

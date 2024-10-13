@@ -32,37 +32,34 @@ export default class WatchFeature extends AbstractFeature {
             options?.sourceDir ?? ''
         )
 
-        this.watcher = chokidar.watch(watchDir, {
-            ignoreInitial: true,
-        })
-
-        const startsWith = [
-            diskUtil.resolvePath(watchDir, 'build'),
-            diskUtil.resolvePath(watchDir, 'dist'),
-        ]
+        this.watcher = chokidar.watch(
+            [
+                diskUtil.resolvePath(watchDir, 'build'),
+                diskUtil.resolvePath(watchDir, 'dist'),
+            ],
+            {
+                ignoreInitial: true,
+            }
+        )
 
         this.watcher.on('all', async (action: ChokidarAction, path: string) => {
-            if (
-                !!startsWith.find((startsWith) => path.startsWith(startsWith))
-            ) {
-                this.changesSinceLastChange.push({
-                    schemaId: this.mapChokidarActionToSchemaId(action),
-                    version: 'v2020_07_22',
-                    values: {
-                        action: this.mapChokidarActionToGeneratedAction(action),
-                        path,
-                        name: pathUtil.basename(path),
-                    },
-                })
+            this.changesSinceLastChange.push({
+                schemaId: this.mapChokidarActionToSchemaId(action),
+                version: 'v2020_07_22',
+                values: {
+                    action: this.mapChokidarActionToGeneratedAction(action),
+                    path,
+                    name: pathUtil.basename(path),
+                },
+            })
 
-                if (this.timeoutId) {
-                    clearTimeout(this.timeoutId)
-                }
-
-                this.timeoutId = setTimeout(async () => {
-                    await this.fireChange()
-                }, options?.delay ?? 500)
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId)
             }
+
+            this.timeoutId = setTimeout(async () => {
+                await this.fireChange()
+            }, options?.delay ?? 500)
         })
     }
 
