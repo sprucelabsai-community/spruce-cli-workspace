@@ -187,7 +187,9 @@ export default class TestReporter {
         this.setIsDebugging(this.isDebugging)
         this.setWatchMode(this.watchMode)
         this.setStatus(this.status)
-        this.setIsRpTraining(this.isRpTraining)
+        try {
+            this.setIsRpTraining(this.isRpTraining)
+        } catch {}
 
         this.updateInterval = setInterval(
             this.handleUpdateInterval.bind(this),
