@@ -1,4 +1,8 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
+import AbstractSpruceTest, {
+    test,
+    assert,
+    errorAssert,
+} from '@sprucelabs/test-utils'
 import TerminalInterface from '../../interfaces/TerminalInterface'
 
 export default class TerminalInterfaceTest extends AbstractSpruceTest {
@@ -31,6 +35,15 @@ export default class TerminalInterfaceTest extends AbstractSpruceTest {
     protected static async startsLoadingAsExpectedIfNotPrompting() {
         await this.startLoading()
         assert.isTrue(this.wasOraHit)
+    }
+
+    @test()
+    protected static async askingToPromptThrowsIfInCi() {
+        process.env.CIRCLECI = 'true'
+        const err = await assert.doesThrowAsync(() =>
+            this.ui.prompt({ type: 'text' })
+        )
+        errorAssert.assertError(err, 'CANNOT_PROMPT_IN_CI')
     }
 
     private static async startLoading() {

@@ -223,8 +223,7 @@ export default class Cli implements CliInterface {
             actionFactory,
             ui,
             emitter,
-            //@ts-ignore
-            featureInstallerFactory: () => featureInstaller,
+            featureInstallerFactory: () => featureInstaller!,
         })
 
         featureInstaller =

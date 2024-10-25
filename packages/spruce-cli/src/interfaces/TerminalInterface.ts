@@ -414,6 +414,11 @@ export default class TerminalInterface implements GraphicsInterface {
         definition: T
     ): Promise<FieldDefinitionValueType<T>> {
         this.isPromptActive = true
+
+        if (isCi()) {
+            throw new SpruceError({ code: 'CANNOT_PROMPT_IN_CI' })
+        }
+
         const name = generateInquirerFieldName()
         const fieldDefinition: FieldDefinitions = definition
         const { defaultValue } = fieldDefinition

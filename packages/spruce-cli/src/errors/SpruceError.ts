@@ -269,6 +269,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = `A view plugin by the name ${options.name} already exists!`
                 break
 
+            case 'CANNOT_PROMPT_IN_CI':
+                message = 'A cannot prompt in ci just happened!'
+                break
+
             default:
                 message = super.friendlyMessage()
         }
