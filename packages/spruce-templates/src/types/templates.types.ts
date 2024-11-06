@@ -137,6 +137,7 @@ export interface ViewsOptions {
     svcTemplateItems: VcTemplateItem[]
     vcTemplateItems: VcTemplateItem[]
     viewPluginItems: ViewControllerPluginItem[]
+    appTemplateItem?: VcTemplateItem
 }
 
 export type ListenerTemplateItem = Omit<EventFeatureListener, 'callback'> & {

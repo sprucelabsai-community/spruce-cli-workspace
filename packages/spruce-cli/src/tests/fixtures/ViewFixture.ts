@@ -24,7 +24,7 @@ export default class ViewFixture {
             options
         )
 
-        await this.syncAction.execute({})
+        await this.syncAction.execute()
 
         return files[0]
     }

@@ -1,5 +1,5 @@
 import globby from '@sprucelabs/globby'
-import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import {
     VcTemplateItem,
@@ -16,12 +16,10 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
     public commandAliases = ['sync.views']
     public invocationMessage = 'Syncing view controller types... 🌲'
 
-    public async execute(
-        _options: SchemaValues<OptionsSchema>
-    ): Promise<FeatureActionResponse> {
+    public async execute(): Promise<FeatureActionResponse> {
         const targetDir = diskUtil.resolvePath(this.cwd, 'src')
         const matches = await globby(
-            ['**/*.svc.ts', '**/*.vc.ts', '**/*.view.plugin.ts'],
+            ['**/*.svc.ts', '**/*.vc.ts', '**/*.view.plugin.ts', '**/*.avc.ts'],
             {
                 cwd: targetDir,
             }
@@ -35,12 +33,13 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         const introspect = introspectionUtil.introspect(paths)
 
         const vcTemplateItems: VcTemplateItem[] = []
+        let appTemplateItem: VcTemplateItem | undefined
         const svcTemplateItems: VcTemplateItem[] = []
         const viewPluginItems: ViewControllerPluginItem[] = []
 
         introspect.forEach(({ classes }) => {
             for (const thisClass of classes) {
-                const { vc, svc, plugin } =
+                const { vc, svc, plugin, avc } =
                     this.mapIntrospectedClassToTemplateItem(thisClass)
 
                 if (vc) {
@@ -49,6 +48,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                     viewPluginItems.push(plugin)
                 } else if (svc) {
                     svcTemplateItems.push(svc)
+                } else if (avc) {
+                    appTemplateItem = avc
                 } else {
                     throw new Error('Unexpected class type.')
                 }
@@ -63,6 +64,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 vcTemplateItems,
                 svcTemplateItems,
                 viewPluginItems,
+                appTemplateItem,
             }
         )
 
@@ -75,6 +77,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         vc?: VcTemplateItem
         svc?: VcTemplateItem
         plugin?: ViewControllerPluginItem
+        avc?: VcTemplateItem
     } {
         const item = {
             id: c.staticProperties.id,
@@ -84,10 +87,13 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
         let vc: VcTemplateItem | undefined
         let svc: VcTemplateItem | undefined
+        let avc: VcTemplateItem | undefined
         let plugin: ViewControllerPluginItem | undefined
 
         if (c.classPath.endsWith('.svc.ts')) {
             svc = item
+        } else if (c.classPath.endsWith('avc.ts')) {
+            avc = item
         } else if (c.classPath.endsWith('view.plugin.ts')) {
             const nameCamel = c.classPath.match(/([^/]+).view.plugin.ts$/)![1]
             plugin = { ...item, nameCamel }
@@ -95,7 +101,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             vc = item
         }
 
-        return { svc, vc, plugin }
+        return { svc, vc, plugin, avc }
     }
 }
 

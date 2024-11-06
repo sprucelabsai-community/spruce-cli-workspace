@@ -66,8 +66,13 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 
 //@ts-ignore
 if(typeof heartwood === 'function') { 
+	{{#if appTemplateItem}}
 	//@ts-ignore
-	heartwood(vcs, pluginsByName) 
+	heartwood({ vcs, pluginsByName, App: {{appTemplateItem.namePascal}} }) 
+	{{else}}
+	//@ts-ignore
+	heartwood({ vcs, pluginsByName }) 
+	{{/if}}
 }
 
 export default vcs

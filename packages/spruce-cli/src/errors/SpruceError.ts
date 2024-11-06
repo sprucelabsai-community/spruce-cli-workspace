@@ -273,6 +273,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = 'A cannot prompt in ci just happened!'
                 break
 
+            case 'APP_VIEW_CONTROLLER_ALREADY_EXISTS':
+                message = `You already have an AppViewController! Run \`spruce sync.views\` if you are having issues.`
+                break
+
             default:
                 message = super.friendlyMessage()
         }

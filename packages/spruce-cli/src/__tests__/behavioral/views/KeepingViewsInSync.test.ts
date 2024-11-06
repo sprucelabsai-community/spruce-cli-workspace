@@ -20,7 +20,7 @@ export default class KeepingViewsInSyncTest extends AbstractSkillTest {
 
     @test()
     protected static async syncingWithNoViewsGeneratesNothing() {
-        const results = await this.action.execute({})
+        const results = await this.action.execute()
         assert.isFalsy(results.errors)
         assert.isFalsy(results.files)
     }

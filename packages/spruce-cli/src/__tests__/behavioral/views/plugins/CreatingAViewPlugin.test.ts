@@ -92,7 +92,7 @@ export default class CreatingAViewPluginTest extends AbstractSkillTest {
 `
 
         this.assertCombinedFileIncludes(expected)
-        this.assertCombinedFileIncludes('heartwood(vcs, pluginsByName)')
+        this.assertCombinedFileIncludes('heartwood({ vcs, pluginsByName })')
     }
 
     @test()

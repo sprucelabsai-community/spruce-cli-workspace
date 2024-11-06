@@ -39,7 +39,6 @@ export const globalContract = buildEventContract({
             }),
         },
         'skill.register-dashboard-widgets': {},
-
         'test.register-abstract-test-classes': {
             responsePayloadSchema: buildSchema({
                 id: 'registerAbstractTestClassResponsePayload',

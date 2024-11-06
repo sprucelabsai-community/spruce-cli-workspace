@@ -48,6 +48,7 @@ import AbstractSpruceError from '@sprucelabs/error'
 
 
 
+
 export declare namespace SpruceErrors.SpruceCli {
 
 	
@@ -1285,6 +1286,26 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type BootErrorEntity = SchemaEntity<SpruceErrors.SpruceCli.BootErrorSchema>
+
+}
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface AppViewControllerAlreadyExists {
+		
+	}
+
+	export interface AppViewControllerAlreadyExistsSchema extends SpruceSchema.Schema {
+		id: 'appViewControllerAlreadyExists',
+		namespace: 'SpruceCli',
+		name: 'App view controller already exists',
+		    fields: {
+		    }
+	}
+
+	export type AppViewControllerAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.AppViewControllerAlreadyExistsSchema>
 
 }
 

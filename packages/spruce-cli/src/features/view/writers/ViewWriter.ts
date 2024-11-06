@@ -214,4 +214,23 @@ export default class ViewWriter extends AbstractWriter {
         )
         return { path, filename }
     }
+
+    public async writeAppViewController(cwd: string) {
+        const match = await globby(cwd + '/**/App.avc.ts')
+
+        if (match.length > 0) {
+            throw new SpruceError({
+                code: 'APP_VIEW_CONTROLLER_ALREADY_EXISTS',
+            })
+        }
+
+        const destination = diskUtil.resolvePath(cwd, 'src', 'App.avc.ts')
+        const contents = this.templates.appViewController()
+
+        return this.writeFileIfChangedMixinResults(
+            destination,
+            contents,
+            'Your new app view controller!'
+        )
+    }
 }

@@ -1,6 +1,10 @@
 export default function isCi() {
     const env = process.env
 
+    if (process.env.IS_TESTING_SELF) {
+        return false
+    }
+
     if (
         [
             'TRAVIS',

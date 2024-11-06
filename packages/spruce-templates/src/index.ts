@@ -28,7 +28,7 @@ import {
     EventPayloadOptions,
     StoreTemplateOptions,
     StoreTemplateItem,
-    ViewsOptions,
+    ViewsOptions as CombinedViewsOptions,
     ListenerTemplateItem,
 } from './types/templates.types'
 import DirectoryTemplateUtility from './utilities/DirectoryTemplateUtility'
@@ -450,7 +450,12 @@ export const templates = {
         return template(options)
     },
 
-    views(options: ViewsOptions) {
+    appViewController() {
+        const template = templateImportUtil.getTemplate('view/App.avc.ts.hbs')
+        return template({})
+    },
+
+    views(options: CombinedViewsOptions) {
         const template = templateImportUtil.getTemplate('view/views.ts.hbs')
         return template(options)
     },
