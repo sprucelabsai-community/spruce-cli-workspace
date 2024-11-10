@@ -26,6 +26,9 @@ export default class InstallFeatureAction extends AbstractAction<OptionsSchema> 
 
             code = await this.promptForFeature(choices)
         }
+
+        this.ui.startLoading('Installing feature...')
+
         const results = await this.features.install({
             features: [{ code: code as any }],
         })
