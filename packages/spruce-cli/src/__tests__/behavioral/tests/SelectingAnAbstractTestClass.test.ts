@@ -131,8 +131,8 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
         for (const feat of featuresWithRegisteredTests) {
             await this.featureInstaller.install({
                 features: [
+                    //@ts-ignore
                     {
-                        //@ts-ignore
                         code: feat.featureCode,
                     },
                 ],

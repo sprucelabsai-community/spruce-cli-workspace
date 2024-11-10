@@ -6,12 +6,6 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        store: StoreFeature
-    }
-}
-
 export default class StoreFeature extends AbstractFeature {
     public nameReadable = 'Data Stores'
     public description = 'For working with remote places of storage.'
@@ -85,5 +79,15 @@ export default class StoreFeature extends AbstractFeature {
         return {
             files,
         }
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        store: StoreFeature
+    }
+
+    interface FeatureOptionsMap {
+        store: undefined
     }
 }

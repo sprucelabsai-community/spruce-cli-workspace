@@ -30,4 +30,8 @@ declare module '../../features/features.types' {
     interface FeatureMap {
         polish: PolishFeature
     }
+
+    interface FeatureOptionsMap {
+        polish: undefined
+    }
 }

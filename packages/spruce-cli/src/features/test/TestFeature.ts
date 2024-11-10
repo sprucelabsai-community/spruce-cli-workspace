@@ -8,12 +8,6 @@ import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import ParentTestFinder from '../error/ParentTestFinder'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        test: TestFeature
-    }
-}
-
 export interface ParentClassCandidate {
     name: string
     label: string
@@ -147,5 +141,15 @@ export default class TestFeature extends AbstractFeature {
         })
 
         return candidates
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        test: TestFeature
+    }
+
+    interface FeatureOptionsMap {
+        test: undefined
     }
 }

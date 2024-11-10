@@ -3,16 +3,6 @@ import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { ActionOptions, FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        view: ViewFeature
-    }
-
-    interface FeatureOptionsMap {
-        view: undefined
-    }
-}
-
 export default class ViewFeature extends AbstractFeature {
     public nameReadable = 'views'
     public description = 'Views: Create views using the Heartwood framework.'
@@ -96,5 +86,15 @@ export default class ViewFeature extends AbstractFeature {
         })
 
         return { files }
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        view: ViewFeature
+    }
+
+    interface FeatureOptionsMap {
+        view: undefined
     }
 }

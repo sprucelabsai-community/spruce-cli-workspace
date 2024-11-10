@@ -25,4 +25,8 @@ declare module '../../features/features.types' {
     interface FeatureMap {
         organization: OrganizationFeature
     }
+
+    interface FeatureOptionsMap {
+        organization: undefined
+    }
 }

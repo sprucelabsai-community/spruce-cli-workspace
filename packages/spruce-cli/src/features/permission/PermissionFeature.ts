@@ -81,4 +81,8 @@ declare module '../../features/features.types' {
     interface FeatureMap {
         permission: PermissionFeature
     }
+
+    interface FeatureOptionsMap {
+        permission: undefined
+    }
 }

@@ -6,6 +6,7 @@ import { FeatureActionResponse } from '../../features.types'
 export default class CreateAppAction extends AbstractAction<OptionsSchema> {
     public optionsSchema = optionsSchema
     public invocationMessage = 'Creating new app view controller... '
+    public readonly commandAliases = ['create.avc']
 
     public async execute(): Promise<FeatureActionResponse> {
         const writer = this.Writer('view', {})
@@ -18,8 +19,6 @@ export default class CreateAppAction extends AbstractAction<OptionsSchema> {
             },
             results
         )
-
-        debugger
 
         return merged
     }

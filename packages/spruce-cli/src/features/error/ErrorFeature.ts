@@ -7,16 +7,6 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        error: ErrorFeature
-    }
-
-    interface FeatureOptionsMap {
-        error: undefined
-    }
-}
-
 export default class ErrorFeature extends AbstractFeature {
     public nameReadable = 'error handling'
     public description =
@@ -100,5 +90,15 @@ export default class ErrorFeature extends AbstractFeature {
     }
     private async writePlugin() {
         return this.Writer('error').writePlugin(this.cwd)
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        error: ErrorFeature
+    }
+
+    interface FeatureOptionsMap {
+        error: undefined
     }
 }

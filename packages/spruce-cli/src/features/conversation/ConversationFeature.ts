@@ -7,12 +7,6 @@ import AbstractFeature, {
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        conversation: ConversationFeature
-    }
-}
-
 export default class ConversationFeature extends AbstractFeature {
     public nameReadable = 'Conversation'
     public code: FeatureCode = 'conversation'
@@ -66,5 +60,15 @@ export default class ConversationFeature extends AbstractFeature {
 
     private async writePlugin() {
         return this.Writer('conversation').writePlugin(this.cwd)
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        conversation: ConversationFeature
+    }
+
+    interface FeatureOptionsMap {
+        conversation: undefined
     }
 }

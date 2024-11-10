@@ -3,12 +3,6 @@ import { FileDescription } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        eventContract: EventContractFeature
-    }
-}
-
 export default class EventContractFeature extends AbstractFeature {
     public code: FeatureCode = 'eventContract'
     public nameReadable = 'Event Contract'
@@ -21,4 +15,14 @@ export default class EventContractFeature extends AbstractFeature {
     public readonly fileDescriptions: FileDescription[] = []
 
     public isInstalled = async () => true
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        eventContract: EventContractFeature
+    }
+
+    interface FeatureOptionsMap {
+        eventContract: undefined
+    }
 }

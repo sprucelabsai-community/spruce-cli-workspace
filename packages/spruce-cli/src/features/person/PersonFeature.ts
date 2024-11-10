@@ -20,4 +20,8 @@ declare module '../../features/features.types' {
     interface FeatureMap {
         person: PersonFeature
     }
+
+    interface FeatureOptionsMap {
+        person: undefined
+    }
 }

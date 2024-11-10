@@ -3,12 +3,6 @@ import uiUtil from '../../utilities/ui.utility'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { ActionOptions, FeatureCode } from '../features.types'
 
-declare module '../../features/features.types' {
-    interface FeatureMap {
-        sandbox: SandboxFeature
-    }
-}
-
 export default class SandboxFeature extends AbstractFeature {
     public code: FeatureCode = 'sandbox'
     public nameReadable = 'Sandbox'
@@ -43,5 +37,15 @@ export default class SandboxFeature extends AbstractFeature {
 
             return {}
         })
+    }
+}
+
+declare module '../../features/features.types' {
+    interface FeatureMap {
+        sandbox: SandboxFeature
+    }
+
+    interface FeatureOptionsMap {
+        sandbox: undefined
     }
 }
