@@ -4,9 +4,10 @@ import CreateAppAction from '../../../features/view/actions/CreateAppAction'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
-export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
+export default class CreatingAnAppControllerTest extends AbstractSkillTest {
     protected static skillCacheKey = 'views'
-    private static avcPath: string
+    private static acPath: string
+    private static skillNamespace = generateId().replace(/\d/g, '')
 
     private static action: CreateAppAction
     private static lastExecution: {
@@ -16,7 +17,9 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
 
     protected static async beforeAll(): Promise<void> {
         await super.beforeAll()
-        this.avcPath = this.resolvePath('src/App.avc.ts')
+        this.acPath = this.resolvePath('src/App.ac.ts')
+        const pgk = this.Service('pkg')
+        pgk.set({ path: 'skill.namespace', value: this.skillNamespace })
     }
 
     protected static async beforeEach(): Promise<void> {
@@ -33,12 +36,12 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
         const results = await this.execute()
         assert.isFalsy(results.errors)
 
-        testUtil.assertFileByPathInGeneratedFiles(this.avcPath, results.files)
+        testUtil.assertFileByPathInGeneratedFiles(this.acPath, results.files)
 
         assert.doesInclude(results.files, {
             action: 'generated',
-            name: 'App.avc.ts',
-            path: this.avcPath,
+            name: 'App.ac.ts',
+            path: this.acPath,
         })
 
         assert.doesInclude(results.files, {
@@ -50,7 +53,6 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
 
     @test()
     protected static async syncsViewsOnCreation() {
-        debugger
         assert.doesInclude(this.lastExecution, {
             actionCode: 'sync',
             featureCode: 'view',
@@ -68,22 +70,22 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
     }
 
     @test()
-    protected static async avcIncludesExpectedContents() {
-        const contents = diskUtil.readFile(this.avcPath)
+    protected static async acIncludesExpectedContents() {
+        const contents = diskUtil.readFile(this.acPath)
         assert.doesInclude(
             contents,
-            'export default class AppViewControllerImpl extends AbstractAppViewController'
+            'export default class AppControllerImpl extends AbstractAppController'
         )
 
         assert.doesInclude(
             contents,
-            'public async (_options: AppViewControllerLoadOptions)'
+            'public async (_options: AppControllerLoadOptions)'
         )
     }
 
     @test()
     protected static async generatedFilesAreValid() {
-        await this.Service('typeChecker').check(this.avcPath)
+        await this.Service('typeChecker').check(this.acPath)
         await this.assertCombinedViewsFileIsValid()
     }
 
@@ -96,31 +98,40 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
     @test()
     protected static async callsHeartwoodImportFunctionAsExpected() {
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: AppViewControllerImpl })'
+            'heartwood({ vcs, pluginsByName, App: AppControllerImpl })'
         )
     }
 
     @test()
-    protected static async throwsEvenIfAppAvcMoves() {
-        const destination = this.resolvePath(`src/${generateId()}/App.avc.ts`)
-        diskUtil.moveFile(this.avcPath, destination)
+    protected static async combineViewsTypesAsExpected() {
+        const expected = `interface AppControllerMap {
+        '${this.skillNamespace}' : AppControllerImpl
+}`
+
+        this.assertCombinedViewsContains(expected)
+    }
+
+    @test()
+    protected static async throwsEvenIfAppMoves() {
+        const destination = this.resolvePath(`src/${generateId()}/App.ac.ts`)
+        diskUtil.moveFile(this.acPath, destination)
 
         await this.executeAndAssertThrowsAvcExists()
-        this.avcPath = destination
+        this.acPath = destination
     }
 
     @test()
-    protected static async canRenameAppAvcAndItUpdatesCombinedViews() {
-        const contents = diskUtil.readFile(this.avcPath)
+    protected static async canRenameAppAndItUpdatesCombinedViews() {
+        const contents = diskUtil.readFile(this.acPath)
         const updatedContents = contents.replace(
-            'AppViewControllerImpl',
-            'NewAppViewControllerImpl'
+            'AppControllerImpl',
+            'NewAppControllerImpl'
         )
-        diskUtil.writeFile(this.avcPath, updatedContents)
+        diskUtil.writeFile(this.acPath, updatedContents)
         await this.Action('view', 'sync').execute({})
 
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: NewAppViewControllerImpl })'
+            'heartwood({ vcs, pluginsByName, App: NewAppControllerImpl })'
         )
 
         await this.assertCombinedViewsFileIsValid()
@@ -148,7 +159,7 @@ export default class CreatingAnAppViewControllerTest extends AbstractSkillTest {
         assert.isTruthy(results.errors)
         errorAssert.assertError(
             results.errors[0],
-            'APP_VIEW_CONTROLLER_ALREADY_EXISTS'
+            'APP_CONTROLLER_ALREADY_EXISTS'
         )
     }
 

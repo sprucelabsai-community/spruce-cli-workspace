@@ -26,8 +26,13 @@ export default class ViewWriter extends AbstractWriter {
     }
 
     public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {
-        let { vcTemplateItems, svcTemplateItems, viewPluginItems, ...rest } =
-            options
+        let {
+            vcTemplateItems,
+            svcTemplateItems,
+            viewPluginItems,
+            appTemplateItem,
+            ...rest
+        } = options
 
         const destinationDir = diskUtil.resolveHashSprucePath(cwd, 'views')
         const destination = diskUtil.resolvePath(destinationDir, 'views.ts')
@@ -47,10 +52,18 @@ export default class ViewWriter extends AbstractWriter {
             destinationDir
         )
 
+        if (appTemplateItem) {
+            appTemplateItem = this.makePathRelative(
+                appTemplateItem,
+                destinationDir
+            )
+        }
+
         const contents = this.templates.views({
             vcTemplateItems,
             svcTemplateItems,
             viewPluginItems,
+            appTemplateItem,
             ...rest,
         })
 
@@ -66,12 +79,20 @@ export default class ViewWriter extends AbstractWriter {
     private removeFileExtensionsFromTemplateItems<
         T extends VcTemplateItem | ViewControllerPluginItem,
     >(vcTemplateItems: T[], destinationDir: string): T[] {
-        return vcTemplateItems.map((i) => ({
+        return vcTemplateItems.map((i) =>
+            this.makePathRelative<T>(i, destinationDir)
+        )
+    }
+
+    private makePathRelative<
+        T extends VcTemplateItem | ViewControllerPluginItem,
+    >(i: T, destinationDir: string): T & { path: string } {
+        return {
             ...i,
             path: diskUtil
                 .resolveRelativePath(destinationDir, i.path)
                 .replace('.ts', ''),
-        }))
+        }
     }
 
     public writeViewController(
@@ -215,17 +236,17 @@ export default class ViewWriter extends AbstractWriter {
         return { path, filename }
     }
 
-    public async writeAppViewController(cwd: string) {
-        const match = await globby(cwd + '/**/App.avc.ts')
+    public async writeAppController(cwd: string) {
+        const match = await globby(cwd + '/**/App.ac.ts')
 
         if (match.length > 0) {
             throw new SpruceError({
-                code: 'APP_VIEW_CONTROLLER_ALREADY_EXISTS',
+                code: 'APP_CONTROLLER_ALREADY_EXISTS',
             })
         }
 
-        const destination = diskUtil.resolvePath(cwd, 'src', 'App.avc.ts')
-        const contents = this.templates.appViewController()
+        const destination = diskUtil.resolvePath(cwd, 'src', 'App.ac.ts')
+        const contents = this.templates.appController()
 
         return this.writeFileIfChangedMixinResults(
             destination,

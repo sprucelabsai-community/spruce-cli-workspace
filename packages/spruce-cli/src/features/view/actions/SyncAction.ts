@@ -19,7 +19,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
     public async execute(): Promise<FeatureActionResponse> {
         const targetDir = diskUtil.resolvePath(this.cwd, 'src')
         const matches = await globby(
-            ['**/*.svc.ts', '**/*.vc.ts', '**/*.view.plugin.ts', '**/*.avc.ts'],
+            ['**/*.svc.ts', '**/*.vc.ts', '**/*.view.plugin.ts', '**/*.ac.ts'],
             {
                 cwd: targetDir,
             }
@@ -39,8 +39,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
         introspect.forEach(({ classes }) => {
             for (const thisClass of classes) {
-                const { vc, svc, plugin, avc } =
-                    this.mapIntrospectedClassToTemplateItem(thisClass)
+                const {
+                    vc,
+                    svc,
+                    plugin,
+                    ac: avc,
+                } = this.mapIntrospectedClassToTemplateItem(thisClass)
 
                 if (vc) {
                     vcTemplateItems.push(vc)
@@ -77,7 +81,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         vc?: VcTemplateItem
         svc?: VcTemplateItem
         plugin?: ViewControllerPluginItem
-        avc?: VcTemplateItem
+        ac?: VcTemplateItem
     } {
         const item = {
             id: c.staticProperties.id,
@@ -87,13 +91,13 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
         let vc: VcTemplateItem | undefined
         let svc: VcTemplateItem | undefined
-        let avc: VcTemplateItem | undefined
+        let ac: VcTemplateItem | undefined
         let plugin: ViewControllerPluginItem | undefined
 
         if (c.classPath.endsWith('.svc.ts')) {
             svc = item
-        } else if (c.classPath.endsWith('avc.ts')) {
-            avc = item
+        } else if (c.classPath.endsWith('ac.ts')) {
+            ac = item
         } else if (c.classPath.endsWith('view.plugin.ts')) {
             const nameCamel = c.classPath.match(/([^/]+).view.plugin.ts$/)![1]
             plugin = { ...item, nameCamel }
@@ -101,7 +105,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             vc = item
         }
 
-        return { svc, vc, plugin, avc }
+        return { svc, vc, plugin, ac }
     }
 }
 

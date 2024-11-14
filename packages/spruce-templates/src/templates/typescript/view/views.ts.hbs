@@ -7,6 +7,9 @@ import {{namePascal}} from '{{path}}'
 {{#each viewPluginItems}}
 import {{namePascal}} from '{{path}}'
 {{/each}}
+{{#if appTemplateItem}}
+import {{appTemplateItem.namePascal}} from '{{appTemplateItem.path}}'
+{{/if}}
 
 import '@sprucelabs/heartwood-view-controllers'
 
@@ -24,6 +27,8 @@ export const pluginsByName = {
 	{{nameCamel}}: {{namePascal}},
 	{{/each}}
 }
+
+
 
 {{#if svcTemplateItems}}
 type LoadOptions<Args extends Record<string,any>[]> = Args[0]['args'] extends Record<string, any> ? Args[0]['args'] : Record<never, any>
@@ -62,7 +67,14 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 		{{nameCamel}}: {{namePascal}}
 		{{/each}}
 	}
+
+	interface AppControllerMap {
+	{{#if appTemplateItem}}
+		'{{namespaceKebab}}': {{appTemplateItem.namePascal}}
+	{{/if}}
+	}
 }
+
 
 //@ts-ignore
 if(typeof heartwood === 'function') { 

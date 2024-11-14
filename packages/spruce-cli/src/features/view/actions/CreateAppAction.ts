@@ -10,7 +10,7 @@ export default class CreateAppAction extends AbstractAction<OptionsSchema> {
 
     public async execute(): Promise<FeatureActionResponse> {
         const writer = this.Writer('view', {})
-        const files = await writer.writeAppViewController(this.cwd)
+        const files = await writer.writeAppController(this.cwd)
 
         const results = await this.Action('view', 'sync').execute({})
         const merged = actionUtil.mergeActionResults(
@@ -25,7 +25,7 @@ export default class CreateAppAction extends AbstractAction<OptionsSchema> {
 }
 
 const optionsSchema = buildSchema({
-    id: 'createAppViewControllerOptions',
+    id: 'createAppControllerOptions',
     fields: {},
 })
 

@@ -1293,19 +1293,19 @@ export declare namespace SpruceErrors.SpruceCli {
 export declare namespace SpruceErrors.SpruceCli {
 
 	
-	export interface AppViewControllerAlreadyExists {
+	export interface AppControllerAlreadyExists {
 		
 	}
 
-	export interface AppViewControllerAlreadyExistsSchema extends SpruceSchema.Schema {
-		id: 'appViewControllerAlreadyExists',
+	export interface AppControllerAlreadyExistsSchema extends SpruceSchema.Schema {
+		id: 'appControllerAlreadyExists',
 		namespace: 'SpruceCli',
 		name: 'App view controller already exists',
 		    fields: {
 		    }
 	}
 
-	export type AppViewControllerAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.AppViewControllerAlreadyExistsSchema>
+	export type AppControllerAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.AppControllerAlreadyExistsSchema>
 
 }
 
