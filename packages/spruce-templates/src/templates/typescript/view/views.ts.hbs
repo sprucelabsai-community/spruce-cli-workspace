@@ -88,3 +88,7 @@ if(typeof heartwood === 'function') {
 }
 
 export default vcs
+
+{{#if appTemplateItem}}
+export const App = {{appTemplateItem.namePascal}}
+{{/if}}

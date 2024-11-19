@@ -79,7 +79,7 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
 
         assert.doesInclude(
             contents,
-            'public async (_options: AppControllerLoadOptions)'
+            'public async load(_options: AppControllerLoadOptions)'
         )
     }
 
@@ -135,6 +135,18 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
         )
 
         await this.assertCombinedViewsFileIsValid()
+    }
+
+    @test()
+    protected static async importsAppFromCombinedViews() {
+        const testScript = `import { App } from '#spruce/views/views'
+const app = new App({} as any)
+console.log(app)`
+
+        const testScriptPath = this.resolvePath('src/test.ts')
+        diskUtil.writeFile(testScriptPath, testScript)
+
+        await this.Service('typeChecker').check(testScriptPath)
     }
 
     private static async assertCombinedViewsFileIsValid() {
