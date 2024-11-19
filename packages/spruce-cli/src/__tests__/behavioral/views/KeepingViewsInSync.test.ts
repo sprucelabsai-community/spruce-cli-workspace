@@ -1,3 +1,4 @@
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { FeatureActionResponse } from '../../../features/features.types'
 import SyncAction from '../../../features/view/actions/SyncAction'
@@ -44,6 +45,19 @@ export default class KeepingViewsInSyncTest extends AbstractSkillTest {
         })
         assert.isFalsy(results.errors)
         await this.assertValuedViewsFile(results)
+    }
+
+    @test()
+    protected static async exportUndefinedApp() {
+        const testScript = `import { App } from '#spruce/views/views'
+        if (App !== undefined) {
+            throw new Error('App should be undefined')
+        }`
+
+        const testScriptPath = this.resolvePath('src/test.ts')
+        diskUtil.writeFile(testScriptPath, testScript)
+
+        await this.Service('typeChecker').check(testScriptPath)
     }
 
     private static async assertValuedViewsFile(results: FeatureActionResponse) {
