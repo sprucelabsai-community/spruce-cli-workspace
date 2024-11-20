@@ -49,7 +49,9 @@ export default class KeepingViewsInSyncTest extends AbstractSkillTest {
 
     @test()
     protected static async exportUndefinedApp() {
-        const testScript = `import { App } from '#spruce/views/views'
+        const testScript =
+            `import { App } from '#` +
+            `spruce/views/views'
         if (App !== undefined) {
             throw new Error('App should be undefined')
         }`

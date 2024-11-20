@@ -1,5 +1,6 @@
 import { AbstractAppController, AppControllerLoadOptions } from '@sprucelabs/heartwood-view-controllers'
 
 export default class AppControllerImpl extends AbstractAppController {
+    public static id = "{{ id }}"
     public async load(_options: AppControllerLoadOptions) {}
 }

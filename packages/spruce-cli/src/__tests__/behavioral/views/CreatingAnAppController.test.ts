@@ -139,9 +139,14 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
 
     @test()
     protected static async importsAppFromCombinedViews() {
-        const testScript = `import { App } from '#spruce/views/views'
+        const testScript =
+            `import { App } from '#` +
+            `spruce/views/views'
 const app = new App({} as any)
-console.log(app)`
+console.log(app)
+if (App.id !== '${this.skillNamespace}') {
+        throw new Error('App.id is not correct')
+}`
 
         const testScriptPath = this.resolvePath('src/test.ts')
         diskUtil.writeFile(testScriptPath, testScript)

@@ -450,9 +450,11 @@ export const templates = {
         return template(options)
     },
 
-    appController() {
+    appController(id: string) {
         const template = templateImportUtil.getTemplate('view/App.ac.ts.hbs')
-        return template({})
+        return template({
+            id,
+        })
     },
 
     views(options: CombinedViewsOptions) {

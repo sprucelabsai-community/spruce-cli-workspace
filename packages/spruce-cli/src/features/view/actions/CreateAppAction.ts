@@ -10,7 +10,11 @@ export default class CreateAppAction extends AbstractAction<OptionsSchema> {
 
     public async execute(): Promise<FeatureActionResponse> {
         const writer = this.Writer('view', {})
-        const files = await writer.writeAppController(this.cwd)
+        const id = await this.Store('skill').loadCurrentSkillsNamespace()
+        const files = await writer.writeAppController(
+            this.cwd,
+            id.toLocaleLowerCase()
+        )
 
         const results = await this.Action('view', 'sync').execute({})
         const merged = actionUtil.mergeActionResults(

@@ -236,7 +236,7 @@ export default class ViewWriter extends AbstractWriter {
         return { path, filename }
     }
 
-    public async writeAppController(cwd: string) {
+    public async writeAppController(cwd: string, id: string) {
         const match = await globby(cwd + '/**/App.ac.ts')
 
         if (match.length > 0) {
@@ -246,7 +246,7 @@ export default class ViewWriter extends AbstractWriter {
         }
 
         const destination = diskUtil.resolvePath(cwd, 'src', 'App.ac.ts')
-        const contents = this.templates.appController()
+        const contents = this.templates.appController(id)
 
         return this.writeFileIfChangedMixinResults(
             destination,
