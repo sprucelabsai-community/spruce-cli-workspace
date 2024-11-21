@@ -74,7 +74,7 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
         const contents = diskUtil.readFile(this.acPath)
         assert.doesInclude(
             contents,
-            'export default class AppControllerImpl extends AbstractAppController'
+            'export default class AppController extends AbstractAppController'
         )
 
         assert.doesInclude(
@@ -98,14 +98,14 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
     @test()
     protected static async callsHeartwoodImportFunctionAsExpected() {
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: AppControllerImpl })'
+            'heartwood({ vcs, pluginsByName, App: AppController })'
         )
     }
 
     @test()
     protected static async combineViewsTypesAsExpected() {
         const expected = `interface AppControllerMap {
-        '${this.skillNamespace}' : AppControllerImpl
+        '${this.skillNamespace}' : AppController
 }`
 
         this.assertCombinedViewsContains(expected)
@@ -124,14 +124,14 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
     protected static async canRenameAppAndItUpdatesCombinedViews() {
         const contents = diskUtil.readFile(this.acPath)
         const updatedContents = contents.replace(
-            'AppControllerImpl',
-            'NewAppControllerImpl'
+            'AppController',
+            'NewAppController'
         )
         diskUtil.writeFile(this.acPath, updatedContents)
         await this.Action('view', 'sync').execute({})
 
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: NewAppControllerImpl })'
+            'heartwood({ vcs, pluginsByName, App: NewAppController })'
         )
 
         await this.assertCombinedViewsFileIsValid()
