@@ -13,7 +13,8 @@ export default class CreateAppAction extends AbstractAction<OptionsSchema> {
         const id = await this.Store('skill').loadCurrentSkillsNamespace()
         const files = await writer.writeAppController(
             this.cwd,
-            id.toLocaleLowerCase()
+            id.toLocaleLowerCase(),
+            id
         )
 
         const results = await this.Action('view', 'sync').execute({})

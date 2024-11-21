@@ -1,4 +1,4 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, errorAssert, generateId } from '@sprucelabs/test-utils'
 import CreateAppAction from '../../../features/view/actions/CreateAppAction'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
@@ -74,7 +74,7 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
         const contents = diskUtil.readFile(this.acPath)
         assert.doesInclude(
             contents,
-            'export default class AppController extends AbstractAppController'
+            `export default class ${this.className} extends AbstractAppController`
         )
 
         assert.doesInclude(
@@ -98,14 +98,14 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
     @test()
     protected static async callsHeartwoodImportFunctionAsExpected() {
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: AppController })'
+            `heartwood({ vcs, pluginsByName, App: ${this.className} })`
         )
     }
 
     @test()
     protected static async combineViewsTypesAsExpected() {
         const expected = `interface AppControllerMap {
-        '${this.skillNamespace}' : AppController
+        '${this.skillNamespace}' : ${this.className}
 }`
 
         this.assertCombinedViewsContains(expected)
@@ -124,14 +124,14 @@ export default class CreatingAnAppControllerTest extends AbstractSkillTest {
     protected static async canRenameAppAndItUpdatesCombinedViews() {
         const contents = diskUtil.readFile(this.acPath)
         const updatedContents = contents.replace(
-            'AppController',
-            'NewAppController'
+            this.className,
+            'NewAppControllerImpl'
         )
         diskUtil.writeFile(this.acPath, updatedContents)
         await this.Action('view', 'sync').execute({})
 
         this.assertCombinedViewsContains(
-            'heartwood({ vcs, pluginsByName, App: NewAppController })'
+            'heartwood({ vcs, pluginsByName, App: NewAppControllerImpl  })'
         )
 
         await this.assertCombinedViewsFileIsValid()
@@ -169,6 +169,10 @@ if (App.id !== '${this.skillNamespace}') {
 
     private static get combinedViewsPath() {
         return this.resolveHashSprucePath('views', 'views.ts')
+    }
+
+    private static get className() {
+        return `${namesUtil.toPascal(this.skillNamespace)}AppController`
     }
 
     private static async executeAndAssertThrowsAvcExists() {

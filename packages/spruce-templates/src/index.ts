@@ -450,11 +450,9 @@ export const templates = {
         return template(options)
     },
 
-    appController(id: string) {
+    appController(options: { id: string; namespacePascal: string }) {
         const template = templateImportUtil.getTemplate('view/App.ac.ts.hbs')
-        return template({
-            id,
-        })
+        return template(options)
     },
 
     views(options: CombinedViewsOptions) {
