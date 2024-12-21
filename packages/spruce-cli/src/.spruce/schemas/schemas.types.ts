@@ -75,7 +75,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface WatcherDidDetectChangesEmitPayload {
 			
 				
-				'changes': ({ schemaId: 'generatedFile', version: 'v2020_07_22', values: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile } | { schemaId: 'generatedDir', version: 'v2020_07_22', values: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir })[]
+				'changes': ({ id: 'generatedFile', values: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile } | { id: 'generatedDir', values: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedDir })[]
 		}
 
 		interface WatcherDidDetectChangesEmitPayloadSchema extends SpruceSchema.Schema {

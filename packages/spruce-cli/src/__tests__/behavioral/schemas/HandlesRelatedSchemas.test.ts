@@ -48,7 +48,7 @@ export default class HandlesRelatedSchemasTest extends AbstractSchemaTest {
 
         assert.doesInclude(
             typesContent,
-            "[fullyQualifiedEventName:string]: { schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature2 }"
+            "[fullyQualifiedEventName:string]: { id: 'eventSignature', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature } | { id: 'eventSignature2', values: SpruceSchemas.TestingSchemas.v2020_07_22.EventSignature2 }"
         )
 
         await this.Service('typeChecker').check(typesPath)

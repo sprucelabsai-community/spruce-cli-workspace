@@ -44,8 +44,7 @@ export default class WatchFeature extends AbstractFeature {
 
         this.watcher.on('all', async (action: ChokidarAction, path: string) => {
             this.changesSinceLastChange.push({
-                schemaId: this.mapChokidarActionToSchemaId(action),
-                version: 'v2020_07_22',
+                id: this.mapChokidarActionToSchemaId(action),
                 values: {
                     action: this.mapChokidarActionToGeneratedAction(action),
                     path,
@@ -65,7 +64,7 @@ export default class WatchFeature extends AbstractFeature {
 
     private mapChokidarActionToSchemaId(
         action: ChokidarAction
-    ): GeneratedFileOrDir['schemaId'] {
+    ): GeneratedFileOrDir['id'] {
         return action.search(/dir/gi) > -1 ? 'generatedDir' : 'generatedFile'
     }
 

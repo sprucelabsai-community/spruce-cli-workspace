@@ -3,6 +3,7 @@ import {
     normalizeSchemaValues,
     Schema,
     SchemaPartialValues,
+    SchemaValues,
     SchemaValuesWithDefaults,
     validateSchemaValues,
 } from '@sprucelabs/schema'
@@ -19,7 +20,7 @@ const validateAndNormalizer = {
         const values = {
             ...defaultSchemaValues(schema),
             ...this.stripUndefined(options),
-        } as SchemaPartialValues<S, false>
+        } as SchemaValues<S>
 
         validateSchemaValues(schema, values, {})
 

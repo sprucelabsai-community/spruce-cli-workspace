@@ -95,7 +95,7 @@ export default class SchemaValueTypeGenerationTest extends AbstractSchemaTest {
         'generates dynamic field with nested schemas',
         `${LOCAL_NAMESPACE}.mercuryContract.${CORE_SCHEMA_VERSION.constValue}.__dynamicFieldSignature.valueTypes`,
         {
-            type: `{ schemaId: 'eventSignature', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature } | { schemaId: 'eventSignature2', version: 'v2020_07_22', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2 }`,
+            type: `{ id: 'eventSignature', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature } | { id: 'eventSignature2', values: SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2 }`,
             value: '[eventSignatureSchema_v2020_07_22, eventSignature2Schema_v2020_07_22]',
             schemaType: `(SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignatureSchema | SpruceSchemas.${LOCAL_NAMESPACE}.v2020_07_22.EventSignature2Schema)[]`,
         }

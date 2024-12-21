@@ -1,4 +1,4 @@
-import { CORE_SCHEMA_VERSION, diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import WatchFeature from '../../../features/watch/WatchFeature'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
@@ -98,8 +98,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
                 'console.log("hello world")'
             )
             expectedChanges.push({
-                schemaId: 'generatedFile',
-                version: CORE_SCHEMA_VERSION.constValue,
+                id: 'generatedFile',
                 values: {
                     action: 'generated',
                     path: this.resolvePath('build', filename),
@@ -126,8 +125,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
             const expected: GeneratedFileOrDir[] = [
                 {
-                    schemaId: 'generatedDir',
-                    version: 'v2020_07_22',
+                    id: 'generatedDir',
                     values: {
                         action: 'generated',
                         name: 'new_dir',
@@ -149,8 +147,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
             const expected: GeneratedFileOrDir[] = [
                 {
-                    schemaId: 'generatedDir',
-                    version: 'v2020_07_22',
+                    id: 'generatedDir',
                     values: {
                         action: 'deleted',
                         name: 'new_dir',
@@ -173,8 +170,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
             const expected: GeneratedFileOrDir[] = [
                 {
-                    schemaId: 'generatedFile',
-                    version: 'v2020_07_22',
+                    id: 'generatedFile',
                     values: {
                         action: 'deleted',
                         name: 'test.js',
@@ -199,8 +195,7 @@ export default class WatchingForChangesTest extends AbstractCliTest {
 
             const expected: GeneratedFileOrDir[] = [
                 {
-                    schemaId: 'generatedFile',
-                    version: 'v2020_07_22',
+                    id: 'generatedFile',
                     values: {
                         action: 'deleted',
                         name: 'test.js',
