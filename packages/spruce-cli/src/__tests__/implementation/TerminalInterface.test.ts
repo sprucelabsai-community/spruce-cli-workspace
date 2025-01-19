@@ -27,6 +27,11 @@ export default class TerminalInterfaceTest extends AbstractSpruceTest {
         this.ui = new TerminalInterface(this.cwd)
     }
 
+    protected static async afterEach(): Promise<void> {
+        await super.afterEach()
+        await this.wait(100)
+    }
+
     @test()
     protected static async dontShowProgressIfPrompting() {
         this.prompt()
@@ -42,6 +47,7 @@ export default class TerminalInterfaceTest extends AbstractSpruceTest {
 
     @test()
     protected static async askingToPromptThrowsIfInCi() {
+        delete process.env.IS_TESTING_SELF
         process.env.CIRCLECI = 'true'
         const err = await assert.doesThrowAsync(() =>
             this.ui.prompt({ type: 'text' })
