@@ -86,10 +86,6 @@ jobs:
           no_output_timeout: 20m
       - store_test_results:
           path: ~/junit
-      - run:
-          name: "Max memory usage for tests"
-          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
-          when: always
   cleanup_test:
     docker:
       - image: cimg/node:lts
