@@ -14,7 +14,7 @@ import {
     namesUtil,
     versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test-utils'
+import { test, assert, generateId } from '@sprucelabs/test-utils'
 import { generateEventContractFileName } from '../../../features/event/writers/EventWriter'
 import { FeatureActionResponse } from '../../../features/features.types'
 import LintService from '../../../services/LintService'
@@ -94,9 +94,14 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
         const eventName = `my-new-event::${this.todaysVersion.constValue}`
         const fqen = `${skill2.slug}.my-new-event::${this.todaysVersion.constValue}`
 
+        const description = generateId() + '"' + '"'
+        const aiInstructions = generateId() + '"' + '"'
+
         await skillFixture.registerEventContract(skill2, {
             eventSignatures: {
                 [eventName]: {
+                    description,
+                    aiInstructions,
                     emitPayloadSchema: buildEmitTargetAndPayloadSchema({
                         eventName: 'my-new-event',
                         targetSchema: eventTargetSchema,
@@ -192,6 +197,13 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
         assert.isEqual(
             sig.listenPermissionContract.permissions[0].id,
             'can-listen'
+        )
+
+        assert.isEqual(sig.description, description, 'description missing')
+        assert.isEqual(
+            sig.aiInstructions,
+            aiInstructions,
+            'aiInstructions missing'
         )
     }
 
