@@ -25,12 +25,13 @@ export default class CreatingSchemasWithGenericsTest extends AbstractSchemaTest 
         )
 
         const contents = diskUtil.readFile(match)
+
         assert.doesInclude(contents, '<Type extends string = string>')
         assert.doesInclude(contents, '<Type2 extends string = string>')
         assert.doesInclude(contents, '<Type>')
         assert.doesInclude(
             contents,
-            "typedByGeneric'?: (Type2)| undefined | null"
+            "'typedByGeneric'?: (Type2) | undefined | null"
         )
 
         await this.assertValidActionResponseFiles(results)

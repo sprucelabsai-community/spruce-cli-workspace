@@ -11,6 +11,9 @@ export default class TerminalInterfaceTest extends AbstractSpruceTest {
 
     protected static async beforeEach() {
         await super.beforeEach()
+
+        process.env.IS_TESTING_SELF = 'true'
+
         this.wasOraHit = false
         //@ts-ignore
         TerminalInterface.ora = () => {
