@@ -270,7 +270,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 break
 
             case 'CANNOT_PROMPT_IN_CI':
-                message = 'A cannot prompt in ci just happened!'
+                message = 'You cannot prompt in CI!'
                 break
 
             case 'APP_CONTROLLER_ALREADY_EXISTS':
