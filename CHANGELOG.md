@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v22.1.13...v24.0.0) (2025-02-19)
+
+
+### Breaking Changes
+
+* upgrade ([6b54fc3](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/6b54fc3))
+
+
+### Features
+
+* app view controller suppor ([d87f5f9](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/d87f5f9))
+* can now install feature directly ([4fcb575](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/4fcb575))
+* event contracts with description and aiInstructions ([5e8d631](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/5e8d631))
+* sandbox can login if registration details conflict ([df86af8](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/df86af8))
+* upgrade ([934ad48](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/934ad48))
+* version bumps ([f634d48](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/f634d48))
+
+
+
+
+
 ## [22.1.13](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v22.1.12...v22.1.13) (2024-10-21)
 
 **Note:** Version bump only for package spruce-cli-workspace
