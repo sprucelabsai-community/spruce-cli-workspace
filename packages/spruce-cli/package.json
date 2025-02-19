@@ -111,7 +111,6 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/data-stores": "^28.5.24",
-		"@sprucelabs/jest-sheets-reporter": "^3.0.200",
 		"@sprucelabs/mercury-core-events": "^25.1.0",
 		"@sprucelabs/resolve-path-aliases": "^2.0.527",
 		"@sprucelabs/spruce-conversation-plugin": "^65.0.9",
@@ -555,23 +554,7 @@
 		"moduleNameMapper": {
 			"^#spruce/schemas/fields/(.*)": "<rootDir>/node_modules/@sprucelabs/schema/build/.spruce/schemas/fields/$1",
 			"^#spruce/(.*)$": "<rootDir>/build/.spruce/$1"
-		},
-		"reporters": [
-			"default",
-			[
-				"@sprucelabs/jest-sheets-reporter",
-				{
-					"sheetId": "1DoWM7mYgGDa-PJXptLomrZmbIBZiuxS1YiAsRXU2Gm0",
-					"worksheetId": 889384139,
-					"testMap": {
-						"generatesExpectedPermissionContract": "P11",
-						"syncsNewPermissionsWhenMade": "P13",
-						"combinedFileImportsAllPermissions": "P14"
-					}
-				}
-			],
-			"jest-junit"
-		]
+		}
 	},
 	"jest-junit": {
 		"addFileAttribute": "true"
