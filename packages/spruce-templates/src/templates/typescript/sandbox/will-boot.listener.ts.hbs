@@ -1,109 +1,174 @@
+import { MercuryClient } from '@sprucelabs/mercury-client'
 import { SchemaError } from '@sprucelabs/schema'
 import { EventFeature } from '@sprucelabs/spruce-event-plugin'
 import {
-	SpruceEvent,
-	SpruceEventResponse,
-	eventResponseUtil,
+    SpruceEvent,
+    SpruceEventResponse,
+    eventResponseUtil,
 } from '@sprucelabs/spruce-event-utils'
-import { EnvService } from '@sprucelabs/spruce-skill-utils'
+import { EnvService, PkgService } from '@sprucelabs/spruce-skill-utils'
 
 export default async (event: SpruceEvent): SpruceEventResponse => {
-	const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
+    const sandboxNumber = process.env.SANDBOX_DEMO_NUMBER
 
-	if (sandboxNumber && process.env.SKILL_ID) {
-		const log = event.log.buildLog('Sandbox')
+    if (sandboxNumber && process.env.SKILL_ID) {
+        const log = event.log.buildLog('Sandbox')
 
-		log.info('Demo sandbox number detected. Checking skill status.')
+        log.info('Demo sandbox number detected. Checking skill status.')
 
-		const events = event.skill.getFeatureByCode('event') as EventFeature
+        const events = event.skill.getFeatureByCode('event') as EventFeature
 
-		const env = new EnvService(event.skill.rootDir)
+        const env = new EnvService(event.skill.rootDir)
+        const pkg = new PkgService(event.skill.rootDir)
 
-		process.env.SKILL_ID = (env.get('SKILL_ID') ??
-			process.env.SKILL_ID) as string
-		process.env.SKILL_API_KEY = (env.get('SKILL_API_KEY') ??
-			process.env.SKILL_API_KEY) as string
+        process.env.SKILL_ID = (env.get('SKILL_ID') ??
+            process.env.SKILL_ID) as string
+        process.env.SKILL_API_KEY = (env.get('SKILL_API_KEY') ??
+            process.env.SKILL_API_KEY) as string
 
-		try {
-			await events.connectToApi({ shouldWaitForWillBoot: false })
-			return
-			// eslint-disable-next-line no-empty
-		} catch {}
+        try {
+            await events.connectToApi({ shouldWaitForWillBoot: false })
+            return
+        } catch {}
 
-		log.warn('It looks like sandbox was reset. Re-registering.')
+        log.warn('It looks like sandbox was reset. Re-registering.')
 
-		const name = process.env.SKILL_NAME as string
-		const slug = process.env.SKILL_SLUG as string
+        const name = process.env.SKILL_NAME as string
+        const slug = pkg.get(['skill', 'namespace']) as string
 
-		assertRequiredParams(name, slug)
+        assertRequiredParams(name, slug)
 
-		delete process.env.SKILL_ID
-		delete process.env.SKILL_API_KEY
+        delete process.env.SKILL_ID
+        delete process.env.SKILL_API_KEY
 
-		const client = (await events.connectToApi({
-			shouldWaitForWillBoot: false,
-		})) as any
+        const client = (await events.connectToApi({
+            shouldWaitForWillBoot: false,
+        })) as any
 
-		const requestResults = await client.emit('request-pin::v2020_12_25', {
-			payload: {
-				phone: sandboxNumber,
-			},
-		})
+        await login(client, sandboxNumber)
 
-		const { challenge } =
-			eventResponseUtil.getFirstResponseOrThrow(requestResults)
+        const skill = await registerOrLoginSkill(client, name, slug)
+        await client.emit(`logout::v2020_12_25`)
 
-		const confirmResults = await client.emit('confirm-pin::v2020_12_25', {
-			payload: {
-				challenge,
-				pin: sandboxNumber.substr(-4),
-			},
-		})
+        debugger
 
-		eventResponseUtil.getFirstResponseOrThrow(confirmResults)
+        await client.authenticate({
+            skillId: skill.id,
+            apiKey: skill.apiKey,
+        })
 
-		const results = await client.emit('register-skill::v2020_12_25', {
-			payload: {
-				name,
-				description: 'Auto-generate for sandbox',
-				slug,
-			},
-		})
+        env.set('SKILL_ID', skill.id)
+        env.set('SKILL_API_KEY', skill.apiKey)
+    }
 
-		const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
+    return
+}
 
-		process.env.SKILL_ID = skill.id
-		process.env.SKILL_API_KEY = skill.apiKey
+async function login(client: any, sandboxNumber: string) {
+    const requestResults = await client.emit('request-pin::v2020_12_25', {
+        payload: {
+            phone: sandboxNumber,
+        },
+    })
 
-		await client.emit(`logout::v2020_12_25`)
+    const { challenge } =
+        eventResponseUtil.getFirstResponseOrThrow(requestResults)
 
-		await client.authenticate({
-			skillId: skill.id,
-			apiKey: skill.apiKey,
-		})
+    const confirmResults = await client.emit('confirm-pin::v2020_12_25', {
+        payload: {
+            challenge,
+            pin: sandboxNumber.substr(-4),
+        },
+    })
 
-		env.set('SKILL_ID', skill.id)
-		env.set('SKILL_API_KEY', skill.apiKey)
-	}
-
-	return
+    eventResponseUtil.getFirstResponseOrThrow(confirmResults)
 }
 
 function assertRequiredParams(
-	name: string | undefined,
-	slug: string | undefined
+    name: string | undefined,
+    slug: string | undefined
 ) {
-	const missing: string[] = []
+    const missing: string[] = []
 
-	if (!name) {
-		missing.push('env.SKILL_NAME')
+    if (!name) {
+        missing.push('env.SKILL_NAME')
+    }
+
+    if (!slug) {
+        missing.push('env.SKILL_SLUG')
+    }
+
+    if (missing.length > 0) {
+        throw new SchemaError({
+            code: 'MISSING_PARAMETERS',
+            parameters: missing,
+        })
+    }
+}
+
+async function registerOrLoginSkill(
+    client: MercuryClient,
+    name: string,
+    slug: string
+) {
+    let skill: any
+    try {
+        skill = await registerSkill(client, name, slug)
+    } catch (err: any) {
+        skill = await loginSkill(client, slug)
+    }
+    process.env.SKILL_ID = skill.id
+    process.env.SKILL_API_KEY = skill.apiKey
+
+    return skill
+}
+
+async function registerSkill(
+    client: MercuryClient,
+    name: string,
+    slug: string
+) {
+    const [{ skill }] = await client.emitAndFlattenResponses(
+        'register-skill::v2020_12_25',
+        {
+            payload: {
+                name,
+                description: 'Auto-generate for sandbox',
+                slug,
+            },
+        }
+    )
+
+    return skill
+}
+
+async function loginSkill(client: MercuryClient, slug: string) {
+    const [{ skills }] = await client.emitAndFlattenResponses(
+        'list-skills::v2020_12_25',
+        {
+            payload: {
+                shouldOnlyShowMine: true,
+            },
+        }
+    )
+
+    const match = skills.find((s: any) => s.slug === slug)
+
+	if (!match) {
+		throw new Error(`Could not find skill with slug ${slug}`)
 	}
 
-	if (!slug) {
-		missing.push('env.SKILL_SLUG')
-	}
+    const [{ skill }] = await client.emitAndFlattenResponses(
+        'get-skill::v2020_12_25',
+        {
+            target: {
+                skillId: match.id,
+            },
+            payload: {
+                shouldIncludeApiKey: true,
+            },
+        }
+    )
 
-	if (missing.length > 0) {
-		throw new SchemaError({ code: 'MISSING_PARAMETERS', parameters: missing })
-	}
+    return skill
 }

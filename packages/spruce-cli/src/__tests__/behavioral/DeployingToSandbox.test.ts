@@ -5,6 +5,7 @@ import { errorAssert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 import testUtil from '../../tests/utilities/test.utility'
 import { ApiClient } from '../../types/apiClient.types'
+import { RegisteredSkill } from '../../types/cli.types'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
     private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER as string
@@ -56,7 +57,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
             name: 'My new skill',
         })
 
-        await this.resetCurrentSkill()
+        await this.unregisterCurrentSkill()
 
         const env = this.Service('env')
 
@@ -64,14 +65,12 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
         env.unset('SKILL_NAME')
         env.unset('SKILL_SLUG')
 
-        const results = await this.Action('skill', 'boot').execute({
-            local: true,
-        })
+        const results = await this.boot()
 
         assert.isTruthy(results.errors)
 
         errorAssert.assertError(results.errors[0], 'MISSING_PARAMETERS', {
-            parameters: ['env.SKILL_NAME', 'env.SKILL_SLUG'],
+            parameters: ['env.SKILL_NAME'],
         })
     }
 
@@ -81,12 +80,12 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
 
         const expected = await this.getTotalSkills(client)
 
-        const boot = await this.Action('skill', 'boot').execute({ local: true })
-
-        boot.meta?.kill()
+        await assert.doesThrowAsync(
+            () => this.bootAndKill(),
+            "don't have access"
+        )
 
         const actual = await this.getTotalSkills(client)
-
         assert.isEqual(expected, actual)
     }
 
@@ -98,9 +97,7 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
             name: 'My new skill',
         })
 
-        const boot = await this.Action('skill', 'boot').execute({ local: true })
-
-        boot.meta?.kill()
+        await this.bootAndKill()
 
         const skills = await this.fetchSkills(client)
 
@@ -113,20 +110,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
     protected static async registersSkillAgain() {
         const { client } = await this.installAndSetupForSandbox()
 
-        const skill = await this.getSkillFixture().registerCurrentSkill({
-            name: 'My new skill',
-        })
+        const skill = await this.registerCurrentSkill('My new skill')
 
-        await this.resetCurrentSkill()
+        await this.unregisterCurrentSkill()
 
-        const env = this.Service('env')
-        env.set('SKILL_ID', skill.id)
-        env.set('SKILL_NAME', skill.name)
-        env.set('SKILL_SLUG', skill.slug)
+        this.updateEnv(skill)
 
-        const boot = await this.Action('skill', 'boot').execute({ local: true })
-
-        boot.meta?.kill()
+        await this.bootAndKill()
 
         const skills = await this.fetchSkills(client)
 
@@ -139,42 +129,79 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
     @test()
     protected static async registersSkillAndCanBootAgain() {
         await this.installAndSetupForSandbox()
+        const skill = await this.registerCurrentSkill('My new skill')
+        await this.unregisterCurrentSkill()
 
-        await this.getSkillFixture().registerCurrentSkill({
-            name: 'My new skill',
-        })
+        this.updateEnv(skill)
 
-        await this.resetCurrentSkill()
-
-        const boot = await this.Action('skill', 'boot').execute({ local: true })
-
-        boot.meta?.kill()
-
-        const boot2 = await this.Action('skill', 'boot').execute({
-            local: true,
-        })
-
-        boot2.meta?.kill()
+        await this.bootAndKill()
+        await this.bootAndKill()
     }
 
     @test()
     protected static async canReRegisterAndThenRegisterConversationsWithoutCrash() {
         await this.installAndSetupForSandbox('conversation-with-sandbox')
 
-        await this.getSkillFixture().registerCurrentSkill({
-            name: 'Conversation test',
-        })
-
-        await this.resetCurrentSkill()
+        const skill = await this.registerCurrentSkill('Conversation test')
+        await this.unregisterCurrentSkill()
+        this.updateEnv(skill)
 
         await this.Action('conversation', 'create').execute({
             nameReadable: 'book an appointment',
             nameCamel: 'bookAnAppointment',
         })
 
-        const boot = await this.Action('skill', 'boot').execute({ local: true })
+        await this.bootAndKill()
+    }
 
+    @test()
+    protected static async logsInSkillIfAlreadyRegisteredButMissingEnv() {
+        await this.installAndSetupForSandbox()
+
+        await this.registerCurrentSkill('Login if already registered')
+
+        const env = this.Service('env')
+
+        const originalSkillId = env.get('SKILL_ID')
+        const orginalSkillApiKey = env.get('SKILL_API_KEY')
+
+        env.set('SKILL_ID', 'this is garbage')
+
+        await this.bootAndKill()
+
+        delete process.env.SKILL_ID
+        delete process.env.SKILL_API_KEY
+
+        const skillId = env.get('SKILL_ID')
+        const apiKey = env.get('SKILL_API_KEY')
+
+        assert.isEqual(
+            skillId,
+            originalSkillId,
+            'It logged in as the wrong skill!'
+        )
+
+        assert.isEqual(
+            apiKey,
+            orginalSkillApiKey,
+            'It logged in with the wrong api key!'
+        )
+    }
+
+    private static updateEnv(skill: RegisteredSkill) {
+        const env = this.Service('env')
+        env.set('SKILL_ID', skill.id)
+        env.set('SKILL_NAME', skill.name)
+    }
+
+    private static async bootAndKill() {
+        const boot = await this.boot()
+        assert.isFalsy(boot.errors)
         boot.meta?.kill()
+    }
+
+    private static async boot() {
+        return await this.Action('skill', 'boot').execute({ local: true })
     }
 
     private static async installAndSetupForSandbox(cacheKey = 'sandbox') {
@@ -202,7 +229,13 @@ export default class DeployingToSandboxTest extends AbstractCliTest {
         return skills
     }
 
-    private static async resetCurrentSkill() {
+    private static async registerCurrentSkill(name: string) {
+        return await this.getSkillFixture().registerCurrentSkill({
+            name,
+        })
+    }
+
+    private static async unregisterCurrentSkill() {
         const isInstalled =
             this.Service('settings').isMarkedAsInstalled('skill')
         if (!isInstalled) {

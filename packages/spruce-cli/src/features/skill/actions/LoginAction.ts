@@ -50,13 +50,14 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
         }
 
         const client = await this.connectToApi()
-        const skillResults = await client.emit('list-skills::v2020_12_25', {
-            payload: {
-                shouldOnlyShowMine: true,
-            },
-        })
-
-        let { skills } = eventResponseUtil.getFirstResponseOrThrow(skillResults)
+        let [{ skills }] = await client.emitAndFlattenResponses(
+            'list-skills::v2020_12_25',
+            {
+                payload: {
+                    shouldOnlyShowMine: true,
+                },
+            }
+        )
 
         if (skillSlug) {
             const match = skills.find((s) => s.slug === skillSlug)
