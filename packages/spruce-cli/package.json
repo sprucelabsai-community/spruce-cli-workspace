@@ -118,7 +118,7 @@
 		"@sprucelabs/spruce-store-plugin": "^66.0.20",
 		"@sprucelabs/spruce-test-fixtures": "^66.0.20",
 		"@sprucelabs/test": "^9.0.71",
-		"@sprucelabs/test-utils": "^5.3.4",
+		"@sprucelabs/test-utils": "^5.4.1",
 		"@types/blessed": "^0.1.25",
 		"@types/eslint": "^9.6.1",
 		"@types/fs-extra": "^11.0.4",
