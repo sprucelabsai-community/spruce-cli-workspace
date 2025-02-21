@@ -1,0 +1,36 @@
+import { assertOptions } from '@sprucelabs/schema'
+import { fake } from '@sprucelabs/spruce-test-fixtures'
+import AbstractSpruceTest, {
+    test,
+    suite,
+    assert,
+    errorAssert,
+} from '@sprucelabs/test-utils'
+
+@fake.login()
+@suite()
+export default class StaticTestFinderTest extends AbstractSpruceTest {
+    @test()
+    protected async throwsWithMissing() {
+        const finder = StaticTestFinder.Finder()
+        const err = await assert.doesThrowAsync(() => finder.find())
+        errorAssert.assertError(err, 'MISSING_PARAMETERS', {
+            parameters: ['lookupDir'],
+        })
+    }
+
+    @test()
+    protected async yourNextTest() {
+        assert.isTrue(false)
+    }
+}
+
+class StaticTestFinder {
+    public static Finder() {
+        return new this()
+    }
+
+    public async find() {
+        assertOptions({}, ['lookupDir'])
+    }
+}

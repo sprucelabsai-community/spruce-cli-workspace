@@ -1,0 +1,24 @@
+import { AbstractSpruceFixtureTest } from '@sprucelabs/spruce-test-fixtures'
+import { assert } from '@sprucelabs/test-utils'
+import HomeIntegrationsStore from '../../stores/HomeIntegrations.store'
+import EventFaker from './EventFaker'
+
+export default abstract class AbstractGoogleTest extends AbstractSpruceFixtureTest {
+    protected static eventFaker: EventFaker
+    protected static homeIntegrations: HomeIntegrationsStore
+
+    protected static async beforeEach(): Promise<void> {
+        await super.beforeEach()
+        this.eventFaker = new EventFaker()
+        this.homeIntegrations = await this.stores.getStore('homeIntegrations')
+    }
+
+    protected static async getFirstHomeIntegration() {
+        const match = await this.homeIntegrations.findOne(
+            {},
+            { shouldIncludePrivateFields: true }
+        )
+        assert.isTruthy(match, 'No home integration found')
+        return match
+    }
+}
