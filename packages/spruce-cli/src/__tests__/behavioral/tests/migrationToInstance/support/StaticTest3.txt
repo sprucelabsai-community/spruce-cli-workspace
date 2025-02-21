@@ -1,0 +1,219 @@
+import {
+    activeRecordCardAssert,
+    buttonAssert,
+    interactor,
+    MockActiveRecordCard,
+    vcAssert,
+} from '@sprucelabs/heartwood-view-controllers'
+import { eventFaker, fake } from '@sprucelabs/spruce-test-fixtures'
+import { test, generateId, assert } from '@sprucelabs/test-utils'
+import { PublicHomeIntegration } from '../../google.types'
+import RootSkillViewController from '../../skillViewControllers/Root.svc'
+import AddHomeIntegrationCardViewController from '../../viewControllers/AddHomeIntegrationCard.vc'
+import AbstractGoogleTest from '../support/AbstractGoogleTest'
+import { DeleteHomeIntergrationTargetAndPayload } from '../support/EventFaker'
+import SpyAddHomeIntegrationCard from './homeIntegrations/SpyAddHomeIntegrationCard'
+
+@fake.login()
+export default class RootSkillViewTest extends AbstractGoogleTest {
+    private static vc: SpyRootSkillView
+    private static fakedIntegrations: PublicHomeIntegration[] = []
+
+    protected static async beforeEach(): Promise<void> {
+        await super.beforeEach()
+
+        this.fakedIntegrations = []
+
+        this.views.setController(
+            'google.add-home-integration-card',
+            SpyAddHomeIntegrationCard
+        )
+        this.views.setController('active-record-card', MockActiveRecordCard)
+        this.views.setController('google.root', SpyRootSkillView)
+        this.vc = this.views.Controller('google.root', {}) as SpyRootSkillView
+
+        await this.eventFaker.fakeListHomeIntegrations(() => {
+            return this.fakedIntegrations
+        })
+
+        await this.eventFaker.fakeDeleteHomeIntegration()
+    }
+
+    @test()
+    protected static async rendersACard() {
+        vcAssert.assertSkillViewRendersCard(this.vc, 'home-cloud-integrations')
+    }
+
+    @test()
+    protected static async cardRendersList() {
+        activeRecordCardAssert.skillViewRendersActiveRecordCard(this.vc)
+    }
+
+    @test()
+    protected static async requiresLogin() {
+        await vcAssert.assertLoginIsRequired(this.vc)
+    }
+
+    @test()
+    protected static async returnsAListOfIntegrations() {
+        const integration = this.seedIntegration()
+        await this.load()
+        this.assertRendersIntegrationRow(integration.id)
+    }
+
+    @test()
+    protected static async homeIntegrationsCardRendersExpectedButtons() {
+        buttonAssert.cardRendersButtons(this.homeIntegrationsCardVc, [
+            'instructions',
+            'add',
+        ])
+    }
+
+    @test()
+    protected static async clickingAddIntegrationRendersDialog() {
+        await this.loadClickAddAndAssertRendersDialog()
+    }
+
+    @test()
+    protected static async callingOnDoneInAddCardHidesDialog() {
+        const { addCardVc, dialogVc } =
+            await this.loadClickAddAndAssertRendersDialog()
+        await addCardVc.simulateClickDone()
+
+        assert.isFalse(dialogVc.getIsVisible())
+    }
+
+    @test()
+    protected static async eachRowRendersDeleteButton() {
+        const integration = await this.seedOneIntegrationAndLoad()
+
+        this.homeIntegrationsCardVc.assertRowRendersButton(
+            integration.id,
+            'delete'
+        )
+    }
+
+    @test()
+    protected static async clickingDeleteButtonRendersAlert() {
+        await this.seedLoadClickDeleteAndAssertConfirm()
+    }
+
+    @test()
+    protected static async clickingDeleteAndConfirmingRemovesRow() {
+        const integration = await this.seedLoadClickDeleteAndConfirm()
+        this.homeIntegrationsCardVc.assertDoesNotRenderRow(integration.id)
+    }
+
+    @test()
+    protected static async doesNotRefreshListIfUserCancels() {
+        const int = await this.seedLoadClickDeleteAndDecline()
+
+        this.assertRendersIntegrationRow(int.id)
+    }
+
+    @test()
+    protected static async confirmingDeleteShouldEmitDeleteEvent() {
+        let passedTarget:
+            | DeleteHomeIntergrationTargetAndPayload['target']
+            | undefined
+
+        await this.eventFaker.fakeDeleteHomeIntegration(({ target }) => {
+            passedTarget = target
+        })
+
+        const integration = await this.seedLoadClickDeleteAndConfirm()
+
+        assert.isEqualDeep(passedTarget, {
+            integrationId: integration.id,
+        })
+    }
+
+    @test()
+    protected static async doesNotEmitEventIfDeclined() {
+        await eventFaker.makeEventThrow(
+            'google.delete-home-integration::v2025_02_08'
+        )
+
+        await this.seedLoadClickDeleteAndDecline()
+    }
+
+    private static async loadClickAddAndAssertRendersDialog() {
+        await this.load()
+        const dialogVc = await vcAssert.assertRendersDialog(this.vc, () =>
+            interactor.clickButton(this.homeIntegrationsCardVc, 'add')
+        )
+
+        const addCardVc = vcAssert.assertRendersAsInstanceOf(
+            dialogVc,
+            AddHomeIntegrationCardViewController
+        ) as SpyAddHomeIntegrationCard
+        return { dialogVc, addCardVc }
+    }
+
+    private static async seedLoadClickDeleteAndConfirm() {
+        const { confirmVc, integration } =
+            await this.seedLoadClickDeleteAndAssertConfirm()
+
+        await confirmVc.accept()
+
+        return integration
+    }
+
+    private static async seedLoadClickDeleteAndDecline() {
+        const { confirmVc, integration } =
+            await this.seedLoadClickDeleteAndAssertConfirm()
+
+        const int = integration
+
+        await confirmVc.decline()
+        return int
+    }
+
+    private static assertRendersIntegrationRow(id: string) {
+        this.homeIntegrationsCardVc.assertRendersRow(id)
+    }
+
+    private static async seedLoadClickDeleteAndAssertConfirm() {
+        const integration = await this.seedOneIntegrationAndLoad()
+
+        const confirmVc = await vcAssert.assertRendersConfirm(this.vc, () =>
+            interactor.clickButtonInRow(this.listVc, integration.id, 'delete')
+        )
+        return { confirmVc, integration }
+    }
+
+    private static get listVc() {
+        return this.homeIntegrationsCardVc.getListVc()
+    }
+
+    private static async seedOneIntegrationAndLoad() {
+        const integration = this.seedIntegration()
+        await this.load()
+        return integration
+    }
+
+    private static seedIntegration() {
+        const integration: PublicHomeIntegration = {
+            description: generateId(),
+            id: generateId(),
+            name: generateId(),
+        }
+
+        this.fakedIntegrations.push(integration)
+        return integration
+    }
+
+    private static async load() {
+        await this.views.load(this.vc)
+    }
+
+    private static get homeIntegrationsCardVc() {
+        return this.vc.getHomeIntegrationsCardVc()
+    }
+}
+
+class SpyRootSkillView extends RootSkillViewController {
+    public getHomeIntegrationsCardVc() {
+        return this.activeRecordCardVc as MockActiveRecordCard
+    }
+}

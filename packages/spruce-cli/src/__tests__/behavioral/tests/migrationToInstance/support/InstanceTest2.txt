@@ -1,0 +1,63 @@
+import { fake, seed } from '@sprucelabs/spruce-test-fixtures'
+import { assert, test, suite } from '@sprucelabs/test-utils'
+import { HomeIntegration, PublicHomeIntegration } from '../../../google.types'
+import AbstractGoogleTest from '../../support/AbstractGoogleTest'
+
+@fake.login()
+@suite()
+export default class ListHomeIntegrationsLIstenerTest extends AbstractGoogleTest {
+    protected async beforeEach(): Promise<void> {
+        await super.beforeEach()
+        await this.bootSkill()
+    }
+
+    protected async afterEach(): Promise<void> {
+    }
+
+    @test()
+    protected async skillIsListening() {
+        await this.emit()
+    }
+
+    @test()
+    @seed('homeIntegrations', 1)
+    protected async canReturnFirstHomeIntegration() {
+        const expected = await this.getFirstHomeIntegration()
+        const integrations = await this.emit()
+        assert.isLength(integrations, 1)
+        const first = integrations[0]
+        this.assertIntegrationEqualsExpected(first, expected)
+    }
+
+    @test()
+    @seed('homeIntegrations', 2)
+    protected async canReturnMultipleHomeIntegrations() {
+        const expected = await this.homeIntegrations.find(
+            {},
+            {},
+            { shouldIncludePrivateFields: true }
+        )
+        const integrations = await this.emit()
+        assert.isLength(integrations, 2)
+        this.assertIntegrationEqualsExpected(integrations[0], expected[0])
+        this.assertIntegrationEqualsExpected(integrations[1], expected[1])
+    }
+
+    private assertIntegrationEqualsExpected(
+        first: PublicHomeIntegration,
+        expected: HomeIntegration
+    ) {
+        assert.isEqual(first.id, expected.id)
+        assert.isEqual(first.name, expected.name)
+        assert.isEqual(first.description, expected.description)
+    }
+
+    private async emit() {
+        const [{ integrations }] =
+            await this.fakedClient.emitAndFlattenResponses(
+                'google.list-home-integrations::v2025_02_08'
+            )
+
+        return integrations
+    }
+}

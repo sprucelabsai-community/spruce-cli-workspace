@@ -8,7 +8,9 @@ import AbstractSpruceTest, {
 import StaticTestFinderImpl, {
     StaticTestFinder,
 } from '../../../../tests/staticToInstanceMigration/StaticTestFinder'
-import StaticToInstanceMigrator from '../../../../tests/staticToInstanceMigration/StaticToInstanceMigrator'
+import StaticToInstanceMigratorImpl, {
+    StaticToInstanceMigrator,
+} from '../../../../tests/staticToInstanceMigration/StaticToInstanceMigrator'
 import StaticToInstanceTestFileMigratorImpl, {
     StaticToInstanceTestFileMigrator,
 } from '../../../../tests/staticToInstanceMigration/StaticToInstanceTestFileMigrator'
@@ -28,12 +30,12 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         StaticTestFinderImpl.Class = FakeStaticTestFinder
         StaticToInstanceTestFileMigratorImpl.Class = FakeFileMigrator
 
-        StaticToInstanceMigrator.diskUtil.readFile = (source) => {
+        StaticToInstanceMigratorImpl.diskUtil.readFile = (source) => {
             this.readFiles.push(source)
             return this.fakedFileContents[source] ?? generateId()
         }
 
-        StaticToInstanceMigrator.diskUtil.writeFile = (
+        StaticToInstanceMigratorImpl.diskUtil.writeFile = (
             destination: string,
             contents: string
         ) => {
@@ -47,7 +49,7 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         this.testFileMigrator =
             StaticToInstanceTestFileMigratorImpl.Migrator() as FakeFileMigrator
 
-        this.migrator = StaticToInstanceMigrator.Migrator({
+        this.migrator = StaticToInstanceMigratorImpl.Migrator({
             testFinder: this.testFinder,
             testFileMigrator: this.testFileMigrator,
         })
@@ -55,8 +57,10 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
 
     @test()
     protected throwsWithMissing() {
-        //@ts-ignore
-        const err = assert.doesThrow(() => StaticToInstanceMigrator.Migrator())
+        const err = assert.doesThrow(() =>
+            //@ts-ignore
+            StaticToInstanceMigratorImpl.Migrator()
+        )
         errorAssert.assertError(err, 'MISSING_PARAMETERS', {
             parameters: ['testFinder', 'testFileMigrator'],
         })
@@ -85,6 +89,7 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         const stats = await this.run()
         assert.isEqualDeep(stats, {
             totalTestsUpdated: this.testFinder.fakedResults.length,
+            totalTestsSkipped: 0,
         })
     }
 
@@ -143,6 +148,65 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         })
     }
 
+    @test()
+    protected async returnsSkippedIfMigratedIsTheSame() {
+        this.setFakedFinderResults(['a'])
+        const contents = generateId()
+        this.setFakedFileContents({
+            a: contents,
+        })
+
+        this.setMigrateFileResponse(contents)
+
+        const stats = await this.run()
+        assert.isEqualDeep(stats, {
+            totalTestsUpdated: 0,
+            totalTestsSkipped: 1,
+        })
+    }
+
+    @test()
+    protected async countsSkippedAndMatched() {
+        const contents1 = generateId()
+        const contents2 = generateId()
+
+        this.setFakedFinderResults(['what', 'the', 'heck'])
+        this.setFakedFileContents({
+            what: contents1,
+            the: contents2,
+            heck: generateId(),
+        })
+
+        this.testFileMigrator.fakedMigrateResponsesByContents = {
+            [contents1]: contents1,
+            [contents2]: contents2,
+        }
+
+        const stats = await this.run()
+        assert.isEqualDeep(stats, {
+            totalTestsUpdated: 1,
+            totalTestsSkipped: 2,
+        })
+    }
+
+    @test()
+    protected async doesNotWriteFileThatDidNotChange() {
+        this.setFakedFinderResults(['a'])
+        const contents = generateId()
+        this.setFakedFileContents({
+            a: contents,
+        })
+
+        this.setMigrateFileResponse(contents)
+
+        await this.run()
+        assert.isUndefined(this.lastWrittenFile)
+    }
+
+    private setMigrateFileResponse(contents: string) {
+        this.testFileMigrator.fakedMigrateResponse = contents
+    }
+
     private assertContentsPassedToFileMigratorEquals(expected: string[]) {
         assert.isEqualDeep(
             this.testFileMigrator.contentsPassedToMigrate,
@@ -176,8 +240,13 @@ class FakeStaticTestFinder implements StaticTestFinder {
 class FakeFileMigrator implements StaticToInstanceTestFileMigrator {
     public contentsPassedToMigrate: string[] = []
     public fakedMigrateResponse = generateId()
+    public fakedMigrateResponsesByContents: Record<string, string> = {}
+
     public migrate(contents: string): string {
         this.contentsPassedToMigrate.push(contents)
-        return this.fakedMigrateResponse
+        return (
+            this.fakedMigrateResponsesByContents[contents] ??
+            this.fakedMigrateResponse
+        )
     }
 }

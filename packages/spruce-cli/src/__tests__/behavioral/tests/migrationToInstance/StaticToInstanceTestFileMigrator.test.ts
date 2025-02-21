@@ -147,6 +147,22 @@ protected suiteMethod() {}`
         this.assertMigratedEquals(before, expected)
     }
 
+    @test()
+    protected canMigrateMoreComplexTest() {
+        const before = this.readTestFile('StaticTest2.txt')
+        const expected = this.readTestFile('InstanceTest2.txt')
+
+        this.assertMigratedEquals(before, expected)
+    }
+
+    @test()
+    protected canMigrateAnotherComplexTest() {
+        const before = this.readTestFile('StaticTest3.txt')
+        const expected = this.readTestFile('InstanceTest3.txt')
+
+        this.assertMigratedEquals(before, expected)
+    }
+
     private readTestFile(name: string) {
         return diskUtil.readFile(this.resolveTestClassPath(name))
     }
@@ -157,11 +173,18 @@ protected suiteMethod() {}`
 
     private assertMigratedEquals(contents: string, expected: string) {
         const actual = this.migrate(contents)
-        assert.isEqual(this.cleanString(actual), this.cleanString(expected))
+
+        const cleanedActual = this.cleanString(actual)
+        const cleanedExpected = this.cleanString(expected)
+
+        assert.isTrue(
+            cleanedActual == cleanedExpected,
+            `${actual}\n\ndoes not equal\n\n${expected}`
+        )
     }
 
     private cleanString(contents: string) {
-        return contents.replace(/\s{2,}/g, ' ')
+        return contents.replace(/\s{2,}/g, ' ').trim()
     }
 
     private migrate(contents: string) {
