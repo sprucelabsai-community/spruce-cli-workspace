@@ -14,7 +14,6 @@ export default class CreatingAnOrgTest extends AbstractCliTest {
         const slug = `my-org-${new Date().getTime()}`
 
         await this.FeatureFixture().installCachedFeatures('organizations')
-
         await this.people.loginAsDemoPerson()
 
         const results = await this.Action('organization', 'create').execute({

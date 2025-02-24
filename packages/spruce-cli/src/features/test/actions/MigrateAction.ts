@@ -24,7 +24,7 @@ export default class MigrationAction extends AbstractAction<OptionsSchema> {
             await migrator.run(path)
 
         return {
-            headline: 'Migrations complete',
+            headline: 'Migrated tests from static to instance based.',
             summaryLines: [
                 `${totalTestsUpdated} test${totalTestsUpdated === 1 ? '' : 's'} updated`,
                 `${totalTestsSkipped} test${totalTestsSkipped === 1 ? '' : 's'} skipped`,

@@ -50,7 +50,7 @@ export default class MigratingTestsTest extends AbstractSkillTest {
 
         const results = await this.execute()
         assert.isEqualDeep(results, {
-            headline: 'Migrated tests from static to instance based',
+            headline: 'Migrated tests from static to instance based.',
             summaryLines: [
                 `${totalTestsUpdated} test${totalTestsUpdated === 1 ? '' : 's'} updated`,
                 `${totalTestsSkipped} test${totalTestsSkipped === 1 ? '' : 's'} skipped`,
