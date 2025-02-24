@@ -4,8 +4,8 @@ import HomeIntegrationsStore from '../../stores/HomeIntegrations.store'
 import EventFaker from './EventFaker'
 
 export default abstract class AbstractGoogleTest extends AbstractSpruceFixtureTest {
-    protected eventFaker: EventFaker
-    protected homeIntegrations: HomeIntegrationsStore
+    protected eventFaker!: EventFaker
+    private homeIntegrations!: HomeIntegrationsStore
 
     protected async beforeEach(): Promise<void> {
         await super.beforeEach()

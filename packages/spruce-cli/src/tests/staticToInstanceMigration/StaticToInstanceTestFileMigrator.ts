@@ -60,6 +60,8 @@ export default class StaticToInstanceTestFileMigratorImpl
             )
         }
 
+        cleanedUp = this.fixNonNullAssertions(cleanedUp)
+
         return cleanedUp
     }
 
@@ -133,6 +135,60 @@ export default class StaticToInstanceTestFileMigratorImpl
         })
 
         return updated
+    }
+
+    private fixNonNullAssertions(contents: string): string {
+        const lines = contents.split('\n')
+
+        const propertyRegex =
+            /^(\s*)(public|protected|private)(\s+readonly)?\s+(\w+)\s*(!)?\s*:\s*([^=;]+)(=.*)?;?$/
+
+        const updatedLines = lines.map((originalLine) => {
+            // Skip lines containing "static"
+            if (originalLine.includes('static')) {
+                return originalLine
+            }
+
+            const match = originalLine.match(propertyRegex)
+            if (!match) {
+                return originalLine
+            }
+
+            let [
+                ,
+                leadingWhitespace,
+                visibility,
+                readonlyPart = '',
+                propName,
+                exclamation,
+                typeDecl,
+                assignment,
+            ] = match
+
+            // Trim trailing whitespace from the type
+            typeDecl = typeDecl.trim()
+
+            if (assignment) {
+                // Remove the bang if there's an assignment
+                exclamation = ''
+
+                // Remove trailing semicolon
+                assignment = assignment.replace(/;$/, '')
+
+                // Ensure we always have " = " at the start
+                // E.g. "=something" => " = something"
+                assignment = assignment.replace(/^=\s*/, ' = ')
+            } else {
+                // No assignment? Add bang
+                exclamation = '!'
+            }
+
+            // Rebuild line, preserving leading indentation
+            const rebuilt = `${leadingWhitespace}${visibility}${readonlyPart} ${propName}${exclamation}: ${typeDecl}${assignment ?? ''}`
+            return rebuilt
+        })
+
+        return updatedLines.join('\n')
     }
 }
 

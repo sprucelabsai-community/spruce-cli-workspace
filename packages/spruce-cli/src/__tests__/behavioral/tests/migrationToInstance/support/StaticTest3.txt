@@ -18,11 +18,13 @@ import SpyAddHomeIntegrationCard from './homeIntegrations/SpyAddHomeIntegrationC
 export default class RootSkillViewTest extends AbstractGoogleTest {
     private static vc: SpyRootSkillView
     private static fakedIntegrations: PublicHomeIntegration[] = []
+    protected static names: string[] = []
 
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
 
         this.fakedIntegrations = []
+        this.names = []
 
         this.views.setController(
             'google.add-home-integration-card',

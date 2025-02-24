@@ -5,7 +5,7 @@ import EventFaker from './EventFaker'
 
 export default abstract class AbstractGoogleTest extends AbstractSpruceFixtureTest {
     protected static eventFaker: EventFaker
-    protected static homeIntegrations: HomeIntegrationsStore
+    private static homeIntegrations: HomeIntegrationsStore
 
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
