@@ -50,8 +50,6 @@ export default async (event: SpruceEvent): SpruceEventResponse => {
         const skill = await registerOrLoginSkill(client, name, slug)
         await client.emit(`logout::v2020_12_25`)
 
-        debugger
-
         await client.authenticate({
             skillId: skill.id,
             apiKey: skill.apiKey,

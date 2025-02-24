@@ -76,6 +76,7 @@ export interface TestOptions {
     namePascal: string
     nameCamel: string
     isTestFixturesInstalled: boolean
+    testType?: 'static' | 'instance'
     parentTestClass?: {
         name: string
         importPath: string

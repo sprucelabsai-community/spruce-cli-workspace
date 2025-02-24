@@ -5,12 +5,12 @@ import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 export default class TestingAConversationTest extends AbstractCliTest {
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async hasTestConvoFeature() {
         assert.isFunction(this.Action('conversation', 'test').execute)
     }
 
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async shouldRunWithoutConversationShouldShutdownOnItsOwn() {
         await this.FeatureFixture().installCachedFeatures('conversation')
 
@@ -33,7 +33,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
         } while (psResults.length > 0)
     }
 
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async runsUntilKilled() {
         await this.installAndCreateConversation()
 
@@ -59,7 +59,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
         } while (psResults.length > 0)
     }
 
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async doesntReturnErrorWhenKilled() {
         await this.installAndCreateConversation()
         const test = this.Action(
@@ -79,7 +79,7 @@ export default class TestingAConversationTest extends AbstractCliTest {
         assert.isFalsy(results.errors)
     }
 
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async returnsErrorWhenScriptErrors() {
         const { createResults } = await this.installAndCreateConversation()
 

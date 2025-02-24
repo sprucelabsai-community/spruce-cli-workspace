@@ -1,19 +1,18 @@
 {{#if isTestFixturesInstalled}}import { fake } from '@sprucelabs/spruce-test-fixtures'{{/if}}
-import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, suite, assert } from '@sprucelabs/test-utils'
+import {{#unless (isDefined parentTestClass)}}AbstractSpruceTest, {{/unless}}{ test, assert } from '@sprucelabs/test-utils'
 {{#if (isDefined parentTestClass)}}import {{#if parentTestClass.isDefaultExport}}{{parentTestClass.name}}{{else}}{ {{parentTestClass.name}} }{{/if}} from '{{parentTestClass.importPath}}'
 {{/if}}
 
 {{#if isTestFixturesInstalled}}@fake.login(){{/if}}
-@suite()
 export default class {{namePascal}}Test extends {{#if (isDefined parentTestClass)}}{{parentTestClass.name}}{{else}}AbstractSpruceTest{{/if}} {
 	@test()
-	protected async canCreate{{namePascal}}() {
+	protected static async canCreate{{namePascal}}() {
 		const {{nameCamel}} = new {{namePascal}}()
 		assert.isTruthy({{nameCamel}})
 	}
 
 	@test()
-	protected async yourNextTest() {
+	protected static async yourNextTest() {
 		assert.isTrue(false)
 	}
 }

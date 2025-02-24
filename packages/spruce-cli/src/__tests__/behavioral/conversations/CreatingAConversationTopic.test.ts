@@ -5,12 +5,12 @@ import testUtil from '../../../tests/utilities/test.utility'
 import { CliInterface } from '../../../types/cli.types'
 
 export default class CreatingAConversationTopicTest extends AbstractCliTest {
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async hasCreateConversationAction() {
         assert.isFunction(this.Action('conversation', 'create').execute)
     }
 
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async createsValidConversationTopicDefinition() {
         const cli =
             await this.FeatureFixture().installCachedFeatures('conversation')

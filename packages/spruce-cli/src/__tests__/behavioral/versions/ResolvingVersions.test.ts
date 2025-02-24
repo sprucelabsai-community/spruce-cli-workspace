@@ -47,7 +47,6 @@ export default class ResolvingVersionsTest extends AbstractSkillTest {
 
     @test()
     protected static async addsVersionFromPackageJsonWhenChoosingDifferentVersion() {
-        debugger
         await this.resolveAndAssertChoices([
             this.newVersionChoice,
             this.buildVersionChoice('v2023_09_16'),
@@ -56,9 +55,8 @@ export default class ResolvingVersionsTest extends AbstractSkillTest {
 
     @test()
     protected static async doesNotAddVersionToChoicesIfDirMatchesVersion() {
-        debugger
         this.createVersionDir('v2023_09_16')
-        debugger
+
         await this.resolveAndAssertChoices([
             this.newVersionChoice,
             this.buildVersionChoice('v2023_09_16'),

@@ -55,7 +55,7 @@ export default class OrganizationStore extends AbstractStore {
 
     public async create(values: { name: string; slug?: string }) {
         const { name, slug } = values
-        debugger
+
         const client = await this.connectToApi()
 
         const results = await client.emit('create-organization::v2020_12_25', {

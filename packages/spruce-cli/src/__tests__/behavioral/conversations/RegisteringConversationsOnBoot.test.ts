@@ -2,7 +2,7 @@ import { test, assert } from '@sprucelabs/test-utils'
 import AbstractEventTest from '../../../tests/AbstractEventTest'
 
 export default class RegisteringConversationsOnBootTest extends AbstractEventTest {
-    @test()
+    @test.skip('bring back if re introducing conversation topics')
     protected static async canRegisterConversationsOnBoot() {
         const { currentSkill } =
             await this.seedDummySkillRegisterCurrentSkillAndInstallToOrg(

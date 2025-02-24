@@ -205,7 +205,12 @@ export const templates = {
     },
 
     test(options: TestOptions) {
-        const template = templateImportUtil.getTemplate('test/Test.test.ts.hbs')
+        const { testType } = options
+        const template = templateImportUtil.getTemplate(
+            testType === 'static'
+                ? 'test/StaticTest.test.ts.hbs'
+                : 'test/Test.test.ts.hbs'
+        )
         return template(options)
     },
 

@@ -1,4 +1,5 @@
 import pathUtil from 'path'
+import globby from '@sprucelabs/globby'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
@@ -51,6 +52,9 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
             'devDependencies.@sprucelabs/spruce-test-fixtures'
         )
 
+        let doesStaticTestExist =
+            await this.doesStaticTestAlreadyExist(resolvedDestination)
+
         const results = await writer.writeTest(resolvedDestination, {
             ...normalizedOptions,
             type,
@@ -58,12 +62,25 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
             parentTestClass,
             isTestFixturesInstalled,
             namePascal: namePascal ?? namesUtil.toPascal(nameCamel),
+            testType: doesStaticTestExist ? 'static' : 'instance',
         })
 
         return {
             files: results,
             hints: ["run `spruce test` in your skill when you're ready!"],
         }
+    }
+
+    private async doesStaticTestAlreadyExist(resolvedDestination: string) {
+        const matches = await globby(resolvedDestination + `/**/*.test.ts`)
+        let doesStaticTestExist = false
+
+        const match = matches[0]
+        if (match) {
+            const contents = diskUtil.readFile(matches[0])
+            doesStaticTestExist = contents.includes('static')
+        }
+        return doesStaticTestExist
     }
 
     private async promptForSubDir(resolvedDestination: string) {
