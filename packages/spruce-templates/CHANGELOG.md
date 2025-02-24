@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.1.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v24.0.0...v24.1.0) (2025-02-24)
+
+
+### Features
+
+* static or instance based testing based on code state ([e558ba0](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/e558ba0))
+
+
+
+
+
 # [24.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v22.1.13...v24.0.0) (2025-02-19)
 
 
