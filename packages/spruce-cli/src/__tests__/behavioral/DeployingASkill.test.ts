@@ -49,9 +49,12 @@ export default class DeployingASkillTest extends AbstractCliTest {
             code: 0,
         })
 
-        CommandServiceImpl.fakeCommand('git push --set-upstream heroku master', {
-            code: 0,
-        })
+        CommandServiceImpl.fakeCommand(
+            'git push --set-upstream heroku master',
+            {
+                code: 0,
+            }
+        )
 
         diskUtil.writeFile(this.resolvePath('Procfile'), 'web: npm run boot')
     }
