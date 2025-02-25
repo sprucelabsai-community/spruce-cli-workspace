@@ -9,7 +9,7 @@ import { FeatureCode } from '../features/features.types'
 import SchemaService from '../features/schema/services/SchemaService'
 import VsCodeService from '../features/vscode/services/VsCodeService'
 import BuildService from './BuildService'
-import CommandService from './CommandService'
+import CommandServiceImpl from './CommandService'
 import DependencyService from './DependencyService'
 import ImportService from './ImportService'
 import LintService from './LintService'
@@ -41,14 +41,14 @@ export default class ServiceFactory {
             case 'schema':
                 return new SchemaService({
                     cwd,
-                    command: new CommandService(cwd),
+                    command: new CommandServiceImpl(cwd),
                 }) as ServiceMap[S]
             case 'lint':
                 return new (Class ?? LintService)(cwd, () =>
                     this.Service(cwd, 'command')
                 ) as ServiceMap[S]
             case 'command': {
-                return new CommandService(cwd) as ServiceMap[S]
+                return new CommandServiceImpl(cwd) as ServiceMap[S]
             }
             case 'remote':
                 return new RemoteService(new EnvService(cwd)) as ServiceMap[S]
@@ -68,7 +68,7 @@ export default class ServiceFactory {
             case 'import':
                 return this.buildImportService(cwd) as ServiceMap[S]
             case 'build': {
-                const commandService = new CommandService(cwd)
+                const commandService = new CommandServiceImpl(cwd)
                 return new BuildService(
                     commandService,
                     this.Service(cwd, 'lint')
@@ -86,7 +86,7 @@ export default class ServiceFactory {
     private buildImportService(cwd: string): ImportService {
         return new ImportService({
             cwd,
-            command: new CommandService(cwd),
+            command: new CommandServiceImpl(cwd),
         })
     }
 
@@ -104,7 +104,7 @@ export interface ServiceMap {
     vsCode: VsCodeService
     schema: SchemaService
     lint: LintService
-    command: CommandService
+    command: CommandServiceImpl
     typeChecker: TypeCheckerService
     import: ImportService
     build: BuildService

@@ -1,17 +1,17 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import { ENABLE_NPM_CACHE_COMMAND } from '../../features/cache/constants'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class ActionExecuter4Test extends AbstractCliTest {
     protected static async beforeEach() {
         await super.beforeEach()
 
-        CommandService.fakeCommand(/which docker/gis, {
+        CommandServiceImpl.fakeCommand(/which docker/gis, {
             code: 0,
         })
-        CommandService.fakeCommand(ENABLE_NPM_CACHE_COMMAND, {
+        CommandServiceImpl.fakeCommand(ENABLE_NPM_CACHE_COMMAND, {
             code: 0,
         })
     }

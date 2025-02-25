@@ -5,6 +5,11 @@ import AbstractSpruceTest, {
     suite,
     generateId,
 } from '@sprucelabs/test-utils'
+import {
+    CommandService,
+    ExecuteCommandOptions,
+} from '../../../../services/CommandService'
+import LintService from '../../../../services/LintService'
 import StaticTestFinderImpl, {
     StaticTestFinder,
 } from '../../../../tests/staticToInstanceMigration/StaticTestFinder'
@@ -23,6 +28,7 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
     private readFiles: string[] = []
     private fakedFileContents: Record<string, string> = {}
     private lastWrittenFile?: { destination: string; contents: string }
+    private spyCommandService: SpyCommandService
 
     public constructor() {
         super()
@@ -48,10 +54,16 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         this.testFinder = StaticTestFinderImpl.Finder() as FakeStaticTestFinder
         this.testFileMigrator =
             StaticToInstanceTestFileMigratorImpl.Migrator() as FakeFileMigrator
+        this.spyCommandService = new SpyCommandService()
+        const lintService = new LintService(
+            this.cwd,
+            () => this.spyCommandService
+        )
 
         this.migrator = StaticToInstanceMigratorImpl.Migrator({
             testFinder: this.testFinder,
             testFileMigrator: this.testFileMigrator,
+            lintService,
         })
     }
 
@@ -62,7 +74,7 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
             StaticToInstanceMigratorImpl.Migrator()
         )
         errorAssert.assertError(err, 'MISSING_PARAMETERS', {
-            parameters: ['testFinder', 'testFileMigrator'],
+            parameters: ['testFinder', 'testFileMigrator', 'lintService'],
         })
     }
 
@@ -203,6 +215,33 @@ export default class StaticToInstanceMigratorTest extends AbstractSpruceTest {
         assert.isUndefined(this.lastWrittenFile)
     }
 
+    @test()
+    protected async lintsMigratedFiles() {
+        await this.run()
+        assert.isTrue(this.spyCommandService.didExecute)
+        assert.doesInclude(
+            this.spyCommandService.lastCommand,
+            `await cli.lintFiles(['**/*.ts'])`
+        )
+    }
+
+    @test()
+    protected async shouldLintAfterMigrating() {
+        this.setFakedFinderResults(['match'])
+        this.setFakedFileContents({
+            match: generateId(),
+        })
+
+        StaticToInstanceMigratorImpl.diskUtil.writeFile = () => {
+            assert.isFalse(
+                this.spyCommandService.didExecute,
+                'Should not lint yet'
+            )
+        }
+
+        await this.run()
+    }
+
     private setMigrateFileResponse(contents: string) {
         this.testFileMigrator.fakedMigrateResponse = contents
     }
@@ -248,5 +287,24 @@ class FakeFileMigrator implements StaticToInstanceTestFileMigrator {
             this.fakedMigrateResponsesByContents[contents] ??
             this.fakedMigrateResponse
         )
+    }
+}
+
+class SpyCommandService implements CommandService {
+    public didExecute = false
+    public lastCommand?: string
+    public async execute(
+        cmd: string,
+        options?: ExecuteCommandOptions
+    ): Promise<{ stdout: string }> {
+        this.lastCommand = options?.args?.[1] ?? cmd
+        this.didExecute = true
+        return {
+            stdout: generateId(),
+        }
+    }
+    public kill(): void {}
+    public pid(): number | undefined {
+        return 0
     }
 }

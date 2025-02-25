@@ -1,13 +1,13 @@
 import fsUtil from 'fs'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class UpgradingASkill4Test extends AbstractCliTest {
     protected static async beforeEach() {
         await super.beforeEach()
-        CommandService.fakeCommand(new RegExp(/rebuild/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/rebuild/gis), {
             code: 0,
         })
     }
@@ -49,8 +49,8 @@ export default class UpgradingASkill4Test extends AbstractCliTest {
             }
         }
 
-        CommandService.fakeCommand(/yarn clean/, { code: 0 })
-        CommandService.fakeCommand(/yarn build.dev/, { code: 0 })
+        CommandServiceImpl.fakeCommand(/yarn clean/, { code: 0 })
+        CommandServiceImpl.fakeCommand(/yarn build.dev/, { code: 0 })
 
         await this.Action('node', 'upgrade').execute({})
 

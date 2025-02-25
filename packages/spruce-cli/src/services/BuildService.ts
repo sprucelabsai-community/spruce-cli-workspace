@@ -1,4 +1,4 @@
-import CommandService from './CommandService'
+import CommandServiceImpl from './CommandService'
 import LintService from './LintService'
 
 export default class BuildService {
@@ -10,11 +10,11 @@ export default class BuildService {
         return this.commandService.cwd
     }
 
-    private commandService: CommandService
+    private commandService: CommandServiceImpl
     private lintService: LintService
 
     public constructor(
-        commandService: CommandService,
+        commandService: CommandServiceImpl,
         lintService: LintService
     ) {
         this.commandService = commandService

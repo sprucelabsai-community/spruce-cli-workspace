@@ -9,7 +9,7 @@ import SpruceError from '../errors/SpruceError'
 
 process.setMaxListeners(100)
 
-export default class CommandService {
+export default class CommandServiceImpl implements CommandService {
     public cwd: string
     private activeChildProcess: ChildProcess | undefined
     private ignoreCloseErrors = false
@@ -25,17 +25,7 @@ export default class CommandService {
 
     public async execute(
         cmd: string,
-        options?: {
-            ignoreErrors?: boolean
-            args?: string[]
-            shouldStream?: boolean
-            outStream?: Writable
-            onError?: (error: string) => void
-            onData?: (data: string) => void
-            spawnOptions?: SpawnOptions
-            forceColor?: boolean
-            env?: Record<string, any>
-        }
+        options?: ExecuteCommandOptions
     ): Promise<{
         stdout: string
     }> {
@@ -51,7 +41,7 @@ export default class CommandService {
         const { mockResponse, mockKey } = this.getMockResponse(executable, args)
 
         if (mockResponse) {
-            CommandService.commandsRunCapturedByMockResponses.push(mockKey)
+            CommandServiceImpl.commandsRunCapturedByMockResponses.push(mockKey)
             mockResponse.callback?.(executable, args)
 
             if (mockResponse.code !== 0) {
@@ -174,7 +164,7 @@ export default class CommandService {
 
     private getMockResponse(executable: string, args: string[]) {
         const mockKey = `${executable} ${args.join(' ')}`.trim()
-        const commands = CommandService.fakeResponses
+        const commands = CommandServiceImpl.fakeResponses
         const match = commands.find((r) =>
             r.command instanceof RegExp
                 ? mockKey.search(r.command) > -1
@@ -207,4 +197,27 @@ interface FakedCommandResponse {
     stdout?: string
     stderr?: string
     callback?: FakedCommandCallback
+}
+
+export interface CommandService {
+    execute(
+        cmd: string,
+        options?: ExecuteCommandOptions
+    ): Promise<{
+        stdout: string
+    }>
+    kill(): void
+    pid(): number | undefined
+}
+
+export interface ExecuteCommandOptions {
+    ignoreErrors?: boolean
+    args?: string[]
+    shouldStream?: boolean
+    outStream?: Writable
+    onError?: (error: string) => void
+    onData?: (data: string) => void
+    spawnOptions?: SpawnOptions
+    forceColor?: boolean
+    env?: Record<string, any>
 }

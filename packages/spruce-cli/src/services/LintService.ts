@@ -2,7 +2,7 @@ import { SchemaError } from '@sprucelabs/schema'
 // import { ESLint } from 'eslint'
 // import fs from 'fs-extra'
 import SpruceError from '../errors/SpruceError'
-import CommandService from './CommandService'
+import { CommandService } from './CommandService'
 
 export default class LintService {
     public cwd: string

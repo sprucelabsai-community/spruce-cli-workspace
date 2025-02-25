@@ -1,5 +1,6 @@
 import { assertOptions } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import LintService from '../../services/LintService'
 import StaticTestFinder from './StaticTestFinder'
 import { StaticToInstanceTestFileMigrator } from './StaticToInstanceTestFileMigrator'
 
@@ -13,15 +14,21 @@ export default class StaticToInstanceMigratorImpl
 
     private testFinder: StaticTestFinder
     private testFileMigrator: StaticToInstanceTestFileMigrator
+    private lintService: LintService
 
     protected constructor(options: StaticToInstanceMigratorOptions) {
-        const { testFinder, testFileMigrator } = options
+        const { testFinder, testFileMigrator, lintService } = options
         this.testFinder = testFinder
         this.testFileMigrator = testFileMigrator
+        this.lintService = lintService
     }
 
     public static Migrator(options: StaticToInstanceMigratorOptions) {
-        assertOptions(options, ['testFinder', 'testFileMigrator'])
+        assertOptions(options, [
+            'testFinder',
+            'testFileMigrator',
+            'lintService',
+        ])
         return new (this.Class ?? this)(options)
     }
 
@@ -43,6 +50,8 @@ export default class StaticToInstanceMigratorImpl
             }
         }
 
+        await this.lintService.fix('**/*.ts')
+
         return {
             totalTestsUpdated,
             totalTestsSkipped,
@@ -61,6 +70,7 @@ export default class StaticToInstanceMigratorImpl
 export interface StaticToInstanceMigratorOptions {
     testFinder: StaticTestFinder
     testFileMigrator: StaticToInstanceTestFileMigrator
+    lintService: LintService
 }
 
 export interface StaticToInstanceMigratorResults {

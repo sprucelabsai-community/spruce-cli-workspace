@@ -7,7 +7,7 @@ import { CLI_HERO } from './constants'
 import { FeatureInstallerImpl } from './features/FeatureInstaller'
 import InFlightEntertainment from './InFlightEntertainment'
 import TerminalInterface from './interfaces/TerminalInterface'
-import CommandService from './services/CommandService'
+import CommandServiceImpl from './services/CommandService'
 
 export async function run(argv: string[] = []): Promise<void> {
     const program = new Command()
@@ -73,7 +73,7 @@ async function setupInFlightEntertainment(ui: TerminalInterface) {
         TerminalInterface.doesSupportColor() &&
         process.env.ENABLE_INSTALL_ENTERTAINMENT !== 'false'
     ) {
-        const command = new CommandService(
+        const command = new CommandServiceImpl(
             diskUtil.resolvePath(__dirname, '../')
         )
         InFlightEntertainment.setup({ command, ui })

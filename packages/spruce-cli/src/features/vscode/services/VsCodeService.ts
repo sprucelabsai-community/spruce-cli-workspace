@@ -1,7 +1,7 @@
 import semver from 'semver'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 
-export default class VsCodeService extends CommandService {
+export default class VsCodeService extends CommandServiceImpl {
     /** Returns whether or not vscode is installed */
     public async isInstalled(): Promise<boolean> {
         const isInstalled = false

@@ -7,19 +7,19 @@ import {
 import { buildSchema } from '@sprucelabs/schema'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../errors/SpruceError'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import JestJsonParser from '../../tests/JestJsonParser'
 import { SpruceTestResults } from './test.types'
 
 export default class TestRunner extends AbstractEventEmitter<TestRunnerContract> {
     private cwd: string
-    private commandService: CommandService
+    private commandService: CommandServiceImpl
     private wasKilled = false
     private testResults: SpruceTestResults = { totalTestFiles: 0 }
 
     public constructor(options: {
         cwd: string
-        commandService: CommandService
+        commandService: CommandServiceImpl
     }) {
         super(testRunnerContract)
         this.cwd = options.cwd

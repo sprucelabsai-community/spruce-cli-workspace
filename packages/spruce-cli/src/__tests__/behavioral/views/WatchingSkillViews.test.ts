@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import WatchAction from '../../../features/view/actions/WatchAction'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class WatchingSkillViewsTest extends AbstractSkillTest {
@@ -21,7 +21,7 @@ export default class WatchingSkillViewsTest extends AbstractSkillTest {
     @test()
     protected static async shouldCallBoot() {
         let wasHit = false
-        CommandService.fakeCommand(
+        CommandServiceImpl.fakeCommand(
             'SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
             {
                 code: 200,

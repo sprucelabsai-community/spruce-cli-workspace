@@ -1,24 +1,24 @@
 import { assert } from '@sprucelabs/test-utils'
-import CommandService from '../services/CommandService'
+import CommandServiceImpl from '../services/CommandService'
 
 type Command = RegExp | string
 
 export default class CommandFaker {
     public fakeCommand(command: Command, code = 0) {
-        CommandService.fakeCommand(command, {
+        CommandServiceImpl.fakeCommand(command, {
             code,
         })
     }
 
     public on(command: Command, cb: () => void) {
-        CommandService.fakeCommand(command, {
+        CommandServiceImpl.fakeCommand(command, {
             code: 0,
             callback: cb,
         })
     }
 
     public makeCommandThrow(command: Command) {
-        CommandService.fakeCommand(command, {
+        CommandServiceImpl.fakeCommand(command, {
             code: 1,
             callback: () =>
                 assert.fail(`${command} should not have been called`),

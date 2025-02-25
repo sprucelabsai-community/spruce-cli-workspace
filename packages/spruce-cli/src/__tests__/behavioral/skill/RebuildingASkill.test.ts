@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class RebuildingASkillTest extends AbstractSkillTest {
@@ -13,7 +13,7 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
     @test()
     protected static async runsExpectedCommand() {
-        CommandService.fakeCommand('yarn rebuild', { code: 0 })
+        CommandServiceImpl.fakeCommand('yarn rebuild', { code: 0 })
 
         const results = await this.Action('skill', 'rebuild').execute({
             shouldPlayGames: false,
@@ -24,7 +24,7 @@ export default class RebuildingASkillTest extends AbstractSkillTest {
 
     @test()
     protected static async handlesError() {
-        CommandService.fakeCommand('yarn rebuild', { code: 1 })
+        CommandServiceImpl.fakeCommand('yarn rebuild', { code: 1 })
 
         const results = await this.Action('skill', 'rebuild').execute({
             shouldPlayGames: false,

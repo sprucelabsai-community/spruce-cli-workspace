@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import uiAssert from '../../../tests/utilities/uiAssert.utility'
 
@@ -16,9 +16,9 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
     @test()
     protected static async buildErrorsGetPassedThroughToResults() {
-        CommandService.fakeCommand(/yarn (add|install)/gis, { code: 0 })
-        CommandService.fakeCommand(/yarn clean.build/gis, { code: 1 })
-        CommandService.fakeCommand(/yarn build.dev/gis, { code: 0 })
+        CommandServiceImpl.fakeCommand(/yarn (add|install)/gis, { code: 0 })
+        CommandServiceImpl.fakeCommand(/yarn clean.build/gis, { code: 1 })
+        CommandServiceImpl.fakeCommand(/yarn build.dev/gis, { code: 0 })
 
         await this.emitter.on('feature.did-execute', () => {
             return {
@@ -33,7 +33,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
     @test()
     protected static async upgradingWritesExpectedFiles() {
-        CommandService.fakeCommand(/build/gis, { code: 0 })
+        CommandServiceImpl.fakeCommand(/build/gis, { code: 0 })
 
         const shouldNotBeFound = [
             'src/.spruce/skill.ts',
@@ -58,7 +58,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
             diskUtil.writeFile(tsConfig, 'beenChanged')
         }
 
-        CommandService.fakeCommand(/yarn/gi, {
+        CommandServiceImpl.fakeCommand(/yarn/gi, {
             code: 0,
         })
 

@@ -1,5 +1,5 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class StoreFeatureTest extends AbstractCliTest {
@@ -7,7 +7,7 @@ export default class StoreFeatureTest extends AbstractCliTest {
     protected static async syncsOnWillExecute() {
         await this.FeatureFixture().installCachedFeatures('stores')
 
-        CommandService.fakeCommand(/yarn/, {
+        CommandServiceImpl.fakeCommand(/yarn/, {
             code: 0,
         })
 

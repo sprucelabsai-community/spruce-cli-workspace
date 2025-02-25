@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import PkgService from '../../services/PkgService'
 import AbstractSkillTest from '../../tests/AbstractSkillTest'
 
@@ -26,7 +26,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
     @test()
     protected static async handlesAtLatestInName() {
-        CommandService.fakeCommand(new RegExp(/yarn/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn/gis), {
             code: 0,
         })
 
@@ -37,7 +37,7 @@ export default class PkgServiceTest extends AbstractSkillTest {
 
     @test()
     protected static async ifInstallingOnlySpruceModulesShouldNotRunNPMAdd() {
-        CommandService.fakeCommand(
+        CommandServiceImpl.fakeCommand(
             new RegExp(/npm.*?install.*?--no-progress/gis),
             {
                 code: 1,

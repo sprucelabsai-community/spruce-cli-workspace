@@ -1,7 +1,7 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { random, uniq } from 'lodash'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { NpmPackage } from '../../../types/cli.types'
 
@@ -27,7 +27,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
         const passedArgs: string[] = []
 
-        CommandService.fakeCommand(/(npm|yarn).*?(install|add)/, {
+        CommandServiceImpl.fakeCommand(/(npm|yarn).*?(install|add)/, {
             code: 0,
             callback: (_, args) => {
                 passedArgs.push(...args)
@@ -51,7 +51,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
         let passedArgs: any[] = []
 
-        CommandService.fakeCommand(/(npm|yarn).*?(install|add)/, {
+        CommandServiceImpl.fakeCommand(/(npm|yarn).*?(install|add)/, {
             code: 0,
             callback: (_, args) => {
                 passedArgs.push(args)

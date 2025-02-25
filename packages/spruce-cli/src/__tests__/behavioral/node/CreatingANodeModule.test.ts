@@ -1,6 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -12,7 +12,7 @@ export default class CreatingANodeModuleTest extends AbstractCliTest {
 
     @test()
     protected static async canCreateAtDestination() {
-        CommandService.fakeCommand(new RegExp(/yarn add/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn add/gis), {
             code: 0,
         })
         const promise = this.Action('node', 'create', {

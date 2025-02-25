@@ -1,14 +1,14 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import TerminalInterface from '../interfaces/TerminalInterface'
-import CommandService from './CommandService'
+import CommandServiceImpl from './CommandService'
 
 export default class GameService {
-    private command: CommandService
+    private command: CommandServiceImpl
     private ui: TerminalInterface
     private statusMessage?: string
     private killed = false
 
-    public constructor(command: CommandService, ui: TerminalInterface) {
+    public constructor(command: CommandServiceImpl, ui: TerminalInterface) {
         this.command = command
         this.ui = ui
         this.command.cwd = diskUtil.resolvePath(__dirname, '../../')

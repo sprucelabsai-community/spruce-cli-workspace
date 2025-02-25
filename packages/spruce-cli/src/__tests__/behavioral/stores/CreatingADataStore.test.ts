@@ -2,7 +2,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import '@sprucelabs/spruce-store-plugin'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
@@ -159,11 +159,11 @@ export default class CreatingDataStoresTest extends AbstractSkillTest {
 
     @test()
     protected static async upgradeRestoresDataStoreTypes() {
-        CommandService.fakeCommand('yarn rebuild', {
+        CommandServiceImpl.fakeCommand('yarn rebuild', {
             code: 0,
         })
 
-        CommandService.fakeCommand(/yarn add/gis, {
+        CommandServiceImpl.fakeCommand(/yarn add/gis, {
             code: 0,
         })
 

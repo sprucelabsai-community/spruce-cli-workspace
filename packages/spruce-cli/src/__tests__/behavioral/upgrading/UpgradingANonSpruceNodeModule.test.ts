@@ -1,6 +1,6 @@
 import { HASH_SPRUCE_DIR, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert, generateId } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import PkgService from '../../../services/PkgService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import ScriptUpdaterImpl, {
@@ -61,7 +61,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
         let wasHit = false
 
-        CommandService.fakeCommand(/yarn.*?-W/, {
+        CommandServiceImpl.fakeCommand(/yarn.*?-W/, {
             code: 0,
             callback: () => {
                 wasHit = true
@@ -79,7 +79,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
 
         const commands: string[] = []
 
-        CommandService.fakeCommand(/yarn.*?add .*/gis, {
+        CommandServiceImpl.fakeCommand(/yarn.*?add .*/gis, {
             code: 0,
             callback: (command, args) => {
                 commands.push([command, ...args].join(' '))
@@ -107,7 +107,7 @@ export default class UpgradingANonSpruceNodeModuleTest extends AbstractCliTest {
     protected static async runsUpgradeInEveryPackageInWorkspace() {
         this.setWorkspaces(['packages/*'])
 
-        CommandService.clearFakedResponses()
+        CommandServiceImpl.clearFakedResponses()
 
         const moduleName = 'test1'
         const path = this.resolvePath('packages', moduleName)

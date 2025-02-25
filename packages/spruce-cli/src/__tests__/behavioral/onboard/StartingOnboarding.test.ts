@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import CliGlobalEmitter, { globalContract } from '../../../GlobalEmitter'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 class SpyEmitter extends CliGlobalEmitter {
@@ -32,7 +32,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
     @test()
     protected static async onboardingThroughSkillCreateThenShutsOff() {
-        CommandService.fakeCommand(/yarn/, { code: 0 })
+        CommandServiceImpl.fakeCommand(/yarn/, { code: 0 })
 
         const onboardAction = this.Action('onboard', 'onboard')
         const onboardPromise = onboardAction.execute({})

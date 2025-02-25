@@ -22,7 +22,7 @@ import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import SkillStore from '../features/skill/stores/SkillStore'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
-import CommandService from '../services/CommandService'
+import CommandServiceImpl from '../services/CommandService'
 import ImportService from '../services/ImportService'
 import LintService from '../services/LintService'
 import ServiceFactory, { Service, ServiceMap } from '../services/ServiceFactory'
@@ -114,7 +114,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         ImportService.clearCache()
         SkillStore.clearCurrentSkill()
         EventStore.clearCache()
-        CommandService.clearFakedResponses()
+        CommandServiceImpl.clearFakedResponses()
         MercuryClientFactory.reset()
         MercuryClientFactory.setIsTestMode(false)
 

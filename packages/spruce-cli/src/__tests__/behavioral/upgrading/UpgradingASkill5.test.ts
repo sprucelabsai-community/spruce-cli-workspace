@@ -2,7 +2,7 @@ import { Schema } from '@sprucelabs/schema'
 import { test, assert } from '@sprucelabs/test-utils'
 import ActionFactory from '../../../features/ActionFactory'
 import { FeatureAction } from '../../../features/features.types'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import LintService from '../../../services/LintService'
 import ServiceFactory from '../../../services/ServiceFactory'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
@@ -50,7 +50,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
     ) {
         await this.FeatureFixture().installCachedFeatures('schemas')
 
-        CommandService.fakeCommand(new RegExp(/yarn/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn/gis), {
             code: 0,
         })
 
@@ -93,7 +93,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
         let wasMovedBackToDev = false
         let wasMovedBackToProd = false
 
-        CommandService.fakeCommand(new RegExp(/yarn/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn/gis), {
             code: 0,
             callback: (_, args) => {
                 if (
@@ -126,7 +126,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
 
         ServiceFactory.setFactoryClass('lint', SpyLintService)
 
-        CommandService.fakeCommand(/.*/gi, {
+        CommandServiceImpl.fakeCommand(/.*/gi, {
             code: 0,
             callback: (command, args) => {
                 this.invocationLog.push([command, ...args].join(' '))

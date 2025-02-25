@@ -3,7 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import SyncAction from '../../../features/error/actions/SyncAction'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 export default class UpgradingASkill3Test extends AbstractCliTest {
@@ -17,14 +17,14 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
         }
 
         await super.beforeEach()
-        CommandService.fakeCommand(new RegExp(/yarn rebuild/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn rebuild/gis), {
             code: 0,
         })
     }
 
     @test()
     protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
-        CommandService.clearFakedResponses()
+        CommandServiceImpl.clearFakedResponses()
         await this.FeatureFixture().installCachedFeatures('views')
 
         await this.Action('node', 'upgrade').execute({})
@@ -36,7 +36,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
     @test()
     protected static async featuresNotEnabledDontInstall() {
-        CommandService.clearFakedResponses()
+        CommandServiceImpl.clearFakedResponses()
         await this.FeatureFixture().installCachedFeatures('schemas')
 
         const results = await this.Action('node', 'upgrade').execute({})
@@ -93,7 +93,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
             return {}
         }
 
-        CommandService.fakeCommand('yarn clean.build', {
+        CommandServiceImpl.fakeCommand('yarn clean.build', {
             code: 0,
             callback: () => {
                 wasCleanBuildCalled = true
@@ -102,7 +102,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
         let wasBuildDevCalled = false
 
-        CommandService.fakeCommand('yarn build.dev', {
+        CommandServiceImpl.fakeCommand('yarn build.dev', {
             code: 0,
             callback: () => {
                 wasBuildDevCalled = true
@@ -217,17 +217,17 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
     private static disableCleanBuildAndYarnAdd() {
         this.disableCleanAndBuild()
 
-        CommandService.fakeCommand(/yarn.*?add/gis, {
+        CommandServiceImpl.fakeCommand(/yarn.*?add/gis, {
             code: 0,
         })
     }
 
     private static disableCleanAndBuild() {
-        CommandService.fakeCommand('yarn clean.build', {
+        CommandServiceImpl.fakeCommand('yarn clean.build', {
             code: 0,
         })
 
-        CommandService.fakeCommand('yarn build.dev', {
+        CommandServiceImpl.fakeCommand('yarn build.dev', {
             code: 0,
         })
     }

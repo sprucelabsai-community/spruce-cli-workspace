@@ -1,7 +1,7 @@
 import { SpruceSchemas } from '#spruce/schemas/schemas.types'
 import bootSkillOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/bootSkillOptions.schema'
 import SpruceError from '../../../errors/SpruceError'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -64,7 +64,7 @@ export default class BootAction extends AbstractAction<OptionsSchema> {
     }
 
     private async boot(
-        command: CommandService,
+        command: CommandServiceImpl,
         script: string,
         resolve: (value: unknown) => void,
         reject: (reason?: any) => void

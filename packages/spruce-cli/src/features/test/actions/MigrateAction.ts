@@ -14,9 +14,11 @@ export default class MigrationAction extends AbstractAction<OptionsSchema> {
     public async execute(): Promise<FeatureActionResponse> {
         const testFinder = StaticTestFinderImpl.Finder()
         const testFileMigrator = StaticToInstanceTestFileMigratorImpl.Migrator()
+        const lintService = this.Service('lint')
         const migrator = StaticToInstanceMigratorImpl.Migrator({
             testFinder,
             testFileMigrator,
+            lintService,
         })
 
         const path = diskUtil.resolvePath(this.cwd, 'src', '__tests__')

@@ -3,7 +3,7 @@ import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import fs from 'fs-extra'
 import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
-import CommandService from './CommandService'
+import CommandServiceImpl from './CommandService'
 
 export default class ImportService {
     public cwd: string
@@ -14,10 +14,10 @@ export default class ImportService {
     private static cachedImports: Record<string, Record<string, any>> = {}
     private static importCacheDir: string =
         diskUtil.createTempDir('import-service')
-    private command: CommandService
+    private command: CommandServiceImpl
     private static isCachingEnabled: boolean
 
-    public constructor(options: { cwd: string; command: CommandService }) {
+    public constructor(options: { cwd: string; command: CommandServiceImpl }) {
         this.cwd = options.cwd
         this.command = options.command
     }

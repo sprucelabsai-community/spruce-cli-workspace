@@ -4,12 +4,12 @@ import {
     PkgService as BasePkgService,
 } from '@sprucelabs/spruce-skill-utils'
 import isCi from '../utilities/isCi'
-import CommandService from './CommandService'
+import CommandServiceImpl from './CommandService'
 
 export default class PkgService extends BasePkgService {
-    private commandService: CommandService
+    private commandService: CommandServiceImpl
 
-    public constructor(cwd: string, commandService: CommandService) {
+    public constructor(cwd: string, commandService: CommandServiceImpl) {
         super(cwd)
         this.commandService = commandService
     }

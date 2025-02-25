@@ -5,7 +5,7 @@ import {
     FeatureActionResponse,
     FeatureInstallResponse,
 } from '../../features/features.types'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import AbstractSchemaTest from '../../tests/AbstractSchemaTest'
 import testUtil from '../../tests/utilities/test.utility'
 
@@ -273,7 +273,7 @@ export default class FeatureCommandExecuterContTest extends AbstractSchemaTest {
     }
 
     private static fakeInstallCommands() {
-        CommandService.fakeCommand(new RegExp(/yarn|npm/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/yarn|npm/gis), {
             code: 0,
         })
     }

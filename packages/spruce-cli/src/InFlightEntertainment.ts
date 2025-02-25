@@ -1,5 +1,5 @@
 import TerminalInterface from './interfaces/TerminalInterface'
-import CommandService from './services/CommandService'
+import CommandServiceImpl from './services/CommandService'
 import GameService from './services/GameService'
 
 export default class InFlightEntertainment {
@@ -7,7 +7,7 @@ export default class InFlightEntertainment {
     private static game?: GameService
 
     public static setup(options: {
-        command: CommandService
+        command: CommandServiceImpl
         ui: TerminalInterface
     }) {
         this.game = new GameService(options.command, options.ui)

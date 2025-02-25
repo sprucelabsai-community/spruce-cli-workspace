@@ -1,6 +1,6 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import FeatureInstaller from '../../features/FeatureInstaller'
-import CommandService from '../../services/CommandService'
+import CommandServiceImpl from '../../services/CommandService'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class FeatureInstallerTest extends AbstractCliTest {
@@ -28,7 +28,7 @@ export default class FeatureInstallerTest extends AbstractCliTest {
 
     @test()
     protected static async afterPackageInstallIsCalledOncePerFeature() {
-        CommandService.fakeCommand(/yarn/, {
+        CommandServiceImpl.fakeCommand(/yarn/, {
             code: 0,
         })
 

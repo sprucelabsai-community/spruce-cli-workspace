@@ -1,12 +1,12 @@
 import { test, assert } from '@sprucelabs/test-utils'
-import CommandService from '../../../services/CommandService'
+import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import testUtil from '../../../tests/utilities/test.utility'
 
 export default class CreatingASkillTest extends AbstractCliTest {
     protected static async beforeEach() {
         await super.beforeEach()
-        CommandService.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
+        CommandServiceImpl.fakeCommand(new RegExp(/npm.*?install .*?/gis), {
             code: 0,
         })
     }
