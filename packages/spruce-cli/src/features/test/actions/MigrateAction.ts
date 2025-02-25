@@ -21,6 +21,7 @@ export default class MigrationAction extends AbstractAction<OptionsSchema> {
             lintService,
         })
 
+        this.ui.startLoading('Migrating tests...')
         const path = diskUtil.resolvePath(this.cwd, 'src', '__tests__')
         const { totalTestsSkipped, totalTestsUpdated } =
             await migrator.run(path)
