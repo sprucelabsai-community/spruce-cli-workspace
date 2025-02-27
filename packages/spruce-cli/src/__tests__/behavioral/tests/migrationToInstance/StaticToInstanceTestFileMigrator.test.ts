@@ -148,6 +148,14 @@ protected suiteMethod() {}`
     }
 
     @test()
+    protected properlyMigrationsAbstractTests2() {
+        const before = this.readTestFile('AbstractStaticTest2.txt')
+        const expected = this.readTestFile('AbstractInstanceTest2.txt')
+
+        this.assertMigratedEquals(before, expected)
+    }
+
+    @test()
     protected canMigrateMoreComplexTest() {
         const before = this.readTestFile('StaticTest2.txt')
         const expected = this.readTestFile('InstanceTest2.txt')

@@ -16,10 +16,12 @@ export default class StaticToInstanceTestFileMigratorImpl
         //    that has the `@test()` decorator
         // 1b. If the contents include `export default abstract class`,
         //     remove `static` from all methods
-        const includesAbstractExport = contents.includes(
-            'export default abstract class'
-        )
-        let cleanedUp = includesAbstractExport
+        const isAbstractTest =
+            /export\s+default\s+(?:abstract\s+class\b|class\s+(Abstract\w*))/m.test(
+                contents
+            )
+
+        let cleanedUp = isAbstractTest
             ? contents.replaceAll(' static ', ' ')
             : contents.replace(
                   // Matches @test() or @seed(...) followed (on next line) by optional visibility and `static`.
@@ -28,7 +30,7 @@ export default class StaticToInstanceTestFileMigratorImpl
               )
 
         // 2. Add `@suite()` above `export default class` if it's not already present
-        if (!cleanedUp.includes('@suite')) {
+        if (!isAbstractTest && !cleanedUp.includes('@suite')) {
             cleanedUp = cleanedUp.replace(
                 /export default class/,
                 '@suite()\nexport default class'
@@ -89,7 +91,6 @@ export default class StaticToInstanceTestFileMigratorImpl
             }
         }
 
-        debugger
         return names
     }
 
