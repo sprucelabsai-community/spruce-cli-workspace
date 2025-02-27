@@ -23,7 +23,7 @@ export default class StaticToInstanceTestFileMigratorImpl
             ? contents.replaceAll(' static ', ' ')
             : contents.replace(
                   // Matches @test() or @seed(...) followed (on next line) by optional visibility and `static`.
-                  /(@(?:test\(\)|seed\([^)]*\))\s*\n\s*(?:public|protected)\s+)static\s+/g,
+                  /(@(?:(?:test|seed)\([\s\S]*?\))\s*\n\s*(?:public|protected)\s+)static\s+/g,
                   '$1'
               )
 
@@ -55,12 +55,15 @@ export default class StaticToInstanceTestFileMigratorImpl
         const methods = ['beforeEach', 'afterEach']
         for (const method of methods) {
             cleanedUp = cleanedUp.replace(
-                `protected static async ${method}()`,
-                `protected async ${method}()`
+                `static async ${method}()`,
+                `async ${method}()`
             )
         }
 
         cleanedUp = this.fixNonNullAssertions(cleanedUp)
+
+        cleanedUp = cleanedUp.replaceAll('= >', '=>')
+        cleanedUp = cleanedUp.replaceAll('! =', ' =')
 
         return cleanedUp
     }
@@ -73,8 +76,9 @@ export default class StaticToInstanceTestFileMigratorImpl
     }
 
     private findThisCalls(contents: string): string[] {
-        // Matches `this.myProp` if followed by space, punctuation, parentheses, or end of string
-        const thisPropertyRegex = /this\.(\w+)(?=[\s.(),;]|$)/g
+        // Matches either `this.myProp` or `delete this.myProp`
+        // if followed by space, punctuation, parentheses, or end of string
+        const thisPropertyRegex = /(?:delete\s+)?this\.(\w+)(?=[\s.(),;]|$)/g
         const names: string[] = []
         let match: RegExpExecArray | null
 
@@ -85,6 +89,7 @@ export default class StaticToInstanceTestFileMigratorImpl
             }
         }
 
+        debugger
         return names
     }
 
@@ -117,21 +122,22 @@ export default class StaticToInstanceTestFileMigratorImpl
         )
 
         /**
-         * 2) Remove `static` from property declarations and add a non-null assertion.
+         * 2) Remove `static` from property declarations and add a non-null assertion
+         *    if the property is not optional.
          *    e.g.
          *    private static myProp: Type => private myProp!: Type
+         *    private static passedIntervalIdToClear?: string => private passedIntervalIdToClear?: string
          */
         const propertyPattern = new RegExp(
             `((?:public|protected|private)?\\s+)?` + // group 1: optional visibility
                 `static\\s+` + // literal "static "
-                `(${name})` + // group 2: the property name
+                `(${name})(\\?)?` + // group 2: property name, group 3: optional "?"
                 `(?=[\\s=:\\[;]|$)`, // lookahead: space, '=', ':', '[', ';', or end-of-string
             'g'
         )
-        updated = updated.replace(propertyPattern, (match, g1, g2) => {
-            // g1 = "private " / "public " / "protected " or empty
-            // g2 = property name
-            return `${g1 ?? ''}${g2}!`
+        updated = updated.replace(propertyPattern, (match, g1, g2, g3) => {
+            // If the property is optional (g3 is "?"), leave it. Otherwise, add a non-null assertion.
+            return `${g1 ?? ''}${g2}${g3 !== undefined ? g3 : '!'}`
         })
 
         return updated

@@ -20,7 +20,7 @@ export default class RootSkillViewTest extends AbstractGoogleTest {
     private static fakedIntegrations: PublicHomeIntegration[] = []
     protected static names: string[] = []
 
-    protected static async beforeEach(): Promise<void> {
+    protected static async beforeEach() {
         await super.beforeEach()
 
         this.fakedIntegrations = []

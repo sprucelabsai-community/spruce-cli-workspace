@@ -163,6 +163,14 @@ protected suiteMethod() {}`
         this.assertMigratedEquals(before, expected)
     }
 
+    @test()
+    protected canMigrateAnotherComplexTest2() {
+        const before = this.readTestFile('StaticTest4.txt')
+        const expected = this.readTestFile('InstanceTest4.txt')
+
+        this.assertMigratedEquals(before, expected)
+    }
+
     private readTestFile(name: string) {
         return diskUtil.readFile(this.resolveTestClassPath(name))
     }

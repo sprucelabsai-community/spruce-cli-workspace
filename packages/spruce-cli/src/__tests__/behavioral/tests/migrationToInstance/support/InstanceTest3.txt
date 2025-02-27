@@ -21,7 +21,7 @@ export default class RootSkillViewTest extends AbstractGoogleTest {
     private fakedIntegrations: PublicHomeIntegration[] = []
     protected names: string[] = []
 
-    protected async beforeEach(): Promise<void> {
+    protected async beforeEach() {
         await super.beforeEach()
 
         this.fakedIntegrations = []
