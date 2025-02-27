@@ -66,6 +66,17 @@ export default class GenerateSkillViewTest extends AbstractEightBitTest {
         GenerateSkillViewController.clearInterval = (id: string) => {
             this.passedIntervalIdToClear = id
         }
+
+        console.log(this.locationIds)
+        console.log(this.organizationIds)
+    }
+
+    private static get locationIds() {
+        console.log('here')
+    }
+
+    private static set organizationIds() {
+        console.log('here')
     }
 
     @test()
