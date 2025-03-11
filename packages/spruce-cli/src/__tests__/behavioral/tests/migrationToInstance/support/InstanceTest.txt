@@ -11,12 +11,14 @@ import AbstractSpruceTest, {
 @suite()
 export default class StaticTestFinderTest extends AbstractSpruceTest {
     private responseBody = generateId()
+    private readonly test = generateId()
 
     @test()
     protected async throwsWithMissing() {
         const finder = StaticTestFinder.Finder()
         const err = await assert.doesThrowAsync(() => finder.find())
         console.log(this.responseBody)
+        console.log(this.test)
         errorAssert.assertError(err, 'MISSING_PARAMETERS', {
             parameters: ['lookupDir'],
         })

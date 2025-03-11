@@ -99,16 +99,13 @@ export default class StaticToInstanceTestFileMigratorImpl
         name: string
     ): string {
         /**
-         * 1) Remove `static` for methods/getters/setters, e.g.:
-         *    private static async doSomething() => private async doSomething()
-         *    private static get value() => private get value()
-         *    private static set value(v) => private set value(v)
+         * 1) Remove `static` for methods/getters/setters
          */
         const methodPattern = new RegExp(
-            `((?:public|protected|private)?\\s+)?` + // group 1
-                `static\\s+` + // literal "static "
-                `(?:(async)\\s+)?` + // group 2: "async"?
-                `(?:(get|set)\\s+)?` + // group 3: "get" or "set"?
+            `((?:public|protected|private)?\\s+)?` + // group 1: optional visibility + space
+                `static\\s+` + // literal 'static '
+                `(?:(async)\\s+)?` + // group 2: 'async'?
+                `(?:(get|set)\\s+)?` + // group 3: 'get' or 'set'?
                 `(${name})\\s*\\(`, // group 4: the identifier + '('
             'g'
         )
@@ -123,22 +120,32 @@ export default class StaticToInstanceTestFileMigratorImpl
         )
 
         /**
-         * 2) Remove `static` from property declarations and add a non-null assertion
-         *    if the property is not optional.
+         * 2) Remove `static` from property declarations, including those marked `readonly`.
          *    e.g.
-         *    private static myProp: Type => private myProp!: Type
-         *    private static passedIntervalIdToClear?: string => private passedIntervalIdToClear?: string
+         *    private static myProp => private myProp!
+         *    private static readonly myProp => private readonly myProp!
+         *    private static myProp?: Type => private myProp?: Type
          */
         const propertyPattern = new RegExp(
-            `((?:public|protected|private)?\\s+)?` + // group 1: optional visibility
+            `((?:public|protected|private)?\\s+)?` + // group 1: optional visibility + space
                 `static\\s+` + // literal "static "
-                `(${name})(\\?)?` + // group 2: property name, group 3: optional "?"
-                `(?=[\\s=:\\[;]|$)`, // lookahead: space, '=', ':', '[', ';', or end-of-string
+                `(readonly\\s+)?` + // group 2: optional "readonly " (with trailing space)
+                `(${name})(\\?)?` + // group 3: property name, group 4: optional "?"
+                `(?=[\\s=:\\[;]|$)`, // lookahead
             'g'
         )
-        updated = updated.replace(propertyPattern, (match, g1, g2, g3) => {
-            // If the property is optional (g3 is "?"), leave it. Otherwise, add a non-null assertion.
-            return `${g1 ?? ''}${g2}${g3 !== undefined ? g3 : '!'}`
+        updated = updated.replace(propertyPattern, (match, g1, g2, g3, g4) => {
+            // g1 => "private ", "protected ", or "public " (plus any spacing) or undefined
+            // g2 => "readonly " if present, else undefined
+            // g3 => property name (e.g. 'test')
+            // g4 => "?" if property is optional, else undefined
+
+            // If it's optional, keep the '?' or else add '!'
+            // (Adjust if you'd rather remove the '!' in this step. Currently we're adding it if not optional.)
+            const optionalChar = g4 ? g4 : '!'
+
+            // Rebuild, dropping 'static' but retaining visibility + optional "readonly " + name + '?' or '!'
+            return `${g1 ?? ''}${g2 ?? ''}${g3}${optionalChar}`
         })
 
         return updated
