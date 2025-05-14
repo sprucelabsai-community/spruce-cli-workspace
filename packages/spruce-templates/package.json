@@ -68,7 +68,7 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.17.16",
-    "@types/node": "^22.15.17",
+    "@types/node": "^22.15.18",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "conventional-changelog-sprucelabs": "2.0.1",
