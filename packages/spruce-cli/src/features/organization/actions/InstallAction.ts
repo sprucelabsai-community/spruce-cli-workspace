@@ -50,14 +50,14 @@ export default class InstallAction extends AbstractAction<OptionsSchema> {
                         label: o.name,
                     }))
 
-                    organizationId = await this.ui.prompt({
+                    organizationId = (await this.ui.prompt({
                         type: 'select',
                         label: 'Which organization should we install your skill to?',
                         isRequired: true,
                         options: {
                             choices,
                         },
-                    })
+                    })) as string
                 }
             }
 

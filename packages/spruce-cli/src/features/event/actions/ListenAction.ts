@@ -286,7 +286,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
             },
         })
 
-        return eventName
+        return `${eventName}`
     }
 
     private async collectNamespace(
@@ -303,7 +303,7 @@ export default class ListenAction extends AbstractAction<OptionsSchema> {
             },
         })
 
-        return namespace
+        return `${namespace}`
     }
 
     private mapContractsToSelectChoices(contracts: EventContract[]) {

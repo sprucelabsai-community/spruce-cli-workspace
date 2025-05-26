@@ -170,7 +170,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
             )
             assert.isFalse(isInstalled)
 
-            await this.ui.sendInput(match?.value)
+            await this.ui.sendInput(`${match?.value}`)
 
             await promise
 
