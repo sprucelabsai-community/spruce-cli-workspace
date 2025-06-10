@@ -40,7 +40,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
         const pattern = options?.pattern ?? ''
         let escapeShell = function (cmd: string) {
             return (
-                '--testPathPattern="' +
+                '--testPathPatterns="' +
                 cmd.replace(/(["\s'$`\\])/g, '\\$1') +
                 '"'
             )
