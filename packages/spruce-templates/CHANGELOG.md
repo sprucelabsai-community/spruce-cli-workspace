@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [26.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v24.1.33...v26.0.0) (2025-06-12)
+
+
+### Breaking Changes
+
+* jest upgrade ([dda1b65](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/dda1b65))
+* new jest ([1bfcc99](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/1bfcc99))
+
+
+
+
+
 ## [24.1.33](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v24.1.32...v24.1.33) (2025-06-09)
 
 **Note:** Version bump only for package @sprucelabs/spruce-templates
