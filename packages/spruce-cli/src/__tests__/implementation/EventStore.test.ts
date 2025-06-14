@@ -9,7 +9,7 @@ import {
     eventTargetSchema,
 } from '@sprucelabs/spruce-event-utils'
 import { diskUtil, versionUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test-utils'
+import { test, assert, generateId } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import CreateAction from '../../features/event/actions/CreateAction'
 import EventStore from '../../features/event/stores/EventStore'
@@ -23,6 +23,7 @@ const EVENT_CAMEL = 'myEventStoreAmazingEvent'
 
 export default class EventStoreTest extends AbstractEventTest {
     private static createAction: CreateAction
+    private static events: EventStore
     protected static get version() {
         return versionUtil.generateVersion()
     }
@@ -32,21 +33,17 @@ export default class EventStoreTest extends AbstractEventTest {
         this.createAction = this.Action<CreateAction>('event', 'create')
         diskUtil.writeFile(this.resolvePath('package.json'), '{}')
         await this.people.loginAsDemoPerson(DEMO_NUMBER_EVENT_STORE)
-    }
-
-    @test()
-    protected static async canInstantiateEventStore() {
-        assert.isTruthy(this.Store('event'))
+        this.events = this.Store('event')
     }
 
     @test()
     protected static async hasFetchEventContractsMethod() {
-        assert.isFunction(this.Store('event').fetchEventContracts)
+        assert.isFunction(this.events.fetchEventContracts)
     }
 
     @test()
     protected static async fetchesCoreEventContracts() {
-        const results = await this.Store('event').fetchEventContracts({
+        const results = await this.events.fetchEventContracts({
             localNamespace: 'my-skill',
         })
         const { contracts, errors } = results
@@ -144,7 +141,7 @@ export default class EventStoreTest extends AbstractEventTest {
         diskUtil.writeFile(match, 'export default {}')
 
         const err = await assert.doesThrowAsync(
-            () => this.Store('event').loadLocalContract(skill.slug),
+            () => this.events.loadLocalContract(skill.slug),
             new RegExp(
                 `${skill.slug}.${EVENT_NAME}::${
                     versionUtil.generateVersion().constValue
@@ -157,7 +154,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
     @test()
     protected static async badLocalSignature() {
-        await this.FeatureFixture().installCachedFeatures('events')
+        await this.installEventsSkill()
 
         const skill = await this.getSkillFixture().registerCurrentSkill({
             name: 'my new skill',
@@ -179,7 +176,7 @@ export default class EventStoreTest extends AbstractEventTest {
         diskUtil.writeFile(match, 'export default {waka: true}')
 
         const err = await assert.doesThrowAsync(
-            () => this.Store('event').loadLocalContract(skill.slug),
+            () => this.events.loadLocalContract(skill.slug),
             new RegExp(
                 `${skill.slug}.${EVENT_NAME}::${
                     versionUtil.generateVersion().constValue
@@ -192,7 +189,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
     @test()
     protected static async mixesInLocalContracts() {
-        await this.FeatureFixture().installCachedFeatures('events')
+        await this.installEventsSkill()
 
         const skill = await this.getSkillFixture().registerCurrentSkill({
             name: 'my new skill',
@@ -208,7 +205,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
         await this.Action('event', 'sync').execute({})
 
-        const { contracts } = await this.Store('event').fetchEventContracts({
+        const { contracts } = await this.events.fetchEventContracts({
             localNamespace: skill.slug,
             namespaces: ['core'],
         })
@@ -258,7 +255,7 @@ export default class EventStoreTest extends AbstractEventTest {
     protected static async mixesInLocalContractWithGlobalEventsAndDoesNotReturnContractTwice() {
         const { skill, fqen } = await this.installAndRegisterOneGlobalEvent()
 
-        const { contracts } = await this.Store('event').fetchEventContracts({
+        const { contracts } = await this.events.fetchEventContracts({
             localNamespace: skill.slug,
         })
 
@@ -279,7 +276,7 @@ export default class EventStoreTest extends AbstractEventTest {
         const eventsPath = this.resolvePath('src', 'events')
         diskUtil.deleteDir(eventsPath)
 
-        const { contracts } = await this.Store('event').fetchEventContracts({
+        const { contracts } = await this.events.fetchEventContracts({
             localNamespace: skill.slug,
         })
 
@@ -293,7 +290,7 @@ export default class EventStoreTest extends AbstractEventTest {
 
     @test()
     protected static async globbyPatternLooksEverywhere() {
-        const store = this.Store('event')
+        const store = this.events
         const expected = this.resolvePath(
             'src',
             '**',
@@ -305,8 +302,22 @@ export default class EventStoreTest extends AbstractEventTest {
         assert.isEqual(store.generateGlobbyForLocalEvents(), expected)
     }
 
+    @test()
+    protected static async passesBackJsErrorsWhenFetchingEventContracts() {
+        const msg = generateId()
+        this.events = this.Store('event', {
+            apiClientFactory: async () => {
+                throw new Error(msg)
+            },
+        })
+        await assert.doesThrowAsync(
+            () => this.events.fetchEventContracts(),
+            msg
+        )
+    }
+
     private static async installAndRegisterOneGlobalEvent() {
-        await this.FeatureFixture().installCachedFeatures('events')
+        await this.installEventsSkill()
 
         const skill = await this.getSkillFixture().registerCurrentSkill({
             name: 'event store test skill',
@@ -354,5 +365,9 @@ export default class EventStoreTest extends AbstractEventTest {
         })
 
         return { eventStore, skill }
+    }
+
+    private static async installEventsSkill() {
+        await this.FeatureFixture().installCachedFeatures('events')
     }
 }

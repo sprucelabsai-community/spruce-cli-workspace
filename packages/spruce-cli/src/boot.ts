@@ -2,6 +2,7 @@ import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Command } from 'commander'
 import './addons/filePrompt.addon'
+import dotenv from 'dotenv'
 import Cli from './cli/Cli'
 import { CLI_HERO } from './constants'
 import { FeatureInstallerImpl } from './features/FeatureInstaller'
@@ -46,6 +47,10 @@ export async function run(argv: string[] = []): Promise<void> {
         terminal.renderHeadline(`Version ${json.version}`)
         return
     }
+
+    dotenv.config({
+        path: diskUtil.resolvePath(cwd, '.env'),
+    })
 
     await Cli.Boot({
         program,
