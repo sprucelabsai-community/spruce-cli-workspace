@@ -4,7 +4,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"version": "26.0.1",
+	"version": "26.0.2",
 	"skill": {
 		"namespace": "spruce-cli",
 		"upgradeIgnoreList": [
@@ -83,7 +83,7 @@
 		"@sprucelabs/spruce-core-schemas": "^41.0.8",
 		"@sprucelabs/spruce-event-utils": "^41.0.9",
 		"@sprucelabs/spruce-skill-utils": "^32.0.8",
-		"@sprucelabs/spruce-templates": "^26.0.1",
+		"@sprucelabs/spruce-templates": "^26.0.2",
 		"@typescript-eslint/eslint-plugin": "^7.7.1",
 		"@typescript-eslint/parser": "^7.7.1",
 		"@sprucelabs/mercury-core-events": "^27.0.4",
