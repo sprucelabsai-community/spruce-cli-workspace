@@ -109,8 +109,8 @@
 	},
 	"devDependencies": {
 		"@sprucelabs/data-stores": "^29.0.9",
-		"@sprucelabs/heartwood-view-controllers": "^121.2.4",
-		"@sprucelabs/mercury-core-events": "^27.0.3",
+		"@sprucelabs/heartwood-view-controllers": "^121.2.5",
+		"@sprucelabs/mercury-core-events": "^27.0.4",
 		"@sprucelabs/resolve-path-aliases": "^3.0.3",
 		"@sprucelabs/spruce-conversation-plugin": "^68.0.5",
 		"@sprucelabs/spruce-deploy-plugin": "^68.0.5",
