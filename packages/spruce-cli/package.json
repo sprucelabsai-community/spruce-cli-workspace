@@ -86,6 +86,7 @@
 		"@sprucelabs/spruce-templates": "^26.0.1",
 		"@typescript-eslint/eslint-plugin": "^7.7.1",
 		"@typescript-eslint/parser": "^7.7.1",
+		"@sprucelabs/mercury-core-events": "^27.0.4",
 		"cfonts": "^3.3.0",
 		"chalk": "4.1.2",
 		"chokidar": "^4.0.3",
@@ -110,7 +111,6 @@
 	"devDependencies": {
 		"@sprucelabs/data-stores": "^29.0.9",
 		"@sprucelabs/heartwood-view-controllers": "^121.2.5",
-		"@sprucelabs/mercury-core-events": "^27.0.4",
 		"@sprucelabs/resolve-path-aliases": "^3.0.3",
 		"@sprucelabs/spruce-conversation-plugin": "^68.0.5",
 		"@sprucelabs/spruce-deploy-plugin": "^68.0.5",
