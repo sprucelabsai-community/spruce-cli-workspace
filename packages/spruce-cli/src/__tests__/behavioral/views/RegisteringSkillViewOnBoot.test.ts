@@ -1,14 +1,17 @@
 import { test, assert } from '@sprucelabs/test-utils'
+import ViewStore from '../../../features/view/stores/ViewStore'
 import LintService from '../../../services/LintService'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import { DEMO_NUMBER_VIEWS_ON_BOOT } from '../../../tests/constants'
 
 export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
     protected static skillCacheKey = 'views'
+    private static views: ViewStore
 
     protected static async beforeEach() {
         await super.beforeEach()
         LintService.enableLinting()
+        this.views = this.Store('view')
     }
 
     @test()
@@ -17,7 +20,7 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 
         let views: any
         try {
-            views = await this.Store('view').fetchSkillViews()
+            views = await this.fetchSkillViews()
         } catch {}
 
         assert.isFalsy(views)
@@ -34,15 +37,19 @@ export default class RegisteringSkillViewOnBootTest extends AbstractSkillTest {
 
         const buildResults = await this.buildSkill()
 
-        this.log('build buildResults', buildResults)
+        this.log('build buildResults', JSON.stringify(buildResults))
 
         const results = await this.bootSkill()
 
         assert.isFalsy(results.errors)
 
-        const skillViews = await this.Store('view').fetchSkillViews()
+        const skillViews = await this.fetchSkillViews()
 
         assert.isTruthy(skillViews, 'Skill views were not registered on boot!')
+    }
+
+    private static async fetchSkillViews() {
+        return await this.views.fetchSkillViews()
     }
 
     protected static async registerAndBootSkill() {
