@@ -87,7 +87,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
     protected static async modulesMovedFromDevToProdDependenciesStayThere() {
         await this.installSkillsSkill()
 
-        await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
+        await this.moveDependencyToProd('eslint')
         await this.moveDependencyToDev('@sprucelabs/error')
 
         let wasMovedBackToDev = false
@@ -96,10 +96,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
         CommandServiceImpl.fakeCommand(new RegExp(/yarn/gis), {
             code: 0,
             callback: (_, args) => {
-                if (
-                    args.indexOf('-D') > -1 &&
-                    args.indexOf('@sprucelabs/resolve-path-aliases') > -1
-                ) {
+                if (args.indexOf('-D') > -1 && args.indexOf('eslint') > -1) {
                     wasMovedBackToDev = true
                 } else if (
                     args.indexOf('-D') === -1 &&

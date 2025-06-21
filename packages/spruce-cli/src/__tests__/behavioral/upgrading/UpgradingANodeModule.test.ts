@@ -41,7 +41,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
         ]
         diskUtil.deleteDir(this.resolveHashSprucePath('features'))
 
-        const results = await this.Action('node', 'upgrade').execute({})
+        const results = await this.upgrade()
 
         assert.isFalsy(results.errors)
 
@@ -62,7 +62,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
             code: 0,
         })
 
-        const promise = this.Action('node', 'upgrade').execute({})
+        const promise = this.upgrade()
 
         await uiAssert.assertRendersConfirmWriteFile(this.ui)
 
@@ -72,5 +72,57 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
         )
 
         await promise
+    }
+
+    @test()
+    protected static async resolvePathAliasesIsADevDependencyInNodeModules() {
+        // this.assertResolvePathAliasesIsDevDependency()
+        await this.upgrade()
+        this.assertResolvePathAliasesIsDevDependency()
+    }
+
+    @test()
+    protected static async movesResolvePathAliasesToDevDependencyOnUpgrade() {
+        const pkg = this.Service('pkg')
+        const version = pkg.get([
+            'devDependencies',
+            '@sprucelabs/resolve-path-aliases',
+        ])
+
+        pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
+
+        pkg.set({
+            path: ['dependencies', '@sprucelabs/resolve-path-aliases'],
+            value: version,
+        })
+
+        await this.upgrade()
+        this.assertResolvePathAliasesIsDevDependency()
+    }
+
+    private static assertResolvePathAliasesIsDevDependency() {
+        const pkg = this.Service('pkg')
+        const devVersion = pkg.get([
+            'devDependencies',
+            '@sprucelabs/resolve-path-aliases',
+        ])
+
+        assert.isTruthy(
+            devVersion,
+            'Should have resolve path aliases as a dev dependency'
+        )
+
+        const prodVersion = pkg.get([
+            'dependencies',
+            '@sprucelabs/resolve-path-aliases',
+        ])
+        assert.isFalsy(
+            prodVersion,
+            'Should not have resolve path aliases as a prod dependency'
+        )
+    }
+
+    private static async upgrade() {
+        return await this.Action('node', 'upgrade').execute({})
     }
 }

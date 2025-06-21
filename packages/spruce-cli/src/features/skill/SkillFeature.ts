@@ -35,6 +35,7 @@ export default class SkillFeature<
         { name: '@sprucelabs/spruce-test-fixtures@latest', isDev: true },
         { name: 'ts-node', isDev: true },
         ...universalDevDependencies,
+        { name: '@sprucelabs/resolve-path-aliases' },
     ]
 
     public optionsSchema = skillFeatureSchema as S

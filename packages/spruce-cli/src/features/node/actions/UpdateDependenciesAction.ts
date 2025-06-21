@@ -57,7 +57,13 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
             : []
 
         const pkg = this.Service('pkg')
-        pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
+
+        if (features.find((f) => f.code === 'skill')) {
+            pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
+        } else {
+            pkg.unset(['dependencies', '@sprucelabs/resolve-path-aliases'])
+        }
+
         const pkgContents = pkg.readPackage()
 
         let dependencies: { stripped: string; name: string }[] =

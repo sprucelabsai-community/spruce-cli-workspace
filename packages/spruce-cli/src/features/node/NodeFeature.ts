@@ -22,7 +22,10 @@ export default class NodeFeature<
     public description = ''
     public dependencies: FeatureDependency[] = []
     public optionsSchema = nodeFeatureOptionsSchema as S
-    public packageDependencies = [...universalDevDependencies]
+    public packageDependencies = [
+        ...universalDevDependencies,
+        { name: '@sprucelabs/resolve-path-aliases', isDev: true },
+    ]
 
     public scripts = {
         ...universalScripts,
