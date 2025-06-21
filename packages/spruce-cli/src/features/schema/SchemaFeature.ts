@@ -21,7 +21,7 @@ export default class SchemaFeature extends AbstractFeature {
         {
             name: '@sprucelabs/spruce-core-schemas@latest',
         },
-        { name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
+        { name: '@sprucelabs/resolve-path-aliases@latest' },
         {
             name: '@sprucelabs/spruce-skill-utils',
         },

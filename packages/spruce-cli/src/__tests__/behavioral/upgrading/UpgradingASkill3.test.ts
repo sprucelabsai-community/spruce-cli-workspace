@@ -23,15 +23,15 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
     }
 
     @test()
-    protected static async doesNotAddResolvePathAliasesToDependenciesAfterUpgrade() {
+    protected static async doesNotAddResolvePathAliasesToDevDependenciesAfterUpgrade() {
         CommandServiceImpl.clearFakedResponses()
         await this.FeatureFixture().installCachedFeatures('views')
 
         await this.Action('node', 'upgrade').execute({})
 
-        const dependencies = this.Service('pkg').get('dependencies')
+        const devDependencies = this.Service('pkg').get('devDependencies')
 
-        assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
+        assert.isFalsy(devDependencies['@sprucelabs/resolve-path-aliases'])
     }
 
     @test()
@@ -43,7 +43,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
 
         const dependencies = this.Service('pkg').get('dependencies')
 
-        assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
+        assert.isFalsy(dependencies['@sprucelabs/heartwood-view-controllers'])
 
         assert.doesThrow(() =>
             testUtil.assertFileByNameInGeneratedFiles(
