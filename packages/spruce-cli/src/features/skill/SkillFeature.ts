@@ -46,10 +46,8 @@ export default class SkillFeature<
         boot: 'node build/index',
         'boot.local':
             'node -r ts-node/register -r tsconfig-paths/register ./src/index',
-
         health: 'yarn boot --health',
         'health.local': 'yarn boot.local --health',
-
         ...universalScripts,
     }
 

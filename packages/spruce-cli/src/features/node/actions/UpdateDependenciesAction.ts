@@ -57,6 +57,7 @@ export default class UpdateDependenciesAction extends AbstractAction<OptionsSche
             : []
 
         const pkg = this.Service('pkg')
+        pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
         const pkgContents = pkg.readPackage()
 
         let dependencies: { stripped: string; name: string }[] =

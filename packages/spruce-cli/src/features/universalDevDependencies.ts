@@ -1,5 +1,5 @@
 const universalDevDependencies = [
-    { name: '@sprucelabs/resolve-path-aliases', isDev: true },
+    { name: '@sprucelabs/resolve-path-aliases' },
     { name: '@types/node', isDev: true },
     { name: 'typescript', isDev: true },
     { name: 'eslint', isDev: true },

@@ -52,7 +52,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
     }
 
     @test()
-    protected static async shouldReWriteNodeDirsAndSkipIndx() {
+    protected static async shouldReWriteNodeDirsAndSkipIndex() {
         for (const file of ['tsconfig.json', 'src/index.ts']) {
             const tsConfig = this.resolvePath(file)
             diskUtil.writeFile(tsConfig, 'beenChanged')

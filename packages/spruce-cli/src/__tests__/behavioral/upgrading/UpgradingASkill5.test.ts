@@ -117,6 +117,23 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
     }
 
     @test()
+    protected static async resolvePathsMovedToProdDependencies() {
+        await this.installSkillsSkill()
+        await this.moveDependencyToDev('@sprucelabs/resolve-path-aliases')
+        await this.upgrade()
+        const pkg = this.Service('pkg')
+        const pkgContents = pkg.readPackage()
+        assert.isTruthy(
+            pkgContents.dependencies['@sprucelabs/resolve-path-aliases'],
+            'resolve-path-aliases should be in dependencies'
+        )
+        assert.isFalsy(
+            pkgContents.devDependencies['@sprucelabs/resolve-path-aliases'],
+            'resolve-path-aliases should not be in devDependencies'
+        )
+    }
+
+    @test()
     protected static async runsFixLintAfterUpgrade() {
         ActionFactory.setActionClass(
             'node',
