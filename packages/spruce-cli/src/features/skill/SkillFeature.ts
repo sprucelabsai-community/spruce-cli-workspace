@@ -81,6 +81,11 @@ export default class SkillFeature<
                 'Gives your skill event support through local boot events and optionall Mercury (spruce event.listen).',
             shouldOverwriteWhenChanged: true,
         },
+        {
+            path: 'tsconfig.prod.json',
+            description: 'Configuration for building for production.',
+            shouldOverwriteWhenChanged: true,
+        },
     ]
 
     public constructor(options: FeatureOptions) {
