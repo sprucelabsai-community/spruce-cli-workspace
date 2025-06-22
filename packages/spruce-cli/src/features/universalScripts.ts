@@ -1,5 +1,5 @@
 const universalScripts = {
-    build: 'yarn run build.tsc --sourceMap ; yarn run resolve-path-aliases',
+    build: 'yarn clean && yarn run build.copy-files && tsc -p tsconfig.prod.json && yarn build.resolve-paths && rm -rf build/__tests__',
     'build.ci':
         'yarn run build.tsc && yarn run build.resolve-paths && yarn run lint',
     'build.dev': 'yarn run build.tsc --sourceMap ; yarn run resolve-paths.lint',
