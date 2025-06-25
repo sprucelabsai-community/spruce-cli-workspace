@@ -68,11 +68,11 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.17.18",
-    "@types/node": "^24.0.3",
+    "@types/node": "^24.0.4",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
     "conventional-changelog-sprucelabs": "2.0.1",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.1",
     "typescript": "^5.8.3"
   },
   "yarn-upgrade-all": {
