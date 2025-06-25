@@ -23,15 +23,15 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
     }
 
     @test()
-    protected static async doesNotAddResolvePathAliasesToDevDependenciesAfterUpgrade() {
+    protected static async resolvePathAliasesToProductionAfterUpgrade() {
         CommandServiceImpl.clearFakedResponses()
         await this.FeatureFixture().installCachedFeatures('views')
 
         await this.Action('node', 'upgrade').execute({})
 
-        const devDependencies = this.Service('pkg').get('devDependencies')
+        const dependencies = this.Service('pkg').get('dependencies')
 
-        assert.isFalsy(devDependencies['@sprucelabs/resolve-path-aliases'])
+        assert.isFalsy(dependencies['@sprucelabs/resolve-path-aliases'])
     }
 
     @test()
