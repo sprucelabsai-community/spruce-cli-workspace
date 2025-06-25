@@ -1,15 +1,17 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import CommandServiceImpl from '../../../services/CommandService'
+import PkgService from '../../../services/PkgService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import uiAssert from '../../../tests/utilities/uiAssert.utility'
 
 export default class UpgradingANodeModuleTest extends AbstractCliTest {
+    private static pkg: PkgService
     protected static async beforeEach() {
         await super.beforeEach()
 
         await this.FeatureFixture().installCachedFeatures('everythingInNode')
-
+        this.pkg = this.Service('pkg')
         const featureInstaller = this.featureInstaller
         featureInstaller.markAsPermanentlySkipped('skill')
     }
@@ -58,9 +60,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
             diskUtil.writeFile(tsConfig, 'beenChanged')
         }
 
-        CommandServiceImpl.fakeCommand(/yarn/gi, {
-            code: 0,
-        })
+        this.fakeYarn()
 
         const promise = this.upgrade()
 
@@ -76,22 +76,21 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
 
     @test()
     protected static async resolvePathAliasesIsADevDependencyInNodeModules() {
-        // this.assertResolvePathAliasesIsDevDependency()
+        this.assertResolvePathAliasesIsDevDependency()
         await this.upgrade()
         this.assertResolvePathAliasesIsDevDependency()
     }
 
     @test()
     protected static async movesResolvePathAliasesToDevDependencyOnUpgrade() {
-        const pkg = this.Service('pkg')
-        const version = pkg.get([
+        const version = this.pkg.get([
             'devDependencies',
             '@sprucelabs/resolve-path-aliases',
         ])
 
-        pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
+        this.pkg.unset(['devDependencies', '@sprucelabs/resolve-path-aliases'])
 
-        pkg.set({
+        this.pkg.set({
             path: ['dependencies', '@sprucelabs/resolve-path-aliases'],
             value: version,
         })
@@ -100,9 +99,48 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
         this.assertResolvePathAliasesIsDevDependency()
     }
 
+    @test()
+    protected static async removesBuildFromScriptsIfMatchesBrokenBuild() {
+        this.pkg.set({
+            path: ['scripts', 'build'],
+            value: 'yarn run build.tsc --sourceMap ; yarn run resolve-paths',
+        })
+
+        this.fakeYarn()
+        await this.upgrade()
+
+        const build = this.pkg.get(['scripts', 'build'])
+        assert.isFalsy(
+            build,
+            'Should not have build script since it matches broken build'
+        )
+    }
+
+    @test()
+    protected static async doesNotRemoveBuildFromScriptsIfDoesNotMatchBrokenBuild() {
+        const value = 'yarn run build.tsc --sourceMap'
+        this.pkg.set({
+            path: ['scripts', 'build'],
+            value,
+        })
+        this.fakeYarn()
+        await this.upgrade()
+        const build = this.pkg.get(['scripts', 'build'])
+        assert.isEqual(
+            build,
+            value,
+            'Should have build script since it does not match broken build'
+        )
+    }
+
+    private static fakeYarn() {
+        CommandServiceImpl.fakeCommand(/yarn/gi, {
+            code: 0,
+        })
+    }
+
     private static assertResolvePathAliasesIsDevDependency() {
-        const pkg = this.Service('pkg')
-        const devVersion = pkg.get([
+        const devVersion = this.pkg.get([
             'devDependencies',
             '@sprucelabs/resolve-path-aliases',
         ])
@@ -112,7 +150,7 @@ export default class UpgradingANodeModuleTest extends AbstractCliTest {
             'Should have resolve path aliases as a dev dependency'
         )
 
-        const prodVersion = pkg.get([
+        const prodVersion = this.pkg.get([
             'dependencies',
             '@sprucelabs/resolve-path-aliases',
         ])

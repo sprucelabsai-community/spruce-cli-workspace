@@ -67,6 +67,17 @@ export default class UpgradeAction extends AbstractAction<OptionsSchema> {
 
         let scripts: Record<string, any> = {}
 
+        const pkg = this.Service('pkg')
+        if (!features.find((f) => f.code === 'skill')) {
+            const build = pkg.get('scripts.build')
+            if (
+                build ===
+                'yarn run build.tsc --sourceMap ; yarn run resolve-paths'
+            ) {
+                pkg.unset(['scripts', 'build'])
+            }
+        }
+
         for (const feature of features) {
             scripts = {
                 ...scripts,

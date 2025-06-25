@@ -78,7 +78,7 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
             return {}
         })
 
-        await this.upgrade()
+        await this.upgrade(false)
 
         assert.isTrue(wasHit === shouldCreateSchema)
     }
@@ -114,20 +114,12 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
     }
 
     @test()
-    protected static async resolvePathsMovedToProdDependencies() {
+    protected static async resolvePathsMovedToDevDependencies() {
         await this.installSkillsSkill()
-        await this.moveDependencyToDev('@sprucelabs/resolve-path-aliases')
+        this.assertResolvePathAliasesInDevDependencies()
+        await this.moveDependencyToProd('@sprucelabs/resolve-path-aliases')
         await this.upgrade()
-        const pkg = this.Service('pkg')
-        const pkgContents = pkg.readPackage()
-        assert.isTruthy(
-            pkgContents.dependencies['@sprucelabs/resolve-path-aliases'],
-            'resolve-path-aliases should be in dependencies'
-        )
-        assert.isFalsy(
-            pkgContents.devDependencies['@sprucelabs/resolve-path-aliases'],
-            'resolve-path-aliases should not be in devDependencies'
-        )
+        this.assertResolvePathAliasesInDevDependencies()
     }
 
     @test()
@@ -160,8 +152,24 @@ export default class UpgradingASkill5Test extends AbstractCliTest {
         )
     }
 
-    private static async upgrade() {
-        await this.Action('node', 'upgrade').execute({})
+    private static assertResolvePathAliasesInDevDependencies() {
+        const pkg = this.Service('pkg')
+        const pkgContents = pkg.readPackage()
+        assert.isFalsy(
+            pkgContents.dependencies['@sprucelabs/resolve-path-aliases'],
+            'resolve-path-aliases not should be in dependencies'
+        )
+        assert.isTruthy(
+            pkgContents.devDependencies['@sprucelabs/resolve-path-aliases'],
+            'resolve-path-aliases should be in devDependencies'
+        )
+    }
+
+    private static async upgrade(shouldCheckForErrors = true) {
+        const results = await this.Action('node', 'upgrade').execute({})
+        if (shouldCheckForErrors) {
+            assert.isFalsy(results.errors, 'errors should be empty')
+        }
     }
 
     private static async installSkillsSkill() {
