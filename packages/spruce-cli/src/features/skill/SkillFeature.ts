@@ -50,6 +50,7 @@ export default class SkillFeature<
         health: 'yarn boot --health',
         'health.local': 'yarn boot.local --health',
         ...universalScripts,
+        build: 'yarn clean && yarn run build.copy-files && tsc -p tsconfig.prod.json && yarn build.resolve-paths && rm -rf build/__tests__',
     }
 
     public readonly fileDescriptions: FileDescription[] = [
