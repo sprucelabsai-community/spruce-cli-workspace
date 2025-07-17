@@ -10,6 +10,14 @@ const upgradeSkillOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.UpgradeSkil
 	name: 'Upgrade skill action',
 	description: 'Upgrade. Everything. Heads up, this can take a few minutes. ⏱',
 	    fields: {
+	            /** Build after upgrade. Should I build your source after the upgrade? */
+	            'shouldBuild': {
+	                label: 'Build after upgrade',
+	                type: 'boolean',
+	                hint: 'Should I build your source after the upgrade?',
+	                defaultValue: true,
+	                options: undefined
+	            },
 	            /** Upgrade mode. */
 	            'upgradeMode': {
 	                label: 'Upgrade mode',

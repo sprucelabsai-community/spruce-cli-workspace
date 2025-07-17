@@ -38,9 +38,11 @@ export default class NodeFeature<
         super(options)
 
         void this.emitter.on('feature.did-execute', async (payload) => {
+            const { featureCode, actionCode, options } = payload
             const shouldUpgrade =
-                payload.featureCode === 'node' &&
-                payload.actionCode === 'upgrade' &&
+                featureCode === 'node' &&
+                actionCode === 'upgrade' &&
+                options?.shouldBuild !== false &&
                 this.features.isInSpruceModule()
 
             if (shouldUpgrade) {
@@ -68,7 +70,7 @@ export default class NodeFeature<
 
             return {
                 summaryLines: [
-                    'Build cleared.',
+                    'Old built files cleared.',
                     'Lint rules applied to source.',
                     'Code rebuilt successfully.',
                 ],

@@ -120,6 +120,12 @@ export const globalContract = buildEventContract({
                             valueType: 'FeatureActionResponse',
                         },
                     },
+                    options: {
+                        type: 'raw',
+                        options: {
+                            valueType: 'Record<string, any>',
+                        },
+                    },
                 },
             }),
             responsePayloadSchema: buildSchema({

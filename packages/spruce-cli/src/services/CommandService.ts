@@ -10,7 +10,7 @@ import SpruceError from '../errors/SpruceError'
 process.setMaxListeners(100)
 
 export default class CommandServiceImpl implements CommandService {
-    public cwd: string
+    private cwd: string
     private activeChildProcess: ChildProcess | undefined
     private ignoreCloseErrors = false
     private static fakeResponses: {
@@ -20,6 +20,14 @@ export default class CommandServiceImpl implements CommandService {
     private static commandsRunCapturedByMockResponses: string[] = []
 
     public constructor(cwd: string) {
+        this.cwd = cwd
+    }
+
+    public getCwd() {
+        return this.cwd
+    }
+
+    public setCwd(cwd: string) {
         this.cwd = cwd
     }
 
@@ -206,6 +214,8 @@ export interface CommandService {
     ): Promise<{
         stdout: string
     }>
+    getCwd(): string
+    setCwd(cwd: string): void
     kill(): void
     pid(): number | undefined
 }

@@ -139,6 +139,7 @@ export default class ActionExecuter {
                 results: response,
                 featureCode,
                 actionCode,
+                options: actionOptions,
             }
         )
 

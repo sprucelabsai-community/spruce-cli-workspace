@@ -27,7 +27,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'path': string
 				
-				'description'?: string| undefined | null
+				'description'?: string | undefined | null
 				
 				'action': ("skipped" | "generated" | "updated" | "deleted")
 		}
@@ -104,8 +104,10 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		/** Upgrade. Everything. Heads up, this can take a few minutes. ⏱ */
 		interface UpgradeSkillOptions {
 			
+				/** Build after upgrade. Should I build your source after the upgrade? */
+				'shouldBuild'?: boolean | undefined | null
 				/** Upgrade mode. */
-				'upgradeMode'?: ("askForChanged" | "forceEverything" | "forceRequiredSkipRest")| undefined | null
+				'upgradeMode'?: ("askForChanged" | "forceEverything" | "forceRequiredSkipRest") | undefined | null
 		}
 
 		interface UpgradeSkillOptionsSchema extends SpruceSchema.Schema {
@@ -115,6 +117,14 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			name: 'Upgrade skill action',
 			description: 'Upgrade. Everything. Heads up, this can take a few minutes. ⏱',
 			    fields: {
+			            /** Build after upgrade. Should I build your source after the upgrade? */
+			            'shouldBuild': {
+			                label: 'Build after upgrade',
+			                type: 'boolean',
+			                hint: 'Should I build your source after the upgrade?',
+			                defaultValue: true,
+			                options: undefined
+			            },
 			            /** Upgrade mode. */
 			            'upgradeMode': {
 			                label: 'Upgrade mode',
@@ -136,17 +146,17 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface TestOptions {
 			
 				/** Report while running. Should I output the test results while they are running? */
-				'shouldReportWhileRunning'?: boolean| undefined | null
+				'shouldReportWhileRunning'?: boolean | undefined | null
 				/** Pattern. I'll filter all tests that match this pattern */
-				'pattern'?: string| undefined | null
+				'pattern'?: string | undefined | null
 				/** Inspect. Pass --inspect related args to test process. */
-				'inspect'?: number| undefined | null
+				'inspect'?: number | undefined | null
 				/** Should wait for manual start?. */
-				'shouldHoldAtStart'?: boolean| undefined | null
+				'shouldHoldAtStart'?: boolean | undefined | null
 				/** Wait until tests are finished. For testing. Returns immediately after executing test so the running process can be managed programatically. */
-				'shouldReturnImmediately'?: boolean| undefined | null
+				'shouldReturnImmediately'?: boolean | undefined | null
 				/** Watch. */
-				'watchMode'?: ("off" | "standard" | "smart")| undefined | null
+				'watchMode'?: ("off" | "standard" | "smart") | undefined | null
 		}
 
 		interface TestOptionsSchema extends SpruceSchema.Schema {
@@ -214,41 +224,41 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SyncSchemasOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
+				'fieldTypesDestinationDir'?: string | undefined | null
 				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
+				'addonsLookupDir'?: string | undefined | null
 				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
+				'generateFieldTypes'?: boolean | undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string | undefined | null
 				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
+				'schemaLookupDir'?: string | undefined | null
 				/** Module import. When other skills use your schemas, will they import them from a module? */
-				'moduleToImportFromWhenRemote'?: string| undefined | null
+				'moduleToImportFromWhenRemote'?: string | undefined | null
 				/** Auto install missing dependencies. */
-				'shouldInstallMissingDependencies'?: boolean| undefined | null
+				'shouldInstallMissingDependencies'?: boolean | undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'shouldEnableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean | undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
+				'globalSchemaNamespace'?: string | undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'shouldFetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean | undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'shouldFetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean | undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean | undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldGenerateCoreSchemaTypes'?: boolean | undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
+				'registerBuiltSchemas'?: boolean | undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				'deleteDestinationDirIfNoSchemas'?: boolean | undefined | null
 				/** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
-				'deleteOrphanedSchemas'?: boolean| undefined | null
+				'deleteOrphanedSchemas'?: boolean | undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
+				'generateStandaloneTypesFile'?: boolean | undefined | null
 				/**  message. */
-				'syncingMessage'?: string| undefined | null
+				'syncingMessage'?: string | undefined | null
 		}
 
 		interface SyncSchemasOptionsSchema extends SpruceSchema.Schema {
@@ -423,11 +433,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SyncSchemaFieldsOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
+				'fieldTypesDestinationDir'?: string | undefined | null
 				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
+				'addonsLookupDir'?: string | undefined | null
 				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
+				'generateFieldTypes'?: boolean | undefined | null
 		}
 
 		interface SyncSchemaFieldsOptionsSchema extends SpruceSchema.Schema {
@@ -477,15 +487,15 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SyncEventOptions {
 			
 				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
+				'contractDestinationDir'?: string | undefined | null
 				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-				'schemaTypesLookupDir'?: string| undefined | null
+				'schemaTypesLookupDir'?: string | undefined | null
 				/** Sync only core events. For use in @sprucelabs/mercury-types */
-				'shouldSyncOnlyCoreEvents'?: boolean| undefined | null
+				'shouldSyncOnlyCoreEvents'?: boolean | undefined | null
 				/** Event signature types file. */
-				'skillEventContractTypesFile'?: string| undefined | null
+				'skillEventContractTypesFile'?: string | undefined | null
 				/** Event builder file. */
-				'eventBuilderFile'?: string| undefined | null
+				'eventBuilderFile'?: string | undefined | null
 		}
 
 		interface SyncEventOptionsSchema extends SpruceSchema.Schema {
@@ -546,43 +556,43 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SyncErrorOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
+				'fieldTypesDestinationDir'?: string | undefined | null
 				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
+				'addonsLookupDir'?: string | undefined | null
 				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
+				'generateFieldTypes'?: boolean | undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string | undefined | null
 				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
+				'schemaLookupDir'?: string | undefined | null
 				/** Module import. When other skills use your schemas, will they import them from a module? */
-				'moduleToImportFromWhenRemote'?: string| undefined | null
+				'moduleToImportFromWhenRemote'?: string | undefined | null
 				/** Auto install missing dependencies. */
-				'shouldInstallMissingDependencies'?: boolean| undefined | null
+				'shouldInstallMissingDependencies'?: boolean | undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'shouldEnableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean | undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
+				'globalSchemaNamespace'?: string | undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'shouldFetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean | undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'shouldFetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean | undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean | undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldGenerateCoreSchemaTypes'?: boolean | undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
+				'registerBuiltSchemas'?: boolean | undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
+				'generateStandaloneTypesFile'?: boolean | undefined | null
 				/**  message. */
-				'syncingMessage'?: string| undefined | null
+				'syncingMessage'?: string | undefined | null
 				/** Error class destination. Where I'll save your new Error class file? */
 				'errorClassDestinationDir': string
 				/** . Where I should look for your error builders? */
-				'errorLookupDir'?: string| undefined | null
+				'errorLookupDir'?: string | undefined | null
 				/** Types destination dir. This is where error options and type information will be written */
-				'errorTypesDestinationDir'?: string| undefined | null
+				'errorTypesDestinationDir'?: string | undefined | null
 		}
 
 		interface SyncErrorOptionsSchema extends SpruceSchema.Schema {
@@ -764,7 +774,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SkillFeature {
 			
 				
-				'destination'?: string| undefined | null
+				'destination'?: string | undefined | null
 				/** What's the name of your skill?. This marketing focused, like "8-bit Stories" or "Adventures". */
 				'name': string
 				/** How would you describe your skill?. */
@@ -812,7 +822,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface SetupVscodeOptions {
 			
 				/** Install everything. */
-				'all'?: boolean| undefined | null
+				'all'?: boolean | undefined | null
 		}
 
 		interface SetupVscodeOptionsSchema extends SpruceSchema.Schema {
@@ -882,7 +892,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface RegisterDashboardWidgetsEmitPayloadSchema {
 			
 				
-				'widgets'?: (BaseWidget)| undefined | null
+				'widgets'?: (BaseWidget) | undefined | null
 		}
 
 		interface RegisterDashboardWidgetsEmitPayloadSchemaSchema extends SpruceSchema.Schema {
@@ -916,7 +926,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'token': string
 				/** Logged in. */
-				'isLoggedIn'?: boolean| undefined | null
+				'isLoggedIn'?: boolean | undefined | null
 		}
 
 		interface PersonWithTokenSchema extends SpruceSchema.Schema {
@@ -969,7 +979,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** mode. */
 				'mode': ("short" | "immersive" | "off")
 				/** Stage. */
-				'stage'?: ("create.skill" | "test")| undefined | null
+				'stage'?: ("create.skill" | "test") | undefined | null
 		}
 
 		interface OnboardingSchema extends SpruceSchema.Schema {
@@ -1028,7 +1038,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface NodeFeatureOptions {
 			
 				
-				'destination'?: string| undefined | null
+				'destination'?: string | undefined | null
 				/** What's the name of your module?. */
 				'name': string
 				/** How would you describe your module?. */
@@ -1082,21 +1092,21 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** Camel case name. camelCase version of the name */
 				'nameCamel': string
 				/** Plural camel case name. camelCase version of the name */
-				'nameCamelPlural'?: string| undefined | null
+				'nameCamelPlural'?: string | undefined | null
 				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
+				'namePascal'?: string | undefined | null
 				/** Plural Pascal case name. PascalCase of the name */
-				'namePascalPlural'?: string| undefined | null
+				'namePascalPlural'?: string | undefined | null
 				/** Constant case name. CONST_CASE of the name */
-				'nameConst'?: string| undefined | null
+				'nameConst'?: string | undefined | null
 				/** Kebab case name. kebab-case of the name */
-				'nameKebab'?: string| undefined | null
+				'nameKebab'?: string | undefined | null
 				/** Snake case name. snake_case of the name */
-				'nameSnake'?: string| undefined | null
+				'nameSnake'?: string | undefined | null
 				/** Snake case name (plural). snakes_case of the name */
-				'nameSnakePlural'?: string| undefined | null
+				'nameSnakePlural'?: string | undefined | null
 				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
+				'description'?: string | undefined | null
 		}
 
 		interface NamedTemplateItemSchema extends SpruceSchema.Schema {
@@ -1200,23 +1210,23 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface ListenEventOptions {
 			
 				/** Contract destination. Where I will generate event contracts. */
-				'contractDestinationDir'?: string| undefined | null
+				'contractDestinationDir'?: string | undefined | null
 				/** Schema types lookup directory. Where I will lookup schema types and interfaces. */
-				'schemaTypesLookupDir'?: string| undefined | null
+				'schemaTypesLookupDir'?: string | undefined | null
 				/** Sync only core events. For use in @sprucelabs/mercury-types */
-				'shouldSyncOnlyCoreEvents'?: boolean| undefined | null
+				'shouldSyncOnlyCoreEvents'?: boolean | undefined | null
 				/** Event signature types file. */
-				'skillEventContractTypesFile'?: string| undefined | null
+				'skillEventContractTypesFile'?: string | undefined | null
 				/** Event builder file. */
-				'eventBuilderFile'?: string| undefined | null
+				'eventBuilderFile'?: string | undefined | null
 				/** Namespace. */
-				'namespace'?: string| undefined | null
+				'namespace'?: string | undefined | null
 				/** Event name. */
-				'eventName'?: string| undefined | null
+				'eventName'?: string | undefined | null
 				/** Events destination directory. Where should I add your listeners? */
-				'listenerDestinationDir'?: string| undefined | null
+				'listenerDestinationDir'?: string | undefined | null
 				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
+				'version'?: string | undefined | null
 		}
 
 		interface ListenEventOptionsSchema extends SpruceSchema.Schema {
@@ -1305,7 +1315,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface InstallSkillAtOrganizationOptions {
 			
 				/** Organization id. */
-				'organizationId'?: string| undefined | null
+				'organizationId'?: string | undefined | null
 		}
 
 		interface InstallSkillAtOrganizationOptionsSchema extends SpruceSchema.Schema {
@@ -1339,11 +1349,11 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** What are you testing?. E.g. Todo Card or Systems List */
 				'nameReadable': string
 				/** Test destination directory. Where I'll save your new test. */
-				'testDestinationDir'?: string| undefined | null
+				'testDestinationDir'?: string | undefined | null
 				/** Camel case name. camelCase version of the name */
 				'nameCamel': string
 				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
+				'namePascal'?: string | undefined | null
 		}
 
 		interface CreateTestOptionsSchema extends SpruceSchema.Schema {
@@ -1405,57 +1415,57 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface CreateSchemaOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
+				'fieldTypesDestinationDir'?: string | undefined | null
 				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
+				'addonsLookupDir'?: string | undefined | null
 				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
+				'generateFieldTypes'?: boolean | undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string | undefined | null
 				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
+				'schemaLookupDir'?: string | undefined | null
 				/** Source module. If this schema should be imported from a node module vs generated locally. */
-				'moduleToImportFromWhenRemote'?: string| undefined | null
+				'moduleToImportFromWhenRemote'?: string | undefined | null
 				/** Auto install missing dependencies. */
-				'shouldInstallMissingDependencies'?: boolean| undefined | null
+				'shouldInstallMissingDependencies'?: boolean | undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'shouldEnableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean | undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
+				'globalSchemaNamespace'?: string | undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'shouldFetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean | undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'shouldFetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean | undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean | undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldGenerateCoreSchemaTypes'?: boolean | undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
+				'registerBuiltSchemas'?: boolean | undefined | null
 				/** Delete directory if no schemas. Should I delete the schema directory if no schemas are found? */
-				'deleteDestinationDirIfNoSchemas'?: boolean| undefined | null
+				'deleteDestinationDirIfNoSchemas'?: boolean | undefined | null
 				/** Delete orphaned schemas. Should I delete schemas where the builders are missing? */
-				'deleteOrphanedSchemas'?: boolean| undefined | null
+				'deleteOrphanedSchemas'?: boolean | undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
+				'generateStandaloneTypesFile'?: boolean | undefined | null
 				/**  message. */
-				'syncingMessage'?: string| undefined | null
+				'syncingMessage'?: string | undefined | null
 				/** Schema builder destination directory. Where I'll save the new schema builder. */
-				'schemaBuilderDestinationDir'?: string| undefined | null
+				'schemaBuilderDestinationDir'?: string | undefined | null
 				/** Builder function. The function that builds this schema */
-				'builderFunction'?: string| undefined | null
+				'builderFunction'?: string | undefined | null
 				/** Sync after creation. This will ensure types and schemas are in sync after you create your builder. */
-				'syncAfterCreate'?: boolean| undefined | null
+				'syncAfterCreate'?: boolean | undefined | null
 				/** Version. Set a version yourself instead of letting me generate one for you */
-				'version'?: string| undefined | null
+				'version'?: string | undefined | null
 				/** Readable name. The name people will read */
 				'nameReadable': string
 				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
+				'namePascal'?: string | undefined | null
 				/** Camel case name. camelCase version of the name */
 				'nameCamel': string
 				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
+				'description'?: string | undefined | null
 		}
 
 		interface CreateSchemaOptionsSchema extends SpruceSchema.Schema {
@@ -1696,7 +1706,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				/** Name. The name people will read */
 				'nameReadable': string
 				/** Slug. kebab-case of the name */
-				'nameKebab'?: string| undefined | null
+				'nameKebab'?: string | undefined | null
 		}
 
 		interface CreateOrganizationOptionsSchema extends SpruceSchema.Schema {
@@ -1735,53 +1745,53 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface CreateErrorOptions {
 			
 				/** Field types directory. Where field types and interfaces will be generated. */
-				'fieldTypesDestinationDir'?: string| undefined | null
+				'fieldTypesDestinationDir'?: string | undefined | null
 				/** Addons lookup directory. Where I'll look for new schema fields to be registered. */
-				'addonsLookupDir'?: string| undefined | null
+				'addonsLookupDir'?: string | undefined | null
 				/** Generate field types. Should I generate field types too? */
-				'generateFieldTypes'?: boolean| undefined | null
+				'generateFieldTypes'?: boolean | undefined | null
 				/** Schema types destination directory. Where I will generate schema types and interfaces. */
-				'schemaTypesDestinationDirOrFile'?: string| undefined | null
+				'schemaTypesDestinationDirOrFile'?: string | undefined | null
 				/** . Where I should look for your schema builders? */
-				'schemaLookupDir'?: string| undefined | null
+				'schemaLookupDir'?: string | undefined | null
 				/** Module import. When other skills use your schemas, will they import them from a module? */
-				'moduleToImportFromWhenRemote'?: string| undefined | null
+				'moduleToImportFromWhenRemote'?: string | undefined | null
 				/** Auto install missing dependencies. */
-				'shouldInstallMissingDependencies'?: boolean| undefined | null
+				'shouldInstallMissingDependencies'?: boolean | undefined | null
 				/** Enable versioning. Should we use versioning? */
-				'shouldEnableVersioning'?: boolean| undefined | null
+				'shouldEnableVersioning'?: boolean | undefined | null
 				/** Global namespace. The name you'll use when accessing these schemas, e.g. SpruceSchemas */
-				'globalSchemaNamespace'?: string| undefined | null
+				'globalSchemaNamespace'?: string | undefined | null
 				/** Fetch remote schemas. I will pull in schemas from other features. */
-				'shouldFetchRemoteSchemas'?: boolean| undefined | null
+				'shouldFetchRemoteSchemas'?: boolean | undefined | null
 				/** Fetch local schemas. I will look in schemaLookupDir to load local schemas. */
-				'shouldFetchLocalSchemas'?: boolean| undefined | null
+				'shouldFetchLocalSchemas'?: boolean | undefined | null
 				/** Fetch core schemas. Should I pull in core schemas too? */
-				'shouldFetchCoreSchemas'?: boolean| undefined | null
+				'shouldFetchCoreSchemas'?: boolean | undefined | null
 				/** Generate core schemas. Used only for updating the @sprucelabs/spruce-core-schemas. Ensures core schemas are generated like local schemas. Also an alias for `--shouldFetchRemoteSchemas=false --shouldFetchCoreSchemas=false --generateStandaloneTypesFile. */
-				'shouldGenerateCoreSchemaTypes'?: boolean| undefined | null
+				'shouldGenerateCoreSchemaTypes'?: boolean | undefined | null
 				/** Register built schemas. Should the schemas use the SchemaRegistry for tracking? */
-				'registerBuiltSchemas'?: boolean| undefined | null
+				'registerBuiltSchemas'?: boolean | undefined | null
 				/** Generate standalone types file. By default, I'll generate a types file that augments core types from @sprucelabs/spruce-core-schemas. Setting this to true will generate a stand alone types file. */
-				'generateStandaloneTypesFile'?: boolean| undefined | null
+				'generateStandaloneTypesFile'?: boolean | undefined | null
 				/**  message. */
-				'syncingMessage'?: string| undefined | null
+				'syncingMessage'?: string | undefined | null
 				/** Error class destination. Where I'll save your new Error class file? */
 				'errorClassDestinationDir': string
 				/** . Where I should look for your error builders? */
-				'errorLookupDir'?: string| undefined | null
+				'errorLookupDir'?: string | undefined | null
 				/** Types destination dir. This is where error options and type information will be written */
-				'errorTypesDestinationDir'?: string| undefined | null
+				'errorTypesDestinationDir'?: string | undefined | null
 				/** Error builder destination directory. Where I'll save your new builder file? */
 				'errorBuilderDestinationDir': string
 				/** Readable name. The name people will read */
 				'nameReadable': string
 				/** Pascal case name. PascalCase of the name */
-				'namePascal'?: string| undefined | null
+				'namePascal'?: string | undefined | null
 				/** Camel case name. camelCase version of the name */
 				'nameCamel': string
 				/** Description. Describe a bit more here */
-				'description'?: string| undefined | null
+				'description'?: string | undefined | null
 		}
 
 		interface CreateErrorOptionsSchema extends SpruceSchema.Schema {
@@ -2045,13 +2055,13 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface BootSkillOptions {
 			
 				/** Run local. Will run using ts-node and typescript directly. Longer boot times */
-				'local'?: boolean| undefined | null
+				'local'?: boolean | undefined | null
 				
-				'onData'?: ((msg: string) => void)| undefined | null
+				'onData'?: ((msg: string) => void) | undefined | null
 				
-				'onError'?: ((msg: string) => void)| undefined | null
+				'onError'?: ((msg: string) => void) | undefined | null
 				/** Wait until skill is booted. For testing. Returns immediately after executing test so the running tests can be managed programatically. */
-				'shouldReturnImmediately'?: boolean| undefined | null
+				'shouldReturnImmediately'?: boolean | undefined | null
 		}
 
 		interface BootSkillOptionsSchema extends SpruceSchema.Schema {
@@ -2103,9 +2113,9 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'name': string
 				
-				'version'?: string| undefined | null
+				'version'?: string | undefined | null
 				
-				'isDev'?: boolean| undefined | null
+				'isDev'?: boolean | undefined | null
 		}
 
 		interface NpmPackageSchema extends SpruceSchema.Schema {
@@ -2148,7 +2158,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 				
 				'path': string
 				
-				'description'?: string| undefined | null
+				'description'?: string | undefined | null
 				
 				'action': ("skipped" | "generated" | "updated" | "deleted")
 		}
@@ -2196,19 +2206,19 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 		interface ActionResponse {
 			
 				
-				'files'?: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile[]| undefined | null
+				'files'?: SpruceSchemas.SpruceCli.v2020_07_22.GeneratedFile[] | undefined | null
 				
-				'headline'?: string| undefined | null
+				'headline'?: string | undefined | null
 				
-				'hints'?: string[]| undefined | null
+				'hints'?: string[] | undefined | null
 				
-				'summaryLines'?: string[]| undefined | null
+				'summaryLines'?: string[] | undefined | null
 				
-				'errors'?: (AbstractSpruceError<any>)[]| undefined | null
+				'errors'?: (AbstractSpruceError<any>)[] | undefined | null
 				
-				'meta'?: (Record<string, any>)| undefined | null
+				'meta'?: (Record<string, any>) | undefined | null
 				
-				'packagesInstalled'?: SpruceSchemas.SpruceCli.v2020_07_22.NpmPackage[]| undefined | null
+				'packagesInstalled'?: SpruceSchemas.SpruceCli.v2020_07_22.NpmPackage[] | undefined | null
 		}
 
 		interface ActionResponseSchema extends SpruceSchema.Schema {

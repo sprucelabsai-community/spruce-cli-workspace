@@ -6,6 +6,12 @@ export default buildSchema({
     description:
         'Upgrade. Everything. Heads up, this can take a few minutes. ⏱',
     fields: {
+        shouldBuild: {
+            type: 'boolean',
+            label: 'Build after upgrade',
+            defaultValue: true,
+            hint: 'Should I build your source after the upgrade?',
+        },
         upgradeMode: {
             type: 'select',
             label: 'Upgrade mode',

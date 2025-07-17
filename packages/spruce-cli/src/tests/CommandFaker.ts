@@ -39,6 +39,6 @@ export default class CommandFaker {
     }
 
     public fakeInstall(code = 0) {
-        this.fakeCommand(/.*?install/gis, code)
+        this.fakeCommand(/.*?(add|install)/gis, code)
     }
 }
