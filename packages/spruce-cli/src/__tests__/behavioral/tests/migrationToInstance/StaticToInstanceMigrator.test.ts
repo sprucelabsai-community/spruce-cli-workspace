@@ -303,6 +303,11 @@ class SpyCommandService implements CommandService {
             stdout: generateId(),
         }
     }
+    public getCwd(): string {
+        return ''
+    }
+
+    public setCwd(_cwd: string): void {}
     public kill(): void {}
     public pid(): number | undefined {
         return 0
