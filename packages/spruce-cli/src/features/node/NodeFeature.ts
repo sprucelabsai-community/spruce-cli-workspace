@@ -57,8 +57,8 @@ export default class NodeFeature<
         try {
             this.ui.clear()
             this.ui.renderHero('Upgrade')
-
             this.ui.startLoading('Cleaning build...')
+
             await this.Service('command').execute('yarn clean.build')
 
             const pkg = this.Service('pkg')
