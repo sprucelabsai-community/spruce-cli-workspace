@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import Cli from '../../cli/Cli'
 import { DEFAULT_HOST } from '../../constants'
 import ServiceFactory from '../../services/ServiceFactory'
@@ -5,7 +6,8 @@ import {
     ApiClientFactory,
     ApiClientFactoryOptions,
 } from '../../types/apiClient.types'
-require('dotenv').config()
+
+dotenv.config({ quiet: true })
 
 const TEST_HOST = process.env.TEST_HOST ?? DEFAULT_HOST
 

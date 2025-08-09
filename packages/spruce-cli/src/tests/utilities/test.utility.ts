@@ -2,9 +2,10 @@ import os from 'os'
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { assert } from '@sprucelabs/test-utils'
+import dotenv from 'dotenv'
 import { GeneratedFile } from '../../types/cli.types'
 import durationUtil from '../../utilities/duration.utility'
-require('dotenv').config()
+dotenv.config({ quiet: true })
 
 function hasArg(regex: RegExp) {
     return !!process.argv?.find((arg) => arg.search(regex) > -1)

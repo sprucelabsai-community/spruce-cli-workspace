@@ -5,7 +5,7 @@ import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import { DEMO_NUMBER_GLOBAL_EVENTS } from '../../../tests/constants'
 import testUtil from '../../../tests/utilities/test.utility'
 import { RegisteredSkill } from '../../../types/cli.types'
-dotenv.config()
+dotenv.config({ quiet: true })
 
 const stamp = new Date().getTime()
 const EVENT_NAME_READABLE = 'did book appointment'

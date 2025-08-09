@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+import dotenv from 'dotenv'
 import { run } from './boot'
 import TerminalInterface from './interfaces/TerminalInterface'
 
-require('dotenv').config()
+dotenv.config({ quiet: true })
 
 run(process.argv)
     .then((results: any) => {

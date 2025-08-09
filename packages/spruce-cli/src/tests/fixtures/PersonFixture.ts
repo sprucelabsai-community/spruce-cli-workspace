@@ -1,9 +1,10 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import { SchemaError } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
+import dotenv from 'dotenv'
 import { ApiClientFactory } from '../../types/apiClient.types'
 
-require('dotenv').config()
+dotenv.config({ quiet: true })
 
 export const DEMO_NUMBER = process.env.DEMO_NUMBER as string
 

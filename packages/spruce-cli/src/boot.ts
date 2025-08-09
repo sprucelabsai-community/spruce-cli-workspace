@@ -50,6 +50,7 @@ export async function run(argv: string[] = []): Promise<void> {
 
     dotenv.config({
         path: diskUtil.resolvePath(cwd, '.env'),
+        quiet: true,
     })
 
     await Cli.Boot({
