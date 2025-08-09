@@ -54,7 +54,7 @@ class SchemaFeature implements SkillFeature {
             '@sprucelabs/schema'
         )
 
-        const isSchemaInstalled = fs.existsSync(schemaPath)
+        const isSchemaInstalled = diskUtil.doesFileExist(schemaPath)
 
         return isSchemaInstalled
     }

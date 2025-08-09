@@ -80,7 +80,7 @@ export default class UpgradingToEslint9Test extends AbstractCliTest {
         await this.migrate()
 
         assert.isFalse(
-            fs.existsSync(settingsPath),
+            diskUtil.doesDirExist(settingsPath),
             `Settings file should not exist`
         )
     }

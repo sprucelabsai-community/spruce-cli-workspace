@@ -7,7 +7,7 @@ import {
     areSchemaValuesValid,
 } from '@sprucelabs/schema'
 import { IField } from '@sprucelabs/schema'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 // @ts-ignore
 import fonts from 'cfonts'
 import chalk from 'chalk'
@@ -495,7 +495,7 @@ export default class TerminalInterface implements GraphicsInterface {
                 // Only let people select an actual file
                 promptOptions.validate = (value: string) => {
                     return (
-                        fs.existsSync(value) &&
+                        diskUtil.doesDirExist(value) &&
                         fs.lstatSync(value).isDirectory()
                     )
                 }
@@ -538,7 +538,7 @@ export default class TerminalInterface implements GraphicsInterface {
                 // Only let people select an actual file
                 promptOptions.validate = (value: string) => {
                     return (
-                        fs.existsSync(value) &&
+                        diskUtil.doesDirExist(value) &&
                         !fs.lstatSync(value).isDirectory() &&
                         path.extname(value) === '.ts'
                     )

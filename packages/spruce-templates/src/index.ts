@@ -12,6 +12,7 @@ import {
     DEFAULT_GLOBAL_SCHEMA_NAMESPACE,
     DEFAULT_BUILDER_FUNCTION,
     DEFAULT_SCHEMA_TYPES_FILE,
+    diskUtil,
 } from '@sprucelabs/spruce-skill-utils'
 import handlebars from 'handlebars'
 import { FieldDefinitions } from '#spruce/schemas/fields/fields.types'
@@ -384,7 +385,7 @@ export const templates = {
         const { kind, dir } = options
 
         if (kind === DirectoryTemplateCode.Skill) {
-            return fs.existsSync(path.join(dir, 'package.json'))
+            return diskUtil.doesFileExist(path.join(dir, 'package.json'))
         }
 
         const filesToCheck =
@@ -392,7 +393,7 @@ export const templates = {
 
         let filesMissing = false
         for (const file of filesToCheck) {
-            if (!fs.existsSync(file.path)) {
+            if (!diskUtil.doesDirExist(file.path)) {
                 filesMissing = true
                 break
             }

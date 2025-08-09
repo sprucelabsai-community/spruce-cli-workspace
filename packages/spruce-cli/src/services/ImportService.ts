@@ -99,7 +99,7 @@ export default class ImportService {
     ): Promise<T> => {
         let defaultImported: T | undefined
 
-        if (!fs.existsSync(file)) {
+        if (!diskUtil.doesFileExist(file)) {
             throw new SpruceError({
                 code: 'FAILED_TO_IMPORT',
                 file,
