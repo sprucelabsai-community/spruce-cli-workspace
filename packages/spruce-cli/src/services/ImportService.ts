@@ -1,6 +1,5 @@
 import pathUtil from 'path'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import fs from 'fs-extra'
 import md5 from 'md5'
 import SpruceError from '../errors/SpruceError'
 import CommandServiceImpl from './CommandService'
