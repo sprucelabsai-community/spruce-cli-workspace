@@ -78,7 +78,7 @@ export default class CreateAction extends AbstractAction<OptionsSchema> {
         const match = matches[0]
         if (match) {
             const contents = diskUtil.readFile(matches[0])
-            doesStaticTestExist = contents.includes('static')
+            doesStaticTestExist = contents.includes('protected static')
         }
         return doesStaticTestExist
     }

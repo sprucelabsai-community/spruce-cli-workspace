@@ -10,7 +10,6 @@ export default abstract class AbstractInstanceTest extends AbstractSkillTest {
 
     protected static async beforeEach() {
         await super.beforeEach()
-
         this.action = this.Action('test', 'create')
     }
 
@@ -42,7 +41,6 @@ export default abstract class AbstractInstanceTest extends AbstractSkillTest {
     protected static async createTestAndAssertContentsEqual(
         name: string,
         expected: string,
-
         willPromptForSubDir = false
     ) {
         const testFile = await this.createTestAndGetCreatedFilePath(
