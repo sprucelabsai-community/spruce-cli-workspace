@@ -93,7 +93,15 @@ export default class CommandServiceImpl implements CommandService {
                       ...options?.spawnOptions,
                   }
 
-            const child = spawn(executable, args, spawnOptions)
+            let child: ChildProcess
+            if (spawnOptions.shell) {
+                const commandStr = options?.args
+                    ? [executable, ...args].join(' ')
+                    : cmd
+                child = spawn(commandStr, spawnOptions)
+            } else {
+                child = spawn(executable, args, spawnOptions)
+            }
             this.activeChildProcess = child
 
             if (options?.outStream) {
