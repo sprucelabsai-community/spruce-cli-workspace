@@ -43,7 +43,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
         await this.ui.sendInput('\n')
         await this.waitForInput()
 
-        await this.ui.sendInput('short')
+        await this.ui.sendInput('immersive')
         await this.waitForInput()
 
         await this.ui.sendInput('\n')
@@ -51,7 +51,7 @@ export default class StartingOnboardingTest extends AbstractCliTest {
         await onboardPromise
 
         const onboardingStore = this.Store('onboarding')
-        assert.isEqual(onboardingStore.getMode(), 'short')
+        assert.isEqual(onboardingStore.getMode(), 'immersive')
 
         const createSkillAction = this.Action('skill', 'create', {
             shouldAutoHandleDependencies: true,
@@ -78,6 +78,6 @@ export default class StartingOnboardingTest extends AbstractCliTest {
         await createPromise
 
         //should still be on (will turn off after test reporter boots)
-        assert.isEqual(onboardingStore.getMode(), 'short')
+        assert.isEqual(onboardingStore.getMode(), 'immersive')
     }
 }

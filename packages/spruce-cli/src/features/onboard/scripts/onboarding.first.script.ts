@@ -20,10 +20,10 @@ const script: Script = [
     'They are free standing. You walk around them a few times before...',
     'You see words scribed onto each.',
     'The door to the left says, "Quick start. 2.5 hours."',
-    'The door to the right says, "Immersive. 4-6 weeks."',
+    'The door to the right says, "Immersive. 2-3 weeks."',
     '"What, 2 and a half hours is not \'Quick\', my robot friend!", you chuckle aloud.',
-    '"And also, four to six week onboarding!?, What the actual sh**!?"',
-    "You don't even have time for a 2 hour onboarding, much less 4-6 weeks!",
+    '"And also, two to three week onboarding!?, What the actual sh**!?"',
+    "You don't even have time for a 2 hour onboarding, much less 2-3 weeks!",
     'But, you take pride in your work and the things you build.',
     "And also... maybe on the other side of these doors is that opportunity everyone's been talking about!",
     async (player) => {
