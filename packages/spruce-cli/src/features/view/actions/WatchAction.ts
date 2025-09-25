@@ -1,5 +1,4 @@
 import { buildSchema } from '@sprucelabs/schema'
-import { heartwoodRemoteUtil } from '@sprucelabs/spruce-event-utils'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -25,6 +24,7 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
 
         this.resetUi()
         const commands = this.Service('command')
+
         await commands.execute(
             'SHOULD_WATCH_VIEWS=true MAXIMUM_LOG_PREFIXES_LENGTH=0 yarn boot',
             {
@@ -51,11 +51,8 @@ export default class WatchAction extends AbstractAction<OptionsSchema> {
     }
 
     private getPreviewUrl() {
-        const remote = this.Service('remote').getRemote() as any
-        return (
-            heartwoodRemoteUtil.buildUrl(remote) +
-            `/#views/${this.skillNamespace}.root`
-        )
+        const host = this.Service('remote').getHost()
+        return host + `/#views/${this.skillNamespace}.root`
     }
 
     private resetUi() {
