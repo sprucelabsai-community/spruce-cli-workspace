@@ -1,10 +1,10 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import CommandServiceImpl from '../../services/CommandService'
-import LintService from '../../services/LintService'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import testUtil from '../../tests/utilities/test.utility'
+import CommandServiceImpl from '../../../services/CommandService'
+import LintService from '../../../services/LintService'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
 
 export default class DeployingASkillTest extends AbstractCliTest {
     private static readonly fastHerokuOptions = {

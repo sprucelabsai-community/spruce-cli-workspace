@@ -2,10 +2,10 @@ import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import AbstractCliTest from '../../tests/AbstractCliTest'
-import testUtil from '../../tests/utilities/test.utility'
-import { ApiClient } from '../../types/apiClient.types'
-import { RegisteredSkill } from '../../types/cli.types'
+import AbstractCliTest from '../../../tests/AbstractCliTest'
+import testUtil from '../../../tests/utilities/test.utility'
+import { ApiClient } from '../../../types/apiClient.types'
+import { RegisteredSkill } from '../../../types/cli.types'
 
 export default class DeployingToSandboxTest extends AbstractCliTest {
     private static sandboxDemoNumber = process.env.SANDBOX_DEMO_NUMBER as string
