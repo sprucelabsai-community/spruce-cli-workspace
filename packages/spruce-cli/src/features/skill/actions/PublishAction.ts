@@ -19,6 +19,7 @@ export type PublishActionDefinition = typeof optionsSchema
 
 export default class PublishAction extends AbstractAction<PublishActionDefinition> {
     public optionsSchema = optionsSchema
+    public commandAliases = ['publish']
     public invocationMessage = 'Publishing... ⚡️'
 
     public async execute(
