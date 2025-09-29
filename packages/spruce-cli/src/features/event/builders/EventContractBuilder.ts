@@ -11,7 +11,7 @@ import DependencyService from '../../../services/DependencyService'
 import EventTemplateItemBuilder from '../../../templateItemBuilders/EventTemplateItemBuilder'
 import { GraphicsInterface } from '../../../types/cli.types'
 import { FeatureActionResponse } from '../../features.types'
-import SkillStore from '../../skill/stores/SkillStore'
+import SkillStoreImpl from '../../skill/stores/SkillStore'
 import validateAndNormalizer from '../../validateAndNormalize.utility'
 import EventStore from '../stores/EventStore'
 import EventWriter from '../writers/EventWriter'
@@ -22,7 +22,7 @@ export default class EventContractBuilder {
     private eventWriter: EventWriter
     private cwd: string
     private eventStore: EventStore
-    private skillStore: SkillStore
+    private skillStore: SkillStoreImpl
     private dependencyService: DependencyService
 
     public constructor(options: {
@@ -31,7 +31,7 @@ export default class EventContractBuilder {
         eventGenerator: EventWriter
         cwd: string
         eventStore: EventStore
-        skillStore: SkillStore
+        skillStore: SkillStoreImpl
         dependencyService: DependencyService
     }) {
         this.optionsSchema = options.optionsSchema

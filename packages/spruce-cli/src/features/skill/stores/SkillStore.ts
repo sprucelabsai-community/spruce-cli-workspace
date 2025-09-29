@@ -1,10 +1,13 @@
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
+import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
 import { namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore, { StoreOptions } from '../../../stores/AbstractStore'
 import { CurrentSkill, RegisteredSkill } from '../../../types/cli.types'
 
-export default class SkillStore extends AbstractStore {
+export default class SkillStoreImpl
+    extends AbstractStore
+    implements SkillStore
+{
     public readonly name = 'skill'
     private static currentSkill?: CurrentSkill
 
@@ -23,21 +26,22 @@ export default class SkillStore extends AbstractStore {
         const isRegisteringCurrentSkill =
             options?.isRegisteringCurrentSkill !== false
 
-        isRegisteringCurrentSkill && (await this.assertInSkill())
+        isRegisteringCurrentSkill && this.assertInSkill()
 
         const { name, slug, description, isPublished } = values
         const client = await this.connectToApi()
 
-        const results = await client.emit('register-skill::v2020_12_25', {
-            payload: {
-                name,
-                slug,
-                description,
-                isPublished,
-            },
-        })
-
-        const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
+        const [{ skill }] = await client.emitAndFlattenResponses(
+            'register-skill::v2020_12_25',
+            {
+                payload: {
+                    name,
+                    slug,
+                    description,
+                    isPublished,
+                },
+            }
+        )
 
         if (isRegisteringCurrentSkill) {
             await this.setCurrentSkillsNamespace(skill.slug)
@@ -47,7 +51,7 @@ export default class SkillStore extends AbstractStore {
         return skill
     }
 
-    private async assertInSkill() {
+    private assertInSkill() {
         const isInstalled =
             this.Service('settings').isMarkedAsInstalled('skill')
 
@@ -57,11 +61,11 @@ export default class SkillStore extends AbstractStore {
     }
 
     public async loadCurrentSkill(): Promise<CurrentSkill> {
-        if (SkillStore.currentSkill) {
-            return SkillStore.currentSkill
+        if (SkillStoreImpl.currentSkill) {
+            return SkillStoreImpl.currentSkill
         }
 
-        await this.assertInSkill()
+        this.assertInSkill()
 
         const currentSkill = this.Service('auth').getCurrentSkill()
 
@@ -70,23 +74,23 @@ export default class SkillStore extends AbstractStore {
                 shouldAuthAsCurrentSkill: true,
             })
 
-            const response = await client.emit('get-skill::v2020_12_25', {
-                target: {
-                    skillId: currentSkill.id,
-                },
-            })
+            const [{ skill }] = await client.emitAndFlattenResponses(
+                'get-skill::v2020_12_25',
+                {
+                    target: {
+                        skillId: currentSkill.id,
+                    },
+                }
+            )
 
-            const { skill } =
-                eventResponseUtil.getFirstResponseOrThrow(response)
-
-            SkillStore.currentSkill = {
+            SkillStoreImpl.currentSkill = {
                 ...skill,
                 namespacePascal: namesUtil.toPascal(skill.slug),
                 isRegistered: true,
                 apiKey: currentSkill.apiKey,
             }
 
-            return SkillStore.currentSkill as CurrentSkill
+            return SkillStoreImpl.currentSkill as CurrentSkill
         }
 
         return {
@@ -95,6 +99,35 @@ export default class SkillStore extends AbstractStore {
             description: this.getSkillDescriptionFromPkg(),
             isRegistered: false,
         }
+    }
+
+    public async publish(options?: PublishOptions) {
+        const { isInstallable = true } = options || {}
+        const skill = await this.loadCurrentSkill()
+        if (!skill.id) {
+            throw new SpruceError({
+                code: 'NO_SKILLS_REGISTERED',
+                friendlyMessage:
+                    'You need to register your skill before you can publish it. Run `spruce register` to get started.',
+            })
+        }
+
+        const client = await this.connectToApi()
+        const [{ skill: results }] = await client.emitAndFlattenResponses(
+            'publish-skill::v2020_12_25',
+            {
+                target: {
+                    skillId: skill.id,
+                },
+                payload: {
+                    canBeInstalled: isInstallable,
+                },
+            }
+        )
+
+        console.log(results)
+
+        delete SkillStoreImpl.currentSkill
     }
 
     public async isCurrentSkillRegistered() {
@@ -148,19 +181,22 @@ export default class SkillStore extends AbstractStore {
         return pkg.get('description')
     }
 
-    public async unregisterSkill(skillId: string) {
+    public async unregisterSkill(skillId?: string) {
         const client = await this.connectToApi()
+        let resolvedSkillId = skillId
+        if (!skillId) {
+            const currentSkill = this.Service('auth').getCurrentSkill()
+            resolvedSkillId = currentSkill?.id
+        }
 
-        const response = await client.emit('unregister-skill::v2020_12_25', {
+        await client.emitAndFlattenResponses('unregister-skill::v2020_12_25', {
             target: {
-                skillId,
+                skillId: resolvedSkillId!,
             },
         })
 
-        eventResponseUtil.getFirstResponseOrThrow(response)
-
-        if (SkillStore.currentSkill?.id === skillId) {
-            SkillStore.currentSkill = undefined
+        if (!skillId || SkillStoreImpl.currentSkill?.id === skillId) {
+            SkillStoreImpl.currentSkill = undefined
             this.Service('auth').logoutCurrentSkill()
         }
     }
@@ -200,3 +236,27 @@ export interface RegisterSkillOptions {
 }
 
 export interface SkillStoreOptions {}
+
+export interface SkillStore {
+    name: 'skill'
+    register(
+        values: CreateSkill,
+        options?: RegisterSkillOptions
+    ): Promise<RegisteredSkill>
+    loadCurrentSkill(): Promise<CurrentSkill>
+    isCurrentSkillRegistered(): Promise<boolean>
+    setCurrentSkillsNamespace(namespace: string): Promise<void>
+    fetchMySkills(): Promise<ListSkill[]>
+    fetchAllSkills(query?: {
+        shouldOnlyShowMine?: boolean
+        namespaces?: string[]
+    }): Promise<ListSkill[]>
+    unregisterSkill(skillId?: string): Promise<void>
+    publish(options?: { isInstallable?: boolean }): Promise<void>
+}
+
+type ListSkill = SpruceSchemas.Mercury.v2020_12_25.ListSkillsSkill
+
+export interface PublishOptions {
+    isInstallable?: boolean
+}

@@ -20,11 +20,7 @@ export default class RegisteringASkillTest extends AbstractCliTest {
         })
 
         assert.isTruthy(results.errors)
-        errorAssert.assertError(results.errors[0], 'MERCURY_RESPONSE_ERROR')
-        errorAssert.assertError(
-            results.errors[0].options.responseErrors[0],
-            'UNAUTHORIZED_ACCESS'
-        )
+        errorAssert.assertError(results.errors[0], 'UNAUTHORIZED_ACCESS')
     }
 
     @test()

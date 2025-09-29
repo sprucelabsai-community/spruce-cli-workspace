@@ -9,7 +9,7 @@ export default abstract class AbstractSkillTest extends AbstractCliTest {
     protected static async beforeAll() {
         if (!this.skillCacheKey) {
             throw new Error(
-                "You must implement `protected static skillCacheKey = 'stores'`"
+                "You must implement `protected static skillCacheKey = '****'`"
             )
         }
         await super.beforeAll()

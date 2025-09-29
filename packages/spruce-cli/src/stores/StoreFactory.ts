@@ -5,7 +5,7 @@ import OnboardingStore from '../features/onboard/stores/OnboardingStore'
 import OrganizationStore from '../features/organization/stores/OrganizationStore'
 import PermissionStore from '../features/permission/stores/PermissionStore'
 import SchemaStore from '../features/schema/stores/SchemaStore'
-import SkillStore, {
+import SkillStoreImpl, {
     SkillStoreOptions,
 } from '../features/skill/stores/SkillStore'
 import StoreStore from '../features/store/stores/StoreStore'
@@ -71,7 +71,7 @@ export interface StoreMap {
     onboarding: OnboardingStore
     schema: SchemaStore
     event: EventStore
-    skill: SkillStore
+    skill: SkillStoreImpl
     organization: OrganizationStore
     conversation: ConversationStore
     store: StoreStore
@@ -84,7 +84,7 @@ const storeMap = {
     onboarding: OnboardingStore,
     schema: SchemaStore,
     event: EventStore,
-    skill: SkillStore,
+    skill: SkillStoreImpl,
     organization: OrganizationStore,
     conversation: ConversationStore,
     store: StoreStore,

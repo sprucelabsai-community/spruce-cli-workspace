@@ -1,5 +1,4 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
-import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import { RegisteredSkill } from '../../../types/cli.types'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
@@ -13,21 +12,15 @@ export default class RegisterAction extends AbstractAction<OptionsSchema> {
         const { nameReadable, nameKebab, description } =
             this.validateAndNormalizeOptions(options)
 
-        const client = await this.connectToApi()
-        const results = await client.emit('register-skill::v2020_12_25', {
-            payload: {
+        try {
+            const skills = this.Store('skill')
+            const skill = await skills.register({
+                description,
                 name: nameReadable,
                 slug: nameKebab,
-                description,
-            },
-        })
-
-        try {
-            const { skill } = eventResponseUtil.getFirstResponseOrThrow(results)
+            })
 
             const summaryLines = generateSkillSummaryLines(skill)
-
-            this.Service('auth').updateCurrentSkill(skill)
 
             return {
                 summaryLines,

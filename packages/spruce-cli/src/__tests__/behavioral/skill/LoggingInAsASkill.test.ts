@@ -13,6 +13,7 @@ export default class LoggingInAsASkillTest extends AbstractSkillTest {
     protected static async beforeAll() {
         await super.beforeAll()
 
+        this.Service('auth').logOutPerson()
         await this.people.loginAsDemoPerson(DEMO_NUMBER_LOGIN_AS_SKILL)
 
         const skillFixture = this.getSkillFixture()

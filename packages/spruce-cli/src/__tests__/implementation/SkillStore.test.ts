@@ -1,10 +1,10 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
-import SkillStore from '../../features/skill/stores/SkillStore'
+import SkillStoreImpl from '../../features/skill/stores/SkillStore'
 import AbstractCliTest from '../../tests/AbstractCliTest'
 
 export default class SkillStoreTest extends AbstractCliTest {
-    private static store: SkillStore
+    private static store: SkillStoreImpl
 
     protected static async beforeEach() {
         await super.beforeEach()
@@ -115,7 +115,7 @@ export default class SkillStoreTest extends AbstractCliTest {
         assert.isEqual(namespace, slug)
     }
 
-    private static SkillStore(): SkillStore {
+    private static SkillStore(): SkillStoreImpl {
         return this.Store('skill', {})
     }
 }

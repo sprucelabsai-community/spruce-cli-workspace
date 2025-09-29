@@ -19,7 +19,7 @@ import FeatureInstaller from '../features/FeatureInstaller'
 import FeatureInstallerFactory from '../features/FeatureInstallerFactory'
 import { FeatureActionResponse, FeatureCode } from '../features/features.types'
 import OnboardingStore from '../features/onboard/stores/OnboardingStore'
-import SkillStore from '../features/skill/stores/SkillStore'
+import SkillStoreImpl from '../features/skill/stores/SkillStore'
 import CliGlobalEmitter, { GlobalEmitter } from '../GlobalEmitter'
 import SpyInterface from '../interfaces/SpyInterface'
 import CommandServiceImpl from '../services/CommandService'
@@ -112,7 +112,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         this.clearFixtures()
 
         ImportService.clearCache()
-        SkillStore.clearCurrentSkill()
+        SkillStoreImpl.clearCurrentSkill()
         EventStore.clearCache()
         CommandServiceImpl.clearFakedResponses()
         MercuryClientFactory.reset()
