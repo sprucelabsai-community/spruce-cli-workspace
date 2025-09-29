@@ -113,19 +113,14 @@ export default class SkillStoreImpl
         }
 
         const client = await this.connectToApi()
-        const [{ skill: results }] = await client.emitAndFlattenResponses(
-            'publish-skill::v2020_12_25',
-            {
-                target: {
-                    skillId: skill.id,
-                },
-                payload: {
-                    canBeInstalled: isInstallable,
-                },
-            }
-        )
-
-        console.log(results)
+        await client.emitAndFlattenResponses('publish-skill::v2020_12_25', {
+            target: {
+                skillId: skill.id,
+            },
+            payload: {
+                canBeInstalled: isInstallable,
+            },
+        })
 
         delete SkillStoreImpl.currentSkill
     }
