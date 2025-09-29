@@ -30,10 +30,7 @@ export default class SetupAction extends AbstractAction<OptionsSchema> {
 
         const err = registerResponse.errors?.[0]
 
-        const isDuplicateSlugError =
-            err?.options?.responseErrors?.length === 1 &&
-            err?.options?.responseErrors?.[0]?.options?.code ===
-                'DUPLICATE_SLUG'
+        const isDuplicateSlugError = err?.options?.code === 'DUPLICATE_SLUG'
 
         let loginAsSkillResponse: any = {}
 
