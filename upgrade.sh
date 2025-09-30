@@ -1,9 +1,72 @@
-cd packages/spruce-cli
-yarn add @jest/reporters @sprucelabs/error @sprucelabs/jest-json-reporter @sprucelabs/mercury-core-events @sprucelabs/mercury-client @sprucelabs/mercury-event-emitter @sprucelabs/mercury-types @sprucelabs/schema @sprucelabs/spruce-core-schemas @sprucelabs/spruce-event-utils @sprucelabs/spruce-skill-utils @sprucelabs/spruce-templates cfonts chokidar cli-table3 fs-extra js-tetris-cli md5 semver string-argv tree-kill tsutils uuid @sprucelabs/globby typescript
-yarn add -D @sprucelabs/data-stores @sprucelabs/heartwood-view-controllers @sprucelabs/resolve-path-aliases @sprucelabs/spruce-conversation-plugin @sprucelabs/spruce-deploy-plugin @sprucelabs/spruce-store-plugin @sprucelabs/spruce-test-fixtures @sprucelabs/test @sprucelabs/test-utils @types/blessed @types/eslint @types/fs-extra @types/lodash @types/md5 @types/node @types/promise.allsettled @types/ps-node @types/semver @types/sha1 @types/slug @types/superagent @types/terminal-kit @types/uuid chokidar-cli concurrently dotenv eslint eslint-config-spruce find-process jest jest-circus jest-junit jest-reporters ps-node ts-jest ts-node tsc-watch tsconfig-paths
+#!/usr/bin/env bash
+set -euo pipefail
 
-cd ../spruce-templates
-yarn add @sprucelabs/mercury-types @sprucelabs/schema @sprucelabs/spruce-event-utils @sprucelabs/spruce-skill-utils handlebars lodash sha1
-yarn add -D @types/lodash @types/node chokidar-cli concurrently prettier typescript
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+collect_packages() {
+  local package_json=$1
+  local field=$2
+
+  jq -r --arg field "$field" '
+    def ignore:
+      (([
+        (.skill.upgradeIgnoreList // []),
+        (."yarn-upgrade-all".ignore // [])
+      ] | add) // [] | unique);
+
+    (ignore) as $ignore
+    | (.[ $field ] // {})
+    | keys[] as $name
+    | select(($ignore | index($name)) | not)
+    | $name
+  ' "$package_json"
+}
+
+upgrade_workspace() {
+  local relative_dir=$1
+  local name=$2
+
+  pushd "$ROOT_DIR/$relative_dir" >/dev/null
+  echo "Upgrading $name"
+
+  local dependencies_output=""
+  dependencies_output="$(collect_packages package.json dependencies || true)"
+  local dependencies=()
+  if [[ -n "$dependencies_output" ]]; then
+    while IFS= read -r dependency; do
+      [[ -n "$dependency" ]] && dependencies+=("$dependency")
+    done <<<"$dependencies_output"
+  fi
+
+  if ((${#dependencies[@]})); then
+    echo "  dependencies: ${dependencies[*]}"
+    yarn add "${dependencies[@]}"
+  else
+    echo "  no dependencies to upgrade"
+  fi
+
+  local dev_dependencies_output=""
+  dev_dependencies_output="$(collect_packages package.json devDependencies || true)"
+  local dev_dependencies=()
+  if [[ -n "$dev_dependencies_output" ]]; then
+    while IFS= read -r dev_dependency; do
+      [[ -n "$dev_dependency" ]] && dev_dependencies+=("$dev_dependency")
+    done <<<"$dev_dependencies_output"
+  fi
+
+  if ((${#dev_dependencies[@]})); then
+    echo "  devDependencies: ${dev_dependencies[*]}"
+    yarn add -D "${dev_dependencies[@]}"
+  else
+    echo "  no devDependencies to upgrade"
+  fi
+
+  popd >/dev/null
+}
+
+upgrade_workspace "packages/spruce-cli" "@sprucelabs/spruce-cli"
+upgrade_workspace "packages/spruce-templates" "@sprucelabs/spruce-templates"
+
+pushd "$ROOT_DIR" >/dev/null
 yarn rebuild
+popd >/dev/null
