@@ -4,9 +4,8 @@ import { MercuryClientFactory } from '@sprucelabs/mercury-client'
 import { SchemaRegistry } from '@sprucelabs/schema'
 import { AuthService, diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
-import AbstractSpruceTest, { assert } from '@sprucelabs/test-utils'
+import AbstractSpruceTest, { assert, generateId } from '@sprucelabs/test-utils'
 import fs from 'fs-extra'
-import * as uuid from 'uuid'
 import EventFaker from '../__tests__/support/EventFaker'
 import AbstractAction from '../features/AbstractAction'
 import { FeatureOptions } from '../features/AbstractFeature'
@@ -177,7 +176,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
     }
 
     protected static freshTmpDir() {
-        const tmpDirectory = testUtil.resolveTestDir(uuid.v4())
+        const tmpDirectory = testUtil.resolveTestDir(generateId())
         fs.ensureDirSync(tmpDirectory)
         return tmpDirectory
     }

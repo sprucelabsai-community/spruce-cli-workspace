@@ -105,8 +105,7 @@
 		"terminal-kit": "sprucelabsai/terminal-kit",
 		"tree-kill": "^1.2.2",
 		"tsutils": "^3.21.0",
-		"typescript": "^5.9.2",
-		"uuid": "^13.0.0"
+		"typescript": "^5.9.2"
 	},
 	"devDependencies": {
 		"@sprucelabs/data-stores": "^30.0.76",
@@ -132,7 +131,6 @@
 		"@types/slug": "^5.0.9",
 		"@types/superagent": "^8.1.9",
 		"@types/terminal-kit": "^2.5.7",
-		"@types/uuid": "^11.0.0",
 		"chokidar-cli": "^3.0.0",
 		"concurrently": "^9.2.1",
 		"conventional-changelog-sprucelabs": "^2.0.5",
