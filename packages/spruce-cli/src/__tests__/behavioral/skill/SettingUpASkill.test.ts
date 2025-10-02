@@ -107,12 +107,6 @@ export default class SettingUpASkill extends AbstractCliTest {
         this.assertSkillNameIsSaved()
     }
 
-    private static assertSkillNameIsSaved() {
-        const env = this.Service('env')
-        assert.isTruthy(env.get('SKILL_NAME'))
-        assert.isEqual(env.get('SKILL_NAME'), 'Transfer file check skill')
-    }
-
     @test()
     protected static async canAcceptOptionalDestination() {
         const cli = await this.Cli()
@@ -146,6 +140,12 @@ export default class SettingUpASkill extends AbstractCliTest {
         assert.isTruthy(first)
 
         assert.doesInclude(first.path, 'taco')
+    }
+
+    private static assertSkillNameIsSaved() {
+        const env = this.Service('env')
+        assert.isTruthy(env.get('SKILL_NAME'))
+        assert.isEqual(env.get('SKILL_NAME'), 'Transfer file check skill')
     }
 
     protected static assertDevDependenciesExist() {
