@@ -54,6 +54,7 @@ export default class TestReporter {
     private minWidth = 50
     private isRpTraining: boolean
     private trainingTokenPopup?: PopupWidget
+    private shouldStripCwdFromErrors = false
     // private orientationWhenErrorLogWasShown: TestReporterOrientation =
     // 'landscape'
 
@@ -641,9 +642,13 @@ export default class TestReporter {
             this.errorLog?.setText('  Nothing to report...')
         } else {
             !this.errorLog && this.dropInErrorLog()
-            const cleanedLog = this.cwd
-                ? errorContent.replace(new RegExp(this.cwd + '/', 'gim'), '')
-                : errorContent
+            const cleanedLog =
+                this.cwd && this.shouldStripCwdFromErrors
+                    ? errorContent.replace(
+                          new RegExp(this.cwd + '/', 'gim'),
+                          ''
+                      )
+                    : errorContent
 
             this.errorLog?.setText(cleanedLog)
         }

@@ -105,8 +105,10 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
         const isScrolledAllTheWay = this.isLogScrolledAllTheWay()
         const logSelection = this.text.textBuffer.selectionRegion
         const markupType = this.markupType(content)
+        const normalizedContent =
+            markupType === 'ansi' ? this.padAnsiSegments(content) : content
 
-        this.text.setContent(content, markupType)
+        this.text.setContent(normalizedContent, markupType)
 
         if (logSelection) {
             this.text.textBuffer.setSelectionRegion(logSelection)
@@ -118,8 +120,46 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
     }
 
     private markupType(content: string) {
-        const match = /\x1b\[([0-9;]+)m|(.[^\x1b]+)/g.exec(content)
-        const markupType = match && match[1] ? 'ansi' : true
+        const match = /\x1b\[[0-9;]+m/.exec(content)
+        const markupType = match ? 'ansi' : true
         return markupType
+    }
+
+    private padAnsiSegments(content: string): string {
+        const sgrPattern = /\u001b\[[0-9;]+m/g
+        let result = ''
+        let lastIndex = 0
+
+        let match: RegExpExecArray | null
+
+        while ((match = sgrPattern.exec(content))) {
+            const segment = content.slice(lastIndex, match.index)
+            if (segment) {
+                result += this.padSegment(segment)
+            }
+
+            result += match[0]
+            lastIndex = match.index + match[0].length
+        }
+
+        if (lastIndex < content.length) {
+            result += this.padSegment(content.slice(lastIndex))
+        }
+
+        return result
+    }
+
+    private padSegment(segment: string): string {
+        if (segment.length !== 1) {
+            return segment
+        }
+
+        if ('{}[]'.includes(segment)) {
+            // Terminal-kit drops single-character chunks when parsing ANSI
+            // sequences, so pad with a zero-width space to keep braces visible.
+            return `${segment}​`
+        }
+
+        return segment
     }
 }
