@@ -71,12 +71,14 @@
     "@types/node": "^24.6.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
-    "conventional-changelog-sprucelabs": "^2.0.5",
+    "conventional-changelog-sprucelabs": "2.0.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   },
   "yarn-upgrade-all": {
-    "ignore": []
+    "ignore": [
+      "conventional-changelog-sprucelabs"
+    ]
   },
   "gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
 }
