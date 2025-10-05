@@ -26,10 +26,11 @@ export default class AgentWriter extends AbstractWriter {
             name: string
         }
     ) {
-        const destination = this.resolveSystemPromptPath(destinationDir)
+        const { name } = options
 
+        const destination = this.resolveSystemPromptPath(destinationDir)
         const promptContents = this.templates.agentSystemPrompt({
-            name: options.name,
+            name,
         })
 
         const results = await this.writeFileIfChangedMixinResults(
