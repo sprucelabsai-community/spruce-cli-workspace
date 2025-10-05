@@ -1,4 +1,6 @@
 import { buildSchema, SchemaValues } from '@sprucelabs/schema'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import SpruceError from '../../../errors/SpruceError'
 import AbstractAction from '../../AbstractAction'
 import { FeatureActionResponse } from '../../features.types'
 
@@ -43,12 +45,34 @@ export default class RegisterAction extends AbstractAction<OptionsSchema> {
         const { name } = this.validateAndNormalizeOptions(options)
 
         const writer = this.Writer('agent')
+        const promptPath = writer.resolveSystemPromptPath(this.cwd)
+        if (diskUtil.doesFileExist(promptPath)) {
+            return {
+                errors: [
+                    new SpruceError({
+                        code: 'AGENT_ALREADY_REGISTERED',
+                        promptPath,
+                    }),
+                ],
+            }
+        }
         const plugin = await writer.writePlugin(this.cwd)
         const prompt = await writer.writeSystemPrompt(this.cwd, {
             name,
         })
 
         return {
+            headline: `AI Agent ${name} Registered Successfully!`,
+            summaryLines: [
+                `Registered ${name} AI Agent!`,
+                `Agent name: ${name}`,
+            ],
+            hints: [
+                'Next steps:',
+                ' - Customize your agent prompt in agents/SYSTEM_PROMPT.md',
+                ' - Boot your skill',
+                ' - Message the agent (try responding to the pin code email/text)',
+            ],
             files: [...plugin, ...prompt],
         }
     }

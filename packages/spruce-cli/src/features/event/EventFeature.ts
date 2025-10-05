@@ -155,6 +155,7 @@ export default class EventFeature extends AbstractFeature {
         const r = remote.getRemote()
 
         if (!r) {
+            debugger
             if (!TerminalInterface.doesSupportColor()) {
                 throw new Error(
                     `Dang! I couldn't find env.HOST. Once that is set, lets try again!`

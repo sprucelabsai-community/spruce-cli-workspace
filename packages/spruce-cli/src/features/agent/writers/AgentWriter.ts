@@ -26,12 +26,7 @@ export default class AgentWriter extends AbstractWriter {
             name: string
         }
     ) {
-        const filename = 'SYSTEM_PROMPT.md'
-        const destination = diskUtil.resolvePath(
-            destinationDir,
-            'agents',
-            filename
-        )
+        const destination = this.resolveSystemPromptPath(destinationDir)
 
         const promptContents = this.templates.agentSystemPrompt({
             name: options.name,
@@ -44,5 +39,15 @@ export default class AgentWriter extends AbstractWriter {
         )
 
         return results
+    }
+
+    public resolveSystemPromptPath(destinationDir: string) {
+        const filename = 'SYSTEM_PROMPT.md'
+        const destination = diskUtil.resolvePath(
+            destinationDir,
+            'agents',
+            filename
+        )
+        return destination
     }
 }

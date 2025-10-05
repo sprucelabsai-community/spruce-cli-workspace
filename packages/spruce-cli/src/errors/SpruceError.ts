@@ -277,6 +277,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = `You already have an AppController! Run \`spruce sync.views\` if you are having issues.`
                 break
 
+            case 'AGENT_ALREADY_REGISTERED':
+                message = `You already registerd an AI Agent at ${options.promptPath}. If you want to register a new one, delete that file first.`
+                break
+
             default:
                 message = super.friendlyMessage()
         }

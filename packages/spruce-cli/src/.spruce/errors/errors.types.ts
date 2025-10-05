@@ -49,6 +49,7 @@ import AbstractSpruceError from '@sprucelabs/error'
 
 
 
+
 export declare namespace SpruceErrors.SpruceCli {
 
 	
@@ -369,7 +370,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			/** Schema id. */
 			'schemaId': string
 			/** Destination. */
-			'destination'?: string| undefined | null
+			'destination'?: string | undefined | null
 	}
 
 	export interface SchemaExistsSchema extends SpruceSchema.Schema {
@@ -733,7 +734,7 @@ export declare namespace SpruceErrors.SpruceCli {
 	export interface Generic {
 		
 			/** Friendly message. */
-			'friendlyMessageSet'?: string| undefined | null
+			'friendlyMessageSet'?: string | undefined | null
 	}
 
 	export interface GenericSchema extends SpruceSchema.Schema {
@@ -852,15 +853,15 @@ export declare namespace SpruceErrors.SpruceCli {
 	export interface ExecutingCommandFailed {
 		
 			/** The command being run. */
-			'cmd'?: string| undefined | null
+			'cmd'?: string | undefined | null
 			/** Args. */
-			'args'?: string[]| undefined | null
+			'args'?: string[] | undefined | null
 			/** Cwd. */
-			'cwd'?: string| undefined | null
+			'cwd'?: string | undefined | null
 			/** Stdout. */
-			'stdout'?: string| undefined | null
+			'stdout'?: string | undefined | null
 			/** stderr. */
-			'stderr'?: string| undefined | null
+			'stderr'?: string | undefined | null
 	}
 
 	export interface ExecutingCommandFailedSchema extends SpruceSchema.Schema {
@@ -1102,7 +1103,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			/** Command. the command being run! */
 			'command': string
 			/** Args. Arguments passed to the command */
-			'args'?: string[]| undefined | null
+			'args'?: string[] | undefined | null
 	}
 
 	export interface CommandNotImplementedSchema extends SpruceSchema.Schema {
@@ -1246,7 +1247,7 @@ export declare namespace SpruceErrors.SpruceCli {
 	export interface BuildFailed {
 		
 			/** File. File we wanted to build, if not set we wanted to build everything.. */
-			'file'?: string| undefined | null
+			'file'?: string | undefined | null
 	}
 
 	export interface BuildFailedSchema extends SpruceSchema.Schema {
@@ -1306,6 +1307,36 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type AppControllerAlreadyExistsEntity = SchemaEntity<SpruceErrors.SpruceCli.AppControllerAlreadyExistsSchema>
+
+}
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface AgentAlreadyRegistered {
+		
+			/** Prompt Path. The path to the existing agent prompt file. */
+			'promptPath': string
+	}
+
+	export interface AgentAlreadyRegisteredSchema extends SpruceSchema.Schema {
+		id: 'agentAlreadyRegistered',
+		namespace: 'SpruceCli',
+		name: 'agent already registered',
+		    fields: {
+		            /** Prompt Path. The path to the existing agent prompt file. */
+		            'promptPath': {
+		                label: 'Prompt Path',
+		                type: 'text',
+		                isRequired: true,
+		                hint: 'The path to the existing agent prompt file.',
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type AgentAlreadyRegisteredEntity = SchemaEntity<SpruceErrors.SpruceCli.AgentAlreadyRegisteredSchema>
 
 }
 

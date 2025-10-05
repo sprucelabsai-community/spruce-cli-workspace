@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process'
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import { RemoteService } from '@sprucelabs/spruce-event-utils'
+import { diskUtil, EnvService } from '@sprucelabs/spruce-skill-utils'
 import dotenv from 'dotenv'
 import TerminalInterface from '../interfaces/TerminalInterface'
 import ImportService from '../services/ImportService'
@@ -211,6 +212,12 @@ async function run() {
         ])
 
         try {
+            const env = new EnvService(cwd)
+            const remote = new RemoteService(env)
+            if (!remote.getHost()) {
+                remote.set('local')
+            }
+
             await fixture.installFeatures(options, cacheKey)
             renderLine(
                 lineNum,

@@ -17,12 +17,7 @@ export default class RegisteringAnAgentAtBootTest extends AbstractSkillTest {
 
     @test()
     protected static async canCreateRegisteringAnAgentAtBoot() {
-        const results = await this.Action('agent', 'register', {
-            shouldAutoHandleDependencies: true,
-        }).execute({
-            type: 'system',
-            name: this.agentName,
-        })
+        const results = await this.register()
 
         const expectedPlugin = this.resolvePath(
             'src',
@@ -60,6 +55,22 @@ export default class RegisteringAnAgentAtBootTest extends AbstractSkillTest {
             this.agentName,
             'Did not set name correctly.'
         )
+    }
+
+    @test()
+    protected static async returnsAnErrorIfAlreadyRegistered() {
+        const results = await this.register()
+        assert.isFalsy(results.files, 'Should not have created files.')
+        assert.isTruthy(results.errors, 'Should have errors.')
+    }
+
+    private static async register() {
+        return await this.Action('agent', 'register', {
+            shouldAutoHandleDependencies: true,
+        }).execute({
+            type: 'system',
+            name: this.agentName,
+        })
     }
 
     private static async loginAndRegisterSkill() {
