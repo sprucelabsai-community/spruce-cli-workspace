@@ -1,3 +1,4 @@
+import { Schema } from '@sprucelabs/schema'
 import { eventResponseUtil } from '@sprucelabs/spruce-event-utils'
 import merge from 'lodash/merge'
 import SpruceError from '../errors/SpruceError'
@@ -40,8 +41,8 @@ export default class ActionExecuter {
     private async execute(options: {
         featureCode: FeatureCode
         actionCode: string
-        action: any
-        originalExecute: any
+        action: FeatureAction<Schema>
+        originalExecute: FeatureAction<Schema>['execute']
         options?: Record<string, any>
     }): Promise<FeatureInstallResponse & FeatureActionResponse> {
         const {
@@ -187,7 +188,7 @@ export default class ActionExecuter {
 
         const originalExecute = action.execute.bind(action)
 
-        action.execute = async (options: any) => {
+        action.execute = async (options: Record<string, any>) => {
             return this.execute({
                 featureCode,
                 actionCode,
@@ -197,7 +198,7 @@ export default class ActionExecuter {
             })
         }
 
-        return action as any
+        return action as FeatureAction<Schema>
     }
 }
 

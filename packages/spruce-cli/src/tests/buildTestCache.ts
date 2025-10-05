@@ -206,7 +206,7 @@ async function run() {
             diskUtil.deleteDir(cwd)
         }
 
-        renderLine(lineNum, `Starting to build '${cacheKey}'...`, [
+        renderLine(lineNum, `Building '${cacheKey}'...`, [
             GraphicsTextEffect.Green,
         ])
 

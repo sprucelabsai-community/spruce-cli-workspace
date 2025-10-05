@@ -472,6 +472,20 @@ export const templates = {
         return template({})
     },
 
+    agentPlugin() {
+        const template = templateImportUtil.getTemplate(
+            'agent/agent.plugin.ts.hbs'
+        )
+        return template({})
+    },
+
+    agentSystemPrompt(options: { name: string }) {
+        const template = templateImportUtil.getTemplate(
+            'agent/SYSTEM_PROMPT.md.hbs'
+        )
+        return template(options)
+    },
+
     viewControllerPlugin(options: { namePascal: string; nameCamel: string }) {
         const template = templateImportUtil.getTemplate(
             'view/viewController.plugin.ts.hbs'

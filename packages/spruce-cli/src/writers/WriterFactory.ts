@@ -1,5 +1,6 @@
 import { SettingsService } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
+import AgentWriter from '../features/agent/writers/AgentWriter'
 import ConversationWriter from '../features/conversation/writers/ConversationWriter'
 import DeployWriter from '../features/deploy/writers/DeployWriter'
 import ErrorWriter from '../features/error/writers/ErrorWriter'
@@ -26,6 +27,7 @@ const classMap = {
     schema: SchemaWriter,
     skill: SkillGenerator,
     test: TestWriter,
+    agent: AgentWriter,
     node: NodeWriter,
     vscode: VsCodeWriter,
     conversation: ConversationWriter,
@@ -102,6 +104,7 @@ export interface WriterMap {
     log: LogWriter
     polish: PolishWriter
     permission: PermissionWriter
+    agent: AgentWriter
 }
 
 export type WriterCode = keyof WriterMap

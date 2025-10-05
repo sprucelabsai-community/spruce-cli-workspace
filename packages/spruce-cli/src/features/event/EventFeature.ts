@@ -104,7 +104,7 @@ export default class EventFeature extends AbstractFeature {
             (featureCode === 'event' ||
                 featureCode === 'eventContract' ||
                 actionCode === 'login') &&
-            actionCode !== 'setRemote'
+            this.initiatingAction !== 'event.setRemote'
 
         if (isRemoteRelevant) {
             const remoteResults = await this.appendRemoteToResultsOrPrompt()

@@ -1,3 +1,4 @@
+import AgentStore from '../features/agent/stores/AgentStore'
 import ConversationStore from '../features/conversation/stores/ConversationStore'
 import EventStore from '../features/event/stores/EventStore'
 import ListenerStore from '../features/event/stores/ListenerStore'
@@ -78,6 +79,7 @@ export interface StoreMap {
     view: ViewStore
     listener: ListenerStore
     permission: PermissionStore
+    agent: AgentStore
 }
 
 const storeMap = {
@@ -91,6 +93,7 @@ const storeMap = {
     view: ViewStore,
     listener: ListenerStore,
     permission: PermissionStore,
+    agent: AgentStore,
 }
 
 export type StoreCode = keyof StoreMap

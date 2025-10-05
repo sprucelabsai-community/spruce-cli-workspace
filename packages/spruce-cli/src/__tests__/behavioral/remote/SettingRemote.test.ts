@@ -5,9 +5,9 @@ import {
     REMOTE_SANDBOX,
 } from '@sprucelabs/spruce-event-utils'
 import { test, assert } from '@sprucelabs/test-utils'
-import { FeatureCode } from '../../features/features.types'
-import TerminalInterface from '../../interfaces/TerminalInterface'
-import AbstractSkillTest from '../../tests/AbstractSkillTest'
+import { FeatureCode } from '../../../features/features.types'
+import TerminalInterface from '../../../interfaces/TerminalInterface'
+import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 
 export default class SettingRemoteTest extends AbstractSkillTest {
     protected static skillCacheKey = 'events'

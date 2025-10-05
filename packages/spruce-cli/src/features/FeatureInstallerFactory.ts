@@ -6,6 +6,7 @@ import { ApiClientFactory } from '../types/apiClient.types'
 import { GraphicsInterface } from '../types/cli.types'
 import { FeatureOptions } from './AbstractFeature'
 import ActionExecuter from './ActionExecuter'
+import AgentFeature from './agent/AgentFeature'
 import CacheFeature from './cache/CacheFeature'
 import ConversationFeature from './conversation/ConversationFeature'
 import DependencyFeature from './dependencies/DependencyFeature'
@@ -55,6 +56,7 @@ export default class FeatureInstallerFactory {
         DependencyFeature,
         PolishFeature,
         PermissionFeature,
+        AgentFeature,
     ]
 
     public static readonly featureCodes: FeatureCode[] = [
@@ -80,6 +82,7 @@ export default class FeatureInstallerFactory {
         'dependency',
         'polish',
         'permission',
+        'agent',
     ]
 
     public static WithAllFeatures(

@@ -39,23 +39,18 @@ export default class StartingOnboardingTest extends AbstractCliTest {
 
         // get through first onboarding script and select short onboarding
         await this.waitForInput()
-        debugger
 
         await this.ui.sendInput('\n')
-        debugger
+
         await this.waitForInput()
-        debugger
 
         await this.ui.sendInput('immersive')
-        debugger
+
         await this.waitForInput()
-        debugger
 
         await this.ui.sendInput('\n')
-        debugger
 
         await onboardPromise
-        debugger
 
         const onboardingStore = this.Store('onboarding')
         assert.isEqual(onboardingStore.getMode(), 'immersive')

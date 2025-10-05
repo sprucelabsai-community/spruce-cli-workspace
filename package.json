@@ -43,9 +43,9 @@
     "watch.tests": "lerna run watch.tests --parallel"
   },
   "dependencies": {
-    "lerna": "^8.1.2"
+    "lerna": "^9.0.0"
   },
   "devDependencies": {
-    "yarn-upgrade-all": "^0.7.2"
+    "yarn-upgrade-all": "^0.7.5"
   }
 }

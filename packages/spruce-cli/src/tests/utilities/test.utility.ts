@@ -89,9 +89,9 @@ const testUtil = {
         name: string | RegExp,
         files: GeneratedFile[] | undefined
     ): string {
-        const file = (files ?? []).find((f) => f.name.search(name) > -1)?.path
+        const path = (files ?? []).find((f) => f.name.search(name) > -1)?.path
         assert.isTruthy(
-            file,
+            path,
             `file named '${name}' not found in generated files.\n\n${JSON.stringify(
                 files ?? [],
                 null,
@@ -99,7 +99,7 @@ const testUtil = {
             )}`
         )
 
-        return file
+        return path
     },
 
     assertFileByPathInGeneratedFiles(
