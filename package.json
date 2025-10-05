@@ -45,6 +45,9 @@
   "dependencies": {
     "lerna": "^9.0.0"
   },
+  "resolutions": {
+    "inquirer": "8.2.7"
+  },
   "devDependencies": {
     "yarn-upgrade-all": "^0.7.5"
   }
