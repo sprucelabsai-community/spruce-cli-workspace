@@ -49,6 +49,7 @@ export default class RegisteringAnAgentAtBootTest extends AbstractSkillTest {
         await this.boot()
 
         const agent = await this.getPlatformAgent()
+
         assert.isTruthy(agent, 'Did not register an agent at boot.')
         assert.isEqual(
             agent.name,
@@ -81,7 +82,15 @@ export default class RegisteringAnAgentAtBootTest extends AbstractSkillTest {
     }
 
     private static async boot() {
-        await this.Action('skill', 'boot').execute({})
+        await this.Action('skill', 'boot').execute({
+            local: true,
+            onData: (data: string) => {
+                this.log(`Boot Log: ${data}`)
+            },
+            onError: (data: string) => {
+                this.log(`Boot Error: ${data}`)
+            },
+        })
     }
 
     private static async getPlatformAgent() {
