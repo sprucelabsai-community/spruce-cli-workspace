@@ -104,7 +104,8 @@ export default class EventFeature extends AbstractFeature {
             (featureCode === 'event' ||
                 featureCode === 'eventContract' ||
                 actionCode === 'login') &&
-            this.initiatingAction !== 'event.setRemote'
+            this.initiatingAction !== 'event.setRemote' &&
+            actionCode !== 'setRemote'
 
         if (isRemoteRelevant) {
             const remoteResults = await this.appendRemoteToResultsOrPrompt()
@@ -155,7 +156,6 @@ export default class EventFeature extends AbstractFeature {
         const r = remote.getRemote()
 
         if (!r) {
-            debugger
             if (!TerminalInterface.doesSupportColor()) {
                 throw new Error(
                     `Dang! I couldn't find env.HOST. Once that is set, lets try again!`
