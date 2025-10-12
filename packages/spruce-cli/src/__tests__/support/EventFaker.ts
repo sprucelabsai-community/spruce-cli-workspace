@@ -4,6 +4,14 @@ import { generateId } from '@sprucelabs/test-utils'
 import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
 export default class EventFaker {
+    public async fakeListSkills(cb?: () => void | ListSkill[]) {
+        await eventFaker.on('list-skills::v2020_12_25', () => {
+            return {
+                skills: cb?.() ?? [],
+            }
+        })
+    }
+
     public async fakeListPermissionContracts(
         cb?: (
             targetAndPayload: ListPermContractsTargetAndPayload
@@ -42,3 +50,5 @@ export default class EventFaker {
         })
     }
 }
+
+export type ListSkill = SpruceSchemas.Mercury.v2020_12_25.ListSkillsSkill

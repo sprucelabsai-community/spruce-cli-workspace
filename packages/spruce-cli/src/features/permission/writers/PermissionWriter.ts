@@ -11,7 +11,17 @@ export default class PermissionWriter extends AbstractWriter {
             'permissions.types.ts'
         )
 
-        const contents = this.templates.permissionTypes({ contracts: map })
+        const keys = Object.keys(map)
+        keys.sort()
+        const sorted: Partial<PermissionContractMap> = {}
+        for (const key of keys) {
+            map[key].sort((a, b) => a.localeCompare(b))
+            sorted[key] = map[key]
+        }
+
+        const contents = this.templates.permissionTypes({
+            contracts: sorted as PermissionContractMap,
+        })
 
         const files = await this.writeFileIfChangedMixinResults(
             destination,
