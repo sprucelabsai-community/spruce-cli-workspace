@@ -75,11 +75,19 @@ export default class TestingDataStoresTest extends AbstractSkillTest {
             shouldReportWhileRunning: false,
         })
 
-        assert.isArray(testResults.errors)
-        assert.isLength(testResults.errors, 1)
+        assert.isArray(testResults.errors, 'should have returned errors')
+        assert.isLength(
+            testResults.errors,
+            1,
+            'should have only returned 1 error'
+        )
 
         const first = testResults.errors[0]
 
-        assert.doesInclude(first.message, 'does not equal')
+        assert.doesInclude(
+            first.message,
+            'Expected:',
+            'should have failed the test'
+        )
     }
 }
