@@ -204,7 +204,7 @@ export default class SelectingAnAbstractTestClassTest extends AbstractTestTest {
 
         await assert.doesThrowAsync(
             () => this.Service('command').execute('yarn test'),
-            /false.*?does not equal.*?true/gis
+            /Expected: false/gis
         )
     }
 
