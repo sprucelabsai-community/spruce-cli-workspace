@@ -172,31 +172,44 @@ export default class KeepingEventsInSyncTest extends AbstractEventTest {
         )) as any
         const sig = eventContractUtil.getSignatureByName(contract, fqen)
 
-        assert.isTruthy(sig.emitPayloadSchema)
-        assert.isTruthy(
+        assert.isTruthy(sig.emitPayloadSchema, 'Did not save emitPayloadSchema')
+        assert.isEqual(
             //@ts-ignore
             sig.emitPayloadSchema.fields?.payload?.options?.schema?.id,
-            'myNewEventEmitPayloadId'
+            'myNewEventEmitPayloadId',
+            'emitPayloadSchema id is wrong'
         )
-        assert.isTruthy(
+        assert.isEqual(
             sig.responsePayloadSchema?.id,
-            'myNewEventResponsePayloadId'
+            'myNewEventResponsePayloadId',
+            'responsePayloadSchema id is wrong'
         )
 
-        assert.isTruthy(sig.emitPermissionContract)
+        assert.isTruthy(
+            sig.emitPermissionContract,
+            'emitPermissionContract missing'
+        )
+
         assert.isEqual(
             sig.emitPermissionContract.id,
-            `${skill2.slug}.myNewEventEmitPermissionContract`
+            `${skill2.slug}.myNewEventEmitPermissionContract`,
+            'emitPermissionContract id is wrong'
         )
-        assert.isEqual(sig.emitPermissionContract.permissions[0].id, 'can-emit')
+        assert.isEqual(
+            sig.emitPermissionContract.permissions[0].id,
+            'can-emit',
+            'emitPermissionContract permission id is wrong'
+        )
         assert.isTruthy(sig.listenPermissionContract)
         assert.isEqual(
             sig.listenPermissionContract.id,
-            `${skill2.slug}.myNewEventListenPermissionContract`
+            `${skill2.slug}.myNewEventListenPermissionContract`,
+            'listenPermissionContract id is wrong'
         )
         assert.isEqual(
             sig.listenPermissionContract.permissions[0].id,
-            'can-listen'
+            'can-listen',
+            'listenPermissionContract permission id is wrong'
         )
 
         assert.isEqual(sig.description, description, 'description missing')
