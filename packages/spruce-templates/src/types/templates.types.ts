@@ -137,6 +137,7 @@ export interface ViewsOptions {
     namespaceKebab: string
     svcTemplateItems: VcTemplateItem[]
     vcTemplateItems: VcTemplateItem[]
+    allTemplateItems: VcTemplateItem[]
     viewPluginItems: ViewControllerPluginItem[]
     appTemplateItem?: VcTemplateItem
 }

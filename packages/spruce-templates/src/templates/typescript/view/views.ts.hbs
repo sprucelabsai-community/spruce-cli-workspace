@@ -14,10 +14,7 @@ import {{appTemplateItem.namePascal}} from '{{appTemplateItem.path}}'
 import '@sprucelabs/heartwood-view-controllers'
 
 const vcs = {
-    {{#each svcTemplateItems}}
-    {{namePascal}},
-    {{/each}}
-    {{#each vcTemplateItems}}
+    {{#each allTemplateItems}}
     {{namePascal}},
     {{/each}}
 }
@@ -48,10 +45,7 @@ declare module '@sprucelabs/heartwood-view-controllers/build/types/heartwood.typ
 	}
 
 	interface ViewControllerMap {
-        {{#each vcTemplateItems}}
-		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
-        {{/each}}
-         {{#each svcTemplateItems}}
+        {{#each allTemplateItems}}
 		'{{../namespaceKebab}}.{{id}}': {{namePascal}}
         {{/each}}
 	}

@@ -25,7 +25,10 @@ export default class ViewWriter extends AbstractWriter {
         return this.writeController(path, { ...options, viewType: 'skillView' })
     }
 
-    public async writeCombinedViewsFile(cwd: string, options: ViewsOptions) {
+    public async writeCombinedViewsFile(
+        cwd: string,
+        options: Omit<ViewsOptions, 'allTemplateItems'>
+    ) {
         let {
             vcTemplateItems,
             svcTemplateItems,
@@ -59,11 +62,22 @@ export default class ViewWriter extends AbstractWriter {
             )
         }
 
+        svcTemplateItems.sort((a, b) =>
+            a.namePascal.localeCompare(b.namePascal)
+        )
+
+        vcTemplateItems.sort((a, b) => a.namePascal.localeCompare(b.namePascal))
+
+        const allTemplateItems = [...vcTemplateItems, ...svcTemplateItems].sort(
+            (a, b) => a.namePascal.localeCompare(b.namePascal)
+        )
+
         const contents = this.templates.views({
             vcTemplateItems,
             svcTemplateItems,
             viewPluginItems,
             appTemplateItem,
+            allTemplateItems,
             ...rest,
         })
 

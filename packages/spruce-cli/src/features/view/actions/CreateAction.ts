@@ -159,3 +159,5 @@ const followUpSchema = buildSchema({
 })
 
 type OptionsSchema = typeof optionsSchema
+
+export type CreateViewOptions = SchemaValues<OptionsSchema>
