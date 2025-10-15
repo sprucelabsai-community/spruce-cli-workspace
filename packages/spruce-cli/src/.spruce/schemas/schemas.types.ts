@@ -1012,7 +1012,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 
 	namespace SpruceSchemas.SpruceCli.v2020_07_22 {
 
-		/** The question is; Are you read? ⚡️ */
+		/** The question is; Are you ready? ⚡️ */
 		interface OnboardOptions {
 			
 		}
@@ -1022,7 +1022,7 @@ declare module '@sprucelabs/spruce-core-schemas/build/.spruce/schemas/core.schem
 			version: 'v2020_07_22',
 			namespace: 'SpruceCli',
 			name: 'Onboard action',
-			description: 'The question is; Are you read? ⚡️',
+			description: 'The question is; Are you ready? ⚡️',
 			    fields: {
 			    }
 		}

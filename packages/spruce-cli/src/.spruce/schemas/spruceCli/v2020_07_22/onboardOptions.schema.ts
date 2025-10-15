@@ -8,7 +8,7 @@ const onboardOptionsSchema: SpruceSchemas.SpruceCli.v2020_07_22.OnboardOptionsSc
 	version: 'v2020_07_22',
 	namespace: 'SpruceCli',
 	name: 'Onboard action',
-	description: 'The question is; Are you read? ⚡️',
+	description: 'The question is; Are you ready? ⚡️',
 	    fields: {
 	    }
 }
