@@ -156,7 +156,6 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
     @test()
     protected static async shouldGenerateCoreSchemaTypesGeneratesValidFiles() {
         await this.installSchemaFeature('schemas')
-
         await this.copyMockCoreSchemas()
 
         const results = await this.Action('schema', 'sync').execute(

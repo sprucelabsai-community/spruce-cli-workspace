@@ -140,7 +140,7 @@ export default class OverrideActionDecorator implements FeatureAction {
             const overrides = this.optionOverrides?.[commandStr]
             if (overrides) {
                 this.ui?.renderLine(
-                    `Overrides found in package.json of ${namespace}.`
+                    `Overrides found in ${this.parent.getProjectLanguage() === 'go' ? '.spruce/settings.json' : 'package.json'} of ${namespace}.`
                 )
                 this.ui?.renderObject(overrides)
                 options = {

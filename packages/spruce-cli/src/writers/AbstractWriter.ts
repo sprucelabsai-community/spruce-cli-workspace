@@ -24,12 +24,21 @@ export default abstract class AbstractWriter {
     protected isLintEnabled = true
 
     public constructor(options: WriterOptions) {
-        this.templates = options.templates
-        this.ui = options.term
-        this.upgradeMode = options.upgradeMode
-        this.fileDescriptions = options.fileDescriptions
-        this.linter = options.linter
-        this.settings = options.settings
+        const {
+            templates,
+            term,
+            upgradeMode,
+            fileDescriptions,
+            linter,
+            settings,
+        } = options
+
+        this.templates = templates
+        this.ui = term
+        this.upgradeMode = upgradeMode
+        this.fileDescriptions = fileDescriptions
+        this.linter = linter
+        this.settings = settings
     }
 
     protected async lint(file: string) {

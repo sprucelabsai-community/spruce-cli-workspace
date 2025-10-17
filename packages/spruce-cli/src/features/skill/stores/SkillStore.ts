@@ -1,5 +1,5 @@
 import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
-import { namesUtil } from '@sprucelabs/spruce-skill-utils'
+import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
 import AbstractStore, { StoreOptions } from '../../../stores/AbstractStore'
 import { CurrentSkill, RegisteredSkill } from '../../../types/cli.types'
@@ -131,24 +131,40 @@ export default class SkillStoreImpl
     }
 
     private getNamespaceFromPkg() {
+        if (this.isGoModule()) {
+            const goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
+            const goModContents = diskUtil.readFile(goModFile)
+            const moduleLine = goModContents.match(/module\s+([^\s]+)/)
+            const moduleParts = moduleLine?.[1].split('/') ?? []
+            return moduleParts.pop() as string
+        }
+
         const nameFromPackage = this.Service('pkg').getSkillNamespace()
         if (!nameFromPackage) {
             throw new Error(
                 'You need need to set skill.namespace in the package.json'
             )
         }
-        return nameFromPackage
+        return nameFromPackage as string
+    }
+
+    private isGoModule() {
+        return diskUtil.detectProjectLanguage(this.cwd) === 'go'
     }
 
     public async loadCurrentSkillsNamespace() {
-        const fallback = namesUtil.toPascal(this.getNamespaceFromPkg())
+        const fallback = this.getNamespaceFromPkg()
 
-        if (this.Service('auth').getCurrentSkill()) {
+        if (!this.isGoModule() && this.Service('auth').getCurrentSkill()) {
             const current = await this.loadCurrentSkill()
             return namesUtil.toPascal(current.slug ?? fallback)
         }
 
-        return fallback
+        if (this.isGoModule()) {
+            return fallback
+        }
+
+        return namesUtil.toPascal(fallback)
     }
 
     public async setCurrentSkillsNamespace(namespace: string) {

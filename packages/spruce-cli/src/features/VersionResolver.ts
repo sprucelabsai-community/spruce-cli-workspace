@@ -54,9 +54,9 @@ export default class VersionResolver {
         fallbackVersion: string
     ) {
         const versions = this.loadVersions(resolvedDestination)
-        const choices = this.buildChoices(versions)
 
         if (versions.length > 0) {
+            const choices = this.buildChoices(versions)
             return await this.ui.prompt({
                 type: 'select',
                 label: 'Version',
@@ -67,6 +67,7 @@ export default class VersionResolver {
                 },
             })
         }
+
         return fallbackVersion
     }
 

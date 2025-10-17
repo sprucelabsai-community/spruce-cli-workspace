@@ -38,6 +38,7 @@ import CommandFaker from './CommandFaker'
 import FeatureFixture, {
     FeatureFixtureOptions,
 } from './fixtures/FeatureFixture'
+import GoFixture from './fixtures/GoFixture'
 import MercuryFixture from './fixtures/MercuryFixture'
 import OrganizationFixture from './fixtures/OrganizationFixture'
 import PersonFixture from './fixtures/PersonFixture'
@@ -58,6 +59,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
     private static skillFixture?: SkillFixture
     private static _featureInstaller?: FeatureInstaller
     private static viewFixture?: ViewFixture
+    private static goFixture?: GoFixture
     private static originalEnv: Record<string, string | undefined>
     private static _writers?: WriterFactory
     protected static eventFaker: EventFaker
@@ -98,9 +100,6 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         this.homeDir = this.freshTmpDir()
 
         AuthService.homeDir = this.homeDir
-
-        this._emitter = undefined
-        this._featureInstaller = undefined
 
         OnboardingStore.overrideCwd(diskUtil.createRandomTempDir())
 
@@ -166,13 +165,15 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         }
     }
 
-    private static clearFixtures() {
+    protected static clearFixtures() {
+        this._featureInstaller = undefined
         this._emitter = undefined
         this.mercuryFixture = undefined
         this.organizationFixture = undefined
         this.personFixture = undefined
         this.skillFixture = undefined
         this.viewFixture = undefined
+        this.goFixture = undefined
     }
 
     protected static freshTmpDir() {
@@ -265,6 +266,14 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         }
 
         return this.personFixture
+    }
+
+    protected static get go() {
+        if (!this.goFixture) {
+            this.goFixture = new GoFixture(this.Service('command'))
+        }
+
+        return this.goFixture
     }
 
     protected static getViewFixture() {

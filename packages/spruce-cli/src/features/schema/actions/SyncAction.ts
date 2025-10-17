@@ -14,9 +14,6 @@ import { FeatureActionResponse } from '../../features.types'
 import schemaDiskUtil from '../utilities/schemaDisk.utility'
 import ValueTypeBuilder from '../ValueTypeBuilder'
 
-type OptionsSchema =
-    SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
-type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions
 export default class SyncAction extends AbstractAction<OptionsSchema> {
     public optionsSchema = syncSchemasActionSchema
     public commandAliases = ['sync.schemas']
@@ -137,17 +134,20 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             let valueTypes: ValueTypes | undefined
 
             try {
-                valueTypes = await this.generateValueTypes({
-                    resolvedDestination: resolvedFieldTypesDestination,
-                    fieldTemplateItems,
-                    schemaTemplateItems,
-                    globalSchemaNamespace: globalSchemaNamespace ?? undefined,
-                })
+                valueTypes = this.isInGoProject()
+                    ? undefined
+                    : await this.generateValueTypes({
+                          resolvedDestination: resolvedFieldTypesDestination,
+                          fieldTemplateItems,
+                          schemaTemplateItems,
+                          globalSchemaNamespace:
+                              globalSchemaNamespace ?? undefined,
+                      })
             } catch (err: any) {
                 schemaErrors.push(err)
             }
 
-            if (valueTypes) {
+            if (valueTypes || this.isInGoProject()) {
                 try {
                     this.ui.startLoading('Determining what changed... ⚡️')
 
@@ -159,11 +159,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                             schemaTemplateItems,
                             shouldImportCoreSchemas,
                             valueTypes,
+                            language: this.getProjectLanguage(),
                             globalSchemaNamespace:
                                 globalSchemaNamespace ?? undefined,
-                            typesTemplate: generateStandaloneTypesFile
-                                ? 'schema/core.schemas.types.ts.hbs'
-                                : undefined,
+                            typesTemplate: this.resolveTypesTemplate(
+                                generateStandaloneTypesFile
+                            ),
                         }
                     )
                 } catch (err: any) {
@@ -173,7 +174,10 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         }
 
         const p = resolvedSchemaTypesDestination
-        diskUtil.deleteEmptyDirs(diskUtil.isDir(p) ? p : pathUtil.dirname(p))
+        const dir = diskUtil.isDir(p) ? p : pathUtil.dirname(p)
+        if (diskUtil.doesDirExist(dir)) {
+            diskUtil.deleteEmptyDirs(dir)
+        }
 
         this.ui.stopLoading()
 
@@ -187,6 +191,22 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 fieldTemplateItems,
             },
         })
+    }
+
+    private resolveTypesTemplate(
+        generateStandaloneTypesFile: boolean
+    ): string | undefined {
+        if (!generateStandaloneTypesFile) {
+            return undefined
+        }
+
+        if (this.getProjectLanguage() === 'go') {
+            return 'schema/core_schemas.go.hbs'
+        }
+
+        return generateStandaloneTypesFile
+            ? 'schema/core.schemas.types.ts.hbs'
+            : undefined
     }
 
     private async optionallyInstallRemoteModules(
@@ -284,11 +304,12 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 },
             })
 
-        const hashSpruceDestination =
-            resolvedSchemaTypesDestinationDirOrFile.replace(
-                diskUtil.resolveHashSprucePath(this.cwd),
-                '#spruce'
-            )
+        const hashSpruceDestination = this.isInGoProject()
+            ? this.cwd
+            : resolvedSchemaTypesDestinationDirOrFile.replace(
+                  diskUtil.resolveHashSprucePath(this.cwd),
+                  '#spruce'
+              )
 
         let total = 0
         let totalNamespaces = 0
@@ -314,11 +335,23 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         return { schemaTemplateItems, schemaErrors }
     }
 
+    private isInGoProject() {
+        return this.getProjectLanguage() === 'go'
+    }
+
     private async generateFieldTemplateItems(options: {
         addonsLookupDir: string
         shouldGenerateFieldTypes: boolean
         resolvedFieldTypesDestination: string
     }) {
+        if (this.getProjectLanguage() === 'go') {
+            return {
+                generateFieldFiles: [],
+                fieldTemplateItems: [],
+                fieldErrors: [],
+            }
+        }
+
         const {
             addonsLookupDir,
             shouldGenerateFieldTypes: generateFieldTypes,
@@ -355,3 +388,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         return builder.generateValueTypes(options)
     }
 }
+
+type OptionsSchema =
+    SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptionsSchema
+type Options = SpruceSchemas.SpruceCli.v2020_07_22.SyncSchemasOptions

@@ -1,7 +1,7 @@
 import path from 'path'
 import pathUtil from 'path'
 import { FieldTemplateItem, SchemaTemplateItem } from '@sprucelabs/schema'
-import { versionUtil } from '@sprucelabs/spruce-skill-utils'
+import { ProjectLanguage, versionUtil } from '@sprucelabs/spruce-skill-utils'
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import {
     LATEST_HANDLEBARS,
@@ -110,13 +110,16 @@ export default class SchemaWriter extends AbstractWriter {
 
     public async writeSchemasAndTypes(
         destinationDirOrFilename: string,
-        options: GenerateSchemaTypesOptions
+        options: Omit<GenerateSchemaTypesOptions, 'valueTypes'> & {
+            valueTypes?: ValueTypes
+        }
     ): Promise<WriteResults> {
         const {
             fieldTemplateItems,
             schemaTemplateItems,
             valueTypes,
             typesTemplate,
+            language,
         } = options
 
         this.isLintEnabled = false
@@ -133,6 +136,7 @@ export default class SchemaWriter extends AbstractWriter {
 
         if (localItems.length > 0) {
             const schemaTypesContents = this.templates.schemasTypes({
+                language: language === 'go' ? 'go' : 'typescript',
                 schemaTemplateItems: localItems,
                 fieldTemplateItems,
                 valueTypes,
@@ -151,15 +155,17 @@ export default class SchemaWriter extends AbstractWriter {
             `Checking ${schemaTemplateItems.length} schemas for changes...`
         )
 
-        const allSchemaResults = await this.writeAllSchemas(
-            pathUtil.dirname(resolvedTypesDestination),
-            {
-                ...options,
-                typesFile: resolvedTypesDestination,
-            }
-        )
+        if (valueTypes) {
+            const allSchemaResults = await this.writeAllSchemas(
+                pathUtil.dirname(resolvedTypesDestination),
+                {
+                    ...(options as GenerateSchemaTypesOptions),
+                    typesFile: resolvedTypesDestination,
+                }
+            )
 
-        results.push(...allSchemaResults)
+            results.push(...allSchemaResults)
+        }
 
         this.isLintEnabled = true
 
@@ -297,4 +303,5 @@ export interface GenerateSchemaTypesOptions {
     typesTemplate?: string
     registerBuiltSchemas?: boolean
     shouldImportCoreSchemas: boolean
+    language?: ProjectLanguage
 }

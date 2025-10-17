@@ -45,15 +45,18 @@ export const templates = {
     schemasTypes(options: {
         schemaTemplateItems: SchemaTemplateItem[]
         fieldTemplateItems: FieldTemplateItem[]
-        valueTypes: ValueTypes
+        valueTypes?: ValueTypes
         globalSchemaNamespace?: string
         typesTemplate?: string
+        language: 'typescript' | 'go'
     }) {
         const imports = importExtractorUtil.extractFieldImports(
             options.fieldTemplateItems
         )
+
         const template = templateImportUtil.getTemplate(
-            options.typesTemplate ?? 'schema/schemas.types.ts.hbs'
+            options.typesTemplate ?? 'schema/schemas.types.ts.hbs',
+            options.language
         )
 
         const schemaImports = importExtractorUtil.extractSchemaImports(

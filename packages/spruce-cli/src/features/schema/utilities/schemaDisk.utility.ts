@@ -47,11 +47,10 @@ const schemaDiskUtil = {
             cwd,
             generateStandaloneTypesFile &&
                 diskUtil.isDirPath(schemaTypesDestinationDirOrFile)
-                ? diskUtil.resolvePath(
+                ? this.resolveStandaloneSchemaTypesFilePath({
                       cwd,
                       schemaTypesDestinationDirOrFile,
-                      'core.schemas.types.ts'
-                  )
+                  })
                 : schemaTypesDestinationDirOrFile
         )
 
@@ -71,6 +70,21 @@ const schemaDiskUtil = {
             resolvedSchemaTypesDestinationDirOrFile,
             resolvedSchemaTypesDestination,
         }
+    },
+
+    resolveStandaloneSchemaTypesFilePath(options: {
+        cwd: string
+        schemaTypesDestinationDirOrFile: string
+    }) {
+        const { cwd, schemaTypesDestinationDirOrFile } = options
+
+        return diskUtil.resolvePath(
+            cwd,
+            schemaTypesDestinationDirOrFile,
+            diskUtil.detectProjectLanguage(cwd) === 'go'
+                ? '../../schemas/core_schemas.go'
+                : 'core.schemas.types.ts'
+        )
     },
 
     async deleteOrphanedSchemas(

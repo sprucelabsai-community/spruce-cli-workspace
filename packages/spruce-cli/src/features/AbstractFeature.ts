@@ -1,6 +1,7 @@
 import pathUtil from 'path'
 import globby from '@sprucelabs/globby'
 import { Schema, SchemaValues } from '@sprucelabs/schema'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
@@ -112,6 +113,10 @@ export default abstract class AbstractFeature<
 
     public getFeature<Code extends FeatureCode>(code: Code) {
         return this.features.getFeature(code)
+    }
+
+    public getProjectLanguage() {
+        return diskUtil.detectProjectLanguage(this.cwd)
     }
 
     public async getAvailableActionCodes(): Promise<string[]> {

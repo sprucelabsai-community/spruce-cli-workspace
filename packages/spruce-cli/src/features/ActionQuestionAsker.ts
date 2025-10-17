@@ -54,7 +54,6 @@ export default class ActionQuestionAskerImpl<
             while (notInstalled.length > 0) {
                 const toInstall = notInstalled.shift()
                 if (!toInstall) {
-                    // for typescript
                     throw new Error('Dependent feature error')
                 }
 

@@ -94,11 +94,20 @@ export default class SchemaFeature extends AbstractFeature {
             return {}
         }
 
+        this.Service('settings').markAsInstalled(this.code)
+
         const files = await this.writePlugin()
 
         return {
             files,
         }
+    }
+
+    public async isInstalled(): Promise<boolean> {
+        return (
+            this.getProjectLanguage() === 'go' ||
+            this.Service('settings').isMarkedAsInstalled(this.code)
+        )
     }
 
     private async writePlugin() {

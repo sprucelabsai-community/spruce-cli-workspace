@@ -96,7 +96,7 @@ export default class PkgService extends BasePkgService {
     }
 
     public getSkillNamespace() {
-        return this.get('skill.namespace')
+        return this.get('skill.namespace') as string
     }
 
     public async uninstall(pkg: string[] | string) {

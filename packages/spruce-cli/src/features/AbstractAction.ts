@@ -1,4 +1,5 @@
 import { Schema, SchemaValues, SchemaPartialValues } from '@sprucelabs/schema'
+import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import { Templates } from '@sprucelabs/spruce-templates'
 import { GlobalEmitter } from '../GlobalEmitter'
 import ServiceFactory, {
@@ -111,14 +112,15 @@ export default abstract class AbstractAction<S extends Schema = Schema>
         return validateAndNormalizer.validateAndNormalize(schema, options)
     }
 
+    protected getProjectLanguage() {
+        return diskUtil.detectProjectLanguage(this.cwd)
+    }
+
     protected async resolveVersion(
         userSuppliedVersion: string | null | undefined,
         resolvedDestination: string
     ) {
-        const versions = VersionResolver.Resolver(
-            this.ui,
-            this.serviceFactory.Service(this.cwd, 'pkg')
-        )
+        const versions = VersionResolver.Resolver(this.ui, this.Service('pkg'))
         const version = await versions.resolveVersion(
             resolvedDestination,
             userSuppliedVersion

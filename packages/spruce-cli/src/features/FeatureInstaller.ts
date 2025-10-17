@@ -107,11 +107,14 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 
     public getFeatureDependencies<C extends FeatureCode>(
         featureCode: C
-        // trackedFeatures: FeatureDependency[] = []
     ): FeatureDependency[] {
+        if (diskUtil.detectProjectLanguage(this.cwd) === 'go') {
+            return []
+        }
+
         let deps = this.getFeatureDependenciesIncludingSelf(
             { code: featureCode, isRequired: true },
-            [] // trackedFeatures
+            []
         ).filter((f) => f.code !== featureCode)
 
         deps = this.sortFeatures(deps)
