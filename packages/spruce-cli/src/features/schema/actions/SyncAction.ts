@@ -27,9 +27,6 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
     public async execute(options: Options): Promise<FeatureActionResponse> {
         const normalizedOptions = this.validateAndNormalizeOptions(options)
-        const isInCoreSchemasModule =
-            this.Service('pkg').get('name') ===
-            '@sprucelabs/spruce-core-schemas'
 
         let {
             schemaTypesDestinationDirOrFile,
@@ -39,7 +36,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             shouldEnableVersioning,
             globalSchemaNamespace,
             shouldFetchRemoteSchemas,
-            shouldGenerateCoreSchemaTypes = isInCoreSchemasModule,
+            shouldGenerateCoreSchemaTypes,
             shouldFetchLocalSchemas,
             generateFieldTypes,
             generateStandaloneTypesFile,

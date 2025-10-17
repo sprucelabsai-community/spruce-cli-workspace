@@ -7,6 +7,7 @@ import { SpruceSchemas } from '@sprucelabs/mercury-types'
 import {
     HealthCheckResults,
     HEALTH_DIVIDER,
+    SettingsService,
 } from '@sprucelabs/spruce-skill-utils'
 import { templates } from '@sprucelabs/spruce-templates'
 import { DEFAULT_HOST } from '../constants'
@@ -191,8 +192,9 @@ export default class Cli implements CliInterface {
         })
 
         const pkg = services.Service(cwd, 'pkg')
+        const settings = services.Service(cwd, 'settings')
 
-        const optionOverrides = this.loadOptionOverrides(pkg)
+        const optionOverrides = this.loadOptionOverrides(pkg, settings)
         const blockedCommands = this.loadCommandBlocks(
             services.Service(cwd, 'pkg')
         )
@@ -287,17 +289,24 @@ export default class Cli implements CliInterface {
         return blocks
     }
 
-    private static loadOptionOverrides(pkg: PkgService): OptionOverrides {
+    private static loadOptionOverrides(
+        pkg: PkgService,
+        settings: SettingsService
+    ): OptionOverrides {
         const mapped: OptionOverrides = {}
+        let overrides: Record<string, string> = {}
 
         if (pkg.doesExist()) {
-            const overrides = pkg.get('skill.commandOverrides')
-
-            Object.keys(overrides ?? {}).forEach((command) => {
-                const options = argParserUtil.parse(overrides[command])
-                mapped[command] = options
-            })
+            overrides = pkg.get('skill.commandOverrides')
         }
+
+        overrides = { ...settings.get('commandOverrides'), ...overrides }
+
+        Object.keys(overrides ?? {}).forEach((command) => {
+            const options = argParserUtil.parse(overrides[command])
+            mapped[command] = options
+        })
+
         return mapped
     }
 

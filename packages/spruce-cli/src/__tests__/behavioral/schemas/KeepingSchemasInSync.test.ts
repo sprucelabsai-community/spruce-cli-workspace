@@ -192,18 +192,16 @@ export default class KeepsSchemasInSyncTest extends AbstractSchemaTest {
     }
 
     @test()
-    protected static async generateCoreSchemaInCoreSchemasModule() {
+    protected static async generateCoreSchemasWithShouldGenerateCoreSchemaTypes() {
         await this.installSchemaFeature('schemas')
-
-        const pkg = this.Service('pkg')
-        pkg.set({ path: 'name', value: '@sprucelabs/spruce-core-schemas' })
-
         await this.copyMockCoreSchemas()
 
-        const results = await this.Action('schema', 'sync').execute({})
+        const results = await this.Action('schema', 'sync').execute({
+            shouldGenerateCoreSchemaTypes: true,
+        })
 
-        assert.isFalsy(results.errors)
-        assert.isTruthy(results.files)
+        assert.isFalsy(results.errors, 'sync schemas had errors')
+        assert.isTruthy(results.files, 'sync should have generated files')
 
         const typesContents = diskUtil.readFile(this.coreSchemaTypesFile)
 
