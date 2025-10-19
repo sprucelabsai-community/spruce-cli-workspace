@@ -1,6 +1,8 @@
 import { test, assert } from '@sprucelabs/test-utils'
 import { random, uniq } from 'lodash'
+import FeatureInstallerFactory from '../../../features/FeatureInstallerFactory'
 import UpdateDependenciesAction from '../../../features/node/actions/UpdateDependenciesAction'
+import SkillFeature from '../../../features/skill/SkillFeature'
 import CommandServiceImpl from '../../../services/CommandService'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 import { NpmPackage } from '../../../types/cli.types'
@@ -10,6 +12,7 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
     protected static async beforeEach() {
         await super.beforeEach()
+        FeatureInstallerFactory.setFeature('skill', SpySkillFeature)
         this.action = this.Action('node', 'updateDependencies')
     }
 
@@ -19,8 +22,12 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
 
         this.Service('pkg').set({ path: 'dependencies.axios', value: '0.0.1' })
 
-        const skill = this.featureInstaller.getFeature('skill')
-        skill.packageDependencies.push({
+        debugger
+        const skill = this.featureInstaller.getFeature(
+            'skill'
+        ) as SpySkillFeature
+
+        skill.addPackageDependency({
             name: 'axios',
             version: '0.21.3',
         })
@@ -139,5 +146,11 @@ export default class UpdateDependencies2Test extends AbstractCliTest {
         this.action.blockUpgrade('random', this.Service('pkg'))
 
         return name
+    }
+}
+
+class SpySkillFeature extends SkillFeature {
+    public addPackageDependency(dependency: NpmPackage) {
+        this._packageDependencies.push(dependency)
     }
 }

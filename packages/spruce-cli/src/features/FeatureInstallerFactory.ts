@@ -120,6 +120,15 @@ export default class FeatureInstallerFactory {
 
         return featureInstaller
     }
+
+    public static setFeature<C extends FeatureCode>(code: C, feature: any) {
+        const index = this.featureCodes.indexOf(code)
+        if (index === -1) {
+            throw new Error(`Feature code "${code}" is not recognized.`)
+        }
+
+        this.features[index] = feature
+    }
 }
 
 interface InstallerWithAllFeaturesOptions {
