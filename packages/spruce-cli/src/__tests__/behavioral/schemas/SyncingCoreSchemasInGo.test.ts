@@ -30,8 +30,6 @@ export default class SyncingSchemasInGoTest extends AbstractSkillTest {
     private static skillNamespace: string = CORE_NAMESPACE
     private static schemaTemplateItemBuilder: SchemaTemplateItemBuilder
 
-    private static shouldGenerateCoreSchemaTypes = true
-
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
 
@@ -244,7 +242,7 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
         const results = await this.Action('schema', 'sync', {
             shouldAutoHandleDependencies: true,
         }).execute({
-            shouldGenerateCoreSchemaTypes: this.shouldGenerateCoreSchemaTypes,
+            shouldGenerateCoreSchemaTypes: true,
             schemaLookupDir: this.resolvePath(this.skillDir, 'src'),
         })
 

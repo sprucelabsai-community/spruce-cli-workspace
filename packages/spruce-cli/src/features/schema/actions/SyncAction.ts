@@ -219,6 +219,10 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 .filter((i) => !!i)
         ) as string[]
 
+        if (this.getProjectLanguage() === 'go') {
+            return
+        }
+
         const notInstalled: string[] = []
 
         const pkg = this.Service('pkg')
