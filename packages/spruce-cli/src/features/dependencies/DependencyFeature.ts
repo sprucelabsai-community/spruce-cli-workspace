@@ -13,7 +13,6 @@ export default class DependencyFeature extends AbstractFeature {
             isRequired: true,
         },
     ]
-    public packageDependencies = []
 
     public async isInstalled() {
         return this.features.isInstalled('skill')

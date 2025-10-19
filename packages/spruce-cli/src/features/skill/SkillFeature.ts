@@ -19,7 +19,7 @@ export default class SkillFeature<
     public description = 'The scaffolding needed to run a Skill'
     public readonly installOrderWeight = 100
 
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         { name: '@sprucelabs/error' },
         { name: '@sprucelabs/spruce-skill-utils' },
         { name: '@sprucelabs/spruce-skill-booter' },

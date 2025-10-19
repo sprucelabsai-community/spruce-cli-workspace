@@ -13,7 +13,7 @@ export default class PolishFeature extends AbstractFeature {
             isRequired: false,
         },
     ]
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         {
             name: '@sprucelabs/heartwood-polish',
             isDev: true,

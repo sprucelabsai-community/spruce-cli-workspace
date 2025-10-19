@@ -35,7 +35,14 @@ export default abstract class AbstractFeature<
 {
     public abstract description: string
     public readonly dependencies: FeatureDependency[] = []
-    public readonly packageDependencies: PackageDependency[] = []
+    protected readonly _packageDependencies: PackageDependency[] = []
+    public get packageDependencies() {
+        const resolved = this._packageDependencies.filter((dep) => {
+            const goDep = dep as GoPackage
+            return !goDep.type || goDep.type === this.getProjectLanguage()
+        })
+        return resolved
+    }
     public readonly optionsSchema?: S
     public readonly fileDescriptions: FileDescription[] = []
 

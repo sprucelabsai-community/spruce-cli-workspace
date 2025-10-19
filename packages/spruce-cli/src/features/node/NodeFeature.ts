@@ -22,7 +22,7 @@ export default class NodeFeature<
     public description = ''
     public dependencies: FeatureDependency[] = []
     public optionsSchema = nodeFeatureOptionsSchema as S
-    public packageDependencies = [...universalDevDependencies]
+    public _packageDependencies = [...universalDevDependencies]
 
     public scripts = {
         ...universalScripts,

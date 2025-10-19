@@ -9,7 +9,7 @@ export default class ViewFeature extends AbstractFeature {
     public code: FeatureCode = 'view'
     public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
-    public readonly packageDependencies: NpmPackage[] = [
+    public readonly _packageDependencies: NpmPackage[] = [
         {
             name: '@sprucelabs/heartwood-view-controllers@latest',
         },

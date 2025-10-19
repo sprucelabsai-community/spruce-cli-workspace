@@ -14,7 +14,6 @@ export default class SandboxFeature extends AbstractFeature {
             isRequired: true,
         },
     ]
-    public packageDependencies = []
     public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
     public constructor(options: ActionOptions) {

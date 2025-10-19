@@ -1,9 +1,6 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
 import createTestOptionsSchema from '#spruce/schemas/spruceCli/v2020_07_22/createTestOptions.schema'
-import AbstractFeature, {
-    FeatureDependency,
-    FeatureOptions,
-} from '../AbstractFeature'
+import AbstractFeature, { FeatureOptions } from '../AbstractFeature'
 import featuresUtil from '../feature.utilities'
 import { FeatureCode } from '../features.types'
 import ScriptLoader from './ScriptLoader'
@@ -13,9 +10,6 @@ export default class OnboardFeature extends AbstractFeature {
     public code: FeatureCode = 'onboard'
     public nameReadable = 'Onboard'
     public description = 'Get building your first skill already!'
-    public dependencies: FeatureDependency[] = []
-    public packageDependencies = []
-
     public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
 
     private onboardingStore?: OnboardingStore

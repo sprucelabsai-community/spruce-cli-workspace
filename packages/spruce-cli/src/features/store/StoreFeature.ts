@@ -16,7 +16,7 @@ export default class StoreFeature extends AbstractFeature {
             isRequired: true,
         },
     ]
-    public packageDependencies = [
+    public _packageDependencies = [
         { name: '@sprucelabs/spruce-store-plugin@latest', isDev: false },
         { name: '@sprucelabs/data-stores@latest', isDev: false },
     ]

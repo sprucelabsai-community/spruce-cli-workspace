@@ -20,7 +20,7 @@ export default class EventFeature extends AbstractFeature {
         { code: 'schema', isRequired: true },
         { code: 'permission', isRequired: true },
     ]
-    public packageDependencies = [
+    public _packageDependencies = [
         {
             name: '@sprucelabs/mercury-client',
         },

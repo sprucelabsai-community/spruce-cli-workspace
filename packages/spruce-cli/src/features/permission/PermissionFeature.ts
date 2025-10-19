@@ -1,7 +1,6 @@
 import { PermissionContractMap } from '@sprucelabs/mercury-types'
 import { diskUtil, NpmPackage } from '@sprucelabs/spruce-skill-utils'
 import AbstractFeature, {
-    FeatureDependency,
     FeatureOptions,
     InstallResults,
 } from '../AbstractFeature'
@@ -12,9 +11,8 @@ export default class PermissionFeature extends AbstractFeature {
     public code: FeatureCode = 'permission'
     public nameReadable = 'permission'
     public description = 'Manage permissions for your skill'
-    public dependencies: FeatureDependency[] = []
     public actionsDir = diskUtil.resolvePath(__dirname, 'actions')
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         {
             name: '@sprucelabs/spruce-permission-plugin@latest',
         },

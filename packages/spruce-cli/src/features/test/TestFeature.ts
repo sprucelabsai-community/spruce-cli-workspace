@@ -25,7 +25,7 @@ export default class TestFeature extends AbstractFeature {
         { code: 'skill', isRequired: false },
         { code: 'node', isRequired: true },
     ]
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         { name: '@sprucelabs/test@latest', isDev: true },
         { name: '@sprucelabs/test-utils@latest', isDev: true },
         { name: '@sprucelabs/jest-json-reporter@latest', isDev: true },

@@ -15,7 +15,7 @@ export default class DeployFeature extends AbstractFeature {
             isRequired: true,
         },
     ]
-    public packageDependencies = [
+    public _packageDependencies = [
         { name: '@sprucelabs/spruce-deploy-plugin@latest', isDev: false },
     ]
 

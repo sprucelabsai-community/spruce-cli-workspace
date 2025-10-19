@@ -11,7 +11,7 @@ export default class AgentFeature extends AbstractFeature {
     public dependencies: FeatureDependency[] = [
         { code: 'event', isRequired: true },
     ]
-    public packageDependencies = [
+    public _packageDependencies = [
         {
             name: '@sprucelabs/spruce-agent-plugin',
         },

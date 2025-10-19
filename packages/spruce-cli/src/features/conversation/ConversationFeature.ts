@@ -15,7 +15,7 @@ export default class ConversationFeature extends AbstractFeature {
     public dependencies: FeatureDependency[] = [
         { code: 'event', isRequired: true },
     ]
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         {
             name: '@sprucelabs/spruce-conversation-plugin@latest',
             isDev: false,

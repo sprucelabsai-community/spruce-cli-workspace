@@ -14,7 +14,7 @@ export default class SchemaFeature extends AbstractFeature {
         { code: 'skill', isRequired: false },
         { code: 'node', isRequired: true },
     ]
-    public packageDependencies: PackageDependency[] = [
+    public _packageDependencies: PackageDependency[] = [
         {
             name: '@sprucelabs/schema@latest',
         },

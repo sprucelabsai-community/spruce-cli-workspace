@@ -17,7 +17,7 @@ export default class ErrorFeature extends AbstractFeature {
         { code: 'schema', isRequired: true },
         { code: 'node', isRequired: true },
     ]
-    public packageDependencies: NpmPackage[] = [
+    public _packageDependencies: NpmPackage[] = [
         {
             name: '@sprucelabs/error@latest',
         },
