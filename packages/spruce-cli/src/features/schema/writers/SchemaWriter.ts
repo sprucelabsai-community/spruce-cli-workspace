@@ -135,7 +135,7 @@ export default class SchemaWriter extends AbstractWriter {
         const localItems = schemaTemplateItems.filter((i) => !i.importFrom)
 
         if (localItems.length > 0) {
-            const schemaTypesContents = this.templates.schemasTypes({
+            let schemaTypesContents = this.templates.schemasTypes({
                 language: language === 'go' ? 'go' : 'typescript',
                 schemaTemplateItems: localItems,
                 fieldTemplateItems,
@@ -143,6 +143,17 @@ export default class SchemaWriter extends AbstractWriter {
                 globalSchemaNamespace: options.globalSchemaNamespace,
                 typesTemplate,
             })
+
+            if (language === 'go') {
+                const referencesSchemaType =
+                    schemaTypesContents.split('SpruceSchema.')
+                if (referencesSchemaType.length === 1) {
+                    schemaTypesContents = schemaTypesContents.replace(
+                        'import SpruceSchema "github.com/sprucelabsai-community/spruce-schema/v32/pkg/fields"',
+                        ''
+                    )
+                }
+            }
 
             results = await this.writeFileIfChangedMixinResults(
                 resolvedTypesDestination,

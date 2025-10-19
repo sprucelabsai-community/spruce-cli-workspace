@@ -1,9 +1,9 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { NpmPackage } from '../../types/cli.types'
 import AbstractFeature, {
     FeatureDependency,
     FeatureOptions,
     InstallResults,
+    PackageDependency,
 } from '../AbstractFeature'
 import { FeatureCode } from '../features.types'
 
@@ -14,7 +14,7 @@ export default class SchemaFeature extends AbstractFeature {
         { code: 'skill', isRequired: false },
         { code: 'node', isRequired: true },
     ]
-    public packageDependencies: NpmPackage[] = [
+    public packageDependencies: PackageDependency[] = [
         {
             name: '@sprucelabs/schema@latest',
         },
@@ -24,6 +24,10 @@ export default class SchemaFeature extends AbstractFeature {
         { name: '@sprucelabs/resolve-path-aliases@latest', isDev: true },
         {
             name: '@sprucelabs/spruce-skill-utils',
+        },
+        {
+            type: 'go',
+            name: 'github.com/sprucelabsai-community/spruce-schema/v32/pkg/fields',
         },
     ]
 
@@ -101,13 +105,6 @@ export default class SchemaFeature extends AbstractFeature {
         return {
             files,
         }
-    }
-
-    public async isInstalled(): Promise<boolean> {
-        return (
-            this.getProjectLanguage() === 'go' ||
-            this.Service('settings').isMarkedAsInstalled(this.code)
-        )
     }
 
     private async writePlugin() {

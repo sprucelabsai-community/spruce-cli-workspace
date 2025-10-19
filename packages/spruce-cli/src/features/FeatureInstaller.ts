@@ -9,7 +9,10 @@ import ServiceFactory, {
     ServiceMap,
 } from '../services/ServiceFactory'
 import { InternalUpdateHandler, NpmPackage } from '../types/cli.types'
-import AbstractFeature, { FeatureDependency } from './AbstractFeature'
+import AbstractFeature, {
+    FeatureDependency,
+    GoPackage,
+} from './AbstractFeature'
 import {
     InstallFeatureOptions,
     FeatureInstallResponse,
@@ -108,7 +111,7 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
     public getFeatureDependencies<C extends FeatureCode>(
         featureCode: C
     ): FeatureDependency[] {
-        if (diskUtil.detectProjectLanguage(this.cwd) === 'go') {
+        if (this.isInGoProject()) {
             return []
         }
 
@@ -120,6 +123,10 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
         deps = this.sortFeatures(deps)
 
         return deps
+    }
+
+    private isInGoProject() {
+        return diskUtil.detectProjectLanguage(this.cwd) === 'go'
     }
 
     private getFeatureDependenciesIncludingSelf(
@@ -418,13 +425,27 @@ export class FeatureInstallerImpl implements ServiceProvider, FeatureInstaller {
 
             didUpdateHandler?.(`Checking node dependency: ${pkg.name}`)
 
-            if (
-                pkg.isDev &&
+            const goPkg = pkg as GoPackage
+            const nodePkg = pkg as NpmPackage
+            const isGoPackage = goPkg.type === 'go'
+
+            const shouldConsider =
+                (isGoPackage && this.isInGoProject()) ||
+                (!isGoPackage && !this.isInGoProject())
+
+            if (!shouldConsider) {
+                return
+            }
+
+            if (isGoPackage) {
+                this.packagesToInstall.push(packageName)
+            } else if (
+                nodePkg.isDev &&
                 this.devPackagesToInstall.indexOf(packageName) === -1
             ) {
                 this.devPackagesToInstall.push(packageName)
             } else if (
-                !pkg.isDev &&
+                !nodePkg.isDev &&
                 this.packagesToInstall.indexOf(packageName) === -1
             ) {
                 this.packagesToInstall.push(packageName)

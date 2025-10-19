@@ -1,7 +1,9 @@
 package schemas
 
+import SpruceSchema "github.com/sprucelabsai-community/spruce-schema/v32/pkg/fields"
+
 {{#each schemaTemplateItems}}
-	{{{ schemaRenderer schema }}}
+{{{ schemaRenderer schema ../schemaTemplateItems }}}
 
 {{/each}}
 

@@ -47,7 +47,9 @@ export default class FeatureFixture implements ServiceProvider {
 
     public static deleteOldSkillDirs() {
         for (const dir of this.dirsToDelete) {
-            diskUtil.deleteDir(dir)
+            try {
+                diskUtil.deleteDir(dir)
+            } catch {}
         }
 
         this.dirsToDelete = []

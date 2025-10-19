@@ -160,10 +160,6 @@ export default class SkillStoreImpl
             return namesUtil.toPascal(current.slug ?? fallback)
         }
 
-        if (this.isGoModule()) {
-            return fallback
-        }
-
         return namesUtil.toPascal(fallback)
     }
 

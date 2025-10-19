@@ -43,7 +43,8 @@ export default class ActionFactory {
             )
         }
 
-        let Class: new (options: ActionOptions) => FeatureAction | undefined
+        let Class: (new (options: ActionOptions) => FeatureAction) | undefined =
+            undefined
         let originalError: Error | undefined
 
         const key = ActionFactory.overrideKey(featureCode, actionCode)
@@ -61,7 +62,6 @@ export default class ActionFactory {
             }
         }
 
-        //@ts-ignore
         if (!Class) {
             throw new SpruceError({
                 code: 'GENERIC',

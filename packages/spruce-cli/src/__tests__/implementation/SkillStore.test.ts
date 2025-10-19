@@ -1,4 +1,5 @@
-import { test, assert, generateId } from '@sprucelabs/test-utils'
+import { namesUtil, randomUtil } from '@sprucelabs/spruce-skill-utils'
+import { test, assert } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import SkillStoreImpl from '../../features/skill/stores/SkillStore'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -117,13 +118,13 @@ export default class SkillStoreTest extends AbstractCliTest {
 
     @test()
     protected static async returnsExpectedModuleInGoProject() {
-        const name = generateId()
+        const name = randomUtil.rand(['my-skill', 'superSkill', 'AwesomeSkill'])
         await this.go.initGoProject(name)
         const actual = await this.store.loadCurrentSkillsNamespace()
 
         assert.isEqual(
             actual,
-            name,
+            namesUtil.toPascal(name),
             'Expected namespace to match go module name'
         )
     }

@@ -54,7 +54,7 @@ export default class TestReporter {
     private minWidth = 50
     private isRpTraining: boolean
     private trainingTokenPopup?: PopupWidget
-    private shouldStripCwdFromErrors = false
+    private shouldStripCwdFromErrors = true
     // private orientationWhenErrorLogWasShown: TestReporterOrientation =
     // 'landscape'
 

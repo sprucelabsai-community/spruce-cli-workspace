@@ -184,20 +184,19 @@ export default class Cli implements CliInterface {
             new TerminalInterface(cwd)) as GraphicsInterface
         let featureInstaller: FeatureInstaller | undefined
 
+        const settings = services.Service(cwd, 'settings')
+
         const writerFactory = new WriterFactory({
             templates,
             ui,
-            settings: services.Service(cwd, 'settings'),
+            settings,
             linter: services.Service(cwd, 'lint'),
         })
 
         const pkg = services.Service(cwd, 'pkg')
-        const settings = services.Service(cwd, 'settings')
 
         const optionOverrides = this.loadOptionOverrides(pkg, settings)
-        const blockedCommands = this.loadCommandBlocks(
-            services.Service(cwd, 'pkg')
-        )
+        const blockedCommands = this.loadCommandBlocks(pkg)
 
         try {
             const s = pkg.getSkillNamespace()

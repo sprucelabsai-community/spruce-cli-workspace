@@ -39,4 +39,8 @@ export default class GoFixture {
             GOCACHE: goCacheDir,
         }
     }
+
+    public async vet() {
+        await this.exec('vet', './...')
+    }
 }

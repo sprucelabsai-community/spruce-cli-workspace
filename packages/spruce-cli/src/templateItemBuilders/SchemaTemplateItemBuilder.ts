@@ -14,12 +14,6 @@ import SpruceError from '../errors/SpruceError'
 import { SchemasByNamespace } from '../features/schema/stores/SchemaStore'
 import schemaUtil from '../features/schema/utilities/schema.utility'
 
-interface SchemaWithDependencies {
-    schema: Schema
-    dependencies: SchemaIdWithVersion[]
-    isNested: boolean
-}
-
 export default class SchemaTemplateItemBuilder {
     private schemasByKey: Record<string, SchemaWithDependencies> = {}
     private localNamespace: string
@@ -250,4 +244,10 @@ export default class SchemaTemplateItemBuilder {
 
         return undefined
     }
+}
+
+interface SchemaWithDependencies {
+    schema: Schema
+    dependencies: SchemaIdWithVersion[]
+    isNested: boolean
 }

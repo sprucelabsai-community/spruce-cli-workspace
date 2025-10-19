@@ -35,7 +35,7 @@ export default abstract class AbstractFeature<
 {
     public abstract description: string
     public readonly dependencies: FeatureDependency[] = []
-    public readonly packageDependencies: NpmPackage[] = []
+    public readonly packageDependencies: PackageDependency[] = []
     public readonly optionsSchema?: S
     public readonly fileDescriptions: FileDescription[] = []
 
@@ -180,4 +180,11 @@ export interface FeatureOptions {
     emitter: GlobalEmitter
     apiClientFactory: ApiClientFactory
     actionExecuter: ActionExecuter
+}
+
+export type PackageDependency = NpmPackage | GoPackage
+
+export interface GoPackage {
+    type: 'go'
+    name: string
 }
