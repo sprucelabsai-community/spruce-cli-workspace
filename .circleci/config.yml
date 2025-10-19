@@ -19,6 +19,16 @@ jobs:
       - run: node -v && npm -v && yarn -v
       - spruce/install_rsync
       - run:
+          name: "Install Go"
+          command: |
+            GO_VERSION=1.21.6
+            curl -fsSL https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go.tar.gz
+            sudo rm -rf /usr/local/go
+            sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+            echo 'export PATH=$PATH:/usr/local/go/bin' >> $BASH_ENV
+            source $BASH_ENV
+            go version
+      - run:
           name: "Install"
           command: |
             yarn install
@@ -64,6 +74,16 @@ jobs:
       - checkout
       - spruce/check_and_skip_if_npm_publish
       - spruce/install_rsync
+      - run:
+          name: "Install Go"
+          command: |
+            GO_VERSION=1.21.6
+            curl -fsSL https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go.tar.gz
+            sudo rm -rf /usr/local/go
+            sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+            echo 'export PATH=$PATH:/usr/local/go/bin' >> $BASH_ENV
+            source $BASH_ENV
+            go version
       - restore_cache:
           name: Restoring Cached Tests
           keys:
