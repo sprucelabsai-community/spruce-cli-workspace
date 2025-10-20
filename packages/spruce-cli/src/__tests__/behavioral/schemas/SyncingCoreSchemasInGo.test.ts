@@ -323,8 +323,7 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
 
     private static moveToGoDir() {
         this.cwd = this.goDir
-        this.go.setCwd(this.cwd)
-        this.clearFixtures()
+        this.setCwd(this.cwd)
     }
 }
 

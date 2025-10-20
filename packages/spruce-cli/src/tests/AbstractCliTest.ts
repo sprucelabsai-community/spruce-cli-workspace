@@ -107,7 +107,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         this.ui.invocations = []
         this.ui.setCursorPosition({ x: 0, y: 0 })
 
-        this.clearFixtures()
+        this.setCwd(this.cwd)
 
         ImportService.clearCache()
         SkillStoreImpl.clearCurrentSkill()
@@ -174,6 +174,11 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         this.skillFixture = undefined
         this.viewFixture = undefined
         this.goFixture = undefined
+    }
+
+    protected static setCwd(cwd: string) {
+        this.clearFixtures()
+        this.cwd = cwd
     }
 
     protected static freshTmpDir() {

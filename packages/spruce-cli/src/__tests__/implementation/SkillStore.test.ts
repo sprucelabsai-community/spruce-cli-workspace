@@ -127,8 +127,7 @@ export default class SkillStoreTest extends AbstractCliTest {
         const name = await this.initRandomGoProject()
         const newCwd = this.resolvePath(this.cwd, generateId())
         diskUtil.createDir(newCwd)
-        this.cwd = newCwd
-        this.clearFixtures()
+        this.setCwd(newCwd)
         this.store = this.SkillStore()
         await this.assertCurrentNamespaceEquals(name)
     }
