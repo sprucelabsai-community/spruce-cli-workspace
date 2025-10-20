@@ -131,7 +131,18 @@ export default class SkillStoreImpl
     }
 
     public getGoModuleName() {
-        const goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
+        let goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
+        if (!diskUtil.doesFileExist(goModFile)) {
+            goModFile = diskUtil.resolvePath(this.cwd, '../go.mod')
+        }
+
+        if (!diskUtil.doesFileExist(goModFile)) {
+            throw new SpruceError({
+                code: 'DIRECTORY_NOT_GO_MODULE',
+                friendlyMessage: `Couldn't find a go.mod file in the current directory or its parent. Are you in a Go module?`,
+                cwd: this.cwd,
+            })
+        }
         const goModContents = diskUtil.readFile(goModFile)
         const moduleLine = goModContents.match(/module\s+([^\s]+)/)
         return moduleLine?.[1] as string

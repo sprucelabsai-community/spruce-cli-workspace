@@ -1,5 +1,5 @@
-import { namesUtil, randomUtil } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test-utils'
+import { diskUtil, namesUtil, randomUtil } from '@sprucelabs/spruce-skill-utils'
+import { test, assert, generateId } from '@sprucelabs/test-utils'
 import { errorAssert } from '@sprucelabs/test-utils'
 import SkillStoreImpl from '../../features/skill/stores/SkillStore'
 import AbstractCliTest from '../../tests/AbstractCliTest'
@@ -118,8 +118,32 @@ export default class SkillStoreTest extends AbstractCliTest {
 
     @test()
     protected static async returnsExpectedModuleInGoProject() {
-        const name = randomUtil.rand(['my-skill', 'superSkill', 'AwesomeSkill'])
-        await this.go.initGoProject(name)
+        const name = await this.initRandomGoProject()
+        await this.assertCurrentNamespaceEquals(name)
+    }
+
+    @test()
+    protected static async canFindGoModuleInSubdirectory() {
+        const name = await this.initRandomGoProject()
+        const newCwd = this.resolvePath(this.cwd, generateId())
+        diskUtil.createDir(newCwd)
+        this.cwd = newCwd
+        this.clearFixtures()
+        this.store = this.SkillStore()
+        await this.assertCurrentNamespaceEquals(name)
+    }
+
+    @test()
+    protected static async throwsNotInGoModuleErrorIfNotInGoProject() {
+        const err = await assert.doesThrowAsync(() =>
+            this.store.getGoModuleName()
+        )
+        errorAssert.assertError(err, 'DIRECTORY_NOT_GO_MODULE', {
+            cwd: this.cwd,
+        })
+    }
+
+    private static async assertCurrentNamespaceEquals(name: string) {
         const actual = await this.store.loadCurrentSkillsNamespace()
 
         assert.isEqual(
@@ -127,6 +151,12 @@ export default class SkillStoreTest extends AbstractCliTest {
             namesUtil.toPascal(name),
             'Expected namespace to match go module name'
         )
+    }
+
+    private static async initRandomGoProject() {
+        const name = randomUtil.rand(['my-skill', 'superSkill', 'AwesomeSkill'])
+        await this.go.initGoProject(name)
+        return name
     }
 
     private static SkillStore(): SkillStoreImpl {

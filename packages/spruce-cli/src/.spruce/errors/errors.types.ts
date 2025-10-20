@@ -50,6 +50,7 @@ import AbstractSpruceError from '@sprucelabs/error'
 
 
 
+
 export declare namespace SpruceErrors.SpruceCli {
 
 	
@@ -291,7 +292,7 @@ export declare namespace SpruceErrors.SpruceCli {
 			
 			'fieldName': string
 			
-			'fieldOptions': (Record<string, any>)
+			'fieldOptions': Record<string, any>
 	}
 
 	export interface SchemaTemplateItemBuildingFailedSchema extends SpruceSchema.Schema {
@@ -551,7 +552,7 @@ export declare namespace SpruceErrors.SpruceCli {
 	export interface MercuryResponseError {
 		
 			
-			'responseErrors': (AbstractSpruceError<any>)[]
+			'responseErrors': AbstractSpruceError<any>[]
 	}
 
 	export interface MercuryResponseErrorSchema extends SpruceSchema.Schema {
@@ -945,6 +946,35 @@ export declare namespace SpruceErrors.SpruceCli {
 	}
 
 	export type DirectoryNotSkillEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryNotSkillSchema>
+
+}
+
+
+export declare namespace SpruceErrors.SpruceCli {
+
+	
+	export interface DirectoryNotGoModule {
+		
+			/** Current Working Directory. */
+			'cwd': string
+	}
+
+	export interface DirectoryNotGoModuleSchema extends SpruceSchema.Schema {
+		id: 'directoryNotGoModule',
+		namespace: 'SpruceCli',
+		name: 'Directory not go module',
+		    fields: {
+		            /** Current Working Directory. */
+		            'cwd': {
+		                label: 'Current Working Directory',
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type DirectoryNotGoModuleEntity = SchemaEntity<SpruceErrors.SpruceCli.DirectoryNotGoModuleSchema>
 
 }
 

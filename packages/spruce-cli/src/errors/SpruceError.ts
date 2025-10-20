@@ -281,6 +281,10 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 message = `You already registerd an AI Agent at ${options.promptPath}. If you want to register a new one, delete that file first.`
                 break
 
+            case 'DIRECTORY_NOT_GO_MODULE':
+                message = 'A Directory not go module just happened!'
+                break
+
             default:
                 message = super.friendlyMessage()
         }
