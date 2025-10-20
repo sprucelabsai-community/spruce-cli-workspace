@@ -13,6 +13,7 @@ import LintService from '../../../services/LintService'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
 import AbstractSkillTest from '../../../tests/AbstractSkillTest'
 import testUtil from '../../../tests/utilities/test.utility'
+import { GeneratedFile } from '../../../types/cli.types'
 
 export default class SyncingSchemasInGoTest extends AbstractSkillTest {
     protected static skillCacheKey = 'schemas'
@@ -26,7 +27,7 @@ export default class SyncingSchemasInGoTest extends AbstractSkillTest {
         'super-skill',
     ])
 
-    private static readonly version = versionUtil.generateVersion().constValue
+    private static version = versionUtil.generateVersion().constValue
     private static skillNamespace: string = CORE_NAMESPACE
     private static schemaTemplateItemBuilder: SchemaTemplateItemBuilder
     private static goFullModuleName: string
@@ -166,15 +167,9 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
         const results = await this.sync()
         const generated = ['nestedSchema', 'anotherSchemaIBuilt']
         for (const schema of generated) {
-            const path = testUtil.assertFileByPathInGeneratedFiles(
-                `schemas/${this.skillNamespace.toLowerCase()}/${this.version}/${namesUtil.toSnake(schema)}.go`,
+            this.assertSchemaFileWrittenWithExpectedPackage(
+                schema,
                 results.files
-            )
-            const contents = diskUtil.readFile(path)
-            assert.doesInclude(
-                contents,
-                `package ${this.version}`,
-                'Did not include expected package declaration.'
             )
         }
     }
@@ -195,6 +190,36 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
         )
 
         await this.go.exec('test', './...')
+    }
+
+    @test()
+    protected static async creatingSchemaWithDifferentVersionAlsoWorks() {
+        this.version = versionUtil.generateVersion('2020_01_01').constValue
+        await this.createSchema('versionedSchema')
+        this.moveToGoDir()
+        const results = await this.sync()
+        this.assertSchemaFileWrittenWithExpectedPackage(
+            'versionedSchema',
+            results.files
+        )
+    }
+
+    private static assertSchemaFileWrittenWithExpectedPackage(
+        schema: string,
+        files: GeneratedFile[] = []
+    ) {
+        assert.isAbove(files.length, 0, 'Expected at least one generated file.')
+
+        const path = testUtil.assertFileByPathInGeneratedFiles(
+            `schemas/${this.skillNamespace.toLowerCase()}/${this.version}/${namesUtil.toSnake(schema)}.go`,
+            files
+        )
+        const contents = diskUtil.readFile(path)
+        assert.doesInclude(
+            contents,
+            `package ${this.version}`,
+            'Did not include expected package declaration.'
+        )
     }
 
     private static async lintBuilders() {
@@ -286,6 +311,11 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
         assert.isFalsy(
             results.errors,
             'Expected no errors when syncing core schemas in a go project.'
+        )
+
+        assert.isTruthy(
+            results.files,
+            'Expected some generated files when syncing core schemas in a go project.'
         )
 
         return results
