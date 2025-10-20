@@ -21,6 +21,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
     private readonly schemaWriter = this.Writer('schema')
     private readonly schemaStore = this.Store('schema')
+    private readonly skillStore = this.Store('skill')
 
     public async execute(options: Options): Promise<FeatureActionResponse> {
         const normalizedOptions = this.validateAndNormalizeOptions(options)
@@ -48,8 +49,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
         this.ui.startLoading('Loading details about your skill... 🧐')
 
-        let localNamespace =
-            await this.Store('skill').loadCurrentSkillsNamespace()
+        let localNamespace = await this.skillStore.loadCurrentSkillsNamespace()
         let shouldImportCoreSchemas = true
 
         if (shouldGenerateCoreSchemaTypes) {
@@ -119,7 +119,6 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
 
             if (deleteOrphanedSchemas) {
                 this.ui.startLoading('Identifying orphaned schemas...')
-
                 await schemaDiskUtil.deleteOrphanedSchemas(
                     resolvedSchemaTypesDestinationDirOrFile,
                     schemaTemplateItems
@@ -151,6 +150,11 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 try {
                     this.ui.startLoading('Determining what changed... ⚡️')
 
+                    let goModuleName: string | undefined = undefined
+                    if (this.isInGoProject()) {
+                        goModuleName = this.skillStore.getGoModuleName()
+                    }
+
                     typeResults = await this.schemaWriter.writeSchemasAndTypes(
                         resolvedSchemaTypesDestination,
                         {
@@ -159,6 +163,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                             schemaTemplateItems,
                             shouldImportCoreSchemas,
                             valueTypes,
+                            goModuleName,
                             language: this.getProjectLanguage(),
                             globalSchemaNamespace:
                                 globalSchemaNamespace ?? undefined,

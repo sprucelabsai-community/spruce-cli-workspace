@@ -1,0 +1,22 @@
+package v2025_10_19
+
+import (
+    "encoding/json"
+    "{{goModuleName}}/schemas"
+)
+
+func Make{{namePascal}}(data map[string]interface{}) (*schemas.{{namePascal}}, error) {
+    var {{nameCamel}} schemas.{{namePascal}}
+
+    jsonData, err := json.Marshal(data)
+    if err != nil {
+        return nil, err
+    }
+
+    err = json.Unmarshal(jsonData, &{{nameCamel}})
+    if err != nil {
+        return nil, err
+    }
+
+    return &{{nameCamel}}, nil
+}

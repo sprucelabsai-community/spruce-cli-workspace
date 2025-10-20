@@ -130,12 +130,17 @@ export default class SkillStoreImpl
         return skill.isRegistered
     }
 
+    public getGoModuleName() {
+        const goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
+        const goModContents = diskUtil.readFile(goModFile)
+        const moduleLine = goModContents.match(/module\s+([^\s]+)/)
+        return moduleLine?.[1] as string
+    }
+
     private getNamespaceFromPkg() {
         if (this.isGoModule()) {
-            const goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
-            const goModContents = diskUtil.readFile(goModFile)
-            const moduleLine = goModContents.match(/module\s+([^\s]+)/)
-            const moduleParts = moduleLine?.[1].split('/') ?? []
+            const module = this.getGoModuleName()
+            const moduleParts = module.split('/') ?? []
             return moduleParts.pop() as string
         }
 

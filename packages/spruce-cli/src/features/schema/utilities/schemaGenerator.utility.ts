@@ -7,26 +7,27 @@ const schemaGeneratorUtil = {
         lookupDir: string,
         schemas: { id: string; namespace?: string; version?: string }[]
     ): Promise<string[]> {
-        const matches = await globby(
-            pathUtil.join(lookupDir, '/**/*.schema.[t|j]s')
-        )
+        const matches = await globby([
+            pathUtil.join(lookupDir, '/**/*.schema.[t|j]s'),
+            pathUtil.join(lookupDir, '/*/v*/*.go'),
+        ])
+
         const filtered = matches.filter((match) => {
             let found = false
 
             for (const schema of schemas) {
                 const { id, namespace, version } = schema
-                let regexString = `${pathUtil.sep}${id}.schema.[t|j]s`
 
-                if (version) {
-                    regexString = pathUtil.sep + version + regexString
-                }
+                const expectedPath = match.endsWith('.go')
+                    ? this.buildPath(
+                          namesUtil.toSnake(id),
+                          '.go',
+                          namespace,
+                          version
+                      )
+                    : this.buildPath(id, '.schema.', namespace, version)
 
-                if (namespace) {
-                    regexString = namesUtil.toCamel(namespace) + regexString
-                }
-
-                const idx = match.search(new RegExp(regexString))
-                if (idx > -1) {
+                if (match.includes(expectedPath)) {
                     found = true
                     break
                 }
@@ -35,6 +36,25 @@ const schemaGeneratorUtil = {
             return !found
         })
         return filtered
+    },
+
+    buildPath(
+        schemaId: string,
+        suffix: string,
+        namespace?: string,
+        version?: string
+    ): string {
+        let path = pathUtil.sep + schemaId + suffix
+
+        if (version) {
+            path = pathUtil.sep + version + path
+        }
+
+        if (namespace) {
+            path = namesUtil.toCamel(namespace) + path
+        }
+
+        return path
     },
 }
 

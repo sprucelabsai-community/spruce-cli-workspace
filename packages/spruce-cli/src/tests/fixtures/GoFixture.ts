@@ -9,12 +9,11 @@ export default class GoFixture {
     }
 
     public async initGoProject(name?: string) {
-        await this.cmdService.execute(
-            `go mod init github.com/${generateId()}/${name ?? generateId()}`,
-            {
-                env: this.buildEnv(),
-            }
-        )
+        const moduleName = `github.com/${generateId()}/${name ?? generateId()}`
+        await this.cmdService.execute(`go mod init ${moduleName}`, {
+            env: this.buildEnv(),
+        })
+        return moduleName
     }
 
     public setCwd(dir: string) {

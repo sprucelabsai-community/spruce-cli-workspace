@@ -118,14 +118,18 @@ export const templates = {
             globalSchemaNamespace?: string
             registerBuiltSchemas: boolean
             schemaFile?: string
+            goModuleName?: string
             typesFile?: string
+            language: 'typescript' | 'go'
         }
     ) {
         const imports = importExtractorUtil.extractFieldImports(
             options.fieldTemplateItems
         )
+
         const template = templateImportUtil.getTemplate(
-            options.schemaFile ?? 'schema/schema.ts.hbs'
+            options.schemaFile ?? 'schema/schema.ts.hbs',
+            options.language
         )
 
         return template({

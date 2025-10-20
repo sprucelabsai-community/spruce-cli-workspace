@@ -1,6 +1,10 @@
 import pathUtil from 'path'
 import { Schema, SchemaError, SchemaTemplateItem } from '@sprucelabs/schema'
-import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
+import {
+    diskUtil,
+    namesUtil,
+    ProjectLanguage,
+} from '@sprucelabs/spruce-skill-utils'
 import schemaGeneratorUtil from './schemaGenerator.utility'
 
 const schemaDiskUtil = {
@@ -8,25 +12,29 @@ const schemaDiskUtil = {
         destination: string
         schema: Schema
         shouldIncludeFileExtension?: boolean
+        language?: ProjectLanguage
     }) {
-        const {
-            destination,
-            schema,
-            shouldIncludeFileExtension: includeFileExtension,
-        } = options
+        const { destination, schema, shouldIncludeFileExtension, language } =
+            options
 
         if (!schema.namespace) {
             throw new SchemaError({
                 code: 'MISSING_PARAMETERS',
                 parameters: ['namespace'],
+                friendlyMessage: `Schema with id "${schema.id}" is missing a namespace so it can not be written to disk.`,
             })
         }
+
+        const name =
+            language == 'go'
+                ? `${namesUtil.toSnake(schema.id)}.go`
+                : `${schema.id}.schema${shouldIncludeFileExtension === false ? '' : '.ts'}`
 
         return pathUtil.join(
             destination,
             namesUtil.toCamel(schema.namespace),
             schema.version ?? '',
-            `${schema.id}.schema${includeFileExtension === false ? '' : '.ts'}`
+            name
         )
     },
 

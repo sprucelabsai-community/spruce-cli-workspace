@@ -7,7 +7,7 @@ import {
     randomUtil,
     versionUtil,
 } from '@sprucelabs/spruce-skill-utils'
-import { test, assert } from '@sprucelabs/test-utils'
+import { test, assert, generateId } from '@sprucelabs/test-utils'
 import CommandServiceImpl from '../../../services/CommandService'
 import LintService from '../../../services/LintService'
 import SchemaTemplateItemBuilder from '../../../templateItemBuilders/SchemaTemplateItemBuilder'
@@ -29,6 +29,7 @@ export default class SyncingSchemasInGoTest extends AbstractSkillTest {
     private static readonly version = versionUtil.generateVersion().constValue
     private static skillNamespace: string = CORE_NAMESPACE
     private static schemaTemplateItemBuilder: SchemaTemplateItemBuilder
+    private static goFullModuleName: string
 
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
@@ -52,8 +53,7 @@ export default class SyncingSchemasInGoTest extends AbstractSkillTest {
     protected static async canSyncCoreSchemasWithoutError() {
         this.moveToGoDir()
 
-        await this.go.initGoProject(this.goModuleName)
-
+        this.goFullModuleName = await this.go.initGoProject(this.goModuleName)
         await this.sync()
 
         const tsFiles = await globby('**/*.ts', {
@@ -158,6 +158,43 @@ export default buildSchema(${JSON.stringify(schema2, null, 4)})`
     protected static async generatedFileShouldPassVet() {
         this.moveToGoDir()
         await this.go.vet()
+    }
+
+    @test()
+    protected static async writesSchemaFileForEachSchemaFound() {
+        this.moveToGoDir()
+        const results = await this.sync()
+        const generated = ['nestedSchema', 'anotherSchemaIBuilt']
+        for (const schema of generated) {
+            const path = testUtil.assertFileByPathInGeneratedFiles(
+                `schemas/${this.skillNamespace.toLowerCase()}/${this.version}/${namesUtil.toSnake(schema)}.go`,
+                results.files
+            )
+            const contents = diskUtil.readFile(path)
+            assert.doesInclude(
+                contents,
+                `package ${this.version}`,
+                'Did not include expected package declaration.'
+            )
+        }
+    }
+
+    @test()
+    protected static async canActuallyUseGeneratedSchemasInGoTest() {
+        this.moveToGoDir()
+        const testSrc = buildGoTest({
+            pwd: this.goFullModuleName,
+            name: generateId(),
+            age: Date.now() % 100,
+            version: this.version,
+        })
+
+        diskUtil.writeFile(
+            this.resolvePath(this.cwd, 'test_schema.go'),
+            testSrc
+        )
+
+        await this.go.exec('test', './...')
     }
 
     private static async lintBuilders() {
@@ -272,3 +309,39 @@ const nestedSchema = buildSchema({
         },
     },
 })
+
+const buildGoTest = (options: {
+    pwd: string
+    name: string
+    age: number
+    version: string
+}) => `
+package goschemas
+
+import (
+	"testing"
+	spruce "${options.pwd}/schemas/spruce/${options.version}"
+)
+
+func TestMakeASchemaIBuilt(t *testing.T) {
+	data := map[string]interface{}{
+		"name": "${options.name}",
+		"age":  ${options.age},
+	}
+
+	result, err := spruce.MakeNestedSchema(data)
+	if err != nil {
+		t.Fatalf("MakeNestedSchema failed: %v", err)
+	}
+
+	if result.Name != "${options.name}" {
+		t.Errorf("Expected Name to be '${options.name}', got '%s'",
+			result.Name)
+	}
+
+	if result.Age != ${options.age} {
+		t.Errorf("Expected Age to be ${options.age}, got %f",
+			result.Age)
+	}
+}
+`
