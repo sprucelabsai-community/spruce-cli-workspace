@@ -192,7 +192,7 @@ export default class SchemaWriter extends AbstractWriter {
         const results: WriteResults = []
 
         for (const item of options.schemaTemplateItems) {
-            if (language === 'go' && !item.importFrom) {
+            if (language === 'ts' || (language === 'go' && !item.importFrom)) {
                 const schemaResults = await this.writeSchema(destinationDir, {
                     ...options,
                     ...item,
