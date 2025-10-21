@@ -118,7 +118,7 @@ export const templates = {
             globalSchemaNamespace?: string
             registerBuiltSchemas: boolean
             schemaFile?: string
-            goModuleName?: string
+            goModuleNameAndPath?: string
             typesFile?: string
             language: 'typescript' | 'go'
         }

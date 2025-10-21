@@ -4,10 +4,10 @@ package {{schema.version}}
 
 import (
     "encoding/json"
-    "{{goModuleName}}/schemas"
+    "{{goModuleNameAndPath}}/schemas"
 )
 
-func Make{{namePascal}}(data map[string]interface{}) (*schemas.{{namePascal}}, error) {
+func Make{{namePascal}}(data map[string]any) (*schemas.{{namePascal}}, error) {
     var {{nameCamel}} schemas.{{namePascal}}
 
     jsonData, err := json.Marshal(data)

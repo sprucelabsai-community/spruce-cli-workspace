@@ -43,13 +43,23 @@ const schemaDiskUtil = {
         generateStandaloneTypesFile: boolean
         schemaTypesDestinationDirOrFile: string
         fieldTypesDestinationDir: string
+        language: ProjectLanguage
     }) {
-        const {
+        let {
             cwd,
             generateStandaloneTypesFile,
             schemaTypesDestinationDirOrFile,
             fieldTypesDestinationDir,
+            language,
         } = options
+
+        if (
+            language === 'go' &&
+            !generateStandaloneTypesFile &&
+            schemaTypesDestinationDirOrFile === '#spruce/schemas'
+        ) {
+            schemaTypesDestinationDirOrFile = 'schemas/schemas.go'
+        }
 
         const resolvedSchemaTypesDestination = diskUtil.resolvePath(
             cwd,

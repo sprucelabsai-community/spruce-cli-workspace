@@ -112,7 +112,7 @@ export default class SchemaWriter extends AbstractWriter {
         destinationDirOrFilename: string,
         options: Omit<GenerateSchemaTypesOptions, 'valueTypes'> & {
             valueTypes?: ValueTypes
-            goModuleName?: string
+            goModuleNameAndPath?: string
         }
     ): Promise<WriteResults> {
         const {
@@ -188,14 +188,17 @@ export default class SchemaWriter extends AbstractWriter {
         destinationDir: string,
         options: GenerateSchemaTypesOptions & { typesFile?: string }
     ): Promise<WriteResults> {
+        const { language } = options
         const results: WriteResults = []
 
         for (const item of options.schemaTemplateItems) {
-            const schemaResults = await this.writeSchema(destinationDir, {
-                ...options,
-                ...item,
-            })
-            results.push(...schemaResults)
+            if (language === 'go' && !item.importFrom) {
+                const schemaResults = await this.writeSchema(destinationDir, {
+                    ...options,
+                    ...item,
+                })
+                results.push(...schemaResults)
+            }
         }
 
         return results
@@ -210,7 +213,7 @@ export default class SchemaWriter extends AbstractWriter {
             typesFile?: string
             language?: ProjectLanguage
             registerBuiltSchemas?: boolean
-            goModuleName?: string
+            goModuleNameAndPath?: string
             shouldImportCoreSchemas: boolean
         } & SchemaTemplateItem
     ) {
@@ -339,5 +342,5 @@ export interface GenerateSchemaTypesOptions {
     registerBuiltSchemas?: boolean
     shouldImportCoreSchemas: boolean
     language?: ProjectLanguage
-    goModuleName?: string
+    goModuleNameAndPath?: string
 }

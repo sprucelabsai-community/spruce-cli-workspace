@@ -73,6 +73,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
             generateStandaloneTypesFile,
             schemaTypesDestinationDirOrFile,
             fieldTypesDestinationDir,
+            language: this.getProjectLanguage(),
         })
 
         this.ui.startLoading('Generating field types...')
@@ -150,9 +151,11 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 try {
                     this.ui.startLoading('Determining what changed... ⚡️')
 
-                    let goModuleName: string | undefined = undefined
+                    let goModuleNameAndPath: string | undefined = undefined
                     if (this.isInGoProject()) {
-                        goModuleName = this.skillStore.getGoModuleName()
+                        goModuleNameAndPath = this.skillStore.getGoModuleName({
+                            shouldIncludePathFromCwd: true,
+                        })
                     }
 
                     typeResults = await this.schemaWriter.writeSchemasAndTypes(
@@ -163,7 +166,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                             schemaTemplateItems,
                             shouldImportCoreSchemas,
                             valueTypes,
-                            goModuleName,
+                            goModuleNameAndPath,
                             language: this.getProjectLanguage(),
                             globalSchemaNamespace:
                                 globalSchemaNamespace ?? undefined,
@@ -201,12 +204,8 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
     private resolveTypesTemplate(
         generateStandaloneTypesFile: boolean
     ): string | undefined {
-        if (!generateStandaloneTypesFile) {
-            return undefined
-        }
-
         if (this.getProjectLanguage() === 'go') {
-            return 'schema/core_schemas.go.hbs'
+            return 'schema/schemas.go.hbs'
         }
 
         return generateStandaloneTypesFile

@@ -1,3 +1,4 @@
+import path from 'path'
 import { SpruceSchemas } from '@sprucelabs/spruce-core-schemas'
 import { diskUtil, namesUtil } from '@sprucelabs/spruce-skill-utils'
 import SpruceError from '../../../errors/SpruceError'
@@ -130,7 +131,9 @@ export default class SkillStoreImpl
         return skill.isRegistered
     }
 
-    public getGoModuleName() {
+    public getGoModuleName(options?: { shouldIncludePathFromCwd?: boolean }) {
+        const { shouldIncludePathFromCwd = false } = options || {}
+
         let goModFile = diskUtil.resolvePath(this.cwd, 'go.mod')
         if (!diskUtil.doesFileExist(goModFile)) {
             goModFile = diskUtil.resolvePath(this.cwd, '../go.mod')
@@ -145,7 +148,18 @@ export default class SkillStoreImpl
         }
         const goModContents = diskUtil.readFile(goModFile)
         const moduleLine = goModContents.match(/module\s+([^\s]+)/)
-        return moduleLine?.[1] as string
+        const goModuleName = moduleLine?.[1] as string
+
+        if (shouldIncludePathFromCwd) {
+            const goModDir = path.dirname(goModFile)
+            const relativePath = this.cwd.replace(goModDir, '')
+
+            if (relativePath) {
+                return `${goModuleName}${relativePath}`
+            }
+        }
+
+        return goModuleName
     }
 
     private getNamespaceFromPkg() {

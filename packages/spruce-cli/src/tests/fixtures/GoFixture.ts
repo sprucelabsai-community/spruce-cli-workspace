@@ -1,4 +1,4 @@
-import { diskUtil } from '@sprucelabs/spruce-skill-utils'
+import os from 'os'
 import { generateId } from '@sprucelabs/test-utils'
 import { CommandService } from '../../services/CommandService'
 
@@ -28,14 +28,8 @@ export default class GoFixture {
     }
 
     private buildEnv() {
-        const cwd = this.cmdService.getCwd()
-        const goCacheDir = diskUtil.resolvePath(cwd, '.go-cache')
-
-        diskUtil.createDir(goCacheDir)
-
         return {
-            HOME: process.env.HOME ?? cwd,
-            GOCACHE: goCacheDir,
+            HOME: os.homedir(),
         }
     }
 
