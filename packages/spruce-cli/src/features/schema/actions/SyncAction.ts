@@ -204,7 +204,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
     private resolveTypesTemplate(
         generateStandaloneTypesFile: boolean
     ): string | undefined {
-        if (this.getProjectLanguage() === 'go') {
+        if (this.isInGoProject()) {
             return 'schema/schemas.go.hbs'
         }
 
@@ -223,7 +223,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
                 .filter((i) => !!i)
         ) as string[]
 
-        if (this.getProjectLanguage() === 'go') {
+        if (this.isInGoProject()) {
             return
         }
 
@@ -352,7 +352,7 @@ export default class SyncAction extends AbstractAction<OptionsSchema> {
         shouldGenerateFieldTypes: boolean
         resolvedFieldTypesDestination: string
     }) {
-        if (this.getProjectLanguage() === 'go') {
+        if (this.isInGoProject()) {
             return {
                 generateFieldFiles: [],
                 fieldTemplateItems: [],
