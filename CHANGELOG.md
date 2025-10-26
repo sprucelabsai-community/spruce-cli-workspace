@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.0.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v28.2.3...v29.0.0) (2025-10-26)
+
+
+### Breaking Changes
+
+* go support ([cbf24d3](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/cbf24d3))
+
+
+### Features
+
+* can specify command overrides in settings.json (prepping for golang support) ([5477c17](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/5477c17))
+
+
+
+
+
 ## [28.2.3](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v28.2.2...v28.2.3) (2025-10-15)
 
 **Note:** Version bump only for package spruce-cli-workspace
