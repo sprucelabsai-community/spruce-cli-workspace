@@ -1,9 +1,36 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
+import { Organization } from '@sprucelabs/spruce-core-schemas'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { generateId } from '@sprucelabs/test-utils'
 import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
 export default class EventFaker {
+    public async fakeCreateOrganization(
+        cb?: (
+            targetAndPayload: CreateOrganizationTargetAndPayload
+        ) => void | Organization
+    ) {
+        await eventFaker.on(
+            'create-organization::v2020_12_25',
+            (targetAndPayload) => {
+                return {
+                    organization:
+                        cb?.(targetAndPayload) ??
+                        this.generateOrganizationValues(),
+                }
+            }
+        )
+    }
+
+    public generateOrganizationValues(): Organization {
+        return {
+            id: generateId(),
+            name: generateId(),
+            slug: generateId(),
+            dateCreated: Date.now(),
+        }
+    }
+
     public async fakeListSkills(cb?: () => void | ListSkill[]) {
         await eventFaker.on('list-skills::v2020_12_25', () => {
             return {
@@ -52,3 +79,5 @@ export default class EventFaker {
 }
 
 export type ListSkill = SpruceSchemas.Mercury.v2020_12_25.ListSkillsSkill
+export type CreateOrganizationTargetAndPayload =
+    SpruceSchemas.Mercury.v2020_12_25.CreateOrganizationEmitTargetAndPayload

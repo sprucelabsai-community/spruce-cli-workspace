@@ -31,7 +31,7 @@ export default class CreatingSchemasWithGenericsTest extends AbstractSchemaTest 
         assert.doesInclude(contents, '<Type>')
         assert.doesInclude(
             contents,
-            "'typedByGeneric'?: Type2 | undefined | null"
+            "'typedByGeneric'?: (Type2) | undefined | null"
         )
 
         await this.assertValidActionResponseFiles(results)
