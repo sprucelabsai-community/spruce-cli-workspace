@@ -154,9 +154,10 @@ export default class TkTextWidget extends TkBaseWidget implements TextWidget {
             return segment
         }
 
-        if ('{}[]()'.includes(segment)) {
+        if (segment.trim().length > 0) {
             // Terminal-kit drops single-character chunks when parsing ANSI
-            // sequences, so pad with a zero-width space to keep braces visible.
+            // sequences, so pad with a zero-width space to keep visible
+            // single characters (digits, braces, etc.) from disappearing.
             return `${segment}​`
         }
 
