@@ -242,6 +242,10 @@ export default class SkillStoreImpl
         return this.fetchAllSkills({ shouldOnlyShowMine: true })
     }
 
+    public static setCurrentSkill(skill: CurrentSkill) {
+        this.currentSkill = skill
+    }
+
     public async fetchAllSkills(query?: {
         shouldOnlyShowMine?: boolean
         namespaces?: string[]

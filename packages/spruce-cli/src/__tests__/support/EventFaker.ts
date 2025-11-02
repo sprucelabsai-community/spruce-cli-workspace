@@ -5,6 +5,33 @@ import { generateId } from '@sprucelabs/test-utils'
 import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
 export default class EventFaker {
+    public async fakeSyncPermissionContracts() {
+        await eventFaker.on('sync-permission-contracts::v2020_12_25', () => {
+            return {
+                contractRecords: [],
+            }
+        })
+    }
+    public async fakeRegisterEvents(cb?: () => void) {
+        await eventFaker.on('register-events::v2020_12_25', () => {
+            cb?.()
+            return {
+                fqens: [],
+            }
+        })
+    }
+    public async fakeGetEventContracts() {
+        await eventFaker.on('get-event-contracts::v2020_12_25', () => {
+            return {
+                contracts: [
+                    {
+                        id: generateId(),
+                        eventSignatures: {},
+                    },
+                ],
+            }
+        })
+    }
     public async fakeCreateOrganization(
         cb?: (
             targetAndPayload: CreateOrganizationTargetAndPayload

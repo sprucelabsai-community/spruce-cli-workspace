@@ -198,7 +198,6 @@ export function buildPermissionContract(..._: any[]):any { return _[0] }
 
     private static async assertGlobalEventsAreTyped(eventName: string) {
         const contents = diskUtil.readFile(this.eventContractPath)
-
         assert.doesInclude(contents, `'${eventName}':`)
     }
 
