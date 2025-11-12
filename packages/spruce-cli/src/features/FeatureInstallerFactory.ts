@@ -16,6 +16,7 @@ import EventFeature from './event/EventFeature'
 import EventContractFeature from './eventContract/EventContractFeature'
 import FeatureInstaller, { FeatureInstallerImpl } from './FeatureInstaller'
 import { FeatureCode } from './features.types'
+import GlobalFeature from './global/GlobalFeature'
 import LogFeature from './log/LogFeature'
 import NodeFeature from './node/NodeFeature'
 import OnboardFeature from './onboard/OnboardFeature'
@@ -57,6 +58,7 @@ export default class FeatureInstallerFactory {
         PolishFeature,
         PermissionFeature,
         AgentFeature,
+        GlobalFeature,
     ]
 
     public static readonly featureCodes: FeatureCode[] = [
@@ -83,6 +85,7 @@ export default class FeatureInstallerFactory {
         'polish',
         'permission',
         'agent',
+        'global',
     ]
 
     public static WithAllFeatures(

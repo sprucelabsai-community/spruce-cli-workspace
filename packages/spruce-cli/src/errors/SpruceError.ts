@@ -174,7 +174,7 @@ export default class SpruceError extends AbstractSpruceError<ErrorOptions> {
                 break
 
             case 'SKILL_NOT_REGISTERED':
-                message = `Dang! I can't continue until you register your skill! Run \`spruce login\` and then \`spruce register.skill\` to get the ball rolling!`
+                message = `Dang! I can't continue until you register your skill! Run \`spruce login\` and then \`spruce register\` to get the ball rolling!`
                 break
 
             case 'NO_ORGANIZATIONS_FOUND':

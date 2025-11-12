@@ -1,10 +1,41 @@
 import { SpruceSchemas } from '@sprucelabs/mercury-types'
-import { Organization } from '@sprucelabs/spruce-core-schemas'
+import { Organization, Skill } from '@sprucelabs/spruce-core-schemas'
 import { eventFaker } from '@sprucelabs/spruce-test-fixtures'
 import { generateId } from '@sprucelabs/test-utils'
 import { ListPermContractsTargetAndPayload } from '../../features/permission/stores/PermissionStore'
 
 export default class EventFaker {
+    public async fakeUnregisterSkill(
+        cb?: (targetAndPayload: UnregisterSkillTargetAndPayload) => void
+    ) {
+        await eventFaker.on(
+            'unregister-skill::v2020_12_25',
+            (targetAndPayload) => {
+                cb?.(targetAndPayload)
+                return {}
+            }
+        )
+    }
+    public async fakeRegisterSkill(
+        cb?: (targetAndPayload: RegisterSkillTargetAndPayload) => void | Skill
+    ) {
+        await eventFaker.on(
+            'register-skill::v2020_12_25',
+            (targetAndPayload) => {
+                return {
+                    skill: cb?.(targetAndPayload) ?? {
+                        id: generateId(),
+                        name: generateId(),
+                        slug: generateId(),
+                        apiKey: generateId(),
+                        dateCreated: Date.now(),
+                        creators: [],
+                    },
+                }
+            }
+        )
+    }
+
     public async fakeSyncPermissionContracts() {
         await eventFaker.on('sync-permission-contracts::v2020_12_25', () => {
             return {
@@ -58,10 +89,14 @@ export default class EventFaker {
         }
     }
 
-    public async fakeListSkills(cb?: () => void | ListSkill[]) {
-        await eventFaker.on('list-skills::v2020_12_25', () => {
+    public async fakeListSkills(
+        cb?: (
+            targetAndPayload: ListSkillsTargetAndPayload
+        ) => void | ListSkill[]
+    ) {
+        await eventFaker.on('list-skills::v2020_12_25', (targetAndPayload) => {
             return {
-                skills: cb?.() ?? [],
+                skills: cb?.(targetAndPayload) ?? [],
             }
         })
     }
@@ -108,3 +143,12 @@ export default class EventFaker {
 export type ListSkill = SpruceSchemas.Mercury.v2020_12_25.ListSkillsSkill
 export type CreateOrganizationTargetAndPayload =
     SpruceSchemas.Mercury.v2020_12_25.CreateOrganizationEmitTargetAndPayload
+
+export type RegisterSkillTargetAndPayload =
+    SpruceSchemas.Mercury.v2020_12_25.RegisterSkillEmitTargetAndPayload
+
+export type ListSkillsTargetAndPayload =
+    SpruceSchemas.Mercury.v2020_12_25.ListSkillsEmitTargetAndPayload
+
+export type UnregisterSkillTargetAndPayload =
+    SpruceSchemas.Mercury.v2020_12_25.UnregisterSkillEmitTargetAndPayload
