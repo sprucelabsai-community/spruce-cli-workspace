@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.1.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.0.1...v29.1.0) (2025-11-13)
+
+
+### Features
+
+* unregister.skill command ([da2f73a](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/da2f73a))
+
+
+
+
+
 ## [29.0.1](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.0.0...v29.0.1) (2025-11-02)
 
 **Note:** Version bump only for package spruce-cli-workspace
