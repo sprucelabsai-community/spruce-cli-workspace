@@ -36,9 +36,19 @@ export default class UnregisterSkillAction extends AbstractAction<OptionsSchema>
                     choices: skills.map((skill) => this.skillToChoices(skill)),
                 },
             })
-            await this.skills.unregisterSkill(skillId)
+
             const match = skills.find((s) => s.id === skillId)
-            response.summaryLines = [`Unregistered ${match?.name}`]
+
+            const confirm = await this.ui.confirm(
+                `Are you sure you want to unregister the skill "${match?.name}"?`
+            )
+
+            if (confirm) {
+                await this.skills.unregisterSkill(skillId)
+                response.summaryLines = [`Unregistered ${match?.name}`]
+            } else {
+                response.summaryLines = ['Unregister cancelled.']
+            }
         } else {
             response.errors = [
                 new SpruceError({ code: 'NO_SKILLS_REGISTERED' }),

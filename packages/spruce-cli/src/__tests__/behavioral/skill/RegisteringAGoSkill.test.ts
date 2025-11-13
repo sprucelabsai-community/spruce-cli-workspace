@@ -3,6 +3,9 @@ import { test, assert } from '@sprucelabs/test-utils'
 import AbstractCliTest from '../../../tests/AbstractCliTest'
 
 export default class RegisteringAGoSkillTest extends AbstractCliTest {
+    @test.only()
+    protected static async stub() {}
+
     @test()
     protected static async canCreateRegisteringAGoSkill() {
         MercuryClientFactory.setIsTestMode(true)

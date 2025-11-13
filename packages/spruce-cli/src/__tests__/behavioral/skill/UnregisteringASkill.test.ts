@@ -17,7 +17,7 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
     private static lastListSkillsPayload: ListSkillsTargetAndPayload['payload']
     private static fakedSkills: ListSkill[] = []
     private static executePromise: Promise<FeatureActionResponse>
-    private static lastUnregisterSkillTarget: UnregisterSkillTargetAndPayload['target']
+    private static lastUnregisterSkillTarget?: UnregisterSkillTargetAndPayload['target']
 
     protected static async beforeEach(): Promise<void> {
         await super.beforeEach()
@@ -26,6 +26,8 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
         this.action = this.Action('global', 'unregisterSkill')
 
         delete this.lastListSkillsPayload
+        delete this.lastUnregisterSkillTarget
+
         this.fakedSkills = []
 
         await this.eventFaker.fakeListSkills(({ payload }) => {
@@ -60,6 +62,7 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
         await this.executeAndWaitForInput()
         this.assertProptsForAllSkills()
         await this.selectSkill(0)
+        await this.pressEnter()
     }
 
     @test()
@@ -72,6 +75,7 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
         this.assertProptsForAllSkills()
 
         await this.selectSkill(1)
+        await this.pressEnter()
     }
 
     @test('can unregister first skill', 0)
@@ -81,6 +85,7 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
         this.pushFakedSkill()
         await this.executeAndWaitForInput()
         await this.selectSkill(idx)
+        await this.pressEnter()
         await this.waitUntilFinished()
 
         assert.isEqualDeep(
@@ -89,6 +94,19 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
                 skillId: this.fakedSkills[idx].id,
             },
             'Skill ID not passed to unregister skill'
+        )
+    }
+
+    @test()
+    protected static async doesNotUnRegisterIfNotConfirmed() {
+        this.pushFakedSkill()
+        await this.executeAndWaitForInput()
+        await this.selectSkill(0)
+        await this.ui.sendInput('n')
+        await this.waitUntilFinished()
+        assert.isFalsy(
+            this.lastUnregisterSkillTarget,
+            'Unregister skill was called unexpectedly'
         )
     }
 
@@ -110,6 +128,10 @@ export default class UnregisteringASkillTest extends AbstractCliTest {
                 choices: this.generateExpectedSkillChoices(),
             },
         })
+    }
+
+    private static async pressEnter() {
+        await this.ui.sendInput('\n')
     }
 
     private static generateExpectedSkillChoices() {
