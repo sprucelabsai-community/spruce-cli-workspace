@@ -194,6 +194,7 @@ export default class ViewWriter extends AbstractWriter {
     }
 
     public writePlugin(cwd: string) {
+        debugger
         const destination = diskUtil.resolveHashSprucePath(
             cwd,
             'features',

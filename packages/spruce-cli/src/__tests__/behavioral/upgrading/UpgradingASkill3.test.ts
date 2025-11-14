@@ -207,6 +207,7 @@ export default class UpgradingASkill3Test extends AbstractCliTest {
     }
 
     private static getViewsPluginPath() {
+        debugger
         return this.resolveHashSprucePath('features', 'view.plugin.ts')
     }
 

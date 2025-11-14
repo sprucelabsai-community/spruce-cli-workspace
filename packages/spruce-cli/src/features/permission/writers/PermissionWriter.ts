@@ -101,6 +101,7 @@ export default class PermissionWriter extends AbstractWriter {
     }
 
     public writePlugin(cwd: string) {
+        debugger
         const destination = diskUtil.resolveHashSprucePath(
             cwd,
             'features',

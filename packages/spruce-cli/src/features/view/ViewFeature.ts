@@ -1,5 +1,5 @@
 import { diskUtil } from '@sprucelabs/spruce-skill-utils'
-import { NpmPackage } from '../../types/cli.types'
+import { GeneratedFile, NpmPackage } from '../../types/cli.types'
 import AbstractFeature, { FeatureDependency } from '../AbstractFeature'
 import { ActionOptions, FeatureCode } from '../features.types'
 
@@ -71,13 +71,21 @@ export default class ViewFeature extends AbstractFeature {
     }
 
     private async handleDidExecuteUpgrade() {
-        const files = await this.Writer('view').writePlugin(this.cwd)
+        const isInstalled = await this.features.isInstalled('skill')
+        let files: GeneratedFile[] = []
+        if (isInstalled) {
+            files = await this.Writer('view').writePlugin(this.cwd)
+        }
         const results = await this.Action('view', 'sync').execute({})
-
         return [...files, ...(results?.files ?? [])]
     }
 
     public async afterPackageInstall() {
+        const isInstalled = await this.features.isInstalled('skill')
+        if (!isInstalled) {
+            return {}
+        }
+
         const files = await this.Writer('view').writePlugin(this.cwd)
 
         this.Service('dependency').add({

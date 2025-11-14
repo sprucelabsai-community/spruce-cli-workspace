@@ -55,6 +55,10 @@ export default class PermissionFeature extends AbstractFeature {
     }
 
     public async afterPackageInstall(): Promise<InstallResults> {
+        const isInstalled = await this.features.isInstalled('skill')
+        if (!isInstalled) {
+            return {}
+        }
         const files = await this.writePlugin()
         const combinedFile = await this.writeTypesFile()
 
