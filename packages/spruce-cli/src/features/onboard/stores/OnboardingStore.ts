@@ -8,7 +8,8 @@ import AbstractLocalStore, {
 import { StoreOptions } from '../../../stores/AbstractStore'
 
 export interface OnboardingStoreSettings
-    extends LocalStoreSettings,
+    extends
+        LocalStoreSettings,
         SpruceSchemas.SpruceCli.v2020_07_22.Onboarding {}
 
 type OnboardingSchema = SpruceSchemas.SpruceCli.v2020_07_22.OnboardingSchema

@@ -17,8 +17,7 @@ import {
 
 export default class ActionQuestionAskerImpl<
     F extends FeatureCode = FeatureCode,
-> implements ActionQuestionAsker<F>
-{
+> implements ActionQuestionAsker<F> {
     private ui: GraphicsInterface
     public static Class?: new (
         options: ActionQuestionAskerOptions

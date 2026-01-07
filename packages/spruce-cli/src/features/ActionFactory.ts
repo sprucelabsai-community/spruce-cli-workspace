@@ -121,11 +121,10 @@ export default class ActionFactory {
     }
 }
 
-export interface FeatureActionFactoryOptions
-    extends Omit<
-        ActionOptions,
-        'parent' | 'actionExecuter' | 'featureInstaller'
-    > {
+export interface FeatureActionFactoryOptions extends Omit<
+    ActionOptions,
+    'parent' | 'actionExecuter' | 'featureInstaller'
+> {
     emitter: GlobalEmitter
     blockedCommands?: BlockedCommands
     optionOverrides?: OptionOverrides

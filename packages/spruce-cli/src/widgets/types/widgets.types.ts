@@ -12,8 +12,9 @@ export interface WidgetButton {
     onClick?: (cb: () => void) => void
 }
 
-export interface BaseWidget<Contract extends EventContract = any>
-    extends MercuryEventEmitter<Contract> {
+export interface BaseWidget<
+    Contract extends EventContract = any,
+> extends MercuryEventEmitter<Contract> {
     type: string
     getId(): string | null
     getFrame(): WidgetFrameCalculated

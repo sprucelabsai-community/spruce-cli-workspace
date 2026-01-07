@@ -31,8 +31,7 @@ import { FeatureCode } from './features.types'
 
 export default abstract class AbstractFeature<
     S extends Schema | undefined = Schema | undefined,
-> implements ServiceProvider
-{
+> implements ServiceProvider {
     public abstract description: string
     public readonly dependencies: FeatureDependency[] = []
     protected _packageDependencies: PackageDependency[] = []

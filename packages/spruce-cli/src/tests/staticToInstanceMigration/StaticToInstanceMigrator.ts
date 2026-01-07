@@ -4,9 +4,7 @@ import LintService from '../../services/LintService'
 import StaticTestFinder from './StaticTestFinder'
 import { StaticToInstanceTestFileMigrator } from './StaticToInstanceTestFileMigrator'
 
-export default class StaticToInstanceMigratorImpl
-    implements StaticToInstanceMigrator
-{
+export default class StaticToInstanceMigratorImpl implements StaticToInstanceMigrator {
     public static diskUtil = diskUtil
     public static Class?: new (
         options: StaticToInstanceMigratorOptions

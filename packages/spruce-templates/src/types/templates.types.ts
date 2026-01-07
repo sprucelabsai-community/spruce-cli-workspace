@@ -91,8 +91,10 @@ export interface EventListenerOptions {
     schemaTypesFile: string
 }
 
-export interface EventSignatureTemplateItem
-    extends Omit<EventSignature, 'emitPayloadSchema'> {
+export interface EventSignatureTemplateItem extends Omit<
+    EventSignature,
+    'emitPayloadSchema'
+> {
     emitPayloadSchema?: SchemaTemplateItem
     responsePayloadSchema?: SchemaTemplateItem
 }

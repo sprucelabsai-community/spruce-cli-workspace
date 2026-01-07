@@ -1,8 +1,6 @@
 import { assertOptions } from '@sprucelabs/schema'
 
-export default class StaticToInstanceTestFileMigratorImpl
-    implements StaticToInstanceTestFileMigrator
-{
+export default class StaticToInstanceTestFileMigratorImpl implements StaticToInstanceTestFileMigrator {
     public static Class?: new () => StaticToInstanceTestFileMigrator
 
     public static Migrator() {

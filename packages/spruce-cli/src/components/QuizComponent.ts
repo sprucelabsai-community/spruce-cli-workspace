@@ -34,8 +34,10 @@ enum AnswerValidity {
     Incorrect = 'incorrect',
 }
 
-interface QuizPresentationOptions<T extends Schema, Q extends QuizQuestions>
-    extends Omit<FormPresentationOptions<T>, 'fields'> {
+interface QuizPresentationOptions<
+    T extends Schema,
+    Q extends QuizQuestions,
+> extends Omit<FormPresentationOptions<T>, 'fields'> {
     questions?: QuizAnswerFieldNames<Q>[]
     randomizeQuestions?: boolean
 }
@@ -77,8 +79,10 @@ interface QuizPresentationResults<Q extends QuizQuestions> {
     totalQuestions: number
 }
 
-interface QuizOptions<T extends Schema, Q extends QuizQuestions>
-    extends Omit<FormOptions<T>, 'schema'> {
+interface QuizOptions<T extends Schema, Q extends QuizQuestions> extends Omit<
+    FormOptions<T>,
+    'schema'
+> {
     /** Should we randomize the questions */
     randomizeQuestions?: boolean
     /** The questions we are asking */
