@@ -50,10 +50,16 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
     public async execute(
         options: SchemaValues<OptionsSchema>
     ): Promise<FeatureActionResponse> {
+        const settings = this.Service('settings')
+
         if (!options.watchMode) {
-            const settings = this.Service('settings')
             options.watchMode = settings.get('test.watchMode') ?? 'off'
         }
+
+        const rpSettings = settings.get('regressionproof') as
+            | { enabled: boolean; projectName: string }
+            | undefined
+        this.isRpTraining = rpSettings?.enabled ?? false
 
         const normalizedOptions = this.validateAndNormalizeOptions(options)
 
@@ -247,11 +253,84 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
     }
 
     private async handleToggleRpTraining() {
-        // this.isRpTraining = !this.isRpTraining
-        // this.testReporter?.setIsRpTraining(this.isRpTraining)
-        // if (this.isRpTraining) {
-        await this.testReporter?.askForTrainingToken()
-        // }
+        const settings = this.Service('settings')
+        const rpSettings = settings.get('regressionproof') as
+            | { enabled: boolean; projectName: string }
+            | undefined
+
+        if (!rpSettings) {
+            const defaultName = await this.getDefaultProjectName()
+            const projectName =
+                await this.testReporter?.askForProjectName(defaultName)
+
+            if (projectName) {
+                try {
+                    this.testReporter?.setRpTrainingStatus('installing')
+                    this.testReporter?.setStatusLabel(
+                        'Installing regressionproof packages...'
+                    )
+
+                    const pkgService = this.Service('pkg')
+                    await pkgService.install(
+                        [
+                            '@regressionproof/cli',
+                            '@regressionproof/jest-reporter',
+                        ],
+                        { isDev: true }
+                    )
+
+                    this.testReporter?.setStatusLabel(
+                        'Initializing regressionproof...'
+                    )
+
+                    const commandService = this.Service('command')
+                    await commandService.execute(
+                        `node node_modules/@regressionproof/cli/build/cli.js init ${projectName}`,
+                        { ignoreErrors: true }
+                    )
+
+                    settings.set('regressionproof', {
+                        enabled: true,
+                        projectName,
+                    })
+                    this.isRpTraining = true
+                    this.testReporter?.setIsRpTraining(true)
+                    this.testReporter?.setStatusLabel('')
+                } catch (err: any) {
+                    this.testReporter?.setRpTrainingStatus('off')
+                    const message = err?.message ?? 'Unknown error'
+                    this.testReporter?.setStatusLabel(
+                        `Setup failed: ${message}`
+                    )
+                }
+            }
+        } else {
+            const newEnabled = !rpSettings.enabled
+            settings.set('regressionproof', {
+                ...rpSettings,
+                enabled: newEnabled,
+            })
+            this.isRpTraining = newEnabled
+            this.testReporter?.setIsRpTraining(newEnabled)
+        }
+    }
+
+    private async getDefaultProjectName(): Promise<string> {
+        try {
+            const commandService = this.Service('command')
+            const result = await commandService.execute(
+                'git remote get-url origin',
+                { ignoreErrors: true }
+            )
+            if (result.stdout) {
+                const match = result.stdout.match(/\/([^/]+?)(?:\.git)?$/)
+                if (match) {
+                    return match[1].replace('.git', '')
+                }
+            }
+        } catch {}
+
+        return pathUtil.basename(this.cwd)
     }
 
     public setWatchMode(mode: WatchMode) {
@@ -381,6 +460,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
         let testResults: SpruceTestResults = await this.testRunner.run({
             pattern: this.pattern,
             debugPort: this.inspect,
+            isRpTraining: this.isRpTraining,
         })
 
         if (

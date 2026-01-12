@@ -29,6 +29,7 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
     public async run(options?: {
         pattern?: string | null
         debugPort?: number | null
+        isRpTraining?: boolean
     }): Promise<SpruceTestResults & { wasKilled: boolean }> {
         this.wasKilled = false
 
@@ -45,7 +46,10 @@ export default class TestRunner extends AbstractEventEmitter<TestRunnerContract>
                 '"'
             )
         }
-        const command = `node --experimental-vm-modules --unhandled-rejections=strict ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter" --testRunner="jest-circus/runner" --passWithNoTests ${
+        const rpReporter = options?.isRpTraining
+            ? ' --reporters="@regressionproof/jest-reporter"'
+            : ''
+        const command = `node --experimental-vm-modules --unhandled-rejections=strict ${debugArgs} ${jestPath} --reporters="@sprucelabs/jest-json-reporter"${rpReporter} --testRunner="jest-circus/runner" --passWithNoTests ${
             pattern ? escapeShell(pattern) : ''
         }`
 

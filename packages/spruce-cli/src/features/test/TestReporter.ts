@@ -53,10 +53,7 @@ export default class TestReporter {
     private handleToggleSmartWatch?: () => any
     private minWidth = 50
     private isRpTraining: boolean
-    private trainingTokenPopup?: PopupWidget
     private shouldStripCwdFromErrors = true
-    // private orientationWhenErrorLogWasShown: TestReporterOrientation =
-    // 'landscape'
 
     public constructor(options?: TestReporterOptions) {
         this.cwd = options?.cwd
@@ -92,8 +89,18 @@ export default class TestReporter {
     }
 
     public setIsRpTraining(isRpTraining: boolean) {
-        this.setLabelStatus('rp', 'Train AI', isRpTraining)
+        this.setRpTrainingStatus(isRpTraining ? 'on' : 'off')
         this.isRpTraining = isRpTraining
+    }
+
+    public setRpTrainingStatus(status: 'off' | 'installing' | 'on') {
+        const colors: Record<string, { fg: string; bg: string }> = {
+            off: { fg: 'w', bg: 'r' },
+            installing: { fg: 'k', bg: 'y' },
+            on: { fg: 'k', bg: 'g' },
+        }
+        const { fg, bg } = colors[status]
+        this.menu.setTextForItem('rp', `Train AI ^${fg}^#^${bg} • ^`)
     }
 
     public startCountdownTimer(durationSec: number) {
@@ -370,38 +377,93 @@ export default class TestReporter {
         }
     }
 
-    public async askForTrainingToken() {
-        if (this.trainingTokenPopup) {
-            return
-        }
+    public async askForProjectName(
+        defaultName: string
+    ): Promise<string | undefined> {
+        return new Promise((resolve) => {
+            const popup = this.widgets.Widget('popup', {
+                parent: this.window,
+                top: 5,
+                left: 8,
+                width: 65,
+                height: 15,
+            })
 
-        this.trainingTokenPopup = this.widgets.Widget('popup', {
-            parent: this.window,
-            top: 10,
-            left: 10,
-            width: 50,
-            height: 10,
-        })
+            this.widgets.Widget('text', {
+                parent: popup,
+                left: 2,
+                top: 1,
+                height: 1,
+                width: popup.getFrame().width - 4,
+                text: 'regressionproof.ai',
+            })
 
-        this.widgets.Widget('text', {
-            parent: this.trainingTokenPopup,
-            left: 4,
-            top: 3,
-            height: 4,
-            width: this.trainingTokenPopup.getFrame().width - 2,
-            text: 'Coming soon...',
-        })
+            this.widgets.Widget('text', {
+                parent: popup,
+                left: 2,
+                top: 3,
+                height: 4,
+                width: popup.getFrame().width - 4,
+                text: "Help Spruce train coding agents on how to do proper TDD.\nIf you contribute to this effort, you'll get a lifetime\nlicense to the agents for free.",
+            })
 
-        const button = this.widgets.Widget('button', {
-            parent: this.trainingTokenPopup,
-            left: 20,
-            top: 7,
-            text: ' Ok ',
-        })
+            const input = this.widgets.Widget('input', {
+                parent: popup,
+                left: 2,
+                top: 8,
+                label: 'Name',
+                width: popup.getFrame().width - 6,
+                height: 1,
+                value: defaultName,
+            })
 
-        await button.on('click', async () => {
-            await this.trainingTokenPopup?.destroy()
-            delete this.trainingTokenPopup
+            const learnMoreButton = this.widgets.Widget('button', {
+                parent: popup,
+                left: 2,
+                top: 11,
+                text: ' Learn more ',
+            })
+
+            const cancelButton = this.widgets.Widget('button', {
+                parent: popup,
+                left: 40,
+                top: 11,
+                text: ' Cancel ',
+            })
+
+            const enableButton = this.widgets.Widget('button', {
+                parent: popup,
+                left: 50,
+                top: 11,
+                text: ' Enable ',
+            })
+
+            void learnMoreButton.on('click', async () => {
+                const open = await import('open')
+                void open.default('https://regressionproof.ai')
+            })
+
+            void enableButton.on('click', () => {
+                const value = input.getValue()
+                void popup.destroy()
+                resolve(value || undefined)
+            })
+
+            void cancelButton.on('click', () => {
+                void popup.destroy()
+                resolve(undefined)
+            })
+
+            void input.on('submit', () => {
+                const value = input.getValue()
+                void popup.destroy()
+                resolve(value || undefined)
+            })
+
+            void input.on('cancel', () => {
+                void popup.destroy()
+                resolve(undefined)
+            })
         })
     }
 
@@ -638,7 +700,6 @@ export default class TestReporter {
         this.testLog.setText(logContent)
 
         if (!errorContent) {
-            // this.errorLog && this.destroyErrorLog()
             this.errorLog?.setText('  Nothing to report...')
         } else {
             !this.errorLog && this.dropInErrorLog()
@@ -678,8 +739,6 @@ export default class TestReporter {
     }
 
     private dropInErrorLog() {
-        // this.orientationWhenErrorLogWasShown = this.orientation
-
         if (this.bottomLayout.getRows().length === 1) {
             if (this.orientation === 'portrait') {
                 this.bottomLayout.addRow({
@@ -719,24 +778,7 @@ export default class TestReporter {
         }
     }
 
-    private destroyErrorLog() {
-        // if (this.errorLog) {
-        //     void this.errorLog?.destroy()
-        //     this.errorLog = undefined
-        //     if (this.orientationWhenErrorLogWasShown === 'landscape') {
-        //         this.bottomLayout.removeColumn(0, 1)
-        //         this.bottomLayout.setColumnWidth({
-        //             rowIdx: 0,
-        //             columnIdx: 0,
-        //             width: '100%',
-        //         })
-        //     } else {
-        //         this.bottomLayout.removeRow(1)
-        //         this.bottomLayout.setRowHeight(0, '100%')
-        //     }
-        //     this.bottomLayout.updateLayout()
-        // }
-    }
+    private destroyErrorLog() {}
 
     private updateProgressBar(results: SpruceTestResults) {
         if (results.totalTestFilesComplete ?? 0 > 0) {
