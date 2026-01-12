@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.2.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.1.2...v29.2.0) (2026-01-12)
+
+
+### Features
+
+* add CLAUDE.md with TDD guidelines and testing documentation ([2381bfb](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/2381bfb))
+* rp progress ([b76c2e1](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/b76c2e1))
+
+
+
+
+
 ## [29.1.2](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.1.1...v29.1.2) (2026-01-07)
 
 **Note:** Version bump only for package spruce-cli-workspace
