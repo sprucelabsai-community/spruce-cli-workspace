@@ -291,7 +291,7 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
 
                     settings.set('regressionproof', {
                         enabled: true,
-                        projectName,
+                        projectName: projectName.trim(),
                     })
                     this.isRpTraining = true
                     this.testReporter?.setIsRpTraining(true)
