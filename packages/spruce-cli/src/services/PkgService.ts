@@ -1,3 +1,5 @@
+import fsUtil from 'fs'
+import pathUtil from 'path'
 import {
     diskUtil,
     PkgService as BasePkgService,
@@ -25,7 +27,51 @@ export default class PkgService extends BasePkgService {
     }
 
     public async install(pkg?: string[] | string, options?: AddOptions) {
-        return this.packageManager.installDependencies(pkg, options)
+        const filtered = this.filterOutWorkspaceSiblings(pkg)
+        if (Array.isArray(filtered) && filtered.length === 0) {
+            return { totalInstalled: 0 }
+        }
+        return this.packageManager.installDependencies(filtered, options)
+    }
+
+    private filterOutWorkspaceSiblings(
+        pkg?: string[] | string
+    ): string[] | string | undefined {
+        if (!pkg) {
+            return pkg
+        }
+        const siblings = this.getWorkspaceSiblingNames()
+        const packages = Array.isArray(pkg) ? pkg : [pkg]
+        const filtered = packages.filter((p) => !siblings.includes(p))
+        return Array.isArray(pkg) ? filtered : filtered[0]
+    }
+
+    private getWorkspaceSiblingNames(): string[] {
+        const packagesDir = pathUtil.dirname(this.cwd)
+        if (pathUtil.basename(packagesDir) !== 'packages') {
+            return []
+        }
+
+        const monorepoRoot = pathUtil.dirname(packagesDir)
+        const rootPkgPath = pathUtil.join(monorepoRoot, 'package.json')
+        if (!diskUtil.doesFileExist(rootPkgPath)) {
+            return []
+        }
+
+        const siblingDirs = fsUtil.readdirSync(packagesDir)
+        const names: string[] = []
+
+        for (const dir of siblingDirs) {
+            const pkgPath = pathUtil.join(packagesDir, dir, 'package.json')
+            if (diskUtil.doesFileExist(pkgPath)) {
+                const siblingPkg = JSON.parse(diskUtil.readFile(pkgPath))
+                if (siblingPkg.name) {
+                    names.push(siblingPkg.name)
+                }
+            }
+        }
+
+        return names
     }
 
     public getSkillNamespace() {

@@ -138,6 +138,7 @@ export default abstract class AbstractCliTest extends AbstractSpruceTest {
         }
 
         if (
+            this.homeDir &&
             diskUtil.doesDirExist(this.homeDir) &&
             testUtil.shouldClearCache()
         ) {
