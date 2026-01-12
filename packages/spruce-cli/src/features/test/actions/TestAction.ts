@@ -299,9 +299,11 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
                 } catch (err: any) {
                     this.testReporter?.setRpTrainingStatus('off')
                     const message = err?.message ?? 'Unknown error'
-                    this.testReporter?.setStatusLabel(
-                        `Setup failed: ${message}`
-                    )
+                    this.testReporter?.setStatusLabel('')
+                    await this.testReporter?.showAlert({
+                        title: 'Train AI Setup Failed',
+                        message: `Could not set up regressionproof:\n\n${message}`,
+                    })
                 }
             }
         } else {

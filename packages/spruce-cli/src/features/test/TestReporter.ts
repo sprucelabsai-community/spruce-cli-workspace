@@ -377,6 +377,55 @@ export default class TestReporter {
         }
     }
 
+    public async showAlert(options: { title: string; message: string }) {
+        const { title, message } = options
+
+        const windowFrame = this.window.getFrame()
+        const popupHeight = Math.min(windowFrame.height - 4, 25)
+
+        return new Promise<void>((resolve) => {
+            const popup = this.widgets.Widget('popup', {
+                parent: this.window,
+                top: 2,
+                left: 4,
+                width: Math.min(windowFrame.width - 8, 80),
+                height: popupHeight,
+            })
+
+            this.widgets.Widget('text', {
+                parent: popup,
+                left: 2,
+                top: 1,
+                height: 1,
+                width: popup.getFrame().width - 4,
+                text: title,
+            })
+
+            this.widgets.Widget('text', {
+                parent: popup,
+                left: 2,
+                top: 3,
+                height: popupHeight - 7,
+                width: popup.getFrame().width - 4,
+                text: message,
+                isScrollEnabled: true,
+                wordWrap: true,
+            })
+
+            const okButton = this.widgets.Widget('button', {
+                parent: popup,
+                left: Math.floor(popup.getFrame().width / 2) - 4,
+                top: popupHeight - 3,
+                text: '   OK   ',
+            })
+
+            void okButton.on('click', () => {
+                void popup.destroy()
+                resolve()
+            })
+        })
+    }
+
     public async askForProjectName(
         defaultName: string
     ): Promise<string | undefined> {
