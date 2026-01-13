@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.3.0](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.2.1...v29.3.0) (2026-01-13)
+
+
+### Features
+
+* new setup.ai command to setup agent/claude/project.md docs ([e1273b1](https://github.com/sprucelabsai-community/spruce-cli-workspace/commit/e1273b1))
+
+
+
+
+
 ## [29.2.1](https://github.com/sprucelabsai-community/spruce-cli-workspace/compare/v29.2.0...v29.2.1) (2026-01-12)
 
 **Note:** Version bump only for package @sprucelabs/spruce-cli
