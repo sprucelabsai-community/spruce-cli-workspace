@@ -46,4 +46,26 @@ export default class NodeWriter extends AbstractWriter {
 
         return [...files, ...directoryTemplateFiles]
     }
+
+    public async writeAiDevelopmentFiles(destinationDir: string) {
+        const claude = await this.writeFileIfChangedMixinResults(
+            diskUtil.resolvePath(destinationDir, 'CLAUDE.md'),
+            this.templates.claudeMd(),
+            'Claude AI assistant configuration'
+        )
+
+        const agents = await this.writeFileIfChangedMixinResults(
+            diskUtil.resolvePath(destinationDir, 'AGENTS.md'),
+            this.templates.agentsMd(),
+            'AI agents documentation'
+        )
+
+        const project = await this.writeFileIfChangedMixinResults(
+            diskUtil.resolvePath(destinationDir, 'docs', 'PROJECT.md'),
+            this.templates.projectMd(),
+            'Project documentation for AI-assisted development'
+        )
+
+        return [...claude, ...agents, ...project]
+    }
 }

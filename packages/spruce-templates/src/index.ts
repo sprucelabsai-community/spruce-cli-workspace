@@ -488,7 +488,8 @@ export const templates = {
 
     agentSystemPrompt(options: { name: string }) {
         const template = templateImportUtil.getTemplate(
-            'agent/SYSTEM_PROMPT.md.hbs'
+            'agent/SYSTEM_PROMPT.md.hbs',
+            'markdown'
         )
         return template(options)
     },
@@ -510,6 +511,30 @@ export const templates = {
     logTransport() {
         const template = templateImportUtil.getTemplate(
             'log/transport.plugin.ts.hbs'
+        )
+        return template({})
+    },
+
+    claudeMd() {
+        const template = templateImportUtil.getTemplate(
+            'CLAUDE.md.hbs',
+            'markdown'
+        )
+        return template({})
+    },
+
+    agentsMd() {
+        const template = templateImportUtil.getTemplate(
+            'AGENTS.md.hbs',
+            'markdown'
+        )
+        return template({})
+    },
+
+    projectMd() {
+        const template = templateImportUtil.getTemplate(
+            'PROJECT.md.hbs',
+            'markdown'
         )
         return template({})
     },
