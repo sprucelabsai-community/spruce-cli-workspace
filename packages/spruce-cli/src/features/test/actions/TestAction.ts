@@ -283,10 +283,14 @@ export default class TestAction extends AbstractAction<OptionsSchema> {
                         'Initializing regressionproof...'
                     )
 
+                    const cliBin = pathUtil.join(
+                        'node_modules',
+                        '.bin',
+                        'regressionproof'
+                    )
                     const commandService = this.Service('command')
                     await commandService.execute(
-                        `node node_modules/@regressionproof/cli/build/cli.js init ${projectName}`,
-                        { ignoreErrors: true }
+                        `${cliBin} init ${projectName}`
                     )
 
                     settings.set('regressionproof', {
