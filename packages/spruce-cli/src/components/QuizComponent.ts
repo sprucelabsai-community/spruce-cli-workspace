@@ -44,13 +44,15 @@ interface QuizPresentationOptions<
 
 type QuizAnswerFieldNames<Q extends QuizQuestions> = Extract<keyof Q, string>
 
-type QuizAnswers<Q extends QuizQuestions> = {
-    [K in QuizAnswerFieldNames<Q>]: string
-}
+type QuizAnswers<Q extends QuizQuestions> = Record<
+    QuizAnswerFieldNames<Q>,
+    string
+>
 
-type QuizAnswerValidities<Q extends QuizQuestions> = {
-    [K in QuizAnswerFieldNames<Q>]: AnswerValidity
-}
+type QuizAnswerValidities<Q extends QuizQuestions> = Record<
+    QuizAnswerFieldNames<Q>,
+    AnswerValidity
+>
 
 interface QuizPresentationResults<Q extends QuizQuestions> {
     /** The answers that were given */
