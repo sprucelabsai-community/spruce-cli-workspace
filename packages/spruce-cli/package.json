@@ -14,7 +14,8 @@
 			"inquirer-file-tree-selection-prompt",
 			"ora",
 			"terminal-kit",
-			"open"
+			"open",
+			"chokidar"
 		]
 	},
 	"license": "MIT",
@@ -89,12 +90,12 @@
 		"@typescript-eslint/parser": "^8.56.0",
 		"cfonts": "^3.3.1",
 		"chalk": "4.1.2",
-		"chokidar": "^5.0.0",
+		"chokidar": "^4.0.3",
 		"cli-table3": "^0.6.5",
 		"commander": "7.2.0",
 		"emphasize": "4.2.0",
 		"fs-extra": "^11.3.3",
-		"inquirer": "^8.2.4",
+		"inquirer": "8.2.7",
 		"inquirer-file-tree-selection-prompt": "1.0.18",
 		"js-tetris-cli": "^0.0.3",
 		"md5": "^2.3.0",
@@ -565,7 +566,8 @@
 			"ora",
 			"terminal-kit",
 			"inquirer",
-			"open"
+			"open",
+			"chokidar"
 		]
 	},
 	"gitHead": "94ce410c05180cdfa9b6ca4b9e47061d52ac4e71"
