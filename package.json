@@ -43,7 +43,7 @@
     "watch.tests": "lerna run watch.tests --parallel"
   },
   "dependencies": {
-    "lerna": "^9.0.0"
+    "lerna": "^9.0.4"
   },
   "resolutions": {
     "inquirer": "8.2.7"
