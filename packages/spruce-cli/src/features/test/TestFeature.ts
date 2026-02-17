@@ -55,9 +55,7 @@ export default class TestFeature extends AbstractFeature {
                     true
                 )
             }
-        } catch (err) {
-            //@ts-ignore
-        }
+        } catch {}
     }
 
     private configureScripts(service: PkgService) {

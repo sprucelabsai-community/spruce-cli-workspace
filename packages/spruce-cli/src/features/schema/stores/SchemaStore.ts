@@ -296,6 +296,8 @@ export default class SchemaStore extends AbstractStore {
                     friendlyMessage: `It looks like your schema's are not versioned. Make sure schemas are in a directory like src/schemas/${
                         versionUtil.generateVersion().dirValue
                     }/*.ts`,
+                    // @ts-ignore
+                    originalError: err,
                 })
             )
         }

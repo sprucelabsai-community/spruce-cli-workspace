@@ -310,7 +310,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
                 })
 
                 results = actionUtil.mergeActionResults(results, testResults)
-            } catch (err) {
+            } catch {
                 results = {
                     errors: [
                         new SpruceError({
@@ -340,7 +340,7 @@ export default class DeployAction extends AbstractAction<OptionsSchema> {
                 })
 
                 results = actionUtil.mergeActionResults(results, buildResults)
-            } catch (err) {
+            } catch {
                 results = {
                     errors: [
                         new SpruceError({

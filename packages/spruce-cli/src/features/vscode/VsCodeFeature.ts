@@ -39,7 +39,7 @@ export default class VsCodeFeature extends AbstractFeature {
 
         try {
             await command.execute('which code')
-        } catch (err) {
+        } catch {
             return false
         }
 

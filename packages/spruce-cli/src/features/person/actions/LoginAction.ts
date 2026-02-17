@@ -59,7 +59,7 @@ export default class LoginAction extends AbstractAction<OptionsSchema> {
                 response.summaryLines = [
                     `Logged in as ${loggedInPerson.casualName}`,
                 ]
-            } catch (err) {
+            } catch {
                 this.ui.renderWarning('Oops, bad pin. Try again please! 🙏')
             }
         } while (!loggedIn)

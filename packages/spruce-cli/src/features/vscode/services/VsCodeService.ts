@@ -18,7 +18,7 @@ export default class VsCodeService extends CommandServiceImpl {
             ) {
                 return true
             }
-        } catch (e) {}
+        } catch {}
 
         return isInstalled
     }
@@ -32,7 +32,7 @@ export default class VsCodeService extends CommandServiceImpl {
             })
 
             extensions = stdout.split('\n')
-        } catch (e) {}
+        } catch {}
 
         return extensions
     }

@@ -93,6 +93,7 @@
 		"cli-table3": "^0.6.5",
 		"commander": "7.2.0",
 		"emphasize": "4.2.0",
+		"eslint-config-spruce": "^11.2.29",
 		"fs-extra": "^11.3.3",
 		"inquirer": "^8.2.4",
 		"inquirer-file-tree-selection-prompt": "1.0.18",

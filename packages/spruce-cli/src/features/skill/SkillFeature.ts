@@ -167,8 +167,7 @@ export default class SkillFeature<
         const engines = (pkg.get('engines') as Record<string, string>) || {}
 
         for (const name in this.engines) {
-            const all = this.engines
-            engines[name] = this.engines[name as keyof typeof all]
+            engines[name] = this.engines[name as keyof typeof this.engines]
         }
 
         pkg.set({ path: 'engines', value: engines })

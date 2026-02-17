@@ -54,7 +54,6 @@ export default class ScriptUpdaterImpl implements ScriptUpdater {
 
         const scripts =
             (this.pkg.get('scripts') as Record<string, string>) ?? {}
-        const all = this.latestScripts
         const oldScripts = this.pkg.get('scripts') ?? {}
 
         let shouldConfirm = this.shouldConfirmIfScriptExistsButIsDifferent
@@ -65,7 +64,8 @@ export default class ScriptUpdaterImpl implements ScriptUpdater {
         }
 
         for (const name in this.latestScripts) {
-            const script = this.latestScripts[name as keyof typeof all]
+            const script =
+                this.latestScripts[name as keyof typeof this.latestScripts]
             const oldScript = oldScripts[name as any]
 
             const shouldAlwaysSkip =
