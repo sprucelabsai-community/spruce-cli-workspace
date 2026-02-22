@@ -112,7 +112,7 @@ async function registerOrLoginSkill(
     let skill: any
     try {
         skill = await registerSkill(client, name, slug)
-    } catch (err: any) {
+    } catch {
         skill = await loginSkill(client, slug)
     }
     process.env.SKILL_ID = skill.id
