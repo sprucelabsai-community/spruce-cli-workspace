@@ -106,7 +106,7 @@
 		"terminal-kit": "sprucelabsai/terminal-kit",
 		"tree-kill": "^1.2.2",
 		"tsutils": "^3.21.0",
-		"typescript": "^5.9.3"
+		"typescript": "^6.0.2"
 	},
 	"devDependencies": {
 		"@sprucelabs/data-stores": "^32.0.10",
